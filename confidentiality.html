@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اتفاقية السرية — NEW MEDIA</title>
+<meta name="description" content="اتفاقية السرية وعدم الإفصاح لوكالة NEW MEDIA — حماية بياناتك التجارية والمعلومات السرية.">
+<link rel="canonical" href="https://newmedia.sa/confidentiality.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #6600cc;
+    --orange: #ff6600;
+    --blend: #cc3366;
+    --black: #050505;
+    --white: #ffffff;
+    --glass-bg: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.10);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Tajawal', sans-serif;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+  a { color: var(--orange); text-decoration: none; transition: opacity 0.2s; }
+  a:hover { opacity: 0.75; }
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--glass-border);
+  }
+  .nav-logo {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 900; font-size: 18px;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--white); text-decoration: none;
+  }
+  .nav-back {
+    font-size: 13px; font-weight: 700;
+    color: rgba(255,255,255,0.5); text-decoration: none;
+    letter-spacing: 0.05em;
+    border: 0.5px solid rgba(255,255,255,0.15);
+    padding: 0.5rem 1.25rem; border-radius: 6px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .nav-back:hover { color: var(--white); border-color: rgba(255,255,255,0.4); opacity: 1; }
+  .page-hero {
+    padding: 10rem 3rem 5rem;
+    max-width: 900px; margin: 0 auto;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .page-tag {
+    font-family: 'Alexandria', sans-serif;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 1.5rem; display: block;
+  }
+  .page-title {
+    font-family: 'Alexandria', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
+    line-height: 1.15; margin-bottom: 1.5rem;
+  }
+  .page-meta { font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
+  .content { max-width: 900px; margin: 0 auto; padding: 4rem 3rem 6rem; }
+  .section {
+    margin-bottom: 3rem; padding: 2.5rem;
+    background: var(--glass-bg);
+    border: 0.5px solid var(--glass-border);
+    border-radius: 16px;
+  }
+  .section h2 {
+    font-family: 'Alexandria', sans-serif;
+    font-size: 1.25rem; font-weight: 700;
+    color: var(--white); margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .section h2 span {
+    display: inline-block; width: 28px; height: 28px;
+    background: linear-gradient(135deg, var(--purple), var(--blend));
+    border-radius: 6px; text-align: center; line-height: 28px;
+    font-size: 12px; margin-left: 0.6rem; vertical-align: middle;
+  }
+  .section p { font-size: 15px; color: rgba(255,255,255,0.65); margin-bottom: 1rem; }
+  .section p:last-child { margin-bottom: 0; }
+  .section ul { list-style: none; padding: 0; margin-top: 0.75rem; }
+  .section ul li {
+    font-size: 15px; color: rgba(255,255,255,0.65);
+    padding: 0.4rem 0; padding-right: 1.2rem; position: relative;
+  }
+  .section ul li::before {
+    content: '—'; position: absolute; right: 0;
+    color: var(--orange); font-size: 12px;
+  }
+  .page-footer {
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    padding: 2.5rem 3rem; max-width: 900px; margin: 0 auto;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .page-hero { padding: 8rem 1.5rem 3rem; }
+    .content { padding: 2rem 1.5rem 4rem; }
+    .page-footer { flex-direction: column; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">NEW MEDIA</a>
+  <a href="/" class="nav-back">← العودة للرئيسية</a>
+</nav>
+
+<div class="page-hero">
+  <span class="page-tag">Legal / قانوني</span>
+  <h1 class="page-title">اتفاقية السرية</h1>
+  <p class="page-meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع علاقات NEW MEDIA التجارية</p>
+</div>
+
+<div class="content">
+
+  <div class="section">
+    <h2><span>01</span> الالتزام بالسرية</h2>
+    <p>تلتزم NEW MEDIA بالمحافظة على سرية جميع المعلومات التجارية والتشغيلية والمالية التي يُفصح عنها العميل في إطار التعاقد. يُعدّ هذا الالتزام ركيزةً أساسية في علاقتنا مع عملائنا.</p>
+    <p>يمتد هذا الالتزام ليشمل جميع موظفي NEW MEDIA ومقاوليها من الباطن والمستشارين المشاركين في تقديم الخدمة.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>02</span> تعريف المعلومات السرية</h2>
+    <p>تشمل المعلومات السرية كل ما يُفصح عنه بشكل صريح أو ضمني وكان يُعدّ سرياً بطبيعته، ومنها على سبيل المثال لا الحصر:</p>
+    <ul>
+      <li>الاستراتيجيات التجارية والخطط التسويقية المستقبلية</li>
+      <li>البيانات المالية وأرقام المبيعات وهوامش الربح</li>
+      <li>قوائم العملاء والموردين وشركاء الأعمال</li>
+      <li>الملكية الفكرية وبراءات الاختراع والأسرار التجارية</li>
+      <li>بيانات الموظفين والهياكل التنظيمية الداخلية</li>
+      <li>كلمات المرور وبيانات الدخول لأي منصة رقمية</li>
+      <li>المعلومات التقنية وبيانات تكنولوجيا المعلومات</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>03</span> استثناءات السرية</h2>
+    <p>لا تخضع للسرية المعلومات التالية:</p>
+    <ul>
+      <li>المعلومات المتاحة للعموم بشكل مشروع وليس بسبب إخلال NEW MEDIA بالسرية</li>
+      <li>المعلومات التي تعلمتها NEW MEDIA بصورة مشروعة من مصدر ثالث غير ملتزم بالسرية</li>
+      <li>المعلومات التي طوّرتها NEW MEDIA بشكل مستقل دون الاستعانة بمعلومات سرية للعميل</li>
+      <li>المعلومات التي أُفصح عنها بموافقة خطية صريحة من العميل</li>
+      <li>المعلومات التي يستوجب القانون أو أمر قضائي الإفصاح عنها</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>04</span> التزامات NEW MEDIA</h2>
+    <p>تتعهد NEW MEDIA بـ:</p>
+    <ul>
+      <li>عدم الإفصاح عن المعلومات السرية لأي طرف ثالث دون إذن كتابي مسبق من العميل</li>
+      <li>استخدام المعلومات السرية لغرض تقديم الخدمات المتفق عليها فقط</li>
+      <li>اتخاذ إجراءات أمنية مناسبة لحماية المعلومات السرية من الوصول غير المصرح به</li>
+      <li>إبلاغ العميل فوراً عند الاشتباه بأي اختراق أو تسرب للمعلومات السرية</li>
+      <li>إعادة أو إتلاف المعلومات السرية عند انتهاء العلاقة التعاقدية إذا طُلب ذلك</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>05</span> مدة الالتزام</h2>
+    <p>يظل الالتزام بالسرية سارياً طوال مدة العقد وبعد انتهائه لمدة <strong style="color:rgba(255,255,255,0.85);">ثلاث سنوات</strong> ما لم يُتفق على خلاف ذلك كتابياً.</p>
+    <p>بالنسبة للأسرار التجارية والملكية الفكرية ذات الطابع الخاص، يبقى الالتزام سارياً إلى أجل غير مسمى ما دامت المعلومات لم تصبح متاحة للعموم بصورة مشروعة.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>06</span> المقاولون من الباطن والشركاء</h2>
+    <p>في حال الاستعانة بمقاولين من الباطن أو شركاء خارجيين لتقديم جزء من الخدمة، تضمن NEW MEDIA:</p>
+    <ul>
+      <li>إبرام اتفاقيات سرية مماثلة مع هؤلاء الأطراف</li>
+      <li>الحد من وصولهم للمعلومات السرية بما يقتضيه العمل فقط</li>
+      <li>مسؤولية NEW MEDIA الكاملة عن أي إخلال بالسرية من قِبل هؤلاء الأطراف</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>07</span> العرض في محفظة الأعمال</h2>
+    <p>تحتفظ NEW MEDIA بحقها في عرض الأعمال المنجزة في محفظتها التجارية وموادها التسويقية، مع مراعاة الاعتبارات التالية:</p>
+    <ul>
+      <li>يُشار للعميل بالاسم إلا إذا طلب السرية الكاملة صراحةً</li>
+      <li>لا تُكشف أرقام الميزانيات أو النتائج التجارية الدقيقة دون موافقة العميل</li>
+      <li>يمكن للعميل طلب إزالة أي عمل من محفظة NEW MEDIA بإشعار كتابي</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>08</span> التعويض عن الإخلال</h2>
+    <p>في حال إخلال NEW MEDIA بأي التزام من التزامات السرية الواردة في هذه الوثيقة، يحق للعميل المطالبة بالتعويض عن الأضرار الفعلية الناجمة عن هذا الإخلال. تُحسم النزاعات المتعلقة بذلك وفق أحكام شروط الخدمة المعمول بها.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>09</span> التواصل</h2>
+    <p>لأي استفسارات حول هذه الاتفاقية أو للحصول على نسخة موقّعة رسمياً:</p>
+    <ul>
+      <li>البريد الإلكتروني: <a href="mailto:hello@newmedia.sa">hello@newmedia.sa</a></li>
+      <li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <div class="page-footer">
+    <div class="footer-links">
+      <a href="/privacy-policy.html">الخصوصية</a>
+      <a href="/terms-of-service.html">شروط الخدمة</a>
+      <a href="/refund-policy.html">الاسترداد</a>
+      <a href="/confidentiality.html">السرية</a>
+      <a href="/cookie-policy.html">الكوكيز</a>
+    </div>
+    <span class="footer-copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
+  </div>
+</footer>
+
+</body>
+</html>

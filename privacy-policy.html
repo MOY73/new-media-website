@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سياسة الخصوصية — NEW MEDIA</title>
+<meta name="description" content="سياسة الخصوصية لوكالة NEW MEDIA — كيف نجمع بياناتك ونحميها ونستخدمها.">
+<link rel="canonical" href="https://newmedia.sa/privacy-policy.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #6600cc;
+    --orange: #ff6600;
+    --blend: #cc3366;
+    --black: #050505;
+    --white: #ffffff;
+    --glass-bg: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.10);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Tajawal', sans-serif;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+  a { color: var(--orange); text-decoration: none; transition: opacity 0.2s; }
+  a:hover { opacity: 0.75; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.25rem 3rem;
+    background: rgba(5,5,5,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--glass-border);
+  }
+  .nav-logo {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-back {
+    font-size: 13px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    border: 0.5px solid rgba(255,255,255,0.15);
+    padding: 0.5rem 1.25rem;
+    border-radius: 6px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .nav-back:hover { color: var(--white); border-color: rgba(255,255,255,0.4); opacity: 1; }
+
+  /* HERO */
+  .page-hero {
+    padding: 10rem 3rem 5rem;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .page-tag {
+    font-family: 'Alexandria', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--orange);
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+  .page-title {
+    font-family: 'Alexandria', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 900;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+  .page-meta {
+    font-size: 13px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.05em;
+  }
+
+  /* CONTENT */
+  .content {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 4rem 3rem 6rem;
+  }
+  .section {
+    margin-bottom: 3rem;
+    padding: 2.5rem;
+    background: var(--glass-bg);
+    border: 0.5px solid var(--glass-border);
+    border-radius: 16px;
+  }
+  .section h2 {
+    font-family: 'Alexandria', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+  .section h2 span {
+    display: inline-block;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--purple), var(--blend));
+    border-radius: 6px;
+    text-align: center;
+    line-height: 28px;
+    font-size: 12px;
+    margin-left: 0.6rem;
+    vertical-align: middle;
+  }
+  .section p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 1rem;
+  }
+  .section p:last-child { margin-bottom: 0; }
+  .section ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 0.75rem;
+  }
+  .section ul li {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    padding: 0.4rem 0;
+    padding-right: 1.2rem;
+    position: relative;
+  }
+  .section ul li::before {
+    content: '—';
+    position: absolute;
+    right: 0;
+    color: var(--orange);
+    font-size: 12px;
+  }
+
+  /* FOOTER */
+  .page-footer {
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    padding: 2.5rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
+  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .page-hero { padding: 8rem 1.5rem 3rem; }
+    .content { padding: 2rem 1.5rem 4rem; }
+    .page-footer { flex-direction: column; padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">NEW MEDIA</a>
+  <a href="/" class="nav-back">← العودة للرئيسية</a>
+</nav>
+
+<div class="page-hero">
+  <span class="page-tag">Legal / قانوني</span>
+  <h1 class="page-title">سياسة الخصوصية</h1>
+  <p class="page-meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA</p>
+</div>
+
+<div class="content">
+
+  <div class="section">
+    <h2><span>01</span> مقدمة</h2>
+    <p>تلتزم شركة NEW MEDIA بحماية خصوصية عملائها وزوار موقعها الإلكتروني. تصف هذه السياسة كيفية جمعنا للبيانات الشخصية واستخدامها وحمايتها والإفصاح عنها عند استخدامك لموقعنا وخدماتنا.</p>
+    <p>بزيارتك لموقعنا أو التعامل معنا، فإنك توافق على الشروط المبينة في هذه الوثيقة. إن كنت لا توافق على أي بند منها، يُرجى التوقف عن استخدام خدماتنا.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>02</span> البيانات التي نجمعها</h2>
+    <p>قد نجمع الأنواع التالية من المعلومات:</p>
+    <ul>
+      <li>الاسم الكامل وعنوان البريد الإلكتروني ورقم الهاتف عند التواصل معنا</li>
+      <li>بيانات الشركة أو المنشأة عند طلب عروض الأسعار أو الخدمات</li>
+      <li>معلومات التصفح مثل عنوان IP ونوع المتصفح والصفحات المُزارة</li>
+      <li>المعلومات التي تقدمها طوعاً من خلال نماذج الاتصال أو البريد الإلكتروني</li>
+      <li>بيانات تحليلية مجهولة الهوية لتحسين تجربة المستخدم</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>03</span> كيف نستخدم بياناتك</h2>
+    <p>نستخدم البيانات المجمّعة للأغراض التالية حصراً:</p>
+    <ul>
+      <li>الرد على استفساراتك وتقديم العروض المطلوبة</li>
+      <li>إدارة العلاقة التعاقدية وتسليم الخدمات المتفق عليها</li>
+      <li>إرسال تحديثات متعلقة بالمشاريع والفواتير</li>
+      <li>تحسين موقعنا وخدماتنا بشكل مستمر</li>
+      <li>الامتثال للمتطلبات القانونية والتنظيمية في المملكة العربية السعودية</li>
+    </ul>
+    <p>لن نبيع بياناتك أو نؤجرها أو نتاجر بها مع أي طرف ثالث.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>04</span> مشاركة البيانات</h2>
+    <p>لا نشارك بياناتك الشخصية مع أطراف خارجية إلا في الحالات التالية:</p>
+    <ul>
+      <li>بموافقتك الصريحة والمسبقة</li>
+      <li>مع مزودي الخدمات التقنية الذين يساعدوننا في تشغيل موقعنا (مثل الاستضافة والتحليلات) بموجب اتفاقيات سرية صارمة</li>
+      <li>استجابةً لأوامر قضائية أو متطلبات قانونية نافذة</li>
+      <li>في حال الاندماج أو الاستحواذ، بعد إخطارك مسبقاً</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2><span>05</span> أمان البيانات</h2>
+    <p>نطبّق إجراءات تقنية وتنظيمية مناسبة لحماية بياناتك من الوصول غير المصرح به أو الإفصاح أو التعديل أو الإتلاف. تشمل هذه الإجراءات:</p>
+    <ul>
+      <li>تشفير الاتصالات عبر بروتوكول HTTPS</li>
+      <li>تقييد الوصول الداخلي للبيانات بمبدأ الحاجة للمعرفة</li>
+      <li>مراجعة دورية لإجراءات الأمان وتحديثها</li>
+    </ul>
+    <p>رغم ذلك، لا يمكن ضمان الأمان المطلق لأي نظام رقمي، ويُشجَّع على اتخاذ الاحتياطات اللازمة من طرفك.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>06</span> حقوقك</h2>
+    <p>وفقاً للأنظمة المعمول بها في المملكة العربية السعودية، يحق لك:</p>
+    <ul>
+      <li>الاطلاع على البيانات الشخصية التي نحتفظ بها عنك</li>
+      <li>طلب تصحيح أي بيانات غير دقيقة</li>
+      <li>طلب حذف بياناتك في الحالات التي يسمح بها النظام</li>
+      <li>سحب موافقتك على معالجة بياناتك في أي وقت</li>
+      <li>تقديم شكوى إلى الجهات التنظيمية المختصة</li>
+    </ul>
+    <p>للممارسة أي من هذه الحقوق، تواصل معنا عبر: <a href="mailto:hello@newmedia.sa">hello@newmedia.sa</a></p>
+  </div>
+
+  <div class="section">
+    <h2><span>07</span> ملفات تعريف الارتباط</h2>
+    <p>يستخدم موقعنا ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وتحليل حركة المرور. للاطلاع على تفاصيل إضافية، يُرجى مراجعة <a href="/cookie-policy.html">سياسة ملفات تعريف الارتباط</a>.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>08</span> التعديلات على هذه السياسة</h2>
+    <p>نحتفظ بالحق في تعديل هذه السياسة في أي وقت. ستُنشر التعديلات على هذه الصفحة مع تحديث تاريخ آخر مراجعة. يُنصح بمراجعة هذه الصفحة بصفة دورية.</p>
+  </div>
+
+  <div class="section">
+    <h2><span>09</span> التواصل معنا</h2>
+    <p>لأي استفسارات تتعلق بهذه السياسة أو بياناتك الشخصية:</p>
+    <ul>
+      <li>البريد الإلكتروني: <a href="mailto:hello@newmedia.sa">hello@newmedia.sa</a></li>
+      <li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li>
+      <li>العنوان: جدة، المملكة العربية السعودية</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>
+  <div class="page-footer">
+    <div class="footer-links">
+      <a href="/privacy-policy.html">الخصوصية</a>
+      <a href="/terms-of-service.html">شروط الخدمة</a>
+      <a href="/refund-policy.html">الاسترداد</a>
+      <a href="/confidentiality.html">السرية</a>
+      <a href="/cookie-policy.html">الكوكيز</a>
+    </div>
+    <span class="footer-copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
+  </div>
+</footer>
+
+</body>
+</html>
