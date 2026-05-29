@@ -909,7 +909,7 @@
     <div class="service-card glow-border reveal" style="transition-delay:0.1s">
       <div class="card-number">01</div>
       <div class="card-icon">📈</div>
-      <div class="card-title">Growth & Performance</div>
+      <div class="card-title" data-i18n="ct1">Growth & Performance</div>
       <div data-i18n="c1_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم النمو والأداء</div>
       <p class="card-text" data-i18n="c1_text">القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
@@ -923,7 +923,7 @@
     <div class="service-card glow-border reveal" style="transition-delay:0.2s">
       <div class="card-number">02</div>
       <div class="card-icon">📱</div>
-      <div class="card-title">Digital Presence</div>
+      <div class="card-title" data-i18n="ct2">Digital Presence</div>
       <div data-i18n="c2_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الحضور الرقمي</div>
       <p class="card-text" data-i18n="c2_text">القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
@@ -937,7 +937,7 @@
     <div class="service-card glow-border reveal" style="transition-delay:0.3s">
       <div class="card-number">03</div>
       <div class="card-icon">🎨</div>
-      <div class="card-title">Brand & Experience</div>
+      <div class="card-title" data-i18n="ct3">Brand & Experience</div>
       <div data-i18n="c3_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الهوية والتجربة</div>
       <p class="card-text" data-i18n="c3_text">القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
@@ -951,7 +951,7 @@
     <div class="service-card glow-border reveal" style="transition-delay:0.4s">
       <div class="card-number">04</div>
       <div class="card-icon">🎬</div>
-      <div class="card-title">Creative Production Studio</div>
+      <div class="card-title" data-i18n="ct4">Creative Production Studio</div>
       <div data-i18n="c4_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">الاستديو الإبداعي</div>
       <p class="card-text" data-i18n="c4_text">المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
@@ -1056,10 +1056,10 @@
       <div>
         <div data-i18n="footer_div_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">أقسامنا</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
-          <li><a href="#services" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Growth & Performance</a></li>
-          <li><a href="#services" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Digital Presence</a></li>
-          <li><a href="#services" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Brand & Experience</a></li>
-          <li><a href="#services" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Creative Production</a></li>
+          <li><a href="#services" data-i18n="fdiv1" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Growth & Performance</a></li>
+          <li><a href="#services" data-i18n="fdiv2" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Digital Presence</a></li>
+          <li><a href="#services" data-i18n="fdiv3" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Brand & Experience</a></li>
+          <li><a href="#services" data-i18n="fdiv4" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Creative Production</a></li>
         </ul>
       </div>
 
@@ -1193,25 +1193,26 @@
   const translations = {
     ar: {
       dir: 'rtl', lang: 'ar', btn: 'EN',
-      nav_services: 'Services', nav_work: 'Work', nav_about: 'About', nav_contact: 'تواصل معنا',
-      hero_eyebrow: 'Full-Service Marketing Agency — KSA',
-      hero_line1: 'WE CREATE', hero_line2: 'IMPACT',
+      nav_services: 'خدماتنا', nav_work: 'أعمالنا', nav_about: 'من نحن', nav_contact: 'تواصل معنا',
+      hero_eyebrow: 'وكالة تسويق شاملة — المملكة العربية السعودية',
+      hero_line1: 'نحن نصنع', hero_line2: 'التأثير',
       hero_sub: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى الإبداع إلى النتائج',
       hero_btn1: 'شوف أعمالنا', hero_btn2: 'تواصل معنا',
       services_tag: 'أقسامنا',
       services_title: 'أربعة أقسام<br><span class="accent">تصنع الفارق</span>',
+      ct1: 'النمو والأداء', ct2: 'الحضور الرقمي', ct3: 'الهوية والتجربة', ct4: 'الاستديو الإبداعي',
       c1_sub: 'قسم النمو والأداء',
       c1_text: 'القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.',
-      c1_t1: 'إعلانات ممولة', c1_t2: 'تحليل البيانات', c1_t3: 'ROI', c1_t4: 'تطوير الأعمال',
+      c1_t1: 'إعلانات ممولة', c1_t2: 'تحليل البيانات', c1_t3: 'عائد الاستثمار', c1_t4: 'تطوير الأعمال',
       c2_sub: 'قسم الحضور الرقمي',
       c2_text: 'القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.',
-      c2_t1: 'صناعة المحتوى', c2_t2: 'Social Media', c2_t3: 'AI & Automation', c2_t4: 'إدارة المجتمعات',
+      c2_t1: 'صناعة المحتوى', c2_t2: 'سوشيال ميديا', c2_t3: 'ذكاء اصطناعي', c2_t4: 'إدارة المجتمعات',
       c3_sub: 'قسم الهوية والتجربة',
       c3_text: 'القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.',
-      c3_t1: 'Brand Identity', c3_t2: 'UI/UX', c3_t3: 'مواقع ومتاجر', c3_t4: 'Landing Pages',
+      c3_t1: 'الهوية البصرية', c3_t2: 'واجهة المستخدم', c3_t3: 'مواقع ومتاجر', c3_t4: 'صفحات الهبوط',
       c4_sub: 'الاستديو الإبداعي',
       c4_text: 'المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.',
-      c4_t1: 'تصوير منتجات', c4_t2: 'إنتاج إعلانات', c4_t3: 'Reels', c4_t4: 'AI Video',
+      c4_t1: 'تصوير منتجات', c4_t2: 'إنتاج إعلانات', c4_t3: 'ريلز', c4_t4: 'فيديو ذكاء اصطناعي',
       stat1: 'عميل راضٍ', stat2: 'متوسط عائد الاستثمار', stat3: 'وصول شهري', stat4: 'معدل الاحتفاظ',
       work_tag: 'ما صنعناه',
       work_title: 'أعمال<br><span class="accent">مختارة</span>',
@@ -1225,6 +1226,7 @@
       footer_contact_title: 'تواصل معنا',
       footer_location: 'جدة، المملكة العربية السعودية',
       footer_copy: '© 2025 New Media Agency. جميع الحقوق محفوظة.',
+      fdiv1: 'النمو والأداء', fdiv2: 'الحضور الرقمي', fdiv3: 'الهوية والتجربة', fdiv4: 'الاستديو الإبداعي',
     },
     en: {
       dir: 'ltr', lang: 'en', btn: 'ع',
@@ -1235,6 +1237,7 @@
       hero_btn1: 'View Our Work', hero_btn2: 'Contact Us',
       services_tag: 'Our Divisions',
       services_title: 'Four Divisions<br><span class="accent">That Make a Difference</span>',
+      ct1: 'Growth & Performance', ct2: 'Digital Presence', ct3: 'Brand & Experience', ct4: 'Creative Production Studio',
       c1_sub: 'Growth & Performance Division',
       c1_text: 'The division responsible for converting attention into profits and data into decisions. Includes paid campaigns, analytics, sales, and business development.',
       c1_t1: 'Paid Ads', c1_t2: 'Data Analytics', c1_t3: 'ROI', c1_t4: 'Business Dev',
@@ -1260,6 +1263,7 @@
       footer_contact_title: 'Contact Us',
       footer_location: 'Jeddah, Saudi Arabia',
       footer_copy: '© 2025 New Media Agency. All rights reserved.',
+      fdiv1: 'Growth & Performance', fdiv2: 'Digital Presence', fdiv3: 'Brand & Experience', fdiv4: 'Creative Production',
     }
   };
 
