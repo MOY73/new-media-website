@@ -23,6 +23,8 @@ nav { position:fixed; top:20px; left:50%; transform:translateX(-50%); width:calc
 .nav-links a:hover { color:var(--white); }
 .nav-cta { font-family:'Alexandria',sans-serif; font-weight:700; font-size:13px; color:var(--white); text-decoration:none; background:linear-gradient(135deg,var(--purple),var(--orange)); padding:10px 22px; border-radius:12px; transition:opacity .3s,transform .2s; }
 .nav-cta:hover { opacity:.85; transform:scale(.98); }
+.lang-btn { font-family:'Alexandria',sans-serif; font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.55); background:transparent; border:1px solid rgba(255,255,255,.15); padding:8px 16px; border-radius:10px; cursor:pointer; transition:all .3s; line-height:1; }
+.lang-btn:hover { background:rgba(255,255,255,.1); color:var(--white); border-color:rgba(255,255,255,.28); }
 .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:9rem 2rem 5rem; position:relative; overflow:hidden; }
 .orb { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
 .o1 { width:600px; height:600px; background:radial-gradient(circle,rgba(204,51,102,.4),transparent 70%); top:-100px; left:-100px; animation:flt 9s ease-in-out infinite; }
@@ -89,130 +91,134 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
 <body>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+
 <nav>
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
   <ul class="nav-links">
-    <li><a href="index.html#services">الأقسام</a></li>
-    <li><a href="index.html#work">أعمالنا</a></li>
-    <li><a href="index.html#contact">من نحن</a></li>
+    <li><a href="index.html#services" data-i18n="nav_div">الأقسام</a></li>
+    <li><a href="index.html#work" data-i18n="nav_work">أعمالنا</a></li>
+    <li><a href="index.html#contact" data-i18n="nav_about">من نحن</a></li>
   </ul>
-  <a href="index.html#contact" class="nav-cta">تواصل معنا</a>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">تواصل معنا</a>
+  </div>
 </nav>
 
 <section class="hero">
   <div class="orb o1"></div>
   <div class="orb o2"></div>
   <div class="orb o3"></div>
-  <div class="badge">القسم الرابع · Creative Production Studio</div>
+  <div class="badge" data-i18n="badge">القسم الرابع · Creative Production Studio</div>
   <div class="hero-icon">🎬</div>
   <div class="hero-num">04</div>
-  <h1>الاستديو<br><span class="g">الإبداعي</span></h1>
-  <p class="hero-sub">نُحوّل أفكارك إلى مشاهد تُشاهد وتُحفظ وتبيع — إنتاج بصري يُوقف الإصبع ويُحرّك القرار</p>
+  <h1 data-i18n="h1">الاستديو<br><span class="g">الإبداعي</span></h1>
+  <p class="hero-sub" data-i18n="hero_sub">نُحوّل أفكارك إلى مشاهد تُشاهد وتُحفظ وتبيع — إنتاج بصري يُوقف الإصبع ويُحرّك القرار</p>
   <div class="hero-actions">
-    <a href="#services" class="btn-p">اكتشف خدماتنا</a>
-    <a href="index.html#contact" class="btn-g">تواصل معنا</a>
+    <a href="#services" class="btn-p" data-i18n="btn_explore">اكتشف خدماتنا</a>
+    <a href="index.html#contact" class="btn-g" data-i18n="btn_contact">تواصل معنا</a>
   </div>
 </section>
 
 <section id="services" class="sec">
-  <div class="sec-tag reveal">ما نقدمه</div>
-  <h2 class="sec-title reveal">محتوى بصري<br><span class="g">يُوقف ويُقنع</span></h2>
+  <div class="sec-tag reveal" data-i18n="sec_tag">ما نقدمه</div>
+  <h2 class="sec-title reveal" data-i18n="sec_title">محتوى بصري<br><span class="g">يُوقف ويُقنع</span></h2>
   <div class="grid-3">
     <div class="card reveal" style="transition-delay:.05s">
       <div class="card-icon">📸</div>
-      <div class="card-title">تصوير المنتجات</div>
-      <p class="card-text">صور احترافية تُبرز منتجك بأفضل صورة وتُحرّك القرار الشرائي — تصوير استوديو، تصوير بيئي، وتصوير إبداعي مختلف.</p>
+      <div class="card-title" data-i18n="c1_title">تصوير المنتجات</div>
+      <p class="card-text" data-i18n="c1_text">صور احترافية تُبرز منتجك بأفضل صورة وتُحرّك القرار الشرائي — تصوير استوديو، تصوير بيئي، وتصوير إبداعي مختلف.</p>
     </div>
     <div class="card reveal" style="transition-delay:.1s">
       <div class="card-icon">🎥</div>
-      <div class="card-title">إنتاج الإعلانات</div>
-      <p class="card-text">إعلانات مرئية تستوقف المشاهد في الثانية الأولى وتُحقق الهدف التجاري — فكرة، إنتاج، مونتاج، وتسليم جاهز للنشر.</p>
+      <div class="card-title" data-i18n="c2_title">إنتاج الإعلانات</div>
+      <p class="card-text" data-i18n="c2_text">إعلانات مرئية تستوقف المشاهد في الثانية الأولى وتُحقق الهدف التجاري — فكرة، إنتاج، مونتاج، وتسليم جاهز للنشر.</p>
     </div>
     <div class="card reveal" style="transition-delay:.15s">
       <div class="card-icon">🎞️</div>
-      <div class="card-title">الريلز والفيديو القصير</div>
-      <p class="card-text">محتوى فيديو قصير وجذاب لإنستقرام وتيك توك وسناب شات — يُوقف السكرول ويجعل جمهورك يتابع ويشارك.</p>
+      <div class="card-title" data-i18n="c3_title">الريلز والفيديو القصير</div>
+      <p class="card-text" data-i18n="c3_text">محتوى فيديو قصير وجذاب لإنستقرام وتيك توك وسناب شات — يُوقف السكرول ويجعل جمهورك يتابع ويشارك.</p>
     </div>
     <div class="card reveal" style="transition-delay:.2s">
       <div class="card-icon">🤖</div>
-      <div class="card-title">فيديو الذكاء الاصطناعي</div>
-      <p class="card-text">نُنتج فيديوهات مُدهشة بتقنيات الذكاء الاصطناعي — Sora, Runway, Kling — بكلفة أقل وإنتاجية أعلى بكثير.</p>
+      <div class="card-title" data-i18n="c4_title">فيديو الذكاء الاصطناعي</div>
+      <p class="card-text" data-i18n="c4_text">نُنتج فيديوهات مُدهشة بتقنيات الذكاء الاصطناعي — Sora, Runway, Kling — بكلفة أقل وإنتاجية أعلى بكثير.</p>
     </div>
     <div class="card reveal" style="transition-delay:.25s">
       <div class="card-icon">🎬</div>
-      <div class="card-title">الأفلام الدعائية</div>
-      <p class="card-text">أفلام شركات وقصص علامات تجارية تُلهم وتُقنع — من كتابة السيناريو إلى التصوير والمونتاج والموسيقى التصويرية.</p>
+      <div class="card-title" data-i18n="c5_title">الأفلام الدعائية</div>
+      <p class="card-text" data-i18n="c5_text">أفلام شركات وقصص علامات تجارية تُلهم وتُقنع — من كتابة السيناريو إلى التصوير والمونتاج والموسيقى التصويرية.</p>
     </div>
     <div class="card reveal" style="transition-delay:.3s">
       <div class="card-icon">✨</div>
-      <div class="card-title">الموشن جرافيك</div>
-      <p class="card-text">نُحرّك الأفكار والبيانات والهويات البصرية بطريقة جذابة وسهلة الفهم — After Effects، 3D، وتأثيرات احترافية.</p>
+      <div class="card-title" data-i18n="c6_title">الموشن جرافيك</div>
+      <p class="card-text" data-i18n="c6_text">نُحرّك الأفكار والبيانات والهويات البصرية بطريقة جذابة وسهلة الفهم — After Effects، 3D، وتأثيرات احترافية.</p>
     </div>
   </div>
   <div class="divs-nav">
-    <a href="growth-performance.html" class="div-link">📈 النمو والأداء</a>
-    <a href="digital-presence.html" class="div-link">📱 الحضور الرقمي</a>
-    <a href="brand-experience.html" class="div-link">🎨 الهوية والتجربة</a>
-    <a href="creative-production.html" class="div-link active">🎬 الاستديو الإبداعي</a>
+    <a href="growth-performance.html" class="div-link" data-i18n="div1">📈 النمو والأداء</a>
+    <a href="digital-presence.html" class="div-link" data-i18n="div2">📱 الحضور الرقمي</a>
+    <a href="brand-experience.html" class="div-link" data-i18n="div3">🎨 الهوية والتجربة</a>
+    <a href="creative-production.html" class="div-link active" data-i18n="div4">🎬 الاستديو الإبداعي</a>
   </div>
 </section>
 
 <div class="divider-sec">
   <div class="divider-inner">
-    <div class="sec-tag reveal">كيف نعمل</div>
-    <h2 class="sec-title reveal">من الفكرة<br><span class="g">إلى المشهد</span></h2>
+    <div class="sec-tag reveal" data-i18n="proc_tag">كيف نعمل</div>
+    <h2 class="sec-title reveal" data-i18n="proc_title">من الفكرة<br><span class="g">إلى المشهد</span></h2>
     <div class="grid-4">
       <div class="reveal" style="transition-delay:.05s">
         <div class="step-num">01</div>
-        <div class="step-title">الإحاطة الإبداعية</div>
-        <p class="step-text">نفهم هدفك والرسالة التي تريد إيصالها والجمهور الذي تخاطبه — الأساس الذي يحدد اتجاه كل شيء.</p>
+        <div class="step-title" data-i18n="s1_title">الإحاطة الإبداعية</div>
+        <p class="step-text" data-i18n="s1_text">نفهم هدفك والرسالة التي تريد إيصالها والجمهور الذي تخاطبه — الأساس الذي يحدد اتجاه كل شيء.</p>
       </div>
       <div class="reveal" style="transition-delay:.1s">
         <div class="step-num">02</div>
-        <div class="step-title">المفهوم الإبداعي</div>
-        <p class="step-text">نُطوّر فكرة إبداعية قوية ومختلفة — سيناريو، Storyboard، وخطة إنتاج واضحة لكل تفصيلة.</p>
+        <div class="step-title" data-i18n="s2_title">المفهوم الإبداعي</div>
+        <p class="step-text" data-i18n="s2_text">نُطوّر فكرة إبداعية قوية ومختلفة — سيناريو، Storyboard، وخطة إنتاج واضحة لكل تفصيلة.</p>
       </div>
       <div class="reveal" style="transition-delay:.15s">
         <div class="step-num">03</div>
-        <div class="step-title">الإنتاج</div>
-        <p class="step-text">ننفّذ بأعلى مستوى احترافي — تصوير، إضاءة، صوت، ومعدات بمستوى عالمي داخل وخارج الاستديو.</p>
+        <div class="step-title" data-i18n="s3_title">الإنتاج</div>
+        <p class="step-text" data-i18n="s3_text">ننفّذ بأعلى مستوى احترافي — تصوير، إضاءة، صوت، ومعدات بمستوى عالمي داخل وخارج الاستديو.</p>
       </div>
       <div class="reveal" style="transition-delay:.2s">
         <div class="step-num">04</div>
-        <div class="step-title">المونتاج والتسليم</div>
-        <p class="step-text">نُسلّم محتوى مُحرَّراً بدقة وجاهزاً للنشر على كل منصة بالمقاسات والجودة المثلى.</p>
+        <div class="step-title" data-i18n="s4_title">المونتاج والتسليم</div>
+        <p class="step-text" data-i18n="s4_text">نُسلّم محتوى مُحرَّراً بدقة وجاهزاً للنشر على كل منصة بالمقاسات والجودة المثلى.</p>
       </div>
     </div>
   </div>
 </div>
 
 <div class="stats-wrap">
-  <div class="sec-tag reveal">بالأرقام</div>
-  <h2 class="sec-title reveal">أرقام<br><span class="g">تتحدث بصرياً</span></h2>
+  <div class="sec-tag reveal" data-i18n="stats_tag">بالأرقام</div>
+  <h2 class="sec-title reveal" data-i18n="stats_title">أرقام<br><span class="g">تتحدث بصرياً</span></h2>
   <div class="grid-3s">
     <div class="stat-card reveal">
       <div class="stat-num">+500</div>
-      <div class="stat-label">مقطع فيديو ومحتوى بصري مُنتج</div>
+      <div class="stat-label" data-i18n="stat1_label">مقطع فيديو ومحتوى بصري مُنتج</div>
     </div>
     <div class="stat-card reveal" style="transition-delay:.1s">
       <div class="stat-num">50M+</div>
-      <div class="stat-label">مشاهدة مجمّعة لمحتوى عملائنا</div>
+      <div class="stat-label" data-i18n="stat2_label">مشاهدة مجمّعة لمحتوى عملائنا</div>
     </div>
     <div class="stat-card reveal" style="transition-delay:.2s">
       <div class="stat-num">+200</div>
-      <div class="stat-label">إعلان تجاري منتج ومُطلق</div>
+      <div class="stat-label" data-i18n="stat3_label">إعلان تجاري منتج ومُطلق</div>
     </div>
   </div>
 </div>
 
 <section class="cta">
-  <h2 class="reveal">مستعد تُنتج محتوى<br><span class="gr">يُوقف المشاهد؟</span></h2>
-  <p class="reveal">تواصل معنا ونبني معاً محتوى بصرياً يُحوّل جمهورك إلى عملاء ومعجبين يُوصون بك</p>
-  <a href="mailto:hello@newmedia.sa" class="btn-p reveal">ابدأ معنا الآن →</a>
+  <h2 class="reveal" data-i18n="cta_title">مستعد تُنتج محتوى<br><span class="gr">يُوقف المشاهد؟</span></h2>
+  <p class="reveal" data-i18n="cta_sub">تواصل معنا ونبني معاً محتوى بصرياً يُحوّل جمهورك إلى عملاء ومعجبين يُوصون بك</p>
+  <a href="mailto:hello@newmedia.sa" class="btn-p reveal" data-i18n="cta_btn">ابدأ معنا الآن →</a>
 </section>
 
 <footer>
-  <p class="foot-copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
+  <p class="foot-copy" data-i18n="foot_copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
   <div class="foot-links">
     <a href="privacy-policy.html">Privacy</a>
     <a href="terms-of-service.html">Terms</a>
@@ -234,6 +240,79 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
   }
   const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const T={
+    ar:{
+      dir:'rtl',lang:'ar',btn:'EN',
+      nav_div:'الأقسام',nav_work:'أعمالنا',nav_about:'من نحن',nav_cta:'تواصل معنا',
+      badge:'القسم الرابع · Creative Production Studio',
+      h1:'الاستديو<br><span class="g">الإبداعي</span>',
+      hero_sub:'نُحوّل أفكارك إلى مشاهد تُشاهد وتُحفظ وتبيع — إنتاج بصري يُوقف الإصبع ويُحرّك القرار',
+      btn_explore:'اكتشف خدماتنا',btn_contact:'تواصل معنا',
+      sec_tag:'ما نقدمه',
+      sec_title:'محتوى بصري<br><span class="g">يُوقف ويُقنع</span>',
+      c1_title:'تصوير المنتجات',c1_text:'صور احترافية تُبرز منتجك بأفضل صورة وتُحرّك القرار الشرائي — تصوير استوديو، تصوير بيئي، وتصوير إبداعي مختلف.',
+      c2_title:'إنتاج الإعلانات',c2_text:'إعلانات مرئية تستوقف المشاهد في الثانية الأولى وتُحقق الهدف التجاري — فكرة، إنتاج، مونتاج، وتسليم جاهز للنشر.',
+      c3_title:'الريلز والفيديو القصير',c3_text:'محتوى فيديو قصير وجذاب لإنستقرام وتيك توك وسناب شات — يُوقف السكرول ويجعل جمهورك يتابع ويشارك.',
+      c4_title:'فيديو الذكاء الاصطناعي',c4_text:'نُنتج فيديوهات مُدهشة بتقنيات الذكاء الاصطناعي — Sora, Runway, Kling — بكلفة أقل وإنتاجية أعلى بكثير.',
+      c5_title:'الأفلام الدعائية',c5_text:'أفلام شركات وقصص علامات تجارية تُلهم وتُقنع — من كتابة السيناريو إلى التصوير والمونتاج والموسيقى التصويرية.',
+      c6_title:'الموشن جرافيك',c6_text:'نُحرّك الأفكار والبيانات والهويات البصرية بطريقة جذابة وسهلة الفهم — After Effects، 3D، وتأثيرات احترافية.',
+      div1:'📈 النمو والأداء',div2:'📱 الحضور الرقمي',div3:'🎨 الهوية والتجربة',div4:'🎬 الاستديو الإبداعي',
+      proc_tag:'كيف نعمل',proc_title:'من الفكرة<br><span class="g">إلى المشهد</span>',
+      s1_title:'الإحاطة الإبداعية',s1_text:'نفهم هدفك والرسالة التي تريد إيصالها والجمهور الذي تخاطبه — الأساس الذي يحدد اتجاه كل شيء.',
+      s2_title:'المفهوم الإبداعي',s2_text:'نُطوّر فكرة إبداعية قوية ومختلفة — سيناريو، Storyboard، وخطة إنتاج واضحة لكل تفصيلة.',
+      s3_title:'الإنتاج',s3_text:'ننفّذ بأعلى مستوى احترافي — تصوير، إضاءة، صوت، ومعدات بمستوى عالمي داخل وخارج الاستديو.',
+      s4_title:'المونتاج والتسليم',s4_text:'نُسلّم محتوى مُحرَّراً بدقة وجاهزاً للنشر على كل منصة بالمقاسات والجودة المثلى.',
+      stats_tag:'بالأرقام',stats_title:'أرقام<br><span class="g">تتحدث بصرياً</span>',
+      stat1_label:'مقطع فيديو ومحتوى بصري مُنتج',stat2_label:'مشاهدة مجمّعة لمحتوى عملائنا',stat3_label:'إعلان تجاري منتج ومُطلق',
+      cta_title:'مستعد تُنتج محتوى<br><span class="gr">يُوقف المشاهد؟</span>',
+      cta_sub:'تواصل معنا ونبني معاً محتوى بصرياً يُحوّل جمهورك إلى عملاء ومعجبين يُوصون بك',
+      cta_btn:'ابدأ معنا الآن →',
+      foot_copy:'© 2025 New Media Agency. جميع الحقوق محفوظة.'
+    },
+    en:{
+      dir:'ltr',lang:'en',btn:'ع',
+      nav_div:'Divisions',nav_work:'Work',nav_about:'About',nav_cta:'Contact Us',
+      badge:'Division 04 · Creative Production Studio',
+      h1:'CREATIVE<br><span class="g">STUDIO</span>',
+      hero_sub:'We turn your ideas into scenes that are watched, remembered, and sell — visual production that stops the scroll and drives decisions',
+      btn_explore:'Explore Our Services',btn_contact:'Contact Us',
+      sec_tag:'What We Offer',
+      sec_title:'Visual Content That<br><span class="g">Stops & Convinces</span>',
+      c1_title:'Product Photography',c1_text:'Professional photos that showcase your product at its best and drive purchase decisions — studio photography, lifestyle shoots, and creative editorial imagery.',
+      c2_title:'Ad Production',c2_text:'Visual ads that stop the viewer in the first second and achieve the business goal — concept, production, editing, and delivery ready to publish.',
+      c3_title:'Reels & Short Video',c3_text:'Short, engaging video content for Instagram, TikTok, and Snapchat — stops the scroll and keeps your audience watching and sharing.',
+      c4_title:'AI Video',c4_text:'We produce stunning videos using AI technologies — Sora, Runway, Kling — at lower cost and far higher output.',
+      c5_title:'Promotional Films',c5_text:'Corporate films and brand stories that inspire and persuade — from scriptwriting to filming, editing, and original score.',
+      c6_title:'Motion Graphics',c6_text:'We animate ideas, data, and visual identities in an engaging and easy-to-understand way — After Effects, 3D, and professional effects.',
+      div1:'📈 Growth & Performance',div2:'📱 Digital Presence',div3:'🎨 Brand & Experience',div4:'🎬 Creative Studio',
+      proc_tag:'How We Work',proc_title:'From Idea<br><span class="g">to Scene</span>',
+      s1_title:'Creative Brief',s1_text:'We understand your goal, the message you want to deliver, and the audience you are speaking to — the foundation that sets the direction for everything.',
+      s2_title:'Creative Concept',s2_text:'We develop a powerful, differentiated creative idea — script, storyboard, and a clear production plan for every detail.',
+      s3_title:'Production',s3_text:'We execute at the highest professional level — filming, lighting, sound, and world-class equipment both in and out of the studio.',
+      s4_title:'Editing & Delivery',s4_text:'We deliver precisely edited content ready for publication on every platform at the optimal dimensions and quality.',
+      stats_tag:'By the Numbers',stats_title:'Numbers<br><span class="g">That Speak Visually</span>',
+      stat1_label:'Video clips & visual content produced',stat2_label:'Combined views on client content',stat3_label:'Commercial ads produced & launched',
+      cta_title:'Ready to Produce Content<br><span class="gr">That Stops the Viewer?</span>',
+      cta_sub:"Contact us and together we'll build visual content that turns your audience into customers and fans who recommend you",
+      cta_btn:'Start With Us Now →',
+      foot_copy:'© 2025 New Media Agency. All rights reserved.'
+    }
+  };
+
+  let curLang='ar';
+  function applyLang(lang){
+    const t=T[lang];
+    document.documentElement.lang=t.lang;
+    document.documentElement.dir=t.dir;
+    document.getElementById('langBtn').textContent=t.btn;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k=el.getAttribute('data-i18n');
+      if(t[k]!==undefined) el.innerHTML=t[k];
+    });
+    curLang=lang;
+  }
+  document.getElementById('langBtn').addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
 </script>
 </body>
 </html>

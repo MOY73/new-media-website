@@ -23,6 +23,8 @@ nav { position:fixed; top:20px; left:50%; transform:translateX(-50%); width:calc
 .nav-links a:hover { color:var(--white); }
 .nav-cta { font-family:'Alexandria',sans-serif; font-weight:700; font-size:13px; color:var(--white); text-decoration:none; background:linear-gradient(135deg,var(--purple),var(--orange)); padding:10px 22px; border-radius:12px; transition:opacity .3s,transform .2s; }
 .nav-cta:hover { opacity:.85; transform:scale(.98); }
+.lang-btn { font-family:'Alexandria',sans-serif; font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.55); background:transparent; border:1px solid rgba(255,255,255,.15); padding:8px 16px; border-radius:10px; cursor:pointer; transition:all .3s; line-height:1; }
+.lang-btn:hover { background:rgba(255,255,255,.1); color:var(--white); border-color:rgba(255,255,255,.28); }
 .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:9rem 2rem 5rem; position:relative; overflow:hidden; }
 .orb { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
 .o1 { width:600px; height:600px; background:radial-gradient(circle,rgba(255,102,0,.3),transparent 70%); top:-150px; left:-100px; animation:flt 9s ease-in-out infinite; }
@@ -89,130 +91,134 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
 <body>
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
+
 <nav>
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
   <ul class="nav-links">
-    <li><a href="index.html#services">الأقسام</a></li>
-    <li><a href="index.html#work">أعمالنا</a></li>
-    <li><a href="index.html#contact">من نحن</a></li>
+    <li><a href="index.html#services" data-i18n="nav_div">الأقسام</a></li>
+    <li><a href="index.html#work" data-i18n="nav_work">أعمالنا</a></li>
+    <li><a href="index.html#contact" data-i18n="nav_about">من نحن</a></li>
   </ul>
-  <a href="index.html#contact" class="nav-cta">تواصل معنا</a>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">تواصل معنا</a>
+  </div>
 </nav>
 
 <section class="hero">
   <div class="orb o1"></div>
   <div class="orb o2"></div>
   <div class="orb o3"></div>
-  <div class="badge">القسم الثاني · Digital Presence</div>
+  <div class="badge" data-i18n="badge">القسم الثاني · Digital Presence</div>
   <div class="hero-icon">📱</div>
   <div class="hero-num">02</div>
-  <h1>الحضور<br><span class="g">الرقمي</span></h1>
-  <p class="hero-sub">نبني صوت براندك الرقمي ونُدير حضوره عبر كل منصة — محتوى يُوقف، مجتمع يتفاعل، وأداء يُقاس</p>
+  <h1 data-i18n="h1">الحضور<br><span class="g">الرقمي</span></h1>
+  <p class="hero-sub" data-i18n="hero_sub">نبني صوت براندك الرقمي ونُدير حضوره عبر كل منصة — محتوى يُوقف، مجتمع يتفاعل، وأداء يُقاس</p>
   <div class="hero-actions">
-    <a href="#services" class="btn-p">اكتشف خدماتنا</a>
-    <a href="index.html#contact" class="btn-g">تواصل معنا</a>
+    <a href="#services" class="btn-p" data-i18n="btn_explore">اكتشف خدماتنا</a>
+    <a href="index.html#contact" class="btn-g" data-i18n="btn_contact">تواصل معنا</a>
   </div>
 </section>
 
 <section id="services" class="sec">
-  <div class="sec-tag reveal">ما نقدمه</div>
-  <h2 class="sec-title reveal">خدمات تبني<br><span class="g">حضوراً لا يُنسى</span></h2>
+  <div class="sec-tag reveal" data-i18n="sec_tag">ما نقدمه</div>
+  <h2 class="sec-title reveal" data-i18n="sec_title">خدمات تبني<br><span class="g">حضوراً لا يُنسى</span></h2>
   <div class="grid-3">
     <div class="card reveal" style="transition-delay:.05s">
       <div class="card-icon">📲</div>
-      <div class="card-title">إدارة السوشيال ميديا</div>
-      <p class="card-text">ندير حساباتك على إنستقرام وتويتر وتيك توك وسناب شات بمحتوى يومي مدروس يبني علاقة حقيقية ومستدامة مع جمهورك.</p>
+      <div class="card-title" data-i18n="c1_title">إدارة السوشيال ميديا</div>
+      <p class="card-text" data-i18n="c1_text">ندير حساباتك على إنستقرام وتويتر وتيك توك وسناب شات بمحتوى يومي مدروس يبني علاقة حقيقية ومستدامة مع جمهورك.</p>
     </div>
     <div class="card reveal" style="transition-delay:.1s">
       <div class="card-icon">✍️</div>
-      <div class="card-title">صناعة المحتوى</div>
-      <p class="card-text">نكتب ونصمم محتوى يُعبّر عن هويتك بشكل أصيل ويجذب جمهورك المستهدف — نصوص، تصاميم، قصص، وأفكار إبداعية.</p>
+      <div class="card-title" data-i18n="c2_title">صناعة المحتوى</div>
+      <p class="card-text" data-i18n="c2_text">نكتب ونصمم محتوى يُعبّر عن هويتك بشكل أصيل ويجذب جمهورك المستهدف — نصوص، تصاميم، قصص، وأفكار إبداعية.</p>
     </div>
     <div class="card reveal" style="transition-delay:.15s">
       <div class="card-icon">🤖</div>
-      <div class="card-title">الذكاء الاصطناعي والأتمتة</div>
-      <p class="card-text">نستخدم أحدث أدوات الذكاء الاصطناعي لتسريع إنتاج المحتوى وتحسين الأداء وتشغيل تجارب رقمية متقدمة بكفاءة أعلى.</p>
+      <div class="card-title" data-i18n="c3_title">الذكاء الاصطناعي والأتمتة</div>
+      <p class="card-text" data-i18n="c3_text">نستخدم أحدث أدوات الذكاء الاصطناعي لتسريع إنتاج المحتوى وتحسين الأداء وتشغيل تجارب رقمية متقدمة بكفاءة أعلى.</p>
     </div>
     <div class="card reveal" style="transition-delay:.2s">
       <div class="card-icon">👥</div>
-      <div class="card-title">بناء المجتمع</div>
-      <p class="card-text">نبني مجتمعاً حول براندك يتفاعل ويشارك ويُوصي — من استراتيجية التفاعل إلى إدارة التعليقات والرسائل.</p>
+      <div class="card-title" data-i18n="c4_title">بناء المجتمع</div>
+      <p class="card-text" data-i18n="c4_text">نبني مجتمعاً حول براندك يتفاعل ويشارك ويُوصي — من استراتيجية التفاعل إلى إدارة التعليقات والرسائل.</p>
     </div>
     <div class="card reveal" style="transition-delay:.25s">
       <div class="card-icon">🗺️</div>
-      <div class="card-title">استراتيجية المحتوى</div>
-      <p class="card-text">نضع خطة محتوى متكاملة تتوافق مع أهدافك التجارية — تقويم نشر، أفكار حملات، وتوزيع ذكي للمحتوى عبر المنصات.</p>
+      <div class="card-title" data-i18n="c5_title">استراتيجية المحتوى</div>
+      <p class="card-text" data-i18n="c5_text">نضع خطة محتوى متكاملة تتوافق مع أهدافك التجارية — تقويم نشر، أفكار حملات، وتوزيع ذكي للمحتوى عبر المنصات.</p>
     </div>
     <div class="card reveal" style="transition-delay:.3s">
       <div class="card-icon">📈</div>
-      <div class="card-title">تحليل الأداء الرقمي</div>
-      <p class="card-text">نتابع كل مقياس يهم — Reach، Engagement، Follower Growth — ونُحسّن الاستراتيجية باستمرار بناءً على البيانات.</p>
+      <div class="card-title" data-i18n="c6_title">تحليل الأداء الرقمي</div>
+      <p class="card-text" data-i18n="c6_text">نتابع كل مقياس يهم — Reach، Engagement، Follower Growth — ونُحسّن الاستراتيجية باستمرار بناءً على البيانات.</p>
     </div>
   </div>
   <div class="divs-nav">
-    <a href="growth-performance.html" class="div-link">📈 النمو والأداء</a>
-    <a href="digital-presence.html" class="div-link active">📱 الحضور الرقمي</a>
-    <a href="brand-experience.html" class="div-link">🎨 الهوية والتجربة</a>
-    <a href="creative-production.html" class="div-link">🎬 الاستديو الإبداعي</a>
+    <a href="growth-performance.html" class="div-link" data-i18n="div1">📈 النمو والأداء</a>
+    <a href="digital-presence.html" class="div-link active" data-i18n="div2">📱 الحضور الرقمي</a>
+    <a href="brand-experience.html" class="div-link" data-i18n="div3">🎨 الهوية والتجربة</a>
+    <a href="creative-production.html" class="div-link" data-i18n="div4">🎬 الاستديو الإبداعي</a>
   </div>
 </section>
 
 <div class="divider-sec">
   <div class="divider-inner">
-    <div class="sec-tag reveal">كيف نعمل</div>
-    <h2 class="sec-title reveal">من الفكرة<br><span class="g">إلى التأثير</span></h2>
+    <div class="sec-tag reveal" data-i18n="proc_tag">كيف نعمل</div>
+    <h2 class="sec-title reveal" data-i18n="proc_title">من الفكرة<br><span class="g">إلى التأثير</span></h2>
     <div class="grid-4">
       <div class="reveal" style="transition-delay:.05s">
         <div class="step-num">01</div>
-        <div class="step-title">تدقيق الحضور</div>
-        <p class="step-text">نُحلّل وضعك الرقمي الحالي ونُحدّد الفجوات والفرص في كل منصة قبل رسم أي خطة.</p>
+        <div class="step-title" data-i18n="s1_title">تدقيق الحضور</div>
+        <p class="step-text" data-i18n="s1_text">نُحلّل وضعك الرقمي الحالي ونُحدّد الفجوات والفرص في كل منصة قبل رسم أي خطة.</p>
       </div>
       <div class="reveal" style="transition-delay:.1s">
         <div class="step-num">02</div>
-        <div class="step-title">خطة المحتوى</div>
-        <p class="step-text">نضع استراتيجية محتوى شاملة بهوية صوتية واضحة وتقويم نشر يضمن الاتساق والتنوع.</p>
+        <div class="step-title" data-i18n="s2_title">خطة المحتوى</div>
+        <p class="step-text" data-i18n="s2_text">نضع استراتيجية محتوى شاملة بهوية صوتية واضحة وتقويم نشر يضمن الاتساق والتنوع.</p>
       </div>
       <div class="reveal" style="transition-delay:.15s">
         <div class="step-num">03</div>
-        <div class="step-title">الإنتاج والنشر</div>
-        <p class="step-text">ننتج المحتوى ونُديره يومياً — تصاميم، نصوص، ريلز، وستوريز تصنع تفاعلاً حقيقياً.</p>
+        <div class="step-title" data-i18n="s3_title">الإنتاج والنشر</div>
+        <p class="step-text" data-i18n="s3_text">ننتج المحتوى ونُديره يومياً — تصاميم، نصوص، ريلز، وستوريز تصنع تفاعلاً حقيقياً.</p>
       </div>
       <div class="reveal" style="transition-delay:.2s">
         <div class="step-num">04</div>
-        <div class="step-title">القياس والتطوير</div>
-        <p class="step-text">نراجع الأداء أسبوعياً ونُطوّر الاستراتيجية بناءً على ما يُحرّك جمهورك فعلاً.</p>
+        <div class="step-title" data-i18n="s4_title">القياس والتطوير</div>
+        <p class="step-text" data-i18n="s4_text">نراجع الأداء أسبوعياً ونُطوّر الاستراتيجية بناءً على ما يُحرّك جمهورك فعلاً.</p>
       </div>
     </div>
   </div>
 </div>
 
 <div class="stats-wrap">
-  <div class="sec-tag reveal">بالأرقام</div>
-  <h2 class="sec-title reveal">نتائج<br><span class="g">تتحدث عن نفسها</span></h2>
+  <div class="sec-tag reveal" data-i18n="stats_tag">بالأرقام</div>
+  <h2 class="sec-title reveal" data-i18n="stats_title">نتائج<br><span class="g">تتحدث عن نفسها</span></h2>
   <div class="grid-3s">
     <div class="stat-card reveal">
       <div class="stat-num">5M+</div>
-      <div class="stat-label">وصول شهري مجمّع لعملائنا</div>
+      <div class="stat-label" data-i18n="stat1_label">وصول شهري مجمّع لعملائنا</div>
     </div>
     <div class="stat-card reveal" style="transition-delay:.1s">
       <div class="stat-num">+300</div>
-      <div class="stat-label">حساب مُدار باحترافية</div>
+      <div class="stat-label" data-i18n="stat2_label">حساب مُدار باحترافية</div>
     </div>
     <div class="stat-card reveal" style="transition-delay:.2s">
       <div class="stat-num">4X</div>
-      <div class="stat-label">متوسط نمو التفاعل</div>
+      <div class="stat-label" data-i18n="stat3_label">متوسط نمو التفاعل</div>
     </div>
   </div>
 </div>
 
 <section class="cta">
-  <h2 class="reveal">مستعد تبني حضوراً<br><span class="gr">لا يُنسى؟</span></h2>
-  <p class="reveal">تواصل معنا ونبني معاً استراتيجية محتوى رقمي تُحوّل متابعيك إلى عملاء حقيقيين</p>
-  <a href="mailto:hello@newmedia.sa" class="btn-p reveal">ابدأ معنا الآن →</a>
+  <h2 class="reveal" data-i18n="cta_title">مستعد تبني حضوراً<br><span class="gr">لا يُنسى؟</span></h2>
+  <p class="reveal" data-i18n="cta_sub">تواصل معنا ونبني معاً استراتيجية محتوى رقمي تُحوّل متابعيك إلى عملاء حقيقيين</p>
+  <a href="mailto:hello@newmedia.sa" class="btn-p reveal" data-i18n="cta_btn">ابدأ معنا الآن →</a>
 </section>
 
 <footer>
-  <p class="foot-copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
+  <p class="foot-copy" data-i18n="foot_copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
   <div class="foot-links">
     <a href="privacy-policy.html">Privacy</a>
     <a href="terms-of-service.html">Terms</a>
@@ -234,6 +240,79 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
   }
   const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const T={
+    ar:{
+      dir:'rtl',lang:'ar',btn:'EN',
+      nav_div:'الأقسام',nav_work:'أعمالنا',nav_about:'من نحن',nav_cta:'تواصل معنا',
+      badge:'القسم الثاني · Digital Presence',
+      h1:'الحضور<br><span class="g">الرقمي</span>',
+      hero_sub:'نبني صوت براندك الرقمي ونُدير حضوره عبر كل منصة — محتوى يُوقف، مجتمع يتفاعل، وأداء يُقاس',
+      btn_explore:'اكتشف خدماتنا',btn_contact:'تواصل معنا',
+      sec_tag:'ما نقدمه',
+      sec_title:'خدمات تبني<br><span class="g">حضوراً لا يُنسى</span>',
+      c1_title:'إدارة السوشيال ميديا',c1_text:'ندير حساباتك على إنستقرام وتويتر وتيك توك وسناب شات بمحتوى يومي مدروس يبني علاقة حقيقية ومستدامة مع جمهورك.',
+      c2_title:'صناعة المحتوى',c2_text:'نكتب ونصمم محتوى يُعبّر عن هويتك بشكل أصيل ويجذب جمهورك المستهدف — نصوص، تصاميم، قصص، وأفكار إبداعية.',
+      c3_title:'الذكاء الاصطناعي والأتمتة',c3_text:'نستخدم أحدث أدوات الذكاء الاصطناعي لتسريع إنتاج المحتوى وتحسين الأداء وتشغيل تجارب رقمية متقدمة بكفاءة أعلى.',
+      c4_title:'بناء المجتمع',c4_text:'نبني مجتمعاً حول براندك يتفاعل ويشارك ويُوصي — من استراتيجية التفاعل إلى إدارة التعليقات والرسائل.',
+      c5_title:'استراتيجية المحتوى',c5_text:'نضع خطة محتوى متكاملة تتوافق مع أهدافك التجارية — تقويم نشر، أفكار حملات، وتوزيع ذكي للمحتوى عبر المنصات.',
+      c6_title:'تحليل الأداء الرقمي',c6_text:'نتابع كل مقياس يهم — Reach، Engagement، Follower Growth — ونُحسّن الاستراتيجية باستمرار بناءً على البيانات.',
+      div1:'📈 النمو والأداء',div2:'📱 الحضور الرقمي',div3:'🎨 الهوية والتجربة',div4:'🎬 الاستديو الإبداعي',
+      proc_tag:'كيف نعمل',proc_title:'من الفكرة<br><span class="g">إلى التأثير</span>',
+      s1_title:'تدقيق الحضور',s1_text:'نُحلّل وضعك الرقمي الحالي ونُحدّد الفجوات والفرص في كل منصة قبل رسم أي خطة.',
+      s2_title:'خطة المحتوى',s2_text:'نضع استراتيجية محتوى شاملة بهوية صوتية واضحة وتقويم نشر يضمن الاتساق والتنوع.',
+      s3_title:'الإنتاج والنشر',s3_text:'ننتج المحتوى ونُديره يومياً — تصاميم، نصوص، ريلز، وستوريز تصنع تفاعلاً حقيقياً.',
+      s4_title:'القياس والتطوير',s4_text:'نراجع الأداء أسبوعياً ونُطوّر الاستراتيجية بناءً على ما يُحرّك جمهورك فعلاً.',
+      stats_tag:'بالأرقام',stats_title:'نتائج<br><span class="g">تتحدث عن نفسها</span>',
+      stat1_label:'وصول شهري مجمّع لعملائنا',stat2_label:'حساب مُدار باحترافية',stat3_label:'متوسط نمو التفاعل',
+      cta_title:'مستعد تبني حضوراً<br><span class="gr">لا يُنسى؟</span>',
+      cta_sub:'تواصل معنا ونبني معاً استراتيجية محتوى رقمي تُحوّل متابعيك إلى عملاء حقيقيين',
+      cta_btn:'ابدأ معنا الآن →',
+      foot_copy:'© 2025 New Media Agency. جميع الحقوق محفوظة.'
+    },
+    en:{
+      dir:'ltr',lang:'en',btn:'ع',
+      nav_div:'Divisions',nav_work:'Work',nav_about:'About',nav_cta:'Contact Us',
+      badge:'Division 02 · Digital Presence',
+      h1:'DIGITAL<br><span class="g">PRESENCE</span>',
+      hero_sub:"We build your brand's digital voice and manage its presence across every platform — content that stops the scroll, a community that engages, and performance that's measured",
+      btn_explore:'Explore Our Services',btn_contact:'Contact Us',
+      sec_tag:'What We Offer',
+      sec_title:'Services That Build<br><span class="g">an Unforgettable Presence</span>',
+      c1_title:'Social Media Management',c1_text:'We manage your accounts on Instagram, X, TikTok, and Snapchat with daily, strategic content that builds a real and lasting relationship with your audience.',
+      c2_title:'Content Creation',c2_text:'We write and design content that authentically expresses your identity and attracts your target audience — copy, designs, stories, and creative ideas.',
+      c3_title:'AI & Automation',c3_text:'We leverage the latest AI tools to accelerate content production, improve performance, and power advanced digital experiences with greater efficiency.',
+      c4_title:'Community Building',c4_text:'We build a community around your brand that engages, shares, and recommends — from engagement strategy to managing comments and messages.',
+      c5_title:'Content Strategy',c5_text:'We create a comprehensive content plan aligned with your business goals — a publishing calendar, campaign ideas, and smart distribution across platforms.',
+      c6_title:'Digital Performance Analytics',c6_text:'We track every metric that matters — Reach, Engagement, Follower Growth — and continuously refine the strategy based on data.',
+      div1:'📈 Growth & Performance',div2:'📱 Digital Presence',div3:'🎨 Brand & Experience',div4:'🎬 Creative Studio',
+      proc_tag:'How We Work',proc_title:'From Idea<br><span class="g">to Impact</span>',
+      s1_title:'Presence Audit',s1_text:'We analyze your current digital presence and identify gaps and opportunities on every platform before drafting any plan.',
+      s2_title:'Content Plan',s2_text:'We build a comprehensive content strategy with a clear brand voice and a publishing calendar that ensures consistency and variety.',
+      s3_title:'Production & Publishing',s3_text:'We produce and manage content daily — designs, copy, reels, and stories that create real engagement.',
+      s4_title:'Measurement & Growth',s4_text:'We review performance weekly and evolve the strategy based on what truly moves your audience.',
+      stats_tag:'By the Numbers',stats_title:'Results<br><span class="g">That Speak for Themselves</span>',
+      stat1_label:'Combined monthly reach for our clients',stat2_label:'Accounts managed professionally',stat3_label:'Average engagement growth',
+      cta_title:'Ready to Build a Presence<br><span class="gr">That Lasts?</span>',
+      cta_sub:"Contact us and together we'll build a digital content strategy that turns your followers into real customers",
+      cta_btn:'Start With Us Now →',
+      foot_copy:'© 2025 New Media Agency. All rights reserved.'
+    }
+  };
+
+  let curLang='ar';
+  function applyLang(lang){
+    const t=T[lang];
+    document.documentElement.lang=t.lang;
+    document.documentElement.dir=t.dir;
+    document.getElementById('langBtn').textContent=t.btn;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k=el.getAttribute('data-i18n');
+      if(t[k]!==undefined) el.innerHTML=t[k];
+    });
+    curLang=lang;
+  }
+  document.getElementById('langBtn').addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
 </script>
 </body>
 </html>

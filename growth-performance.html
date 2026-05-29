@@ -14,10 +14,8 @@
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 html { scroll-behavior:smooth; }
 body { background:var(--black); color:var(--white); font-family:'Tajawal',sans-serif; overflow-x:hidden; cursor:none; }
-
 .cursor { width:12px; height:12px; background:var(--orange); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; }
 .cursor-ring { width:36px; height:36px; border:1.5px solid rgba(255,102,0,0.5); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s,border-color .3s; }
-
 nav { position:fixed; top:20px; left:50%; transform:translateX(-50%); width:calc(100% - 48px); max-width:1200px; z-index:500; background:rgba(5,5,5,0.5); backdrop-filter:blur(24px) saturate(180%); border:1px solid var(--glass-border); border-radius:20px; padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 30px rgba(102,0,204,0.15); }
 .nav-logo { font-family:'Alexandria',sans-serif; font-weight:900; font-size:18px; letter-spacing:.1em; background:linear-gradient(90deg,var(--purple),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-transform:uppercase; text-decoration:none; }
 .nav-links { display:flex; gap:2rem; list-style:none; direction:ltr; }
@@ -25,15 +23,14 @@ nav { position:fixed; top:20px; left:50%; transform:translateX(-50%); width:calc
 .nav-links a:hover { color:var(--white); }
 .nav-cta { font-family:'Alexandria',sans-serif; font-weight:700; font-size:13px; color:var(--white); text-decoration:none; background:linear-gradient(135deg,var(--purple),var(--orange)); padding:10px 22px; border-radius:12px; transition:opacity .3s,transform .2s; }
 .nav-cta:hover { opacity:.85; transform:scale(.98); }
-
-/* Hero */
+.lang-btn { font-family:'Alexandria',sans-serif; font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.55); background:transparent; border:1px solid rgba(255,255,255,.15); padding:8px 16px; border-radius:10px; cursor:pointer; transition:all .3s; line-height:1; }
+.lang-btn:hover { background:rgba(255,255,255,.1); color:var(--white); border-color:rgba(255,255,255,.28); }
 .hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:9rem 2rem 5rem; position:relative; overflow:hidden; }
 .orb { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
 .o1 { width:600px; height:600px; background:radial-gradient(circle,rgba(102,0,204,.4),transparent 70%); top:-150px; right:-150px; animation:flt 9s ease-in-out infinite; }
 .o2 { width:500px; height:500px; background:radial-gradient(circle,rgba(255,102,0,.25),transparent 70%); bottom:-100px; left:-100px; animation:flt 12s ease-in-out infinite reverse; }
 .o3 { width:300px; height:300px; background:radial-gradient(circle,rgba(204,51,102,.2),transparent 70%); top:40%; left:50%; animation:flt 7s ease-in-out infinite 2s; }
 @keyframes flt { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-20px) scale(1.04)} 66%{transform:translate(-15px,25px) scale(.96)} }
-
 .badge { display:inline-flex; align-items:center; gap:.5rem; font-family:'Alexandria',sans-serif; font-weight:700; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--orange); border:1px solid rgba(255,102,0,.3); padding:7px 20px; border-radius:30px; margin-bottom:2rem; opacity:0; animation:up .7s .1s forwards; background:rgba(255,102,0,.06); }
 .hero-icon { font-size:4.5rem; margin-bottom:1.5rem; opacity:0; animation:up .7s .2s forwards; }
 .hero-num { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(1rem,2vw,1.25rem); letter-spacing:.4em; color:rgba(255,255,255,.2); margin-bottom:.5rem; opacity:0; animation:up .7s .25s forwards; }
@@ -42,23 +39,17 @@ h1 .g { background:linear-gradient(135deg,var(--purple),var(--orange)); -webkit-
 .hero-sub { font-size:clamp(.95rem,2vw,1.2rem); font-weight:300; color:rgba(255,255,255,.5); max-width:580px; line-height:1.9; margin-bottom:3rem; opacity:0; animation:up .7s .4s forwards; }
 .hero-actions { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; opacity:0; animation:up .7s .5s forwards; }
 @keyframes up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
-
 .btn-p { display:inline-flex; align-items:center; gap:.5rem; background:linear-gradient(135deg,var(--purple),var(--orange)); color:var(--white); font-family:'Alexandria',sans-serif; font-weight:700; font-size:14px; letter-spacing:.08em; text-decoration:none; padding:14px 32px; border-radius:14px; transition:transform .2s,box-shadow .3s; box-shadow:0 4px 24px rgba(102,0,204,.35); }
 .btn-p:hover { transform:scale(.97); box-shadow:0 8px 32px rgba(102,0,204,.5); }
 .btn-g { display:inline-flex; align-items:center; gap:.5rem; color:rgba(255,255,255,.65); font-family:'Alexandria',sans-serif; font-weight:700; font-size:14px; letter-spacing:.08em; text-decoration:none; padding:14px 28px; border-radius:14px; border:1px solid rgba(255,255,255,.15); transition:all .3s; }
 .btn-g:hover { color:var(--white); border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.05); }
-
-/* Section */
 .sec { padding:7rem 2rem; max-width:1200px; margin:0 auto; }
 .sec-tag { font-family:'Alexandria',sans-serif; font-weight:700; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--orange); margin-bottom:1rem; }
 .sec-title { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(2rem,4vw,3.5rem); line-height:1.1; margin-bottom:3.5rem; }
 .sec-title .g { background:linear-gradient(135deg,var(--purple),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-
-/* Services */
 .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
 @media(max-width:900px){ .grid-3{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:600px){ .grid-3{grid-template-columns:1fr} }
-
 .card { background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:22px; padding:2.25rem; position:relative; overflow:hidden; transition:border-color .35s,transform .35s,box-shadow .35s; }
 .card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(102,0,204,.06),rgba(255,102,0,.06)); opacity:0; transition:opacity .35s; border-radius:22px; }
 .card:hover { border-color:rgba(255,102,0,.35); transform:translateY(-5px); box-shadow:0 16px 48px rgba(102,0,204,.2); }
@@ -66,46 +57,33 @@ h1 .g { background:linear-gradient(135deg,var(--purple),var(--orange)); -webkit-
 .card-icon { font-size:2.25rem; margin-bottom:1.25rem; }
 .card-title { font-family:'Alexandria',sans-serif; font-weight:700; font-size:1.05rem; letter-spacing:.04em; color:var(--white); margin-bottom:.75rem; }
 .card-text { font-size:.9rem; font-weight:300; color:rgba(255,255,255,.48); line-height:1.8; }
-
-/* Divider section */
 .divider-sec { background:rgba(255,255,255,.02); border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border); padding:7rem 2rem; }
 .divider-inner { max-width:1200px; margin:0 auto; }
 .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:2.5rem; margin-top:3.5rem; }
 @media(max-width:900px){ .grid-4{grid-template-columns:repeat(2,1fr)} }
 @media(max-width:500px){ .grid-4{grid-template-columns:1fr} }
-
 .step-num { font-family:'Alexandria',sans-serif; font-weight:900; font-size:4rem; background:linear-gradient(135deg,var(--purple),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:1rem; }
 .step-title { font-family:'Alexandria',sans-serif; font-weight:700; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; color:var(--white); margin-bottom:.75rem; }
 .step-text { font-size:.875rem; font-weight:300; color:rgba(255,255,255,.42); line-height:1.8; }
-
-/* Stats */
 .stats-wrap { padding:7rem 2rem; max-width:1200px; margin:0 auto; }
 .grid-3s { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:3rem; }
 @media(max-width:700px){ .grid-3s{grid-template-columns:1fr} }
 .stat-card { background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:22px; padding:3rem 2rem; text-align:center; }
 .stat-num { font-family:'Alexandria',sans-serif; font-weight:900; font-size:3.25rem; background:linear-gradient(135deg,var(--purple),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:.6rem; }
 .stat-label { font-size:.9rem; font-weight:300; color:rgba(255,255,255,.42); letter-spacing:.05em; }
-
-/* CTA */
 .cta { background:radial-gradient(ellipse at center,rgba(102,0,204,.15) 0%,transparent 70%); border-top:1px solid var(--glass-border); padding:9rem 2rem; text-align:center; }
 .cta h2 { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(2.2rem,5vw,4.5rem); line-height:1.15; margin-bottom:1.5rem; }
 .cta p { font-size:1rem; font-weight:300; color:rgba(255,255,255,.45); max-width:520px; margin:0 auto 2.5rem; line-height:1.9; }
 .gr { background:linear-gradient(135deg,var(--purple),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
-
-/* Footer */
 footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
 .foot-copy { font-size:12px; color:rgba(255,255,255,.2); }
 .foot-links { display:flex; gap:1.5rem; }
 .foot-links a { font-family:'Alexandria',sans-serif; font-weight:700; font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.2); text-decoration:none; transition:color .3s; }
 .foot-links a:hover { color:rgba(255,255,255,.5); }
-
-/* Divisions nav */
 .divs-nav { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:4rem; padding-top:4rem; border-top:1px solid var(--glass-border); }
 .div-link { display:flex; align-items:center; gap:.6rem; font-family:'Alexandria',sans-serif; font-weight:700; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.4); text-decoration:none; border:1px solid var(--glass-border); padding:10px 20px; border-radius:30px; transition:all .3s; }
 .div-link:hover { color:var(--white); border-color:rgba(255,102,0,.4); background:rgba(255,102,0,.06); }
 .div-link.active { color:var(--orange); border-color:rgba(255,102,0,.5); background:rgba(255,102,0,.08); }
-
-/* Reveal */
 .reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1); }
 .reveal.visible { opacity:1; transform:none; }
 </style>
@@ -117,141 +95,138 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
 <nav>
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
   <ul class="nav-links">
-    <li><a href="index.html#services">الأقسام</a></li>
-    <li><a href="index.html#work">أعمالنا</a></li>
-    <li><a href="index.html#contact">من نحن</a></li>
+    <li><a href="index.html#services" data-i18n="nav_div">الأقسام</a></li>
+    <li><a href="index.html#work" data-i18n="nav_work">أعمالنا</a></li>
+    <li><a href="index.html#contact" data-i18n="nav_about">من نحن</a></li>
   </ul>
-  <a href="index.html#contact" class="nav-cta">تواصل معنا</a>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="index.html#contact" class="nav-cta" data-i18n="nav_cta">تواصل معنا</a>
+  </div>
 </nav>
 
-<!-- Hero -->
 <section class="hero">
   <div class="orb o1"></div>
   <div class="orb o2"></div>
   <div class="orb o3"></div>
-  <div class="badge">القسم الأول · Growth & Performance</div>
+  <div class="badge" data-i18n="badge">القسم الأول · Growth &amp; Performance</div>
   <div class="hero-icon">📈</div>
   <div class="hero-num">01</div>
-  <h1>النمو<br><span class="g">والأداء</span></h1>
-  <p class="hero-sub">نُحوّل الميزانيات إلى نتائج والبيانات إلى قرارات — حملات ممولة ذكية تصنع عائداً حقيقياً ومستداماً</p>
+  <h1 data-i18n="h1">النمو<br><span class="g">والأداء</span></h1>
+  <p class="hero-sub" data-i18n="hero_sub">نُحوّل الميزانيات إلى نتائج والبيانات إلى قرارات — حملات ممولة ذكية تصنع عائداً حقيقياً ومستداماً</p>
   <div class="hero-actions">
-    <a href="#services" class="btn-p">اكتشف خدماتنا</a>
-    <a href="index.html#contact" class="btn-g">تواصل معنا</a>
+    <a href="#services" class="btn-p" data-i18n="btn_explore">اكتشف خدماتنا</a>
+    <a href="index.html#contact" class="btn-g" data-i18n="btn_contact">تواصل معنا</a>
   </div>
 </section>
 
-<!-- Services -->
 <section id="services" class="sec">
-  <div class="sec-tag reveal">ما نقدمه</div>
-  <h2 class="sec-title reveal">خدمات تُحرّك<br><span class="g">الأرقام للأمام</span></h2>
+  <div class="sec-tag reveal" data-i18n="sec_tag">ما نقدمه</div>
+  <h2 class="sec-title reveal" data-i18n="sec_title">خدمات تُحرّك<br><span class="g">الأرقام للأمام</span></h2>
   <div class="grid-3">
 
     <div class="card reveal" style="transition-delay:.05s">
       <div class="card-icon">🎯</div>
-      <div class="card-title">الحملات الممولة</div>
-      <p class="card-text">نُدير حملاتك على Google وMeta وTikTok وSnapchat بدقة استهداف عالية وإدارة يومية لتحقيق أقصى عائد ممكن على كل ريال تُنفقه.</p>
+      <div class="card-title" data-i18n="c1_title">الحملات الممولة</div>
+      <p class="card-text" data-i18n="c1_text">نُدير حملاتك على Google وMeta وTikTok وSnapchat بدقة استهداف عالية وإدارة يومية لتحقيق أقصى عائد ممكن على كل ريال تُنفقه.</p>
     </div>
 
     <div class="card reveal" style="transition-delay:.1s">
       <div class="card-icon">📊</div>
-      <div class="card-title">تحليل البيانات</div>
-      <p class="card-text">نقرأ أرقامك ونُحوّلها إلى رؤى واضحة وقرارات استراتيجية تُسرّع نمو أعمالك وتُقلّل الهدر في الإنفاق الإعلاني.</p>
+      <div class="card-title" data-i18n="c2_title">تحليل البيانات</div>
+      <p class="card-text" data-i18n="c2_text">نقرأ أرقامك ونُحوّلها إلى رؤى واضحة وقرارات استراتيجية تُسرّع نمو أعمالك وتُقلّل الهدر في الإنفاق الإعلاني.</p>
     </div>
 
     <div class="card reveal" style="transition-delay:.15s">
       <div class="card-icon">⚡</div>
-      <div class="card-title">تحسين معدل التحويل</div>
-      <p class="card-text">نُحلّل رحلة العميل ونُزيل العقبات التي تمنعه من الشراء — A/B Testing واختبارات مستمرة لرفع نسبة التحويل وخفض تكلفة الاكتساب.</p>
+      <div class="card-title" data-i18n="c3_title">تحسين معدل التحويل</div>
+      <p class="card-text" data-i18n="c3_text">نُحلّل رحلة العميل ونُزيل العقبات التي تمنعه من الشراء — A/B Testing واختبارات مستمرة لرفع نسبة التحويل وخفض تكلفة الاكتساب.</p>
     </div>
 
     <div class="card reveal" style="transition-delay:.2s">
       <div class="card-icon">🔍</div>
-      <div class="card-title">استهداف الجمهور</div>
-      <p class="card-text">نُحدّد جمهورك المثالي بدقة ونصل إليه في اللحظة المناسبة بالرسالة الصحيحة على المنصة الأنسب لزيادة فرصة التحويل.</p>
+      <div class="card-title" data-i18n="c4_title">استهداف الجمهور</div>
+      <p class="card-text" data-i18n="c4_text">نُحدّد جمهورك المثالي بدقة ونصل إليه في اللحظة المناسبة بالرسالة الصحيحة على المنصة الأنسب لزيادة فرصة التحويل.</p>
     </div>
 
     <div class="card reveal" style="transition-delay:.25s">
       <div class="card-icon">🚀</div>
-      <div class="card-title">تطوير الأعمال</div>
-      <p class="card-text">نرسم استراتيجيات نمو واضحة وقابلة للتنفيذ — من تحليل السوق والمنافسين إلى فرص التوسع والشراكات الاستراتيجية.</p>
+      <div class="card-title" data-i18n="c5_title">تطوير الأعمال</div>
+      <p class="card-text" data-i18n="c5_text">نرسم استراتيجيات نمو واضحة وقابلة للتنفيذ — من تحليل السوق والمنافسين إلى فرص التوسع والشراكات الاستراتيجية.</p>
     </div>
 
     <div class="card reveal" style="transition-delay:.3s">
       <div class="card-icon">📋</div>
-      <div class="card-title">تقارير الأداء</div>
-      <p class="card-text">تقارير شهرية تفصيلية تُريك بالضبط أين يذهب كل ريال وما الذي يُحرّك نمو أعمالك فعلاً — بلا غموض ولا تزوير.</p>
+      <div class="card-title" data-i18n="c6_title">تقارير الأداء</div>
+      <p class="card-text" data-i18n="c6_text">تقارير شهرية تفصيلية تُريك بالضبط أين يذهب كل ريال وما الذي يُحرّك نمو أعمالك فعلاً — بلا غموض ولا تزوير.</p>
     </div>
 
   </div>
 
-  <!-- Other divisions -->
   <div class="divs-nav">
-    <a href="growth-performance.html" class="div-link active">📈 النمو والأداء</a>
-    <a href="digital-presence.html" class="div-link">📱 الحضور الرقمي</a>
-    <a href="brand-experience.html" class="div-link">🎨 الهوية والتجربة</a>
-    <a href="creative-production.html" class="div-link">🎬 الاستديو الإبداعي</a>
+    <a href="growth-performance.html" class="div-link active" data-i18n="div1">📈 النمو والأداء</a>
+    <a href="digital-presence.html" class="div-link" data-i18n="div2">📱 الحضور الرقمي</a>
+    <a href="brand-experience.html" class="div-link" data-i18n="div3">🎨 الهوية والتجربة</a>
+    <a href="creative-production.html" class="div-link" data-i18n="div4">🎬 الاستديو الإبداعي</a>
   </div>
 </section>
 
-<!-- Process -->
 <div class="divider-sec">
   <div class="divider-inner">
-    <div class="sec-tag reveal">كيف نعمل</div>
-    <h2 class="sec-title reveal">أربع خطوات<br><span class="g">نحو النتائج</span></h2>
+    <div class="sec-tag reveal" data-i18n="proc_tag">كيف نعمل</div>
+    <h2 class="sec-title reveal" data-i18n="proc_title">أربع خطوات<br><span class="g">نحو النتائج</span></h2>
     <div class="grid-4">
       <div class="reveal" style="transition-delay:.05s">
         <div class="step-num">01</div>
-        <div class="step-title">التحليل</div>
-        <p class="step-text">نفهم عملك وسوقك ومنافسيك وجمهورك المستهدف بعمق قبل أي خطوة — لأن التشخيص الصحيح يُنجي من العلاج الخاطئ.</p>
+        <div class="step-title" data-i18n="s1_title">التحليل</div>
+        <p class="step-text" data-i18n="s1_text">نفهم عملك وسوقك ومنافسيك وجمهورك المستهدف بعمق قبل أي خطوة — لأن التشخيص الصحيح يُنجي من العلاج الخاطئ.</p>
       </div>
       <div class="reveal" style="transition-delay:.1s">
         <div class="step-num">02</div>
-        <div class="step-title">الاستراتيجية</div>
-        <p class="step-text">نضع خطة تسويقية محكمة بأهداف واضحة ومقاييس نجاح قابلة للقياس — خطة مخصصة لك لا نسخة جاهزة.</p>
+        <div class="step-title" data-i18n="s2_title">الاستراتيجية</div>
+        <p class="step-text" data-i18n="s2_text">نضع خطة تسويقية محكمة بأهداف واضحة ومقاييس نجاح قابلة للقياس — خطة مخصصة لك لا نسخة جاهزة.</p>
       </div>
       <div class="reveal" style="transition-delay:.15s">
         <div class="step-num">03</div>
-        <div class="step-title">التنفيذ</div>
-        <p class="step-text">نُطلق الحملات ونُدير الميزانيات ونُتابع الأداء لحظة بلحظة — تدخّل سريع عند أي انحراف عن الهدف.</p>
+        <div class="step-title" data-i18n="s3_title">التنفيذ</div>
+        <p class="step-text" data-i18n="s3_text">نُطلق الحملات ونُدير الميزانيات ونُتابع الأداء لحظة بلحظة — تدخّل سريع عند أي انحراف عن الهدف.</p>
       </div>
       <div class="reveal" style="transition-delay:.2s">
         <div class="step-num">04</div>
-        <div class="step-title">التحسين المستمر</div>
-        <p class="step-text">نُحلّل النتائج ونُحسّن الأداء باستمرار — لأن النمو الحقيقي ليس لحظة بل رحلة لا تنتهي.</p>
+        <div class="step-title" data-i18n="s4_title">التحسين المستمر</div>
+        <p class="step-text" data-i18n="s4_text">نُحلّل النتائج ونُحسّن الأداء باستمرار — لأن النمو الحقيقي ليس لحظة بل رحلة لا تنتهي.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Stats -->
 <div class="stats-wrap">
-  <div class="sec-tag reveal">بالأرقام</div>
-  <h2 class="sec-title reveal">نتائج<br><span class="g">تتحدث عن نفسها</span></h2>
+  <div class="sec-tag reveal" data-i18n="stats_tag">بالأرقام</div>
+  <h2 class="sec-title reveal" data-i18n="stats_title">نتائج<br><span class="g">تتحدث عن نفسها</span></h2>
   <div class="grid-3s">
     <div class="stat-card reveal">
       <div class="stat-num">300%+</div>
-      <div class="stat-label">متوسط نمو المبيعات لعملائنا</div>
+      <div class="stat-label" data-i18n="stat1_label">متوسط نمو المبيعات لعملائنا</div>
     </div>
     <div class="stat-card reveal" style="transition-delay:.1s">
       <div class="stat-num">5X</div>
-      <div class="stat-label">متوسط عائد الاستثمار الإعلاني</div>
+      <div class="stat-label" data-i18n="stat2_label">متوسط عائد الاستثمار الإعلاني</div>
     </div>
     <div class="stat-card reveal" style="transition-delay:.2s">
       <div class="stat-num">+200</div>
-      <div class="stat-label">حملة ممولة ناجحة أطلقناها</div>
+      <div class="stat-label" data-i18n="stat3_label">حملة ممولة ناجحة أطلقناها</div>
     </div>
   </div>
 </div>
 
-<!-- CTA -->
 <section class="cta">
-  <h2 class="reveal">مستعد تُضاعف<br><span class="gr">مبيعاتك؟</span></h2>
-  <p class="reveal">تواصل معنا اليوم ونبني معاً استراتيجية نمو تُحقق نتائج حقيقية وقابلة للقياس — بدون كلام فاضي</p>
-  <a href="mailto:hello@newmedia.sa" class="btn-p reveal">ابدأ معنا الآن →</a>
+  <h2 class="reveal" data-i18n="cta_title">مستعد تُضاعف<br><span class="gr">مبيعاتك؟</span></h2>
+  <p class="reveal" data-i18n="cta_sub">تواصل معنا اليوم ونبني معاً استراتيجية نمو تُحقق نتائج حقيقية وقابلة للقياس — بدون كلام فاضي</p>
+  <a href="mailto:hello@newmedia.sa" class="btn-p reveal" data-i18n="cta_btn">ابدأ معنا الآن →</a>
 </section>
 
 <footer>
-  <p class="foot-copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
+  <p class="foot-copy" data-i18n="foot_copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
   <div class="foot-links">
     <a href="privacy-policy.html">Privacy</a>
     <a href="terms-of-service.html">Terms</a>
@@ -260,8 +235,7 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
 </footer>
 
 <script>
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursorRing');
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
   let mx=0,my=0,rx=0,ry=0;
   if(cursor&&ring){
     document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
@@ -272,10 +246,81 @@ footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-widt
       el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(255,102,0,.5)';});
     });
   }
-  const obs = new IntersectionObserver(entries=>{
-    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});
-  },{threshold:.12});
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+  const T={
+    ar:{
+      dir:'rtl',lang:'ar',btn:'EN',
+      nav_div:'الأقسام',nav_work:'أعمالنا',nav_about:'من نحن',nav_cta:'تواصل معنا',
+      badge:'القسم الأول · Growth &amp; Performance',
+      h1:'النمو<br><span class="g">والأداء</span>',
+      hero_sub:'نُحوّل الميزانيات إلى نتائج والبيانات إلى قرارات — حملات ممولة ذكية تصنع عائداً حقيقياً ومستداماً',
+      btn_explore:'اكتشف خدماتنا',btn_contact:'تواصل معنا',
+      sec_tag:'ما نقدمه',
+      sec_title:'خدمات تُحرّك<br><span class="g">الأرقام للأمام</span>',
+      c1_title:'الحملات الممولة',c1_text:'نُدير حملاتك على Google وMeta وTikTok وSnapchat بدقة استهداف عالية وإدارة يومية لتحقيق أقصى عائد ممكن على كل ريال تُنفقه.',
+      c2_title:'تحليل البيانات',c2_text:'نقرأ أرقامك ونُحوّلها إلى رؤى واضحة وقرارات استراتيجية تُسرّع نمو أعمالك وتُقلّل الهدر في الإنفاق الإعلاني.',
+      c3_title:'تحسين معدل التحويل',c3_text:'نُحلّل رحلة العميل ونُزيل العقبات التي تمنعه من الشراء — A/B Testing واختبارات مستمرة لرفع نسبة التحويل وخفض تكلفة الاكتساب.',
+      c4_title:'استهداف الجمهور',c4_text:'نُحدّد جمهورك المثالي بدقة ونصل إليه في اللحظة المناسبة بالرسالة الصحيحة على المنصة الأنسب لزيادة فرصة التحويل.',
+      c5_title:'تطوير الأعمال',c5_text:'نرسم استراتيجيات نمو واضحة وقابلة للتنفيذ — من تحليل السوق والمنافسين إلى فرص التوسع والشراكات الاستراتيجية.',
+      c6_title:'تقارير الأداء',c6_text:'تقارير شهرية تفصيلية تُريك بالضبط أين يذهب كل ريال وما الذي يُحرّك نمو أعمالك فعلاً — بلا غموض ولا تزوير.',
+      div1:'📈 النمو والأداء',div2:'📱 الحضور الرقمي',div3:'🎨 الهوية والتجربة',div4:'🎬 الاستديو الإبداعي',
+      proc_tag:'كيف نعمل',proc_title:'أربع خطوات<br><span class="g">نحو النتائج</span>',
+      s1_title:'التحليل',s1_text:'نفهم عملك وسوقك ومنافسيك وجمهورك المستهدف بعمق قبل أي خطوة — لأن التشخيص الصحيح يُنجي من العلاج الخاطئ.',
+      s2_title:'الاستراتيجية',s2_text:'نضع خطة تسويقية محكمة بأهداف واضحة ومقاييس نجاح قابلة للقياس — خطة مخصصة لك لا نسخة جاهزة.',
+      s3_title:'التنفيذ',s3_text:'نُطلق الحملات ونُدير الميزانيات ونُتابع الأداء لحظة بلحظة — تدخّل سريع عند أي انحراف عن الهدف.',
+      s4_title:'التحسين المستمر',s4_text:'نُحلّل النتائج ونُحسّن الأداء باستمرار — لأن النمو الحقيقي ليس لحظة بل رحلة لا تنتهي.',
+      stats_tag:'بالأرقام',stats_title:'نتائج<br><span class="g">تتحدث عن نفسها</span>',
+      stat1_label:'متوسط نمو المبيعات لعملائنا',stat2_label:'متوسط عائد الاستثمار الإعلاني',stat3_label:'حملة ممولة ناجحة أطلقناها',
+      cta_title:'مستعد تُضاعف<br><span class="gr">مبيعاتك؟</span>',
+      cta_sub:'تواصل معنا اليوم ونبني معاً استراتيجية نمو تُحقق نتائج حقيقية وقابلة للقياس — بدون كلام فاضي',
+      cta_btn:'ابدأ معنا الآن →',
+      foot_copy:'© 2025 New Media Agency. جميع الحقوق محفوظة.'
+    },
+    en:{
+      dir:'ltr',lang:'en',btn:'ع',
+      nav_div:'Divisions',nav_work:'Work',nav_about:'About',nav_cta:'Contact Us',
+      badge:'Division 01 · Growth &amp; Performance',
+      h1:'GROWTH &amp;<br><span class="g">PERFORMANCE</span>',
+      hero_sub:'We turn budgets into results and data into decisions — smart paid campaigns that generate real, sustainable ROI',
+      btn_explore:'Explore Our Services',btn_contact:'Contact Us',
+      sec_tag:'What We Offer',
+      sec_title:'Services That Move<br><span class="g">Numbers Forward</span>',
+      c1_title:'Paid Campaigns',c1_text:'We manage your campaigns on Google, Meta, TikTok, and Snapchat with precise targeting and daily management to maximize ROI on every riyal spent.',
+      c2_title:'Data Analytics',c2_text:'We read your numbers and turn them into clear insights and strategic decisions that accelerate business growth and reduce ad spend waste.',
+      c3_title:'Conversion Rate Optimization',c3_text:'We analyze the customer journey and remove purchase barriers — continuous A/B Testing to increase conversion rates and lower acquisition costs.',
+      c4_title:'Audience Targeting',c4_text:'We identify your ideal audience with precision and reach them at the right moment with the right message on the most suitable platform.',
+      c5_title:'Business Development',c5_text:'We map clear, actionable growth strategies — from market and competitor analysis to expansion opportunities and strategic partnerships.',
+      c6_title:'Performance Reports',c6_text:'Monthly detailed reports that show you exactly where every riyal goes and what truly drives your business growth — no ambiguity, no spin.',
+      div1:'📈 Growth & Performance',div2:'📱 Digital Presence',div3:'🎨 Brand & Experience',div4:'🎬 Creative Studio',
+      proc_tag:'How We Work',proc_title:'Four Steps<br><span class="g">Toward Results</span>',
+      s1_title:'Analysis',s1_text:'We deeply understand your business, market, competitors, and target audience before any step — because the right diagnosis prevents the wrong treatment.',
+      s2_title:'Strategy',s2_text:'We build a tight marketing plan with clear objectives and measurable KPIs — a plan tailored to you, not a ready-made template.',
+      s3_title:'Execution',s3_text:'We launch campaigns, manage budgets, and monitor performance moment by moment — with rapid intervention at any deviation from the goal.',
+      s4_title:'Continuous Optimization',s4_text:'We analyze results and continuously improve performance — because real growth is not a moment but an endless journey.',
+      stats_tag:'By the Numbers',stats_title:'Results<br><span class="g">That Speak for Themselves</span>',
+      stat1_label:'Average sales growth for our clients',stat2_label:'Average advertising ROI',stat3_label:'Successful paid campaigns launched',
+      cta_title:'Ready to Double<br><span class="gr">Your Sales?</span>',
+      cta_sub:'Contact us today and together we\'ll build a growth strategy that delivers real, measurable results — no fluff',
+      cta_btn:'Start With Us Now →',
+      foot_copy:'© 2025 New Media Agency. All rights reserved.'
+    }
+  };
+
+  let curLang='ar';
+  function applyLang(lang){
+    const t=T[lang];
+    document.documentElement.lang=t.lang;
+    document.documentElement.dir=t.dir;
+    document.getElementById('langBtn').textContent=t.btn;
+    document.querySelectorAll('[data-i18n]').forEach(el=>{
+      const k=el.getAttribute('data-i18n');
+      if(t[k]!==undefined) el.innerHTML=t[k];
+    });
+    curLang=lang;
+  }
+  document.getElementById('langBtn').addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
 </script>
 </body>
 </html>
