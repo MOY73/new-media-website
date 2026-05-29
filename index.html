@@ -237,6 +237,27 @@
 
   .nav-cta:hover { opacity: 0.85; transform: scale(0.98); }
 
+  .lang-btn {
+    font-family: 'Alexandria', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: rgba(255,255,255,0.65);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.14);
+    padding: 8px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    line-height: 1;
+  }
+  .lang-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: var(--white);
+    border-color: rgba(255,255,255,0.28);
+    transform: scale(0.97);
+  }
+
   /* HERO */
   .hero {
     min-height: 100vh;
@@ -825,11 +846,14 @@
       </div>
     </a>
   <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#about">About</a></li>
+    <li><a href="#services" data-i18n="nav_services">Services</a></li>
+    <li><a href="#work" data-i18n="nav_work">Work</a></li>
+    <li><a href="#about" data-i18n="nav_about">About</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">تواصل معنا</a>
+  <div style="display:flex;align-items:center;gap:0.75rem;">
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="#contact" class="nav-cta" data-i18n="nav_contact">تواصل معنا</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -840,16 +864,16 @@
     </div>
   </div>
   
-  <div class="hero-eyebrow">Full-Service Marketing Agency — KSA</div>
+  <div class="hero-eyebrow" data-i18n="hero_eyebrow">Full-Service Marketing Agency — KSA</div>
   <h1 class="hero-title">
-    <span class="line-1">WE CREATE</span>
-    <span class="line-2">IMPACT</span>
+    <span class="line-1" data-i18n="hero_line1">WE CREATE</span>
+    <span class="line-2" data-i18n="hero_line2">IMPACT</span>
   </h1>
-  <p class="hero-sub">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى الإبداع إلى النتائج</p>
+  <p class="hero-sub" data-i18n="hero_sub">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى الإبداع إلى النتائج</p>
   <!-- hero logo area already in title -->
   <div class="hero-buttons">
-    <a href="#work" class="btn-primary"><span>شوف أعمالنا</span></a>
-    <a href="#contact" class="btn-ghost">تواصل معنا</a>
+    <a href="#work" class="btn-primary"><span data-i18n="hero_btn1">شوف أعمالنا</span></a>
+    <a href="#contact" class="btn-ghost" data-i18n="hero_btn2">تواصل معنا</a>
   </div>
   <div class="scroll-hint">
     <div class="scroll-line"></div>
@@ -876,8 +900,8 @@
 
 <!-- SERVICES -->
 <section class="section" id="services">
-  <div class="section-tag reveal">أقسامنا</div>
-  <h2 class="section-title reveal">
+  <div class="section-tag reveal" data-i18n="services_tag">أقسامنا</div>
+  <h2 class="section-title reveal" data-i18n="services_title">
     أربعة أقسام<br><span class="accent">تصنع الفارق</span>
   </h2>
   <div class="services-grid">
@@ -886,13 +910,13 @@
       <div class="card-number">01</div>
       <div class="card-icon">📈</div>
       <div class="card-title">Growth & Performance</div>
-      <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم النمو والأداء</div>
-      <p class="card-text">القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.</p>
+      <div data-i18n="c1_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم النمو والأداء</div>
+      <p class="card-text" data-i18n="c1_text">القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إعلانات ممولة</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تحليل البيانات</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">ROI</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تطوير الأعمال</span>
+        <span data-i18n="c1_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إعلانات ممولة</span>
+        <span data-i18n="c1_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تحليل البيانات</span>
+        <span data-i18n="c1_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">ROI</span>
+        <span data-i18n="c1_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تطوير الأعمال</span>
       </div>
     </div>
 
@@ -900,13 +924,13 @@
       <div class="card-number">02</div>
       <div class="card-icon">📱</div>
       <div class="card-title">Digital Presence</div>
-      <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الحضور الرقمي</div>
-      <p class="card-text">القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.</p>
+      <div data-i18n="c2_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الحضور الرقمي</div>
+      <p class="card-text" data-i18n="c2_text">القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">صناعة المحتوى</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Social Media</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">AI & Automation</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إدارة المجتمعات</span>
+        <span data-i18n="c2_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">صناعة المحتوى</span>
+        <span data-i18n="c2_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Social Media</span>
+        <span data-i18n="c2_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">AI & Automation</span>
+        <span data-i18n="c2_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إدارة المجتمعات</span>
       </div>
     </div>
 
@@ -914,13 +938,13 @@
       <div class="card-number">03</div>
       <div class="card-icon">🎨</div>
       <div class="card-title">Brand & Experience</div>
-      <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الهوية والتجربة</div>
-      <p class="card-text">القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.</p>
+      <div data-i18n="c3_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الهوية والتجربة</div>
+      <p class="card-text" data-i18n="c3_text">القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Brand Identity</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">UI/UX</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">مواقع ومتاجر</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Landing Pages</span>
+        <span data-i18n="c3_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Brand Identity</span>
+        <span data-i18n="c3_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">UI/UX</span>
+        <span data-i18n="c3_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">مواقع ومتاجر</span>
+        <span data-i18n="c3_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Landing Pages</span>
       </div>
     </div>
 
@@ -928,13 +952,13 @@
       <div class="card-number">04</div>
       <div class="card-icon">🎬</div>
       <div class="card-title">Creative Production Studio</div>
-      <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">الاستديو الإبداعي</div>
-      <p class="card-text">المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.</p>
+      <div data-i18n="c4_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">الاستديو الإبداعي</div>
+      <p class="card-text" data-i18n="c4_text">المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تصوير منتجات</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إنتاج إعلانات</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Reels</span>
-        <span style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">AI Video</span>
+        <span data-i18n="c4_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تصوير منتجات</span>
+        <span data-i18n="c4_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إنتاج إعلانات</span>
+        <span data-i18n="c4_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Reels</span>
+        <span data-i18n="c4_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">AI Video</span>
       </div>
     </div>
 
@@ -945,27 +969,27 @@
   <div class="stats-grid">
     <div class="stat-item reveal">
       <div class="stat-num">+150</div>
-      <div class="stat-label">عميل راضٍ</div>
+      <div class="stat-label" data-i18n="stat1">عميل راضٍ</div>
     </div>
     <div class="stat-item reveal" style="transition-delay:0.1s">
       <div class="stat-num">5X</div>
-      <div class="stat-label">متوسط عائد الاستثمار</div>
+      <div class="stat-label" data-i18n="stat2">متوسط عائد الاستثمار</div>
     </div>
     <div class="stat-item reveal" style="transition-delay:0.2s">
       <div class="stat-num">3M+</div>
-      <div class="stat-label">وصول شهري</div>
+      <div class="stat-label" data-i18n="stat3">وصول شهري</div>
     </div>
     <div class="stat-item reveal" style="transition-delay:0.3s">
       <div class="stat-num">98%</div>
-      <div class="stat-label">معدل الاحتفاظ</div>
+      <div class="stat-label" data-i18n="stat4">معدل الاحتفاظ</div>
     </div>
   </div>
 </div>
 
 <!-- WORK -->
 <section class="section" id="work">
-  <div class="section-tag reveal">ما صنعناه</div>
-  <h2 class="section-title reveal">أعمال<br><span class="accent">مختارة</span></h2>
+  <div class="section-tag reveal" data-i18n="work_tag">ما صنعناه</div>
+  <h2 class="section-title reveal" data-i18n="work_title">أعمال<br><span class="accent">مختارة</span></h2>
   <div class="work-grid reveal">
     <div class="work-card">
       <div class="work-card-bg-1" style="position:absolute;inset:0;"></div>
@@ -996,12 +1020,12 @@
 <!-- CTA -->
 <section class="cta-section" id="contact">
   <div class="cta-inner reveal">
-    <h2 class="cta-title">
+    <h2 class="cta-title" data-i18n="cta_title">
       جاهز تبدأ<br>
       <span class="gradient-text">مشروعك؟</span>
     </h2>
-    <p class="cta-sub">تواصل معنا اليوم ونبني معاً استراتيجية تسويقية تصنع فارقاً حقيقياً</p>
-    <a href="mailto:hello@newmedia.sa" class="btn-primary"><span>ابدأ معنا الآن →</span></a>
+    <p class="cta-sub" data-i18n="cta_sub">تواصل معنا اليوم ونبني معاً استراتيجية تسويقية تصنع فارقاً حقيقياً</p>
+    <a href="mailto:hello@newmedia.sa" class="btn-primary"><span data-i18n="cta_btn">ابدأ معنا الآن →</span></a>
   </div>
 </section>
 
@@ -1020,7 +1044,7 @@
           </div>
           <span style="font-family:'Alexandria',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(90deg,var(--purple),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">New Media</span>
         </div>
-        <p style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.8;max-width:260px;margin-bottom:1.5rem;">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.</p>
+        <p data-i18n="footer_desc" style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.8;max-width:260px;margin-bottom:1.5rem;">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.</p>
         <div style="display:flex;gap:12px;">
           <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-decoration:none;font-size:14px;transition:color 0.3s,border-color 0.3s;" aria-label="X">𝕏</a>
           <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-decoration:none;font-size:13px;transition:color 0.3s,border-color 0.3s;" aria-label="LinkedIn">in</a>
@@ -1030,7 +1054,7 @@
 
       <!-- Divisions column -->
       <div>
-        <div style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">أقسامنا</div>
+        <div data-i18n="footer_div_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">أقسامنا</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
           <li><a href="#services" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Growth & Performance</a></li>
           <li><a href="#services" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Digital Presence</a></li>
@@ -1041,23 +1065,23 @@
 
       <!-- Policies column -->
       <div>
-        <div style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">السياسات</div>
+        <div data-i18n="footer_pol_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">السياسات</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
-          <li><a href="privacy-policy.html" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">سياسة الخصوصية</a></li>
-          <li><a href="terms-of-service.html" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">شروط الخدمة</a></li>
-          <li><a href="refund-policy.html" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">سياسة الاسترداد</a></li>
-          <li><a href="confidentiality.html" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">اتفاقية السرية</a></li>
-          <li><a href="cookie-policy.html" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">ملفات تعريف الارتباط</a></li>
+          <li><a href="privacy-policy.html" data-i18n="footer_pol1" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">سياسة الخصوصية</a></li>
+          <li><a href="terms-of-service.html" data-i18n="footer_pol2" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">شروط الخدمة</a></li>
+          <li><a href="refund-policy.html" data-i18n="footer_pol3" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">سياسة الاسترداد</a></li>
+          <li><a href="confidentiality.html" data-i18n="footer_pol4" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">اتفاقية السرية</a></li>
+          <li><a href="cookie-policy.html" data-i18n="footer_pol5" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">ملفات تعريف الارتباط</a></li>
         </ul>
       </div>
 
       <!-- Contact column -->
       <div>
-        <div style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">تواصل معنا</div>
+        <div data-i18n="footer_contact_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">تواصل معنا</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
           <li><a href="mailto:hello@newmedia.sa" class="hover-orange" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;direction:ltr;display:block;transition:color 0.3s;">hello@newmedia.sa</a></li>
           <li><a href="tel:+966500000000" class="hover-orange" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;direction:ltr;display:block;transition:color 0.3s;">+966 50 000 0000</a></li>
-          <li><span style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);">جدة، المملكة العربية السعودية</span></li>
+          <li><span data-i18n="footer_location" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);">جدة، المملكة العربية السعودية</span></li>
         </ul>
       </div>
 
@@ -1065,7 +1089,7 @@
 
     <!-- Bottom bar -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;flex-wrap:wrap;gap:1rem;">
-      <p style="font-size:12px;color:rgba(255,255,255,0.2);letter-spacing:0.05em;">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
+      <p data-i18n="footer_copy" style="font-size:12px;color:rgba(255,255,255,0.2);letter-spacing:0.05em;">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
       <div style="display:flex;gap:1.5rem;">
         <a href="privacy-policy.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;">Privacy</a>
         <a href="terms-of-service.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;">Terms</a>
@@ -1164,6 +1188,98 @@
 
   const statsSection = document.querySelector('.stats-section');
   if (statsSection) statsObserver.observe(statsSection);
+
+  // Language toggle
+  const translations = {
+    ar: {
+      dir: 'rtl', lang: 'ar', btn: 'EN',
+      nav_services: 'Services', nav_work: 'Work', nav_about: 'About', nav_contact: 'تواصل معنا',
+      hero_eyebrow: 'Full-Service Marketing Agency — KSA',
+      hero_line1: 'WE CREATE', hero_line2: 'IMPACT',
+      hero_sub: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى الإبداع إلى النتائج',
+      hero_btn1: 'شوف أعمالنا', hero_btn2: 'تواصل معنا',
+      services_tag: 'أقسامنا',
+      services_title: 'أربعة أقسام<br><span class="accent">تصنع الفارق</span>',
+      c1_sub: 'قسم النمو والأداء',
+      c1_text: 'القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.',
+      c1_t1: 'إعلانات ممولة', c1_t2: 'تحليل البيانات', c1_t3: 'ROI', c1_t4: 'تطوير الأعمال',
+      c2_sub: 'قسم الحضور الرقمي',
+      c2_text: 'القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.',
+      c2_t1: 'صناعة المحتوى', c2_t2: 'Social Media', c2_t3: 'AI & Automation', c2_t4: 'إدارة المجتمعات',
+      c3_sub: 'قسم الهوية والتجربة',
+      c3_text: 'القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.',
+      c3_t1: 'Brand Identity', c3_t2: 'UI/UX', c3_t3: 'مواقع ومتاجر', c3_t4: 'Landing Pages',
+      c4_sub: 'الاستديو الإبداعي',
+      c4_text: 'المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.',
+      c4_t1: 'تصوير منتجات', c4_t2: 'إنتاج إعلانات', c4_t3: 'Reels', c4_t4: 'AI Video',
+      stat1: 'عميل راضٍ', stat2: 'متوسط عائد الاستثمار', stat3: 'وصول شهري', stat4: 'معدل الاحتفاظ',
+      work_tag: 'ما صنعناه',
+      work_title: 'أعمال<br><span class="accent">مختارة</span>',
+      cta_title: 'جاهز تبدأ<br><span class="gradient-text">مشروعك؟</span>',
+      cta_sub: 'تواصل معنا اليوم ونبني معاً استراتيجية تسويقية تصنع فارقاً حقيقياً',
+      cta_btn: 'ابدأ معنا الآن →',
+      footer_desc: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.',
+      footer_div_title: 'أقسامنا', footer_pol_title: 'السياسات',
+      footer_pol1: 'سياسة الخصوصية', footer_pol2: 'شروط الخدمة',
+      footer_pol3: 'سياسة الاسترداد', footer_pol4: 'اتفاقية السرية', footer_pol5: 'ملفات تعريف الارتباط',
+      footer_contact_title: 'تواصل معنا',
+      footer_location: 'جدة، المملكة العربية السعودية',
+      footer_copy: '© 2025 New Media Agency. جميع الحقوق محفوظة.',
+    },
+    en: {
+      dir: 'ltr', lang: 'en', btn: 'ع',
+      nav_services: 'Services', nav_work: 'Work', nav_about: 'About', nav_contact: 'Contact Us',
+      hero_eyebrow: 'Full-Service Marketing Agency — KSA',
+      hero_line1: 'WE CREATE', hero_line2: 'IMPACT',
+      hero_sub: 'A full-service marketing agency creating an unforgettable presence — from strategy to creativity to results.',
+      hero_btn1: 'View Our Work', hero_btn2: 'Contact Us',
+      services_tag: 'Our Divisions',
+      services_title: 'Four Divisions<br><span class="accent">That Make a Difference</span>',
+      c1_sub: 'Growth & Performance Division',
+      c1_text: 'The division responsible for converting attention into profits and data into decisions. Includes paid campaigns, analytics, sales, and business development.',
+      c1_t1: 'Paid Ads', c1_t2: 'Data Analytics', c1_t3: 'ROI', c1_t4: 'Business Dev',
+      c2_sub: 'Digital Presence Division',
+      c2_text: "The division that builds the brand's voice and digital presence. Includes content creation, social media management, and AI.",
+      c2_t1: 'Content Creation', c2_t2: 'Social Media', c2_t3: 'AI & Automation', c2_t4: 'Community Mgmt',
+      c3_sub: 'Brand & Experience Division',
+      c3_text: 'The division that transforms projects into unforgettable brands. Includes visual identity, design, and web & store development.',
+      c3_t1: 'Brand Identity', c3_t2: 'UI/UX', c3_t3: 'Websites & Stores', c3_t4: 'Landing Pages',
+      c4_sub: 'Creative Studio',
+      c4_text: 'The place where ideas become scenes that are watched, remembered, and sold. Includes photography, production, and AI video.',
+      c4_t1: 'Product Photography', c4_t2: 'Ad Production', c4_t3: 'Reels', c4_t4: 'AI Video',
+      stat1: 'Happy Clients', stat2: 'Average ROI', stat3: 'Monthly Reach', stat4: 'Retention Rate',
+      work_tag: 'What We Built',
+      work_title: 'Selected<br><span class="accent">Work</span>',
+      cta_title: 'Ready to Start<br><span class="gradient-text">Your Project?</span>',
+      cta_sub: "Contact us today and together we'll build a marketing strategy that makes a real difference.",
+      cta_btn: 'Start With Us Now →',
+      footer_desc: 'A full-service marketing agency creating an unforgettable presence — from strategy to results.',
+      footer_div_title: 'Our Divisions', footer_pol_title: 'Policies',
+      footer_pol1: 'Privacy Policy', footer_pol2: 'Terms of Service',
+      footer_pol3: 'Refund Policy', footer_pol4: 'Confidentiality', footer_pol5: 'Cookie Policy',
+      footer_contact_title: 'Contact Us',
+      footer_location: 'Jeddah, Saudi Arabia',
+      footer_copy: '© 2025 New Media Agency. All rights reserved.',
+    }
+  };
+
+  let currentLang = 'ar';
+
+  function applyLang(lang) {
+    const t = translations[lang];
+    document.documentElement.lang = t.lang;
+    document.documentElement.dir = t.dir;
+    document.getElementById('langBtn').textContent = t.btn;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.innerHTML = t[key];
+    });
+    currentLang = lang;
+  }
+
+  document.getElementById('langBtn').addEventListener('click', () => {
+    applyLang(currentLang === 'ar' ? 'en' : 'ar');
+  });
 </script>
 </body>
 </html>
