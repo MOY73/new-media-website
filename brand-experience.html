@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الهوية والتجربة — NEW MEDIA</title>
+<meta name="description" content="قسم الهوية والتجربة في NEW MEDIA — هوية بصرية، تصميم UI/UX، مواقع ومتاجر احترافية.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root { --purple:#6600cc; --orange:#ff6600; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body { background:var(--black); color:var(--white); font-family:'Tajawal',sans-serif; overflow-x:hidden; cursor:none; }
+.cursor { width:12px; height:12px; background:var(--purple); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); mix-blend-mode:difference; }
+.cursor-ring { width:36px; height:36px; border:1.5px solid rgba(102,0,204,0.5); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); transition:width .3s,height .3s,border-color .3s; }
+nav { position:fixed; top:20px; left:50%; transform:translateX(-50%); width:calc(100% - 48px); max-width:1200px; z-index:500; background:rgba(5,5,5,0.5); backdrop-filter:blur(24px) saturate(180%); border:1px solid var(--glass-border); border-radius:20px; padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between; box-shadow:0 4px 30px rgba(102,0,204,0.15); }
+.nav-logo { font-family:'Alexandria',sans-serif; font-weight:900; font-size:18px; letter-spacing:.1em; background:linear-gradient(90deg,var(--purple),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; text-transform:uppercase; text-decoration:none; }
+.nav-links { display:flex; gap:2rem; list-style:none; direction:ltr; }
+.nav-links a { font-family:'Alexandria',sans-serif; font-weight:700; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,0.55); text-decoration:none; transition:color .3s; }
+.nav-links a:hover { color:var(--white); }
+.nav-cta { font-family:'Alexandria',sans-serif; font-weight:700; font-size:13px; color:var(--white); text-decoration:none; background:linear-gradient(135deg,var(--purple),var(--orange)); padding:10px 22px; border-radius:12px; transition:opacity .3s,transform .2s; }
+.nav-cta:hover { opacity:.85; transform:scale(.98); }
+.hero { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:9rem 2rem 5rem; position:relative; overflow:hidden; }
+.orb { position:absolute; border-radius:50%; filter:blur(90px); pointer-events:none; }
+.o1 { width:600px; height:600px; background:radial-gradient(circle,rgba(102,0,204,.45),transparent 70%); bottom:-100px; right:-100px; animation:flt 10s ease-in-out infinite; }
+.o2 { width:450px; height:450px; background:radial-gradient(circle,rgba(204,51,102,.3),transparent 70%); top:-80px; left:-80px; animation:flt 8s ease-in-out infinite reverse; }
+.o3 { width:300px; height:300px; background:radial-gradient(circle,rgba(255,102,0,.2),transparent 70%); top:50%; right:15%; animation:flt 6s ease-in-out infinite 2s; }
+@keyframes flt { 0%,100%{transform:translate(0,0) scale(1)} 33%{transform:translate(25px,-20px) scale(1.04)} 66%{transform:translate(-15px,25px) scale(.96)} }
+.badge { display:inline-flex; align-items:center; gap:.5rem; font-family:'Alexandria',sans-serif; font-weight:700; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--purple); border:1px solid rgba(102,0,204,.4); padding:7px 20px; border-radius:30px; margin-bottom:2rem; opacity:0; animation:up .7s .1s forwards; background:rgba(102,0,204,.08); }
+.hero-icon { font-size:4.5rem; margin-bottom:1.5rem; opacity:0; animation:up .7s .2s forwards; }
+.hero-num { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(1rem,2vw,1.25rem); letter-spacing:.4em; color:rgba(255,255,255,.2); margin-bottom:.5rem; opacity:0; animation:up .7s .25s forwards; }
+h1 { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(3.5rem,9vw,8rem); line-height:.95; letter-spacing:-.02em; text-transform:uppercase; margin-bottom:1.5rem; opacity:0; animation:up .7s .3s forwards; }
+h1 .g { background:linear-gradient(135deg,var(--purple),#cc3366); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.hero-sub { font-size:clamp(.95rem,2vw,1.2rem); font-weight:300; color:rgba(255,255,255,.5); max-width:580px; line-height:1.9; margin-bottom:3rem; opacity:0; animation:up .7s .4s forwards; }
+.hero-actions { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; opacity:0; animation:up .7s .5s forwards; }
+@keyframes up { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+.btn-p { display:inline-flex; align-items:center; gap:.5rem; background:linear-gradient(135deg,var(--purple),#cc3366); color:var(--white); font-family:'Alexandria',sans-serif; font-weight:700; font-size:14px; letter-spacing:.08em; text-decoration:none; padding:14px 32px; border-radius:14px; transition:transform .2s,box-shadow .3s; box-shadow:0 4px 24px rgba(102,0,204,.4); }
+.btn-p:hover { transform:scale(.97); box-shadow:0 8px 32px rgba(102,0,204,.55); }
+.btn-g { display:inline-flex; align-items:center; gap:.5rem; color:rgba(255,255,255,.65); font-family:'Alexandria',sans-serif; font-weight:700; font-size:14px; letter-spacing:.08em; text-decoration:none; padding:14px 28px; border-radius:14px; border:1px solid rgba(255,255,255,.15); transition:all .3s; }
+.btn-g:hover { color:var(--white); border-color:rgba(255,255,255,.35); background:rgba(255,255,255,.05); }
+.sec { padding:7rem 2rem; max-width:1200px; margin:0 auto; }
+.sec-tag { font-family:'Alexandria',sans-serif; font-weight:700; font-size:11px; letter-spacing:.3em; text-transform:uppercase; color:var(--purple); margin-bottom:1rem; }
+.sec-title { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(2rem,4vw,3.5rem); line-height:1.1; margin-bottom:3.5rem; }
+.sec-title .g { background:linear-gradient(135deg,var(--purple),#cc3366); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1.5rem; }
+@media(max-width:900px){ .grid-3{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:600px){ .grid-3{grid-template-columns:1fr} }
+.card { background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:22px; padding:2.25rem; position:relative; overflow:hidden; transition:border-color .35s,transform .35s,box-shadow .35s; }
+.card::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(102,0,204,.07),rgba(204,51,102,.05)); opacity:0; transition:opacity .35s; border-radius:22px; }
+.card:hover { border-color:rgba(102,0,204,.45); transform:translateY(-5px); box-shadow:0 16px 48px rgba(102,0,204,.25); }
+.card:hover::after { opacity:1; }
+.card-icon { font-size:2.25rem; margin-bottom:1.25rem; }
+.card-title { font-family:'Alexandria',sans-serif; font-weight:700; font-size:1.05rem; letter-spacing:.04em; color:var(--white); margin-bottom:.75rem; }
+.card-text { font-size:.9rem; font-weight:300; color:rgba(255,255,255,.48); line-height:1.8; }
+.divider-sec { background:rgba(255,255,255,.02); border-top:1px solid var(--glass-border); border-bottom:1px solid var(--glass-border); padding:7rem 2rem; }
+.divider-inner { max-width:1200px; margin:0 auto; }
+.grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:2.5rem; margin-top:3.5rem; }
+@media(max-width:900px){ .grid-4{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:500px){ .grid-4{grid-template-columns:1fr} }
+.step-num { font-family:'Alexandria',sans-serif; font-weight:900; font-size:4rem; background:linear-gradient(135deg,var(--purple),#cc3366); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1; margin-bottom:1rem; }
+.step-title { font-family:'Alexandria',sans-serif; font-weight:700; font-size:1rem; letter-spacing:.08em; text-transform:uppercase; color:var(--white); margin-bottom:.75rem; }
+.step-text { font-size:.875rem; font-weight:300; color:rgba(255,255,255,.42); line-height:1.8; }
+.stats-wrap { padding:7rem 2rem; max-width:1200px; margin:0 auto; }
+.grid-3s { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:3rem; }
+@media(max-width:700px){ .grid-3s{grid-template-columns:1fr} }
+.stat-card { background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:22px; padding:3rem 2rem; text-align:center; }
+.stat-num { font-family:'Alexandria',sans-serif; font-weight:900; font-size:3.25rem; background:linear-gradient(135deg,var(--purple),#cc3366); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:.6rem; }
+.stat-label { font-size:.9rem; font-weight:300; color:rgba(255,255,255,.42); letter-spacing:.05em; }
+.cta { background:radial-gradient(ellipse at center,rgba(102,0,204,.18) 0%,transparent 70%); border-top:1px solid var(--glass-border); padding:9rem 2rem; text-align:center; }
+.cta h2 { font-family:'Alexandria',sans-serif; font-weight:900; font-size:clamp(2.2rem,5vw,4.5rem); line-height:1.15; margin-bottom:1.5rem; }
+.cta p { font-size:1rem; font-weight:300; color:rgba(255,255,255,.45); max-width:520px; margin:0 auto 2.5rem; line-height:1.9; }
+.gr { background:linear-gradient(135deg,var(--purple),#cc3366); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+footer { border-top:1px solid var(--glass-border); padding:2.5rem 2rem; max-width:1200px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+.foot-copy { font-size:12px; color:rgba(255,255,255,.2); }
+.foot-links { display:flex; gap:1.5rem; }
+.foot-links a { font-family:'Alexandria',sans-serif; font-weight:700; font-size:10px; letter-spacing:.15em; text-transform:uppercase; color:rgba(255,255,255,.2); text-decoration:none; transition:color .3s; }
+.foot-links a:hover { color:rgba(255,255,255,.5); }
+.divs-nav { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-top:4rem; padding-top:4rem; border-top:1px solid var(--glass-border); }
+.div-link { display:flex; align-items:center; gap:.6rem; font-family:'Alexandria',sans-serif; font-weight:700; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.4); text-decoration:none; border:1px solid var(--glass-border); padding:10px 20px; border-radius:30px; transition:all .3s; }
+.div-link:hover { color:var(--white); border-color:rgba(102,0,204,.4); background:rgba(102,0,204,.06); }
+.div-link.active { color:var(--purple); border-color:rgba(102,0,204,.5); background:rgba(102,0,204,.08); }
+.reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1); }
+.reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<nav>
+  <a href="index.html" class="nav-logo">NEW MEDIA</a>
+  <ul class="nav-links">
+    <li><a href="index.html#services">الأقسام</a></li>
+    <li><a href="index.html#work">أعمالنا</a></li>
+    <li><a href="index.html#contact">من نحن</a></li>
+  </ul>
+  <a href="index.html#contact" class="nav-cta">تواصل معنا</a>
+</nav>
+
+<section class="hero">
+  <div class="orb o1"></div>
+  <div class="orb o2"></div>
+  <div class="orb o3"></div>
+  <div class="badge">القسم الثالث · Brand & Experience</div>
+  <div class="hero-icon">🎨</div>
+  <div class="hero-num">03</div>
+  <h1>الهوية<br><span class="g">والتجربة</span></h1>
+  <p class="hero-sub">نُحوّل مشروعك إلى علامة تجارية لا تُنسى — هوية بصرية تحكي قصتك، وتصميم يُقنع في أول نظرة</p>
+  <div class="hero-actions">
+    <a href="#services" class="btn-p">اكتشف خدماتنا</a>
+    <a href="index.html#contact" class="btn-g">تواصل معنا</a>
+  </div>
+</section>
+
+<section id="services" class="sec">
+  <div class="sec-tag reveal">ما نقدمه</div>
+  <h2 class="sec-title reveal">هوية تبقى في<br><span class="g">الذاكرة للأبد</span></h2>
+  <div class="grid-3">
+    <div class="card reveal" style="transition-delay:.05s">
+      <div class="card-icon">✨</div>
+      <div class="card-title">الهوية البصرية</div>
+      <p class="card-text">نصمم هوية بصرية متكاملة تعكس قيمك وشخصيتك وتُميّزك عن المنافسين — لوغو، ألوان، خطوط، وعناصر بصرية متناسقة.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:.1s">
+      <div class="card-icon">💎</div>
+      <div class="card-title">دليل العلامة التجارية</div>
+      <p class="card-text">نضع Brand Guidelines شاملاً يضمن تجربة متسقة وموحّدة في كل نقطة تواصل مع عملائك — رقمياً وورقياً.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:.15s">
+      <div class="card-icon">🖥️</div>
+      <div class="card-title">تصميم UI/UX</div>
+      <p class="card-text">نصمم تجارب رقمية جميلة وسهلة الاستخدام — من الـ Wireframe إلى الـ Prototype الكامل الذي يُسهّل على المستخدم تحقيق هدفه.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:.2s">
+      <div class="card-icon">🌐</div>
+      <div class="card-title">تطوير المواقع</div>
+      <p class="card-text">مواقع ويب احترافية سريعة ومتجاوبة مع جميع الأجهزة — تصميم فريد، كود نظيف، وأداء يُبهر الزائر من أول لحظة.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:.25s">
+      <div class="card-icon">🛍️</div>
+      <div class="card-title">المتاجر الإلكترونية</div>
+      <p class="card-text">متاجر إلكترونية مُحسّنة للمبيعات وتجربة المستخدم — تصميم يُشجّع الشراء وبنية تقنية تضمن الأمان والسرعة.</p>
+    </div>
+    <div class="card reveal" style="transition-delay:.3s">
+      <div class="card-icon">🎯</div>
+      <div class="card-title">صفحات الهبوط</div>
+      <p class="card-text">Landing Pages مُصمّمة للتحويل بأعلى دقة — كل عنصر في مكانه الصحيح ليُقنع الزائر باتخاذ الخطوة التالية.</p>
+    </div>
+  </div>
+  <div class="divs-nav">
+    <a href="growth-performance.html" class="div-link">📈 النمو والأداء</a>
+    <a href="digital-presence.html" class="div-link">📱 الحضور الرقمي</a>
+    <a href="brand-experience.html" class="div-link active">🎨 الهوية والتجربة</a>
+    <a href="creative-production.html" class="div-link">🎬 الاستديو الإبداعي</a>
+  </div>
+</section>
+
+<div class="divider-sec">
+  <div class="divider-inner">
+    <div class="sec-tag reveal">كيف نعمل</div>
+    <h2 class="sec-title reveal">من الفراغ<br><span class="g">إلى الهوية</span></h2>
+    <div class="grid-4">
+      <div class="reveal" style="transition-delay:.05s">
+        <div class="step-num">01</div>
+        <div class="step-title">الاستكشاف</div>
+        <p class="step-text">نفهم قصتك وقيمك وجمهورك والسوق الذي تعمل فيه — الهوية الجيدة تبدأ من الفهم العميق.</p>
+      </div>
+      <div class="reveal" style="transition-delay:.1s">
+        <div class="step-num">02</div>
+        <div class="step-title">التصور الإبداعي</div>
+        <p class="step-text">نُطوّر مفاهيم بصرية متعددة تُجسّد شخصية براندك ونُقدّمها مع مبرراتها الاستراتيجية.</p>
+      </div>
+      <div class="reveal" style="transition-delay:.15s">
+        <div class="step-num">03</div>
+        <div class="step-title">التصميم والتطوير</div>
+        <p class="step-text">نُنفّذ الهوية المختارة بأعلى دقة ونُطوّر كل التطبيقات الرقمية والمطبوعة.</p>
+      </div>
+      <div class="reveal" style="transition-delay:.2s">
+        <div class="step-num">04</div>
+        <div class="step-title">التسليم والدعم</div>
+        <p class="step-text">نُسلّم الملفات كاملة مع دليل الاستخدام ونقف معك في كل تطبيق لاحق للهوية.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stats-wrap">
+  <div class="sec-tag reveal">بالأرقام</div>
+  <h2 class="sec-title reveal">أعمال<br><span class="g">تتحدث عن نفسها</span></h2>
+  <div class="grid-3s">
+    <div class="stat-card reveal">
+      <div class="stat-num">+100</div>
+      <div class="stat-label">هوية بصرية مُصمّمة</div>
+    </div>
+    <div class="stat-card reveal" style="transition-delay:.1s">
+      <div class="stat-num">+50</div>
+      <div class="stat-label">موقع ومتجر مُطوّر</div>
+    </div>
+    <div class="stat-card reveal" style="transition-delay:.2s">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">التزام بالموعد والجودة</div>
+    </div>
+  </div>
+</div>
+
+<section class="cta">
+  <h2 class="reveal">مستعد تُعيد بناء<br><span class="gr">هوية براندك؟</span></h2>
+  <p class="reveal">تواصل معنا ونبني معاً هوية بصرية تجعل براندك لا يُنسى في ذاكرة كل من يراه</p>
+  <a href="mailto:hello@newmedia.sa" class="btn-p reveal">ابدأ معنا الآن →</a>
+</section>
+
+<footer>
+  <p class="foot-copy">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
+  <div class="foot-links">
+    <a href="privacy-policy.html">Privacy</a>
+    <a href="terms-of-service.html">Terms</a>
+    <a href="index.html">Home</a>
+  </div>
+</footer>
+
+<script>
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  if(cursor&&ring){
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+    function animRing(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+    animRing();
+    document.querySelectorAll('a,button,.card').forEach(el=>{
+      el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='52px';ring.style.height='52px';ring.style.borderColor='rgba(102,0,204,.8)';});
+      el.addEventListener('mouseleave',()=>{cursor.style.width='12px';cursor.style.height='12px';ring.style.width='36px';ring.style.height='36px';ring.style.borderColor='rgba(102,0,204,.5)';});
+    });
+  }
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
