@@ -114,6 +114,19 @@
   .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
   .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); }
   .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+  .theme-btn { font-size:15px; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); width:34px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; display:flex; align-items:center; justify-content:center; padding:0; }
+  .theme-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); }
+  html.light { --black:#f5f5f7; --white:#0d0d0d; --glass-bg:rgba(0,0,0,0.04); --glass-border:rgba(0,0,0,0.09); }
+  html.light body { background:#f5f5f7; color:#0d0d0d; }
+  html.light nav { background:rgba(245,245,247,.88); border-color:rgba(0,0,0,.08); }
+  html.light .nav-logo { color:#0d0d0d; }
+  html.light .nav-back { color:rgba(0,0,0,.5); border-color:rgba(0,0,0,.15); }
+  html.light .nav-back:hover { color:#0d0d0d; border-color:rgba(0,0,0,.4); }
+  html.light .theme-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
+  html.light .theme-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
+  html.light .page-meta { color:rgba(0,0,0,.3); }
+  html.light .footer-links a { color:rgba(0,0,0,.3); }
+  html.light .footer-copy { color:rgba(0,0,0,.2); }
   @media (max-width: 768px) {
     nav { padding: 1rem 1.5rem; }
     .page-hero { padding: 8rem 1.5rem 3rem; }
@@ -126,7 +139,10 @@
 
 <nav>
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
-  <a href="index.html" class="nav-back">← العودة للرئيسية</a>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" title="Dark / Light">☽</button>
+    <a href="index.html" class="nav-back">← العودة للرئيسية</a>
+  </div>
 </nav>
 
 <div class="page-hero">
@@ -217,7 +233,7 @@
     <h2><span>09</span> التواصل</h2>
     <p>لأي استفسارات أو مخاوف تتعلق بهذه الشروط:</p>
     <ul>
-      <li>البريد الإلكتروني: <a href="mailto:hello@newmedia.sa">hello@newmedia.sa</a></li>
+      <li>البريد الإلكتروني: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li>
       <li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li>
     </ul>
   </div>
@@ -237,6 +253,12 @@
   </div>
 </footer>
 
+<script>
+  const themeBtn=document.getElementById('themeBtn');
+  function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
+  applyTheme(localStorage.getItem('nm-theme')||'dark');
+  themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
+</script>
 </body>
 </html>
 
