@@ -46,6 +46,8 @@
     --glass-bg: rgba(255,255,255,0.04);
     --glass-border: rgba(255,255,255,0.10);
     --glass-shadow: 0 8px 40px rgba(0,0,0,0.5);
+    --tag-color: rgba(255,255,255,0.5);
+    --tag-border: rgba(255,102,0,0.4);
   }
 
   /* LIGHT MODE OVERRIDES */
@@ -55,6 +57,8 @@
     --glass-bg: rgba(0,0,0,0.04);
     --glass-border: rgba(0,0,0,0.09);
     --glass-shadow: 0 8px 40px rgba(0,0,0,0.12);
+    --tag-color: rgba(0,0,0,0.55);
+    --tag-border: rgba(255,102,0,0.5);
   }
   html.light body { background: #f5f5f7; color: #0d0d0d; }
   html.light body::before { opacity: 0.12; }
@@ -73,6 +77,7 @@
   html.light .marquee-item { color: rgba(0,0,0,0.25); }
   html.light .card-number { color: rgba(0,0,0,0.2); }
   html.light .card-text { color: rgba(0,0,0,0.45); }
+  html.light .card-icon { border-color: rgba(0,0,0,0.12); }
   html.light .stats-section { background: rgba(0,0,0,0.025); border-color: rgba(0,0,0,0.05); }
   html.light .stat-label { color: rgba(0,0,0,0.35); }
   html.light .cta-inner { background: rgba(0,0,0,0.025); border-color: rgba(0,0,0,0.07); }
@@ -972,10 +977,10 @@
       <div data-i18n="c1_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم النمو والأداء</div>
       <p class="card-text" data-i18n="c1_text">القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span data-i18n="c1_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إعلانات ممولة</span>
-        <span data-i18n="c1_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تحليل البيانات</span>
-        <span data-i18n="c1_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">ROI</span>
-        <span data-i18n="c1_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تطوير الأعمال</span>
+        <span data-i18n="c1_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">إعلانات ممولة</span>
+        <span data-i18n="c1_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">تحليل البيانات</span>
+        <span data-i18n="c1_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">ROI</span>
+        <span data-i18n="c1_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">تطوير الأعمال</span>
       </div>
     </a>
 
@@ -986,10 +991,10 @@
       <div data-i18n="c2_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الحضور الرقمي</div>
       <p class="card-text" data-i18n="c2_text">القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span data-i18n="c2_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">صناعة المحتوى</span>
-        <span data-i18n="c2_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Social Media</span>
-        <span data-i18n="c2_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">AI & Automation</span>
-        <span data-i18n="c2_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إدارة المجتمعات</span>
+        <span data-i18n="c2_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">صناعة المحتوى</span>
+        <span data-i18n="c2_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">Social Media</span>
+        <span data-i18n="c2_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">AI & Automation</span>
+        <span data-i18n="c2_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">إدارة المجتمعات</span>
       </div>
     </a>
 
@@ -1000,10 +1005,10 @@
       <div data-i18n="c3_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">قسم الهوية والتجربة</div>
       <p class="card-text" data-i18n="c3_text">القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span data-i18n="c3_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Brand Identity</span>
-        <span data-i18n="c3_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">UI/UX</span>
-        <span data-i18n="c3_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">مواقع ومتاجر</span>
-        <span data-i18n="c3_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Landing Pages</span>
+        <span data-i18n="c3_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">Brand Identity</span>
+        <span data-i18n="c3_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">UI/UX</span>
+        <span data-i18n="c3_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">مواقع ومتاجر</span>
+        <span data-i18n="c3_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">Landing Pages</span>
       </div>
     </a>
 
@@ -1014,10 +1019,10 @@
       <div data-i18n="c4_sub" style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--orange);margin-bottom:0.75rem;">الاستديو الإبداعي</div>
       <p class="card-text" data-i18n="c4_text">المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.</p>
       <div style="margin-top:1rem;display:flex;flex-wrap:wrap;gap:6px;">
-        <span data-i18n="c4_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">تصوير منتجات</span>
-        <span data-i18n="c4_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">إنتاج إعلانات</span>
-        <span data-i18n="c4_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">Reels</span>
-        <span data-i18n="c4_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid rgba(255,102,0,0.4);border-radius:20px;color:rgba(255,255,255,0.5);letter-spacing:0.05em;">AI Video</span>
+        <span data-i18n="c4_t1" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">تصوير منتجات</span>
+        <span data-i18n="c4_t2" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">إنتاج إعلانات</span>
+        <span data-i18n="c4_t3" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">Reels</span>
+        <span data-i18n="c4_t4" style="font-size:10px;padding:3px 10px;border:0.5px solid var(--tag-border);border-radius:20px;color:var(--tag-color);letter-spacing:0.05em;">AI Video</span>
       </div>
     </a>
 
