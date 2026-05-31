@@ -14,119 +14,42 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --purple: #6600cc;
-    --orange: #ff6600;
-    --blend: #cc3366;
-    --black: #050505;
-    --white: #ffffff;
-    --glass-bg: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.10);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Tajawal', sans-serif;
-    line-height: 1.8;
-    overflow-x: hidden;
-  }
-  a { color: var(--orange); text-decoration: none; transition: opacity 0.2s; }
-  a:hover { opacity: 0.75; }
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 3rem;
-    background: rgba(5,5,5,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid var(--glass-border);
-  }
-  .nav-logo {
-    font-family: 'Alexandria', sans-serif;
-    font-weight: 900; font-size: 18px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--white); text-decoration: none;
-  }
-  .nav-back {
-    font-size: 13px; font-weight: 700;
-    color: rgba(255,255,255,0.5); text-decoration: none;
-    letter-spacing: 0.05em;
-    border: 0.5px solid rgba(255,255,255,0.15);
-    padding: 0.5rem 1.25rem; border-radius: 6px;
-    transition: color 0.3s, border-color 0.3s;
-  }
-  .nav-back:hover { color: var(--white); border-color: rgba(255,255,255,0.4); opacity: 1; }
-  .page-hero {
-    padding: 10rem 3rem 5rem;
-    max-width: 900px; margin: 0 auto;
-    border-bottom: 0.5px solid rgba(255,255,255,0.06);
-  }
-  .page-tag {
-    font-family: 'Alexandria', sans-serif;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--orange); margin-bottom: 1.5rem; display: block;
-  }
-  .page-title {
-    font-family: 'Alexandria', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
-    line-height: 1.15; margin-bottom: 1.5rem;
-  }
-  .page-meta { font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
-  .content { max-width: 900px; margin: 0 auto; padding: 4rem 3rem 6rem; }
-  .section {
-    margin-bottom: 3rem; padding: 2.5rem;
-    background: var(--glass-bg);
-    border: 0.5px solid var(--glass-border);
-    border-radius: 16px;
-  }
-  .section h2 {
-    font-family: 'Alexandria', sans-serif;
-    font-size: 1.25rem; font-weight: 700;
-    color: var(--white); margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 0.5px solid rgba(255,255,255,0.08);
-  }
-  .section h2 span {
-    display: inline-block; width: 28px; height: 28px;
-    background: linear-gradient(135deg, var(--purple), var(--blend));
-    border-radius: 6px; text-align: center; line-height: 28px;
-    font-size: 12px; margin-left: 0.6rem; vertical-align: middle;
-  }
-  .section p { font-size: 15px; color: rgba(255,255,255,0.65); margin-bottom: 1rem; }
-  .section p:last-child { margin-bottom: 0; }
-  .section ul { list-style: none; padding: 0; margin-top: 0.75rem; }
-  .section ul li {
-    font-size: 15px; color: rgba(255,255,255,0.65);
-    padding: 0.4rem 0; padding-right: 1.2rem; position: relative;
-  }
-  .section ul li::before {
-    content: '—'; position: absolute; right: 0;
-    color: var(--orange); font-size: 12px;
-  }
-  .highlight-box {
-    background: rgba(255,102,0,0.06);
-    border: 0.5px solid rgba(255,102,0,0.2);
-    border-radius: 10px;
-    padding: 1.5rem;
-    margin-top: 1.5rem;
-  }
-  .highlight-box p {
-    color: rgba(255,255,255,0.8) !important;
-    font-size: 14px !important;
-  }
-  .page-footer {
-    border-top: 0.5px solid rgba(255,255,255,0.06);
-    padding: 2.5rem 3rem; max-width: 900px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 1rem;
-  }
-  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); }
-  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+  :root { --purple:#6600cc; --orange:#ff6600; --blend:#cc3366; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Tajawal',sans-serif; line-height:1.8; overflow-x:hidden; }
+  a { color:var(--orange); text-decoration:none; transition:opacity 0.2s; }
+  a:hover { opacity:0.75; }
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.25rem 3rem; background:rgba(5,5,5,0.85); backdrop-filter:blur(20px); border-bottom:0.5px solid var(--glass-border); }
+  .nav-logo { font-family:'Alexandria',sans-serif; font-weight:900; font-size:18px; letter-spacing:0.15em; text-transform:uppercase; color:var(--white); text-decoration:none; }
+  .nav-back { font-size:13px; font-weight:700; color:rgba(255,255,255,0.5); text-decoration:none; letter-spacing:0.05em; border:0.5px solid rgba(255,255,255,0.15); padding:0.5rem 1.25rem; border-radius:6px; transition:color 0.3s,border-color 0.3s; }
+  .nav-back:hover { color:var(--white); border-color:rgba(255,255,255,0.4); opacity:1; }
+  .page-hero { padding:10rem 3rem 5rem; max-width:900px; margin:0 auto; border-bottom:0.5px solid rgba(255,255,255,0.06); }
+  .page-tag { font-family:'Alexandria',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; display:block; }
+  .page-title { font-family:'Alexandria',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; line-height:1.15; margin-bottom:1.5rem; }
+  .page-meta { font-size:13px; color:rgba(255,255,255,0.3); letter-spacing:0.05em; }
+  .content { max-width:900px; margin:0 auto; padding:4rem 3rem 6rem; }
+  .section { margin-bottom:3rem; padding:2.5rem; background:var(--glass-bg); border:0.5px solid var(--glass-border); border-radius:16px; }
+  .section h2 { font-family:'Alexandria',sans-serif; font-size:1.25rem; font-weight:700; color:var(--white); margin-bottom:1.25rem; padding-bottom:0.75rem; border-bottom:0.5px solid rgba(255,255,255,0.08); }
+  .section h2 span { display:inline-block; width:28px; height:28px; background:linear-gradient(135deg,var(--purple),var(--blend)); border-radius:6px; text-align:center; line-height:28px; font-size:12px; color:#fff; margin-left:0.6rem; vertical-align:middle; }
+  .section p { font-size:15px; color:rgba(255,255,255,0.65); margin-bottom:1rem; }
+  .section p:last-child { margin-bottom:0; }
+  .section ul { list-style:none; padding:0; margin-top:0.75rem; }
+  .section ul li { font-size:15px; color:rgba(255,255,255,0.65); padding:0.4rem 0; padding-right:1.2rem; position:relative; }
+  .section ul li::before { content:'—'; position:absolute; right:0; color:var(--orange); font-size:12px; }
+  html[lang="en"] .section ul li { padding-right:0; padding-left:1.2rem; }
+  html[lang="en"] .section ul li::before { right:auto; left:0; }
+  .hi-text { color:rgba(255,255,255,0.85); }
+  .highlight-box { background:rgba(255,102,0,0.06); border:0.5px solid rgba(255,102,0,0.2); border-radius:10px; padding:1.5rem; margin-top:1.5rem; }
+  .highlight-box p { color:rgba(255,255,255,0.8) !important; font-size:14px !important; }
+  .page-footer { border-top:0.5px solid rgba(255,255,255,0.06); padding:2.5rem 3rem; max-width:900px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+  .footer-links { display:flex; gap:2rem; flex-wrap:wrap; }
+  .footer-links a { font-size:12px; color:rgba(255,255,255,0.3); }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,0.2); }
   .theme-btn { font-size:15px; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); width:34px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; display:flex; align-items:center; justify-content:center; padding:0; }
   .theme-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); }
+  .lang-btn { font-size:12px; font-family:'Alexandria',sans-serif; font-weight:700; letter-spacing:0.1em; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); padding:0 12px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; }
+  .lang-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:#fff; }
   html.light { --black:#f5f5f7; --white:#0d0d0d; --glass-bg:rgba(0,0,0,0.04); --glass-border:rgba(0,0,0,0.09); }
   html.light body { background:#f5f5f7; color:#0d0d0d; }
   html.light nav { background:rgba(245,245,247,.88); border-color:rgba(0,0,0,.08); }
@@ -135,15 +58,19 @@
   html.light .nav-back:hover { color:#0d0d0d; border-color:rgba(0,0,0,.4); }
   html.light .theme-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
   html.light .theme-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
+  html.light .lang-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
+  html.light .lang-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
   html.light .page-meta { color:rgba(0,0,0,.3); }
+  html.light .section p { color:rgba(0,0,0,0.65); }
+  html.light .section ul li { color:rgba(0,0,0,0.65); }
+  html.light .section h2 { border-color:rgba(0,0,0,0.08); }
+  html.light .page-hero { border-color:rgba(0,0,0,0.06); }
+  html.light .page-footer { border-color:rgba(0,0,0,0.06); }
   html.light .footer-links a { color:rgba(0,0,0,.3); }
   html.light .footer-copy { color:rgba(0,0,0,.2); }
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .page-hero { padding: 8rem 1.5rem 3rem; }
-    .content { padding: 2rem 1.5rem 4rem; }
-    .page-footer { flex-direction: column; padding: 2rem 1.5rem; }
-  }
+  html.light .hi-text { color:rgba(0,0,0,0.8); }
+  html.light .highlight-box p { color:rgba(0,0,0,0.7) !important; }
+  @media (max-width:768px) { nav { padding:1rem 1.5rem; } .page-hero { padding:8rem 1.5rem 3rem; } .content { padding:2rem 1.5rem 4rem; } .page-footer { flex-direction:column; padding:2rem 1.5rem; } }
 </style>
 </head>
 <body>
@@ -152,27 +79,24 @@
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
   <div style="display:flex;align-items:center;gap:.75rem;">
     <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" title="Dark / Light">☽</button>
-    <a href="index.html" class="nav-back">← العودة للرئيسية</a>
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="index.html" class="nav-back" data-i18n="nav_back">← العودة للرئيسية</a>
   </div>
 </nav>
 
 <div class="page-hero">
   <span class="page-tag">Legal / قانوني</span>
-  <h1 class="page-title">سياسة الاسترداد</h1>
-  <p class="page-meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA</p>
+  <h1 class="page-title" data-i18n="page_title">سياسة الاسترداد</h1>
+  <p class="page-meta" data-i18n="page_meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA</p>
 </div>
 
 <div class="content">
-
-  <div class="section">
+  <div class="section" data-i18n="s01">
     <h2><span>01</span> مبدأ عام</h2>
     <p>تسعى NEW MEDIA إلى تقديم خدمات عالية الجودة تُرضي عملاءها بالكامل. نفهم أن ظروف الأعمال تتغير، لذا وضعنا هذه السياسة بشفافية تامة لتوضيح حقوق كل طرف فيما يتعلق باسترداد المبالغ المدفوعة.</p>
-    <div class="highlight-box">
-      <p>نشجع العملاء على التواصل المباشر معنا قبل طلب الاسترداد الرسمي — غالباً ما يمكن حل المشكلة أو تعديل مسار المشروع لتحقيق الرضا التام.</p>
-    </div>
+    <div class="highlight-box"><p>نشجع العملاء على التواصل المباشر معنا قبل طلب الاسترداد الرسمي — غالباً ما يمكن حل المشكلة أو تعديل مسار المشروع لتحقيق الرضا التام.</p></div>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s02">
     <h2><span>02</span> الخدمات المستمرة (الاشتراكات الشهرية)</h2>
     <p>بالنسبة للخدمات المستمرة كإدارة وسائل التواصل الاجتماعي والإعلانات الرقمية:</p>
     <ul>
@@ -182,19 +106,17 @@
       <li>يتم تسليم كل المواد والأصول الرقمية للعميل خلال 7 أيام من انتهاء التعاقد</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s03">
     <h2><span>03</span> المشاريع ذات الدفعة الواحدة</h2>
     <p>للمشاريع كتصميم الهوية البصرية وإنتاج المحتوى وتطوير المواقع:</p>
     <ul>
-      <li><strong style="color:rgba(255,255,255,0.85);">قبل بدء العمل:</strong> استرداد كامل للمبلغ المدفوع مطروحاً منه رسوم إدارية بنسبة 5%</li>
-      <li><strong style="color:rgba(255,255,255,0.85);">بعد تسليم المسودة الأولى:</strong> استرداد 50% من قيمة المشروع</li>
-      <li><strong style="color:rgba(255,255,255,0.85);">بعد الموافقة على المسودة النهائية:</strong> لا يُتاح الاسترداد</li>
-      <li><strong style="color:rgba(255,255,255,0.85);">بعد التسليم النهائي:</strong> لا يُتاح الاسترداد</li>
+      <li><strong class="hi-text">قبل بدء العمل:</strong> استرداد كامل للمبلغ المدفوع مطروحاً منه رسوم إدارية بنسبة 5%</li>
+      <li><strong class="hi-text">بعد تسليم المسودة الأولى:</strong> استرداد 50% من قيمة المشروع</li>
+      <li><strong class="hi-text">بعد الموافقة على المسودة النهائية:</strong> لا يُتاح الاسترداد</li>
+      <li><strong class="hi-text">بعد التسليم النهائي:</strong> لا يُتاح الاسترداد</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s04">
     <h2><span>04</span> حالات الاسترداد الكامل</h2>
     <p>يحق للعميل الحصول على استرداد كامل دون أي خصومات في الحالات التالية:</p>
     <ul>
@@ -204,8 +126,7 @@
       <li>إنهاء NEW MEDIA للتعاقد بإرادتها المنفردة دون مبرر مشروع</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s05">
     <h2><span>05</span> حالات عدم الاسترداد</h2>
     <p>لا يُتاح الاسترداد في الحالات التالية:</p>
     <ul>
@@ -215,8 +136,7 @@
       <li>الظروف القاهرة التي تحول دون إتمام الخدمة خارج سيطرة الطرفين</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s06">
     <h2><span>06</span> إجراءات طلب الاسترداد</h2>
     <p>لطلب الاسترداد، اتبع الخطوات التالية:</p>
     <ul>
@@ -226,8 +146,7 @@
       <li>في حال الموافقة، تُحوَّل المبالغ خلال 14 يوم عمل عبر نفس وسيلة الدفع الأصلية</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s07">
     <h2><span>07</span> التواصل</h2>
     <p>لأي استفسارات حول سياسة الاسترداد أو للبدء في إجراءات طلب الاسترداد:</p>
     <ul>
@@ -235,29 +154,73 @@
       <li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li>
     </ul>
   </div>
-
 </div>
 
 <footer>
   <div class="page-footer">
     <div class="footer-links">
-      <a href="privacy-policy.html">الخصوصية</a>
-      <a href="terms-of-service.html">شروط الخدمة</a>
-      <a href="refund-policy.html">الاسترداد</a>
-      <a href="confidentiality.html">السرية</a>
-      <a href="cookie-policy.html">الكوكيز</a>
+      <a href="privacy-policy.html" data-i18n="fl_privacy">الخصوصية</a>
+      <a href="terms-of-service.html" data-i18n="fl_terms">شروط الخدمة</a>
+      <a href="refund-policy.html" data-i18n="fl_refund">الاسترداد</a>
+      <a href="confidentiality.html" data-i18n="fl_conf">السرية</a>
+      <a href="cookie-policy.html" data-i18n="fl_cookie">الكوكيز</a>
     </div>
-    <span class="footer-copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
+    <span class="footer-copy" data-i18n="footer_copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
   </div>
 </footer>
 
 <script>
-  const themeBtn=document.getElementById('themeBtn');
-  function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
-  applyTheme(localStorage.getItem('nm-theme')||'dark');
-  themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
+const T = {
+  ar: {
+    dir:'rtl', lang:'ar', btn:'EN',
+    nav_back:'← العودة للرئيسية',
+    page_title:'سياسة الاسترداد',
+    page_meta:'آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA',
+    footer_copy:'© 2025 NEW MEDIA. جميع الحقوق محفوظة.',
+    fl_privacy:'الخصوصية', fl_terms:'شروط الخدمة', fl_refund:'الاسترداد', fl_conf:'السرية', fl_cookie:'الكوكيز',
+    s01:`<h2><span>01</span> مبدأ عام</h2><p>تسعى NEW MEDIA إلى تقديم خدمات عالية الجودة تُرضي عملاءها بالكامل. نفهم أن ظروف الأعمال تتغير، لذا وضعنا هذه السياسة بشفافية تامة لتوضيح حقوق كل طرف فيما يتعلق باسترداد المبالغ المدفوعة.</p><div class="highlight-box"><p>نشجع العملاء على التواصل المباشر معنا قبل طلب الاسترداد الرسمي — غالباً ما يمكن حل المشكلة أو تعديل مسار المشروع لتحقيق الرضا التام.</p></div>`,
+    s02:`<h2><span>02</span> الخدمات المستمرة (الاشتراكات الشهرية)</h2><p>بالنسبة للخدمات المستمرة كإدارة وسائل التواصل الاجتماعي والإعلانات الرقمية:</p><ul><li>يمكن إلغاء الاشتراك بإشعار مسبق 30 يوماً قبل تاريخ التجديد</li><li>لا يُسترد رسم الاشتراك عن الفترة الحالية بعد بدء تنفيذ الخدمة</li><li>في حال الإلغاء قبل بدء فترة الاشتراك الجديدة، لا تُخصم رسوم إضافية</li><li>يتم تسليم كل المواد والأصول الرقمية للعميل خلال 7 أيام من انتهاء التعاقد</li></ul>`,
+    s03:`<h2><span>03</span> المشاريع ذات الدفعة الواحدة</h2><p>للمشاريع كتصميم الهوية البصرية وإنتاج المحتوى وتطوير المواقع:</p><ul><li><strong class="hi-text">قبل بدء العمل:</strong> استرداد كامل للمبلغ المدفوع مطروحاً منه رسوم إدارية بنسبة 5%</li><li><strong class="hi-text">بعد تسليم المسودة الأولى:</strong> استرداد 50% من قيمة المشروع</li><li><strong class="hi-text">بعد الموافقة على المسودة النهائية:</strong> لا يُتاح الاسترداد</li><li><strong class="hi-text">بعد التسليم النهائي:</strong> لا يُتاح الاسترداد</li></ul>`,
+    s04:`<h2><span>04</span> حالات الاسترداد الكامل</h2><p>يحق للعميل الحصول على استرداد كامل دون أي خصومات في الحالات التالية:</p><ul><li>إخفاق NEW MEDIA في البدء بالمشروع خلال المدة المتفق عليها دون أسباب مقبولة</li><li>التأخر الجسيم عن مواعيد التسليم المتفق عليها بأكثر من 60% من الوقت المحدد</li><li>عدم التزام NEW MEDIA بمتطلبات المشروع المحددة في العقد بشكل جوهري</li><li>إنهاء NEW MEDIA للتعاقد بإرادتها المنفردة دون مبرر مشروع</li></ul>`,
+    s05:`<h2><span>05</span> حالات عدم الاسترداد</h2><p>لا يُتاح الاسترداد في الحالات التالية:</p><ul><li>تأخر العميل في تقديم المواد أو الموافقات اللازمة لإتمام المشروع</li><li>تغيير العميل لمتطلبات المشروع بعد بدء التنفيذ</li><li>عدم الرضا الذاتي عن الأعمال الإبداعية التي تطابق المتطلبات الأصلية المتفق عليها</li><li>الظروف القاهرة التي تحول دون إتمام الخدمة خارج سيطرة الطرفين</li></ul>`,
+    s06:`<h2><span>06</span> إجراءات طلب الاسترداد</h2><p>لطلب الاسترداد، اتبع الخطوات التالية:</p><ul><li>أرسل طلبك الرسمي عبر البريد الإلكتروني إلى <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>أرفق رقم العقد وسبب طلب الاسترداد</li><li>سيتم الرد على طلبك خلال 5 أيام عمل</li><li>في حال الموافقة، تُحوَّل المبالغ خلال 14 يوم عمل عبر نفس وسيلة الدفع الأصلية</li></ul>`,
+    s07:`<h2><span>07</span> التواصل</h2><p>لأي استفسارات حول سياسة الاسترداد أو للبدء في إجراءات طلب الاسترداد:</p><ul><li>البريد الإلكتروني: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li></ul>`,
+  },
+  en: {
+    dir:'ltr', lang:'en', btn:'ع',
+    nav_back:'← Back to Home',
+    page_title:'Refund Policy',
+    page_meta:'Last updated: May 2025 &nbsp;·&nbsp; Applies to all NEW MEDIA services',
+    footer_copy:'© 2025 NEW MEDIA. All rights reserved.',
+    fl_privacy:'Privacy', fl_terms:'Terms of Service', fl_refund:'Refund', fl_conf:'Confidentiality', fl_cookie:'Cookies',
+    s01:`<h2><span>01</span> General Principle</h2><p>NEW MEDIA strives to deliver high-quality services that fully satisfy its clients. We understand that business circumstances change, which is why we have established this policy with complete transparency to clarify each party's rights regarding refunds.</p><div class="highlight-box"><p>We encourage clients to contact us directly before formally requesting a refund — in most cases, the issue can be resolved or the project adjusted to achieve full satisfaction.</p></div>`,
+    s02:`<h2><span>02</span> Ongoing Services (Monthly Subscriptions)</h2><p>For ongoing services such as social media management and digital advertising:</p><ul><li>Subscription can be cancelled with 30 days' prior notice before the renewal date</li><li>Subscription fees for the current period are non-refundable once service has commenced</li><li>If cancelled before the start of a new subscription period, no additional fees are charged</li><li>All materials and digital assets are delivered to the client within 7 days of contract termination</li></ul>`,
+    s03:`<h2><span>03</span> One-Time Projects</h2><p>For projects such as brand identity design, content production, and website development:</p><ul><li><strong class="hi-text">Before work begins:</strong> Full refund minus a 5% administrative fee</li><li><strong class="hi-text">After first draft delivery:</strong> 50% refund of project value</li><li><strong class="hi-text">After final draft approval:</strong> No refund available</li><li><strong class="hi-text">After final delivery:</strong> No refund available</li></ul>`,
+    s04:`<h2><span>04</span> Full Refund Cases</h2><p>The client is entitled to a full refund without deductions in the following cases:</p><ul><li>NEW MEDIA fails to start the project within the agreed timeframe without acceptable reasons</li><li>Significant delay in agreed delivery dates exceeding 60% of the specified time</li><li>NEW MEDIA fails to materially comply with the project requirements specified in the contract</li><li>NEW MEDIA terminates the contract unilaterally without legitimate justification</li></ul>`,
+    s05:`<h2><span>05</span> Non-Refundable Cases</h2><p>No refund is available in the following cases:</p><ul><li>Client delay in providing required materials or approvals to complete the project</li><li>Client changing project requirements after commencement</li><li>Subjective dissatisfaction with creative work that meets the originally agreed specifications</li><li>Force majeure circumstances beyond either party's control</li></ul>`,
+    s06:`<h2><span>06</span> Refund Request Procedure</h2><p>To request a refund, follow these steps:</p><ul><li>Send your official request by email to <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>Attach the contract number and reason for the refund request</li><li>Your request will be responded to within 5 business days</li><li>If approved, funds are transferred within 14 business days via the original payment method</li></ul>`,
+    s07:`<h2><span>07</span> Contact</h2><p>For any inquiries about the refund policy or to initiate a refund request:</p><ul><li>Email: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>Phone: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li></ul>`,
+  }
+};
+let curLang='ar';
+function applyLang(lang){
+  const t=T[lang];
+  document.documentElement.lang=t.lang;
+  document.documentElement.dir=t.dir;
+  document.getElementById('langBtn').textContent=t.btn;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  curLang=lang;
+  localStorage.setItem('nm-lang',lang);
+}
+document.getElementById('langBtn').addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
+applyLang(localStorage.getItem('nm-lang')||'ar');
+const themeBtn=document.getElementById('themeBtn');
+function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
+applyTheme(localStorage.getItem('nm-theme')||'dark');
+themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
 </script>
 </body>
 </html>
-
-

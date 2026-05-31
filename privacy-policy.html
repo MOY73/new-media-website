@@ -14,166 +14,39 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --purple: #6600cc;
-    --orange: #ff6600;
-    --blend: #cc3366;
-    --black: #050505;
-    --white: #ffffff;
-    --glass-bg: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.10);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Tajawal', sans-serif;
-    line-height: 1.8;
-    overflow-x: hidden;
-  }
-  a { color: var(--orange); text-decoration: none; transition: opacity 0.2s; }
-  a:hover { opacity: 0.75; }
-
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 3rem;
-    background: rgba(5,5,5,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid var(--glass-border);
-  }
-  .nav-logo {
-    font-family: 'Alexandria', sans-serif;
-    font-weight: 900;
-    font-size: 18px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--white);
-    text-decoration: none;
-  }
-  .nav-back {
-    font-size: 13px;
-    font-weight: 700;
-    color: rgba(255,255,255,0.5);
-    text-decoration: none;
-    letter-spacing: 0.05em;
-    border: 0.5px solid rgba(255,255,255,0.15);
-    padding: 0.5rem 1.25rem;
-    border-radius: 6px;
-    transition: color 0.3s, border-color 0.3s;
-  }
-  .nav-back:hover { color: var(--white); border-color: rgba(255,255,255,0.4); opacity: 1; }
-
-  /* HERO */
-  .page-hero {
-    padding: 10rem 3rem 5rem;
-    max-width: 900px;
-    margin: 0 auto;
-    border-bottom: 0.5px solid rgba(255,255,255,0.06);
-  }
-  .page-tag {
-    font-family: 'Alexandria', sans-serif;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--orange);
-    margin-bottom: 1.5rem;
-    display: block;
-  }
-  .page-title {
-    font-family: 'Alexandria', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 900;
-    line-height: 1.15;
-    margin-bottom: 1.5rem;
-  }
-  .page-meta {
-    font-size: 13px;
-    color: rgba(255,255,255,0.3);
-    letter-spacing: 0.05em;
-  }
-
-  /* CONTENT */
-  .content {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 4rem 3rem 6rem;
-  }
-  .section {
-    margin-bottom: 3rem;
-    padding: 2.5rem;
-    background: var(--glass-bg);
-    border: 0.5px solid var(--glass-border);
-    border-radius: 16px;
-  }
-  .section h2 {
-    font-family: 'Alexandria', sans-serif;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--white);
-    margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 0.5px solid rgba(255,255,255,0.08);
-  }
-  .section h2 span {
-    display: inline-block;
-    width: 28px;
-    height: 28px;
-    background: linear-gradient(135deg, var(--purple), var(--blend));
-    border-radius: 6px;
-    text-align: center;
-    line-height: 28px;
-    font-size: 12px;
-    margin-left: 0.6rem;
-    vertical-align: middle;
-  }
-  .section p {
-    font-size: 15px;
-    color: rgba(255,255,255,0.65);
-    margin-bottom: 1rem;
-  }
-  .section p:last-child { margin-bottom: 0; }
-  .section ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 0.75rem;
-  }
-  .section ul li {
-    font-size: 15px;
-    color: rgba(255,255,255,0.65);
-    padding: 0.4rem 0;
-    padding-right: 1.2rem;
-    position: relative;
-  }
-  .section ul li::before {
-    content: '—';
-    position: absolute;
-    right: 0;
-    color: var(--orange);
-    font-size: 12px;
-  }
-
-  /* FOOTER */
-  .page-footer {
-    border-top: 0.5px solid rgba(255,255,255,0.06);
-    padding: 2.5rem 3rem;
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); }
-  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
-
+  :root { --purple:#6600cc; --orange:#ff6600; --blend:#cc3366; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Tajawal',sans-serif; line-height:1.8; overflow-x:hidden; }
+  a { color:var(--orange); text-decoration:none; transition:opacity 0.2s; }
+  a:hover { opacity:0.75; }
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.25rem 3rem; background:rgba(5,5,5,0.85); backdrop-filter:blur(20px); border-bottom:0.5px solid var(--glass-border); }
+  .nav-logo { font-family:'Alexandria',sans-serif; font-weight:900; font-size:18px; letter-spacing:0.15em; text-transform:uppercase; color:var(--white); text-decoration:none; }
+  .nav-back { font-size:13px; font-weight:700; color:rgba(255,255,255,0.5); text-decoration:none; letter-spacing:0.05em; border:0.5px solid rgba(255,255,255,0.15); padding:0.5rem 1.25rem; border-radius:6px; transition:color 0.3s,border-color 0.3s; }
+  .nav-back:hover { color:var(--white); border-color:rgba(255,255,255,0.4); opacity:1; }
+  .page-hero { padding:10rem 3rem 5rem; max-width:900px; margin:0 auto; border-bottom:0.5px solid rgba(255,255,255,0.06); }
+  .page-tag { font-family:'Alexandria',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; display:block; }
+  .page-title { font-family:'Alexandria',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; line-height:1.15; margin-bottom:1.5rem; }
+  .page-meta { font-size:13px; color:rgba(255,255,255,0.3); letter-spacing:0.05em; }
+  .content { max-width:900px; margin:0 auto; padding:4rem 3rem 6rem; }
+  .section { margin-bottom:3rem; padding:2.5rem; background:var(--glass-bg); border:0.5px solid var(--glass-border); border-radius:16px; }
+  .section h2 { font-family:'Alexandria',sans-serif; font-size:1.25rem; font-weight:700; color:var(--white); margin-bottom:1.25rem; padding-bottom:0.75rem; border-bottom:0.5px solid rgba(255,255,255,0.08); }
+  .section h2 span { display:inline-block; width:28px; height:28px; background:linear-gradient(135deg,var(--purple),var(--blend)); border-radius:6px; text-align:center; line-height:28px; font-size:12px; color:#fff; margin-left:0.6rem; vertical-align:middle; }
+  .section p { font-size:15px; color:rgba(255,255,255,0.65); margin-bottom:1rem; }
+  .section p:last-child { margin-bottom:0; }
+  .section ul { list-style:none; padding:0; margin-top:0.75rem; }
+  .section ul li { font-size:15px; color:rgba(255,255,255,0.65); padding:0.4rem 0; padding-right:1.2rem; position:relative; }
+  .section ul li::before { content:'—'; position:absolute; right:0; color:var(--orange); font-size:12px; }
+  html[lang="en"] .section ul li { padding-right:0; padding-left:1.2rem; }
+  html[lang="en"] .section ul li::before { right:auto; left:0; }
+  .page-footer { border-top:0.5px solid rgba(255,255,255,0.06); padding:2.5rem 3rem; max-width:900px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+  .footer-links { display:flex; gap:2rem; flex-wrap:wrap; }
+  .footer-links a { font-size:12px; color:rgba(255,255,255,0.3); }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,0.2); }
   .theme-btn { font-size:15px; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); width:34px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; display:flex; align-items:center; justify-content:center; padding:0; }
   .theme-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); }
+  .lang-btn { font-size:12px; font-family:'Alexandria',sans-serif; font-weight:700; letter-spacing:0.1em; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); padding:0 12px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; }
+  .lang-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:#fff; }
   html.light { --black:#f5f5f7; --white:#0d0d0d; --glass-bg:rgba(0,0,0,0.04); --glass-border:rgba(0,0,0,0.09); }
   html.light body { background:#f5f5f7; color:#0d0d0d; }
   html.light nav { background:rgba(245,245,247,.88); border-color:rgba(0,0,0,.08); }
@@ -182,16 +55,17 @@
   html.light .nav-back:hover { color:#0d0d0d; border-color:rgba(0,0,0,.4); }
   html.light .theme-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
   html.light .theme-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
+  html.light .lang-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
+  html.light .lang-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
   html.light .page-meta { color:rgba(0,0,0,.3); }
+  html.light .section p { color:rgba(0,0,0,0.65); }
+  html.light .section ul li { color:rgba(0,0,0,0.65); }
+  html.light .section h2 { border-color:rgba(0,0,0,0.08); }
+  html.light .page-hero { border-color:rgba(0,0,0,0.06); }
+  html.light .page-footer { border-color:rgba(0,0,0,0.06); }
   html.light .footer-links a { color:rgba(0,0,0,.3); }
   html.light .footer-copy { color:rgba(0,0,0,.2); }
-
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .page-hero { padding: 8rem 1.5rem 3rem; }
-    .content { padding: 2rem 1.5rem 4rem; }
-    .page-footer { flex-direction: column; padding: 2rem 1.5rem; }
-  }
+  @media (max-width:768px) { nav { padding:1rem 1.5rem; } .page-hero { padding:8rem 1.5rem 3rem; } .content { padding:2rem 1.5rem 4rem; } .page-footer { flex-direction:column; padding:2rem 1.5rem; } }
 </style>
 </head>
 <body>
@@ -200,25 +74,24 @@
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
   <div style="display:flex;align-items:center;gap:.75rem;">
     <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" title="Dark / Light">☽</button>
-    <a href="index.html" class="nav-back">← العودة للرئيسية</a>
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="index.html" class="nav-back" data-i18n="nav_back">← العودة للرئيسية</a>
   </div>
 </nav>
 
 <div class="page-hero">
   <span class="page-tag">Legal / قانوني</span>
-  <h1 class="page-title">سياسة الخصوصية</h1>
-  <p class="page-meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA</p>
+  <h1 class="page-title" data-i18n="page_title">سياسة الخصوصية</h1>
+  <p class="page-meta" data-i18n="page_meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA</p>
 </div>
 
 <div class="content">
-
-  <div class="section">
+  <div class="section" data-i18n="s01">
     <h2><span>01</span> مقدمة</h2>
     <p>تلتزم شركة NEW MEDIA بحماية خصوصية عملائها وزوار موقعها الإلكتروني. تصف هذه السياسة كيفية جمعنا للبيانات الشخصية واستخدامها وحمايتها والإفصاح عنها عند استخدامك لموقعنا وخدماتنا.</p>
     <p>بزيارتك لموقعنا أو التعامل معنا، فإنك توافق على الشروط المبينة في هذه الوثيقة. إن كنت لا توافق على أي بند منها، يُرجى التوقف عن استخدام خدماتنا.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s02">
     <h2><span>02</span> البيانات التي نجمعها</h2>
     <p>قد نجمع الأنواع التالية من المعلومات:</p>
     <ul>
@@ -229,8 +102,7 @@
       <li>بيانات تحليلية مجهولة الهوية لتحسين تجربة المستخدم</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s03">
     <h2><span>03</span> كيف نستخدم بياناتك</h2>
     <p>نستخدم البيانات المجمّعة للأغراض التالية حصراً:</p>
     <ul>
@@ -242,8 +114,7 @@
     </ul>
     <p>لن نبيع بياناتك أو نؤجرها أو نتاجر بها مع أي طرف ثالث.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s04">
     <h2><span>04</span> مشاركة البيانات</h2>
     <p>لا نشارك بياناتك الشخصية مع أطراف خارجية إلا في الحالات التالية:</p>
     <ul>
@@ -253,8 +124,7 @@
       <li>في حال الاندماج أو الاستحواذ، بعد إخطارك مسبقاً</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s05">
     <h2><span>05</span> أمان البيانات</h2>
     <p>نطبّق إجراءات تقنية وتنظيمية مناسبة لحماية بياناتك من الوصول غير المصرح به أو الإفصاح أو التعديل أو الإتلاف. تشمل هذه الإجراءات:</p>
     <ul>
@@ -264,8 +134,7 @@
     </ul>
     <p>رغم ذلك، لا يمكن ضمان الأمان المطلق لأي نظام رقمي، ويُشجَّع على اتخاذ الاحتياطات اللازمة من طرفك.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s06">
     <h2><span>06</span> حقوقك</h2>
     <p>وفقاً للأنظمة المعمول بها في المملكة العربية السعودية، يحق لك:</p>
     <ul>
@@ -277,18 +146,15 @@
     </ul>
     <p>للممارسة أي من هذه الحقوق، تواصل معنا عبر: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s07">
     <h2><span>07</span> ملفات تعريف الارتباط</h2>
     <p>يستخدم موقعنا ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وتحليل حركة المرور. للاطلاع على تفاصيل إضافية، يُرجى مراجعة <a href="cookie-policy.html">سياسة ملفات تعريف الارتباط</a>.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s08">
     <h2><span>08</span> التعديلات على هذه السياسة</h2>
     <p>نحتفظ بالحق في تعديل هذه السياسة في أي وقت. ستُنشر التعديلات على هذه الصفحة مع تحديث تاريخ آخر مراجعة. يُنصح بمراجعة هذه الصفحة بصفة دورية.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s09">
     <h2><span>09</span> التواصل معنا</h2>
     <p>لأي استفسارات تتعلق بهذه السياسة أو بياناتك الشخصية:</p>
     <ul>
@@ -297,29 +163,77 @@
       <li>العنوان: جدة، المملكة العربية السعودية</li>
     </ul>
   </div>
-
 </div>
 
 <footer>
   <div class="page-footer">
     <div class="footer-links">
-      <a href="privacy-policy.html">الخصوصية</a>
-      <a href="terms-of-service.html">شروط الخدمة</a>
-      <a href="refund-policy.html">الاسترداد</a>
-      <a href="confidentiality.html">السرية</a>
-      <a href="cookie-policy.html">الكوكيز</a>
+      <a href="privacy-policy.html" data-i18n="fl_privacy">الخصوصية</a>
+      <a href="terms-of-service.html" data-i18n="fl_terms">شروط الخدمة</a>
+      <a href="refund-policy.html" data-i18n="fl_refund">الاسترداد</a>
+      <a href="confidentiality.html" data-i18n="fl_conf">السرية</a>
+      <a href="cookie-policy.html" data-i18n="fl_cookie">الكوكيز</a>
     </div>
-    <span class="footer-copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
+    <span class="footer-copy" data-i18n="footer_copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
   </div>
 </footer>
 
 <script>
-  const themeBtn=document.getElementById('themeBtn');
-  function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
-  applyTheme(localStorage.getItem('nm-theme')||'dark');
-  themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
+const T = {
+  ar: {
+    dir:'rtl', lang:'ar', btn:'EN',
+    nav_back:'← العودة للرئيسية',
+    page_title:'سياسة الخصوصية',
+    page_meta:'آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA',
+    footer_copy:'© 2025 NEW MEDIA. جميع الحقوق محفوظة.',
+    fl_privacy:'الخصوصية', fl_terms:'شروط الخدمة', fl_refund:'الاسترداد', fl_conf:'السرية', fl_cookie:'الكوكيز',
+    s01:`<h2><span>01</span> مقدمة</h2><p>تلتزم شركة NEW MEDIA بحماية خصوصية عملائها وزوار موقعها الإلكتروني. تصف هذه السياسة كيفية جمعنا للبيانات الشخصية واستخدامها وحمايتها والإفصاح عنها عند استخدامك لموقعنا وخدماتنا.</p><p>بزيارتك لموقعنا أو التعامل معنا، فإنك توافق على الشروط المبينة في هذه الوثيقة. إن كنت لا توافق على أي بند منها، يُرجى التوقف عن استخدام خدماتنا.</p>`,
+    s02:`<h2><span>02</span> البيانات التي نجمعها</h2><p>قد نجمع الأنواع التالية من المعلومات:</p><ul><li>الاسم الكامل وعنوان البريد الإلكتروني ورقم الهاتف عند التواصل معنا</li><li>بيانات الشركة أو المنشأة عند طلب عروض الأسعار أو الخدمات</li><li>معلومات التصفح مثل عنوان IP ونوع المتصفح والصفحات المُزارة</li><li>المعلومات التي تقدمها طوعاً من خلال نماذج الاتصال أو البريد الإلكتروني</li><li>بيانات تحليلية مجهولة الهوية لتحسين تجربة المستخدم</li></ul>`,
+    s03:`<h2><span>03</span> كيف نستخدم بياناتك</h2><p>نستخدم البيانات المجمّعة للأغراض التالية حصراً:</p><ul><li>الرد على استفساراتك وتقديم العروض المطلوبة</li><li>إدارة العلاقة التعاقدية وتسليم الخدمات المتفق عليها</li><li>إرسال تحديثات متعلقة بالمشاريع والفواتير</li><li>تحسين موقعنا وخدماتنا بشكل مستمر</li><li>الامتثال للمتطلبات القانونية والتنظيمية في المملكة العربية السعودية</li></ul><p>لن نبيع بياناتك أو نؤجرها أو نتاجر بها مع أي طرف ثالث.</p>`,
+    s04:`<h2><span>04</span> مشاركة البيانات</h2><p>لا نشارك بياناتك الشخصية مع أطراف خارجية إلا في الحالات التالية:</p><ul><li>بموافقتك الصريحة والمسبقة</li><li>مع مزودي الخدمات التقنية الذين يساعدوننا في تشغيل موقعنا (مثل الاستضافة والتحليلات) بموجب اتفاقيات سرية صارمة</li><li>استجابةً لأوامر قضائية أو متطلبات قانونية نافذة</li><li>في حال الاندماج أو الاستحواذ، بعد إخطارك مسبقاً</li></ul>`,
+    s05:`<h2><span>05</span> أمان البيانات</h2><p>نطبّق إجراءات تقنية وتنظيمية مناسبة لحماية بياناتك من الوصول غير المصرح به أو الإفصاح أو التعديل أو الإتلاف. تشمل هذه الإجراءات:</p><ul><li>تشفير الاتصالات عبر بروتوكول HTTPS</li><li>تقييد الوصول الداخلي للبيانات بمبدأ الحاجة للمعرفة</li><li>مراجعة دورية لإجراءات الأمان وتحديثها</li></ul><p>رغم ذلك، لا يمكن ضمان الأمان المطلق لأي نظام رقمي، ويُشجَّع على اتخاذ الاحتياطات اللازمة من طرفك.</p>`,
+    s06:`<h2><span>06</span> حقوقك</h2><p>وفقاً للأنظمة المعمول بها في المملكة العربية السعودية، يحق لك:</p><ul><li>الاطلاع على البيانات الشخصية التي نحتفظ بها عنك</li><li>طلب تصحيح أي بيانات غير دقيقة</li><li>طلب حذف بياناتك في الحالات التي يسمح بها النظام</li><li>سحب موافقتك على معالجة بياناتك في أي وقت</li><li>تقديم شكوى إلى الجهات التنظيمية المختصة</li></ul><p>للممارسة أي من هذه الحقوق، تواصل معنا عبر: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></p>`,
+    s07:`<h2><span>07</span> ملفات تعريف الارتباط</h2><p>يستخدم موقعنا ملفات تعريف الارتباط (Cookies) لتحسين تجربة التصفح وتحليل حركة المرور. للاطلاع على تفاصيل إضافية، يُرجى مراجعة <a href="cookie-policy.html">سياسة ملفات تعريف الارتباط</a>.</p>`,
+    s08:`<h2><span>08</span> التعديلات على هذه السياسة</h2><p>نحتفظ بالحق في تعديل هذه السياسة في أي وقت. ستُنشر التعديلات على هذه الصفحة مع تحديث تاريخ آخر مراجعة. يُنصح بمراجعة هذه الصفحة بصفة دورية.</p>`,
+    s09:`<h2><span>09</span> التواصل معنا</h2><p>لأي استفسارات تتعلق بهذه السياسة أو بياناتك الشخصية:</p><ul><li>البريد الإلكتروني: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li><li>العنوان: جدة، المملكة العربية السعودية</li></ul>`,
+  },
+  en: {
+    dir:'ltr', lang:'en', btn:'ع',
+    nav_back:'← Back to Home',
+    page_title:'Privacy Policy',
+    page_meta:'Last updated: May 2025 &nbsp;·&nbsp; Applies to all NEW MEDIA services',
+    footer_copy:'© 2025 NEW MEDIA. All rights reserved.',
+    fl_privacy:'Privacy', fl_terms:'Terms of Service', fl_refund:'Refund', fl_conf:'Confidentiality', fl_cookie:'Cookies',
+    s01:`<h2><span>01</span> Introduction</h2><p>NEW MEDIA is committed to protecting the privacy of its clients and website visitors. This policy describes how we collect, use, protect, and disclose personal data when you use our website and services.</p><p>By visiting our website or engaging with us, you agree to the terms set out in this document. If you disagree with any provision, please discontinue using our services.</p>`,
+    s02:`<h2><span>02</span> Data We Collect</h2><p>We may collect the following types of information:</p><ul><li>Full name, email address, and phone number when you contact us</li><li>Company or business details when requesting quotes or services</li><li>Browsing information such as IP address, browser type, and pages visited</li><li>Information you voluntarily provide through contact forms or email</li><li>Anonymous analytics data to improve user experience</li></ul>`,
+    s03:`<h2><span>03</span> How We Use Your Data</h2><p>We use collected data exclusively for the following purposes:</p><ul><li>Responding to your inquiries and providing requested quotes</li><li>Managing the contractual relationship and delivering agreed services</li><li>Sending project updates and invoices</li><li>Continuously improving our website and services</li><li>Complying with legal and regulatory requirements in Saudi Arabia</li></ul><p>We will never sell, rent, or trade your data with any third party.</p>`,
+    s04:`<h2><span>04</span> Data Sharing</h2><p>We do not share your personal data with external parties except in the following cases:</p><ul><li>With your explicit prior consent</li><li>With technical service providers who assist in operating our website (such as hosting and analytics) under strict confidentiality agreements</li><li>In response to court orders or applicable legal requirements</li><li>In the event of a merger or acquisition, after prior notification</li></ul>`,
+    s05:`<h2><span>05</span> Data Security</h2><p>We implement appropriate technical and organizational measures to protect your data from unauthorized access, disclosure, alteration, or destruction. These measures include:</p><ul><li>Communications encryption via HTTPS</li><li>Restricting internal data access on a need-to-know basis</li><li>Regular review and updating of security procedures</li></ul><p>Despite this, no digital system can guarantee absolute security, and you are encouraged to take necessary precautions on your end.</p>`,
+    s06:`<h2><span>06</span> Your Rights</h2><p>Under the applicable regulations in Saudi Arabia, you have the right to:</p><ul><li>Access the personal data we hold about you</li><li>Request correction of any inaccurate data</li><li>Request deletion of your data where permitted by law</li><li>Withdraw your consent to data processing at any time</li><li>File a complaint with relevant regulatory authorities</li></ul><p>To exercise any of these rights, contact us at: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></p>`,
+    s07:`<h2><span>07</span> Cookies</h2><p>Our website uses cookies to improve the browsing experience and analyze traffic. For further details, please review our <a href="cookie-policy.html">Cookie Policy</a>.</p>`,
+    s08:`<h2><span>08</span> Changes to This Policy</h2><p>We reserve the right to modify this policy at any time. Changes will be published on this page with an updated review date. We recommend reviewing this page periodically.</p>`,
+    s09:`<h2><span>09</span> Contact Us</h2><p>For any inquiries regarding this policy or your personal data:</p><ul><li>Email: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>Phone: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li><li>Address: Jeddah, Saudi Arabia</li></ul>`,
+  }
+};
+let curLang='ar';
+function applyLang(lang){
+  const t=T[lang];
+  document.documentElement.lang=t.lang;
+  document.documentElement.dir=t.dir;
+  document.getElementById('langBtn').textContent=t.btn;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  curLang=lang;
+  localStorage.setItem('nm-lang',lang);
+}
+document.getElementById('langBtn').addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
+applyLang(localStorage.getItem('nm-lang')||'ar');
+const themeBtn=document.getElementById('themeBtn');
+function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
+applyTheme(localStorage.getItem('nm-theme')||'dark');
+themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
 </script>
 </body>
 </html>
-
-

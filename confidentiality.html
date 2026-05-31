@@ -14,108 +14,40 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --purple: #6600cc;
-    --orange: #ff6600;
-    --blend: #cc3366;
-    --black: #050505;
-    --white: #ffffff;
-    --glass-bg: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.10);
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'Tajawal', sans-serif;
-    line-height: 1.8;
-    overflow-x: hidden;
-  }
-  a { color: var(--orange); text-decoration: none; transition: opacity 0.2s; }
-  a:hover { opacity: 0.75; }
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 3rem;
-    background: rgba(5,5,5,0.85);
-    backdrop-filter: blur(20px);
-    border-bottom: 0.5px solid var(--glass-border);
-  }
-  .nav-logo {
-    font-family: 'Alexandria', sans-serif;
-    font-weight: 900; font-size: 18px;
-    letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--white); text-decoration: none;
-  }
-  .nav-back {
-    font-size: 13px; font-weight: 700;
-    color: rgba(255,255,255,0.5); text-decoration: none;
-    letter-spacing: 0.05em;
-    border: 0.5px solid rgba(255,255,255,0.15);
-    padding: 0.5rem 1.25rem; border-radius: 6px;
-    transition: color 0.3s, border-color 0.3s;
-  }
-  .nav-back:hover { color: var(--white); border-color: rgba(255,255,255,0.4); opacity: 1; }
-  .page-hero {
-    padding: 10rem 3rem 5rem;
-    max-width: 900px; margin: 0 auto;
-    border-bottom: 0.5px solid rgba(255,255,255,0.06);
-  }
-  .page-tag {
-    font-family: 'Alexandria', sans-serif;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--orange); margin-bottom: 1.5rem; display: block;
-  }
-  .page-title {
-    font-family: 'Alexandria', sans-serif;
-    font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900;
-    line-height: 1.15; margin-bottom: 1.5rem;
-  }
-  .page-meta { font-size: 13px; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
-  .content { max-width: 900px; margin: 0 auto; padding: 4rem 3rem 6rem; }
-  .section {
-    margin-bottom: 3rem; padding: 2.5rem;
-    background: var(--glass-bg);
-    border: 0.5px solid var(--glass-border);
-    border-radius: 16px;
-  }
-  .section h2 {
-    font-family: 'Alexandria', sans-serif;
-    font-size: 1.25rem; font-weight: 700;
-    color: var(--white); margin-bottom: 1.25rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 0.5px solid rgba(255,255,255,0.08);
-  }
-  .section h2 span {
-    display: inline-block; width: 28px; height: 28px;
-    background: linear-gradient(135deg, var(--purple), var(--blend));
-    border-radius: 6px; text-align: center; line-height: 28px;
-    font-size: 12px; margin-left: 0.6rem; vertical-align: middle;
-  }
-  .section p { font-size: 15px; color: rgba(255,255,255,0.65); margin-bottom: 1rem; }
-  .section p:last-child { margin-bottom: 0; }
-  .section ul { list-style: none; padding: 0; margin-top: 0.75rem; }
-  .section ul li {
-    font-size: 15px; color: rgba(255,255,255,0.65);
-    padding: 0.4rem 0; padding-right: 1.2rem; position: relative;
-  }
-  .section ul li::before {
-    content: '—'; position: absolute; right: 0;
-    color: var(--orange); font-size: 12px;
-  }
-  .page-footer {
-    border-top: 0.5px solid rgba(255,255,255,0.06);
-    padding: 2.5rem 3rem; max-width: 900px; margin: 0 auto;
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 1rem;
-  }
-  .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; }
-  .footer-links a { font-size: 12px; color: rgba(255,255,255,0.3); }
-  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.2); }
+  :root { --purple:#6600cc; --orange:#ff6600; --blend:#cc3366; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--black); color:var(--white); font-family:'Tajawal',sans-serif; line-height:1.8; overflow-x:hidden; }
+  a { color:var(--orange); text-decoration:none; transition:opacity 0.2s; }
+  a:hover { opacity:0.75; }
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1.25rem 3rem; background:rgba(5,5,5,0.85); backdrop-filter:blur(20px); border-bottom:0.5px solid var(--glass-border); }
+  .nav-logo { font-family:'Alexandria',sans-serif; font-weight:900; font-size:18px; letter-spacing:0.15em; text-transform:uppercase; color:var(--white); text-decoration:none; }
+  .nav-back { font-size:13px; font-weight:700; color:rgba(255,255,255,0.5); text-decoration:none; letter-spacing:0.05em; border:0.5px solid rgba(255,255,255,0.15); padding:0.5rem 1.25rem; border-radius:6px; transition:color 0.3s,border-color 0.3s; }
+  .nav-back:hover { color:var(--white); border-color:rgba(255,255,255,0.4); opacity:1; }
+  .page-hero { padding:10rem 3rem 5rem; max-width:900px; margin:0 auto; border-bottom:0.5px solid rgba(255,255,255,0.06); }
+  .page-tag { font-family:'Alexandria',sans-serif; font-size:10px; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; color:var(--orange); margin-bottom:1.5rem; display:block; }
+  .page-title { font-family:'Alexandria',sans-serif; font-size:clamp(2rem,5vw,3.5rem); font-weight:900; line-height:1.15; margin-bottom:1.5rem; }
+  .page-meta { font-size:13px; color:rgba(255,255,255,0.3); letter-spacing:0.05em; }
+  .content { max-width:900px; margin:0 auto; padding:4rem 3rem 6rem; }
+  .section { margin-bottom:3rem; padding:2.5rem; background:var(--glass-bg); border:0.5px solid var(--glass-border); border-radius:16px; }
+  .section h2 { font-family:'Alexandria',sans-serif; font-size:1.25rem; font-weight:700; color:var(--white); margin-bottom:1.25rem; padding-bottom:0.75rem; border-bottom:0.5px solid rgba(255,255,255,0.08); }
+  .section h2 span { display:inline-block; width:28px; height:28px; background:linear-gradient(135deg,var(--purple),var(--blend)); border-radius:6px; text-align:center; line-height:28px; font-size:12px; color:#fff; margin-left:0.6rem; vertical-align:middle; }
+  .section p { font-size:15px; color:rgba(255,255,255,0.65); margin-bottom:1rem; }
+  .section p:last-child { margin-bottom:0; }
+  .section ul { list-style:none; padding:0; margin-top:0.75rem; }
+  .section ul li { font-size:15px; color:rgba(255,255,255,0.65); padding:0.4rem 0; padding-right:1.2rem; position:relative; }
+  .section ul li::before { content:'—'; position:absolute; right:0; color:var(--orange); font-size:12px; }
+  html[lang="en"] .section ul li { padding-right:0; padding-left:1.2rem; }
+  html[lang="en"] .section ul li::before { right:auto; left:0; }
+  .hi-text { color:rgba(255,255,255,0.85); }
+  .page-footer { border-top:0.5px solid rgba(255,255,255,0.06); padding:2.5rem 3rem; max-width:900px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
+  .footer-links { display:flex; gap:2rem; flex-wrap:wrap; }
+  .footer-links a { font-size:12px; color:rgba(255,255,255,0.3); }
+  .footer-copy { font-size:12px; color:rgba(255,255,255,0.2); }
   .theme-btn { font-size:15px; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); width:34px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; display:flex; align-items:center; justify-content:center; padding:0; }
   .theme-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); }
+  .lang-btn { font-size:12px; font-family:'Alexandria',sans-serif; font-weight:700; letter-spacing:0.1em; color:rgba(255,255,255,.65); background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.14); padding:0 12px; height:34px; border-radius:8px; cursor:pointer; transition:all .3s; }
+  .lang-btn:hover { background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:#fff; }
   html.light { --black:#f5f5f7; --white:#0d0d0d; --glass-bg:rgba(0,0,0,0.04); --glass-border:rgba(0,0,0,0.09); }
   html.light body { background:#f5f5f7; color:#0d0d0d; }
   html.light nav { background:rgba(245,245,247,.88); border-color:rgba(0,0,0,.08); }
@@ -124,15 +56,18 @@
   html.light .nav-back:hover { color:#0d0d0d; border-color:rgba(0,0,0,.4); }
   html.light .theme-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
   html.light .theme-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
+  html.light .lang-btn { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
+  html.light .lang-btn:hover { background:rgba(0,0,0,.1); color:#0d0d0d; border-color:rgba(0,0,0,.25); }
   html.light .page-meta { color:rgba(0,0,0,.3); }
+  html.light .section p { color:rgba(0,0,0,0.65); }
+  html.light .section ul li { color:rgba(0,0,0,0.65); }
+  html.light .section h2 { border-color:rgba(0,0,0,0.08); }
+  html.light .page-hero { border-color:rgba(0,0,0,0.06); }
+  html.light .page-footer { border-color:rgba(0,0,0,0.06); }
   html.light .footer-links a { color:rgba(0,0,0,.3); }
   html.light .footer-copy { color:rgba(0,0,0,.2); }
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .page-hero { padding: 8rem 1.5rem 3rem; }
-    .content { padding: 2rem 1.5rem 4rem; }
-    .page-footer { flex-direction: column; padding: 2rem 1.5rem; }
-  }
+  html.light .hi-text { color:rgba(0,0,0,0.8); }
+  @media (max-width:768px) { nav { padding:1rem 1.5rem; } .page-hero { padding:8rem 1.5rem 3rem; } .content { padding:2rem 1.5rem 4rem; } .page-footer { flex-direction:column; padding:2rem 1.5rem; } }
 </style>
 </head>
 <body>
@@ -141,25 +76,24 @@
   <a href="index.html" class="nav-logo">NEW MEDIA</a>
   <div style="display:flex;align-items:center;gap:.75rem;">
     <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" title="Dark / Light">☽</button>
-    <a href="index.html" class="nav-back">← العودة للرئيسية</a>
+    <button class="lang-btn" id="langBtn" aria-label="Switch language">EN</button>
+    <a href="index.html" class="nav-back" data-i18n="nav_back">← العودة للرئيسية</a>
   </div>
 </nav>
 
 <div class="page-hero">
   <span class="page-tag">Legal / قانوني</span>
-  <h1 class="page-title">اتفاقية السرية</h1>
-  <p class="page-meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع علاقات NEW MEDIA التجارية</p>
+  <h1 class="page-title" data-i18n="page_title">اتفاقية السرية</h1>
+  <p class="page-meta" data-i18n="page_meta">آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع علاقات NEW MEDIA التجارية</p>
 </div>
 
 <div class="content">
-
-  <div class="section">
+  <div class="section" data-i18n="s01">
     <h2><span>01</span> الالتزام بالسرية</h2>
     <p>تلتزم NEW MEDIA بالمحافظة على سرية جميع المعلومات التجارية والتشغيلية والمالية التي يُفصح عنها العميل في إطار التعاقد. يُعدّ هذا الالتزام ركيزةً أساسية في علاقتنا مع عملائنا.</p>
     <p>يمتد هذا الالتزام ليشمل جميع موظفي NEW MEDIA ومقاوليها من الباطن والمستشارين المشاركين في تقديم الخدمة.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s02">
     <h2><span>02</span> تعريف المعلومات السرية</h2>
     <p>تشمل المعلومات السرية كل ما يُفصح عنه بشكل صريح أو ضمني وكان يُعدّ سرياً بطبيعته، ومنها على سبيل المثال لا الحصر:</p>
     <ul>
@@ -172,8 +106,7 @@
       <li>المعلومات التقنية وبيانات تكنولوجيا المعلومات</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s03">
     <h2><span>03</span> استثناءات السرية</h2>
     <p>لا تخضع للسرية المعلومات التالية:</p>
     <ul>
@@ -184,8 +117,7 @@
       <li>المعلومات التي يستوجب القانون أو أمر قضائي الإفصاح عنها</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s04">
     <h2><span>04</span> التزامات NEW MEDIA</h2>
     <p>تتعهد NEW MEDIA بـ:</p>
     <ul>
@@ -196,14 +128,12 @@
       <li>إعادة أو إتلاف المعلومات السرية عند انتهاء العلاقة التعاقدية إذا طُلب ذلك</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s05">
     <h2><span>05</span> مدة الالتزام</h2>
-    <p>يظل الالتزام بالسرية سارياً طوال مدة العقد وبعد انتهائه لمدة <strong style="color:rgba(255,255,255,0.85);">ثلاث سنوات</strong> ما لم يُتفق على خلاف ذلك كتابياً.</p>
+    <p>يظل الالتزام بالسرية سارياً طوال مدة العقد وبعد انتهائه لمدة <strong class="hi-text">ثلاث سنوات</strong> ما لم يُتفق على خلاف ذلك كتابياً.</p>
     <p>بالنسبة للأسرار التجارية والملكية الفكرية ذات الطابع الخاص، يبقى الالتزام سارياً إلى أجل غير مسمى ما دامت المعلومات لم تصبح متاحة للعموم بصورة مشروعة.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s06">
     <h2><span>06</span> المقاولون من الباطن والشركاء</h2>
     <p>في حال الاستعانة بمقاولين من الباطن أو شركاء خارجيين لتقديم جزء من الخدمة، تضمن NEW MEDIA:</p>
     <ul>
@@ -212,8 +142,7 @@
       <li>مسؤولية NEW MEDIA الكاملة عن أي إخلال بالسرية من قِبل هؤلاء الأطراف</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s07">
     <h2><span>07</span> العرض في محفظة الأعمال</h2>
     <p>تحتفظ NEW MEDIA بحقها في عرض الأعمال المنجزة في محفظتها التجارية وموادها التسويقية، مع مراعاة الاعتبارات التالية:</p>
     <ul>
@@ -222,13 +151,11 @@
       <li>يمكن للعميل طلب إزالة أي عمل من محفظة NEW MEDIA بإشعار كتابي</li>
     </ul>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s08">
     <h2><span>08</span> التعويض عن الإخلال</h2>
     <p>في حال إخلال NEW MEDIA بأي التزام من التزامات السرية الواردة في هذه الوثيقة، يحق للعميل المطالبة بالتعويض عن الأضرار الفعلية الناجمة عن هذا الإخلال. تُحسم النزاعات المتعلقة بذلك وفق أحكام شروط الخدمة المعمول بها.</p>
   </div>
-
-  <div class="section">
+  <div class="section" data-i18n="s09">
     <h2><span>09</span> التواصل</h2>
     <p>لأي استفسارات حول هذه الاتفاقية أو للحصول على نسخة موقّعة رسمياً:</p>
     <ul>
@@ -236,29 +163,77 @@
       <li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li>
     </ul>
   </div>
-
 </div>
 
 <footer>
   <div class="page-footer">
     <div class="footer-links">
-      <a href="privacy-policy.html">الخصوصية</a>
-      <a href="terms-of-service.html">شروط الخدمة</a>
-      <a href="refund-policy.html">الاسترداد</a>
-      <a href="confidentiality.html">السرية</a>
-      <a href="cookie-policy.html">الكوكيز</a>
+      <a href="privacy-policy.html" data-i18n="fl_privacy">الخصوصية</a>
+      <a href="terms-of-service.html" data-i18n="fl_terms">شروط الخدمة</a>
+      <a href="refund-policy.html" data-i18n="fl_refund">الاسترداد</a>
+      <a href="confidentiality.html" data-i18n="fl_conf">السرية</a>
+      <a href="cookie-policy.html" data-i18n="fl_cookie">الكوكيز</a>
     </div>
-    <span class="footer-copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
+    <span class="footer-copy" data-i18n="footer_copy">© 2025 NEW MEDIA. جميع الحقوق محفوظة.</span>
   </div>
 </footer>
 
 <script>
-  const themeBtn=document.getElementById('themeBtn');
-  function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
-  applyTheme(localStorage.getItem('nm-theme')||'dark');
-  themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
+const T = {
+  ar: {
+    dir:'rtl', lang:'ar', btn:'EN',
+    nav_back:'← العودة للرئيسية',
+    page_title:'اتفاقية السرية',
+    page_meta:'آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع علاقات NEW MEDIA التجارية',
+    footer_copy:'© 2025 NEW MEDIA. جميع الحقوق محفوظة.',
+    fl_privacy:'الخصوصية', fl_terms:'شروط الخدمة', fl_refund:'الاسترداد', fl_conf:'السرية', fl_cookie:'الكوكيز',
+    s01:`<h2><span>01</span> الالتزام بالسرية</h2><p>تلتزم NEW MEDIA بالمحافظة على سرية جميع المعلومات التجارية والتشغيلية والمالية التي يُفصح عنها العميل في إطار التعاقد. يُعدّ هذا الالتزام ركيزةً أساسية في علاقتنا مع عملائنا.</p><p>يمتد هذا الالتزام ليشمل جميع موظفي NEW MEDIA ومقاوليها من الباطن والمستشارين المشاركين في تقديم الخدمة.</p>`,
+    s02:`<h2><span>02</span> تعريف المعلومات السرية</h2><p>تشمل المعلومات السرية كل ما يُفصح عنه بشكل صريح أو ضمني وكان يُعدّ سرياً بطبيعته، ومنها على سبيل المثال لا الحصر:</p><ul><li>الاستراتيجيات التجارية والخطط التسويقية المستقبلية</li><li>البيانات المالية وأرقام المبيعات وهوامش الربح</li><li>قوائم العملاء والموردين وشركاء الأعمال</li><li>الملكية الفكرية وبراءات الاختراع والأسرار التجارية</li><li>بيانات الموظفين والهياكل التنظيمية الداخلية</li><li>كلمات المرور وبيانات الدخول لأي منصة رقمية</li><li>المعلومات التقنية وبيانات تكنولوجيا المعلومات</li></ul>`,
+    s03:`<h2><span>03</span> استثناءات السرية</h2><p>لا تخضع للسرية المعلومات التالية:</p><ul><li>المعلومات المتاحة للعموم بشكل مشروع وليس بسبب إخلال NEW MEDIA بالسرية</li><li>المعلومات التي تعلمتها NEW MEDIA بصورة مشروعة من مصدر ثالث غير ملتزم بالسرية</li><li>المعلومات التي طوّرتها NEW MEDIA بشكل مستقل دون الاستعانة بمعلومات سرية للعميل</li><li>المعلومات التي أُفصح عنها بموافقة خطية صريحة من العميل</li><li>المعلومات التي يستوجب القانون أو أمر قضائي الإفصاح عنها</li></ul>`,
+    s04:`<h2><span>04</span> التزامات NEW MEDIA</h2><p>تتعهد NEW MEDIA بـ:</p><ul><li>عدم الإفصاح عن المعلومات السرية لأي طرف ثالث دون إذن كتابي مسبق من العميل</li><li>استخدام المعلومات السرية لغرض تقديم الخدمات المتفق عليها فقط</li><li>اتخاذ إجراءات أمنية مناسبة لحماية المعلومات السرية من الوصول غير المصرح به</li><li>إبلاغ العميل فوراً عند الاشتباه بأي اختراق أو تسرب للمعلومات السرية</li><li>إعادة أو إتلاف المعلومات السرية عند انتهاء العلاقة التعاقدية إذا طُلب ذلك</li></ul>`,
+    s05:`<h2><span>05</span> مدة الالتزام</h2><p>يظل الالتزام بالسرية سارياً طوال مدة العقد وبعد انتهائه لمدة <strong class="hi-text">ثلاث سنوات</strong> ما لم يُتفق على خلاف ذلك كتابياً.</p><p>بالنسبة للأسرار التجارية والملكية الفكرية ذات الطابع الخاص، يبقى الالتزام سارياً إلى أجل غير مسمى ما دامت المعلومات لم تصبح متاحة للعموم بصورة مشروعة.</p>`,
+    s06:`<h2><span>06</span> المقاولون من الباطن والشركاء</h2><p>في حال الاستعانة بمقاولين من الباطن أو شركاء خارجيين لتقديم جزء من الخدمة، تضمن NEW MEDIA:</p><ul><li>إبرام اتفاقيات سرية مماثلة مع هؤلاء الأطراف</li><li>الحد من وصولهم للمعلومات السرية بما يقتضيه العمل فقط</li><li>مسؤولية NEW MEDIA الكاملة عن أي إخلال بالسرية من قِبل هؤلاء الأطراف</li></ul>`,
+    s07:`<h2><span>07</span> العرض في محفظة الأعمال</h2><p>تحتفظ NEW MEDIA بحقها في عرض الأعمال المنجزة في محفظتها التجارية وموادها التسويقية، مع مراعاة الاعتبارات التالية:</p><ul><li>يُشار للعميل بالاسم إلا إذا طلب السرية الكاملة صراحةً</li><li>لا تُكشف أرقام الميزانيات أو النتائج التجارية الدقيقة دون موافقة العميل</li><li>يمكن للعميل طلب إزالة أي عمل من محفظة NEW MEDIA بإشعار كتابي</li></ul>`,
+    s08:`<h2><span>08</span> التعويض عن الإخلال</h2><p>في حال إخلال NEW MEDIA بأي التزام من التزامات السرية الواردة في هذه الوثيقة، يحق للعميل المطالبة بالتعويض عن الأضرار الفعلية الناجمة عن هذا الإخلال. تُحسم النزاعات المتعلقة بذلك وفق أحكام شروط الخدمة المعمول بها.</p>`,
+    s09:`<h2><span>09</span> التواصل</h2><p>لأي استفسارات حول هذه الاتفاقية أو للحصول على نسخة موقّعة رسمياً:</p><ul><li>البريد الإلكتروني: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>الهاتف: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li></ul>`,
+  },
+  en: {
+    dir:'ltr', lang:'en', btn:'ع',
+    nav_back:'← Back to Home',
+    page_title:'Confidentiality Agreement',
+    page_meta:'Last updated: May 2025 &nbsp;·&nbsp; Applies to all NEW MEDIA business relationships',
+    footer_copy:'© 2025 NEW MEDIA. All rights reserved.',
+    fl_privacy:'Privacy', fl_terms:'Terms of Service', fl_refund:'Refund', fl_conf:'Confidentiality', fl_cookie:'Cookies',
+    s01:`<h2><span>01</span> Confidentiality Commitment</h2><p>NEW MEDIA is committed to maintaining the confidentiality of all commercial, operational, and financial information disclosed by the client within the scope of the engagement. This commitment is a fundamental pillar of our relationship with clients.</p><p>This commitment extends to all NEW MEDIA employees, subcontractors, and consultants involved in service delivery.</p>`,
+    s02:`<h2><span>02</span> Definition of Confidential Information</h2><p>Confidential information includes anything disclosed explicitly or implicitly that is considered confidential by nature, including but not limited to:</p><ul><li>Business strategies and future marketing plans</li><li>Financial data, sales figures, and profit margins</li><li>Client, supplier, and business partner lists</li><li>Intellectual property, patents, and trade secrets</li><li>Employee data and internal organizational structures</li><li>Passwords and login credentials for any digital platform</li><li>Technical information and IT data</li></ul>`,
+    s03:`<h2><span>03</span> Confidentiality Exceptions</h2><p>The following information is not subject to confidentiality:</p><ul><li>Information legitimately in the public domain, not due to a breach by NEW MEDIA</li><li>Information NEW MEDIA legitimately obtained from a third party not bound by confidentiality</li><li>Information independently developed by NEW MEDIA without using the client's confidential information</li><li>Information disclosed with the client's explicit written consent</li><li>Information required by law or court order to be disclosed</li></ul>`,
+    s04:`<h2><span>04</span> NEW MEDIA's Obligations</h2><p>NEW MEDIA undertakes to:</p><ul><li>Not disclose confidential information to any third party without prior written permission from the client</li><li>Use confidential information solely for the purpose of delivering the agreed services</li><li>Implement appropriate security measures to protect confidential information from unauthorized access</li><li>Immediately notify the client upon suspicion of any breach or leakage of confidential information</li><li>Return or destroy confidential information upon termination of the contractual relationship if requested</li></ul>`,
+    s05:`<h2><span>05</span> Duration of Commitment</h2><p>The confidentiality obligation remains in effect throughout the contract term and for <strong class="hi-text">three years</strong> after its termination, unless otherwise agreed in writing.</p><p>For trade secrets and intellectual property of a proprietary nature, the obligation remains in effect indefinitely as long as the information has not legitimately entered the public domain.</p>`,
+    s06:`<h2><span>06</span> Subcontractors & Partners</h2><p>If subcontractors or external partners are engaged to deliver part of the service, NEW MEDIA ensures:</p><ul><li>Similar confidentiality agreements are executed with such parties</li><li>Their access to confidential information is limited to what the work requires</li><li>NEW MEDIA bears full responsibility for any breach of confidentiality by such parties</li></ul>`,
+    s07:`<h2><span>07</span> Portfolio Showcase</h2><p>NEW MEDIA retains the right to showcase completed work in its portfolio and marketing materials, subject to the following:</p><ul><li>The client is referenced by name unless they explicitly request full confidentiality</li><li>Budget figures or precise business results are not disclosed without the client's consent</li><li>The client may request removal of any work from NEW MEDIA's portfolio by written notice</li></ul>`,
+    s08:`<h2><span>08</span> Compensation for Breach</h2><p>In the event of a breach by NEW MEDIA of any of its confidentiality obligations set forth in this document, the client has the right to claim compensation for actual damages resulting from such breach. Disputes related to this are resolved in accordance with the applicable Terms of Service.</p>`,
+    s09:`<h2><span>09</span> Contact</h2><p>For any inquiries about this agreement or to obtain an officially signed copy:</p><ul><li>Email: <a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li>Phone: <a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li></ul>`,
+  }
+};
+let curLang='ar';
+function applyLang(lang){
+  const t=T[lang];
+  document.documentElement.lang=t.lang;
+  document.documentElement.dir=t.dir;
+  document.getElementById('langBtn').textContent=t.btn;
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(t[k]!==undefined) el.innerHTML=t[k];
+  });
+  curLang=lang;
+  localStorage.setItem('nm-lang',lang);
+}
+document.getElementById('langBtn').addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
+applyLang(localStorage.getItem('nm-lang')||'ar');
+const themeBtn=document.getElementById('themeBtn');
+function applyTheme(t){if(t==='light'){document.documentElement.classList.add('light');themeBtn.textContent='☀';}else{document.documentElement.classList.remove('light');themeBtn.textContent='☽';}localStorage.setItem('nm-theme',t);}
+applyTheme(localStorage.getItem('nm-theme')||'dark');
+themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.classList.contains('light')?'dark':'light'));
 </script>
 </body>
 </html>
-
-
