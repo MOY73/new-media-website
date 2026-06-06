@@ -48,6 +48,10 @@
     --glass-shadow: 0 8px 40px rgba(0,0,0,0.5);
     --tag-color: rgba(255,255,255,0.5);
     --tag-border: rgba(255,102,0,0.4);
+    --footer-text: rgba(255,255,255,0.4);
+    --footer-text-dim: rgba(255,255,255,0.2);
+    --footer-sep: rgba(255,255,255,0.06);
+    --footer-social-border: rgba(255,255,255,0.1);
   }
 
   /* LIGHT MODE OVERRIDES */
@@ -59,6 +63,10 @@
     --glass-shadow: 0 8px 40px rgba(0,0,0,0.12);
     --tag-color: rgba(0,0,0,0.55);
     --tag-border: rgba(255,102,0,0.5);
+    --footer-text: rgba(0,0,0,0.55);
+    --footer-text-dim: rgba(0,0,0,0.35);
+    --footer-sep: rgba(0,0,0,0.08);
+    --footer-social-border: rgba(0,0,0,0.12);
   }
   html.light body { background: #f5f5f7; color: #0d0d0d; }
   html.light body::before { opacity: 0.12; }
@@ -1098,7 +1106,7 @@
   <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
 
     <!-- Top footer -->
-    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:5rem 0 3rem;border-bottom:0.5px solid rgba(255,255,255,0.06);">
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;padding:5rem 0 3rem;border-bottom:0.5px solid var(--footer-sep);">
 
       <!-- Brand column -->
       <div>
@@ -1108,11 +1116,11 @@
           </div>
           <span style="font-family:'Alexandria',sans-serif;font-weight:900;font-size:18px;letter-spacing:0.08em;text-transform:uppercase;background:linear-gradient(90deg,var(--purple),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">New Media</span>
         </div>
-        <p data-i18n="footer_desc" style="font-size:14px;font-weight:300;color:rgba(255,255,255,0.4);line-height:1.8;max-width:260px;margin-bottom:1.5rem;">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.</p>
+        <p data-i18n="footer_desc" style="font-size:14px;font-weight:300;color:var(--footer-text);line-height:1.8;max-width:260px;margin-bottom:1.5rem;">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.</p>
         <div style="display:flex;gap:12px;">
-          <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-decoration:none;font-size:14px;transition:color 0.3s,border-color 0.3s;" aria-label="X">𝕏</a>
-          <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-decoration:none;font-size:13px;transition:color 0.3s,border-color 0.3s;" aria-label="LinkedIn">in</a>
-          <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid rgba(255,255,255,0.1);border-radius:8px;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);text-decoration:none;font-size:13px;transition:color 0.3s,border-color 0.3s;" aria-label="Behance">◎</a>
+          <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid var(--footer-social-border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--footer-text);text-decoration:none;font-size:14px;transition:color 0.3s,border-color 0.3s;" aria-label="X">𝕏</a>
+          <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid var(--footer-social-border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--footer-text);text-decoration:none;font-size:13px;transition:color 0.3s,border-color 0.3s;" aria-label="LinkedIn">in</a>
+          <a href="#!" class="social-link" style="width:36px;height:36px;border:0.5px solid var(--footer-social-border);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--footer-text);text-decoration:none;font-size:13px;transition:color 0.3s,border-color 0.3s;" aria-label="Behance">◎</a>
         </div>
       </div>
 
@@ -1120,10 +1128,10 @@
       <div>
         <div data-i18n="footer_div_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">أقسامنا</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
-          <li><a href="#services" data-i18n="fdiv1" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Growth & Performance</a></li>
-          <li><a href="#services" data-i18n="fdiv2" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Digital Presence</a></li>
-          <li><a href="#services" data-i18n="fdiv3" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Brand & Experience</a></li>
-          <li><a href="#services" data-i18n="fdiv4" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">Creative Production</a></li>
+          <li><a href="#services" data-i18n="fdiv1" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">Growth & Performance</a></li>
+          <li><a href="#services" data-i18n="fdiv2" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">Digital Presence</a></li>
+          <li><a href="#services" data-i18n="fdiv3" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">Brand & Experience</a></li>
+          <li><a href="#services" data-i18n="fdiv4" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">Creative Production</a></li>
         </ul>
       </div>
 
@@ -1131,11 +1139,11 @@
       <div>
         <div data-i18n="footer_pol_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">السياسات</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
-          <li><a href="privacy-policy.html" data-i18n="footer_pol1" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">سياسة الخصوصية</a></li>
-          <li><a href="terms-of-service.html" data-i18n="footer_pol2" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">شروط الخدمة</a></li>
-          <li><a href="refund-policy.html" data-i18n="footer_pol3" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">سياسة الاسترداد</a></li>
-          <li><a href="confidentiality.html" data-i18n="footer_pol4" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">اتفاقية السرية</a></li>
-          <li><a href="cookie-policy.html" data-i18n="footer_pol5" class="hover-highlight" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;transition:color 0.3s;">ملفات تعريف الارتباط</a></li>
+          <li><a href="privacy-policy.html" data-i18n="footer_pol1" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">سياسة الخصوصية</a></li>
+          <li><a href="terms-of-service.html" data-i18n="footer_pol2" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">شروط الخدمة</a></li>
+          <li><a href="refund-policy.html" data-i18n="footer_pol3" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">سياسة الاسترداد</a></li>
+          <li><a href="confidentiality.html" data-i18n="footer_pol4" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">اتفاقية السرية</a></li>
+          <li><a href="cookie-policy.html" data-i18n="footer_pol5" class="hover-highlight" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;transition:color 0.3s;">ملفات تعريف الارتباط</a></li>
         </ul>
       </div>
 
@@ -1143,9 +1151,9 @@
       <div>
         <div data-i18n="footer_contact_title" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:11px;letter-spacing:0.25em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem;">تواصل معنا</div>
         <ul style="list-style:none;display:flex;flex-direction:column;gap:0.75rem;">
-          <li><a href="mailto:newmediahc@gmail.com" class="hover-orange" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;direction:ltr;display:block;transition:color 0.3s;">newmediahc@gmail.com</a></li>
-          <li><a href="tel:+966500000000" class="hover-orange" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);text-decoration:none;direction:ltr;display:block;transition:color 0.3s;">+966 50 000 0000</a></li>
-          <li><span data-i18n="footer_location" style="font-size:13px;font-weight:300;color:rgba(255,255,255,0.4);">جدة، المملكة العربية السعودية</span></li>
+          <li><a href="mailto:newmediahc@gmail.com" class="hover-orange" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;direction:ltr;display:block;transition:color 0.3s;">newmediahc@gmail.com</a></li>
+          <li><a href="tel:+966500000000" class="hover-orange" style="font-size:13px;font-weight:300;color:var(--footer-text);text-decoration:none;direction:ltr;display:block;transition:color 0.3s;">+966 50 000 0000</a></li>
+          <li><span data-i18n="footer_location" style="font-size:13px;font-weight:300;color:var(--footer-text);">جدة، المملكة العربية السعودية</span></li>
         </ul>
       </div>
 
@@ -1153,11 +1161,11 @@
 
     <!-- Bottom bar -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;flex-wrap:wrap;gap:1rem;">
-      <p data-i18n="footer_copy" style="font-size:12px;color:rgba(255,255,255,0.2);letter-spacing:0.05em;">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
+      <p data-i18n="footer_copy" style="font-size:12px;color:var(--footer-text-dim);letter-spacing:0.05em;">© 2025 New Media Agency. جميع الحقوق محفوظة.</p>
       <div style="display:flex;gap:1.5rem;">
-        <a href="privacy-policy.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;">Privacy</a>
-        <a href="terms-of-service.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;">Terms</a>
-        <a href="cookie-policy.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);text-decoration:none;">Cookies</a>
+        <a href="privacy-policy.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--footer-text-dim);text-decoration:none;">Privacy</a>
+        <a href="terms-of-service.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--footer-text-dim);text-decoration:none;">Terms</a>
+        <a href="cookie-policy.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--footer-text-dim);text-decoration:none;">Cookies</a>
       </div>
     </div>
 
