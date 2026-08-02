@@ -1,5 +1,13 @@
 export default {
   async fetch(request, env) {
-    return env.ASSETS.fetch(request);
+    const response = await env.ASSETS.fetch(request);
+    if (response.status !== 404) return response;
+
+    const notFoundUrl = new URL('/404.html', request.url);
+    const notFoundPage = await env.ASSETS.fetch(new Request(notFoundUrl, request));
+    return new Response(notFoundPage.body, {
+      status: 404,
+      headers: notFoundPage.headers,
+    });
   },
 };
