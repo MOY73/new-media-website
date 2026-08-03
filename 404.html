@@ -9,7 +9,7 @@
 <script src="/site-preferences.js"></script>
 <title>404 — الصفحة غير موجودة | NEW MEDIA</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -101,6 +101,7 @@
   html.light .lang-btn-404 { color:rgba(0,0,0,.6); background:rgba(0,0,0,.05); border-color:rgba(0,0,0,.13); }
   html.light .footer-copy-404 { color:rgba(0,0,0,.4); }
 </style>
+<link rel="stylesheet" href="/site-fixes.css">
 </head>
 <body>
   <button class="theme-btn-404" id="themeBtn" aria-label="Toggle theme" title="Dark / Light">☽</button>
@@ -111,7 +112,7 @@
   <h1 class="title" data-i18n="title">الصفحة غير موجودة</h1>
   <p class="sub" data-i18n="sub">يبدو أن هذه الصفحة لا وجود لها. ربما تم نقلها أو حذفها.</p>
   <a href="/" class="btn" data-i18n="back">العودة للرئيسية</a>
-  <p class="footer-copy-404" data-i18n="footer_copy">© New Media 2025. جميع الحقوق محفوظة.</p>
+  <p class="footer-copy-404" data-i18n="footer_copy">© جميع الحقوق محفوظة لدى New Media.</p>
 <script>
   const translations={
     ar:{
@@ -119,14 +120,14 @@
       title:'الصفحة غير موجودة',
       sub:'يبدو أن هذه الصفحة لا وجود لها. ربما تم نقلها أو حذفها.',
       back:'العودة للرئيسية',
-      footer_copy:'© New Media 2025. جميع الحقوق محفوظة.'
+      footer_copy:'© جميع الحقوق محفوظة لدى New Media.'
     },
     en:{
       lang:'en', dir:'ltr', btn:'ع',
       title:'Page Not Found',
       sub:'This page does not seem to exist. It may have been moved or deleted.',
       back:'Back to Home',
-      footer_copy:'© New Media 2025. All rights reserved.'
+      footer_copy:'© All rights reserved by New Media.'
     }
   };
   let currentLang=window.NMPreferences.getLanguage();

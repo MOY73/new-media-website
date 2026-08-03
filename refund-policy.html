@@ -13,7 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root { --purple:#6600cc; --orange:#ff6600; --blend:#cc3366; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -73,6 +73,7 @@
   html.light .highlight-box p { color:rgba(0,0,0,0.7) !important; }
   @media (max-width:768px) { nav { padding:1rem 1.5rem; } .page-hero { padding:8rem 1.5rem 3rem; } .content { padding:2rem 1.5rem 4rem; } .page-footer { flex-direction:column; padding:2rem 1.5rem; } }
 </style>
+<link rel="stylesheet" href="/site-fixes.css">
 </head>
 <body>
 
@@ -166,7 +167,7 @@
       <a href="confidentiality.html" data-i18n="fl_conf">السرية</a>
       <a href="cookie-policy.html" data-i18n="fl_cookie">الكوكيز</a>
     </div>
-    <span class="footer-copy" data-i18n="footer_copy">© New Media 2025. جميع الحقوق محفوظة.</span>
+    <span class="footer-copy" data-i18n="footer_copy">© جميع الحقوق محفوظة لدى New Media.</span>
   </div>
 </footer>
 
@@ -177,7 +178,7 @@ const T = {
     nav_back:'← العودة للرئيسية',
     page_title:'سياسة الاسترداد',
     page_meta:'آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA',
-    footer_copy:'© New Media 2025. جميع الحقوق محفوظة.',
+    footer_copy:'© جميع الحقوق محفوظة لدى New Media.',
     fl_privacy:'الخصوصية', fl_terms:'شروط الخدمة', fl_refund:'الاسترداد', fl_conf:'السرية', fl_cookie:'الكوكيز',
     s01:`<h2><span>01</span> مبدأ عام</h2><p>تسعى NEW MEDIA إلى تقديم خدمات عالية الجودة تُرضي عملاءها بالكامل. نفهم أن ظروف الأعمال تتغير، لذا وضعنا هذه السياسة بشفافية تامة لتوضيح حقوق كل طرف فيما يتعلق باسترداد المبالغ المدفوعة.</p><div class="highlight-box"><p>نشجع العملاء على التواصل المباشر معنا قبل طلب الاسترداد الرسمي — غالباً ما يمكن حل المشكلة أو تعديل مسار المشروع لتحقيق الرضا التام.</p></div>`,
     s02:`<h2><span>02</span> الخدمات المستمرة (الاشتراكات الشهرية)</h2><p>بالنسبة للخدمات المستمرة كإدارة وسائل التواصل الاجتماعي والإعلانات الرقمية:</p><ul><li>يمكن إلغاء الاشتراك بإشعار مسبق 30 يوماً قبل تاريخ التجديد</li><li>لا يُسترد رسم الاشتراك عن الفترة الحالية بعد بدء تنفيذ الخدمة</li><li>في حال الإلغاء قبل بدء فترة الاشتراك الجديدة، لا تُخصم رسوم إضافية</li><li>يتم تسليم كل المواد والأصول الرقمية للعميل خلال 7 أيام من انتهاء التعاقد</li></ul>`,
@@ -192,7 +193,7 @@ const T = {
     nav_back:'← Back to Home',
     page_title:'Refund Policy',
     page_meta:'Last updated: May 2025 &nbsp;·&nbsp; Applies to all NEW MEDIA services',
-    footer_copy:'© New Media 2025. All rights reserved.',
+    footer_copy:'© All rights reserved by New Media.',
     fl_privacy:'Privacy', fl_terms:'Terms of Service', fl_refund:'Refund', fl_conf:'Confidentiality', fl_cookie:'Cookies',
     s01:`<h2><span>01</span> General Principle</h2><p>NEW MEDIA strives to deliver high-quality services that fully satisfy its clients. We understand that business circumstances change, which is why we have established this policy with complete transparency to clarify each party's rights regarding refunds.</p><div class="highlight-box"><p>We encourage clients to contact us directly before formally requesting a refund — in most cases, the issue can be resolved or the project adjusted to achieve full satisfaction.</p></div>`,
     s02:`<h2><span>02</span> Ongoing Services (Monthly Subscriptions)</h2><p>For ongoing services such as social media management and digital advertising:</p><ul><li>Subscription can be cancelled with 30 days' prior notice before the renewal date</li><li>Subscription fees for the current period are non-refundable once service has commenced</li><li>If cancelled before the start of a new subscription period, no additional fees are charged</li><li>All materials and digital assets are delivered to the client within 7 days of contract termination</li></ul>`,

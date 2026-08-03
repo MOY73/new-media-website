@@ -13,7 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root { --purple:#6600cc; --orange:#ff6600; --blend:#cc3366; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -68,6 +68,7 @@
   html.light .footer-copy { color:rgba(0,0,0,.2); }
   @media (max-width:768px) { nav { padding:1rem 1.5rem; } .page-hero { padding:8rem 1.5rem 3rem; } .content { padding:2rem 1.5rem 4rem; } .page-footer { flex-direction:column; padding:2rem 1.5rem; } }
 </style>
+<link rel="stylesheet" href="/site-fixes.css">
 </head>
 <body>
 
@@ -174,7 +175,7 @@
       <a href="confidentiality.html" data-i18n="fl_conf">السرية</a>
       <a href="cookie-policy.html" data-i18n="fl_cookie">الكوكيز</a>
     </div>
-    <span class="footer-copy" data-i18n="footer_copy">© New Media 2025. جميع الحقوق محفوظة.</span>
+    <span class="footer-copy" data-i18n="footer_copy">© جميع الحقوق محفوظة لدى New Media.</span>
   </div>
 </footer>
 
@@ -185,7 +186,7 @@ const T = {
     nav_back:'← العودة للرئيسية',
     page_title:'شروط الخدمة',
     page_meta:'آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على جميع خدمات NEW MEDIA',
-    footer_copy:'© New Media 2025. جميع الحقوق محفوظة.',
+    footer_copy:'© جميع الحقوق محفوظة لدى New Media.',
     fl_privacy:'الخصوصية', fl_terms:'شروط الخدمة', fl_refund:'الاسترداد', fl_conf:'السرية', fl_cookie:'الكوكيز',
     s01:`<h2><span>01</span> القبول والموافقة</h2><p>يُشكّل استخدامك لخدمات NEW MEDIA أو إبرام عقد معنا موافقةً صريحة على هذه الشروط والأحكام. إن كنت تمثل شركة أو كياناً قانونياً، فأنت تقر بامتلاكك الصلاحية الكاملة لإبرام هذه الاتفاقية باسمه.</p><p>تسري هذه الشروط على جميع الخدمات التي تقدمها NEW MEDIA بما فيها: النمو والأداء، الحضور الرقمي، الهوية البصرية، والإنتاج الإعلامي.</p>`,
     s02:`<h2><span>02</span> طبيعة الخدمات</h2><p>تقدم NEW MEDIA خدمات تسويقية شاملة تشمل:</p><ul><li>التسويق الرقمي وإدارة الإعلانات المدفوعة</li><li>إدارة حسابات وسائل التواصل الاجتماعي</li><li>تصميم الهوية البصرية والمواد الإبداعية</li><li>الإنتاج المرئي والمحتوى الإعلامي</li><li>تطوير المواقع الإلكترونية وتحسين محركات البحث</li><li>الاستشارات الاستراتيجية التسويقية</li></ul><p>تُحدَّد تفاصيل كل خدمة في عقد أو مقترح خدمة منفصل يُوقَّع بين الطرفين.</p>`,
@@ -202,7 +203,7 @@ const T = {
     nav_back:'← Back to Home',
     page_title:'Terms of Service',
     page_meta:'Last updated: May 2025 &nbsp;·&nbsp; Applies to all NEW MEDIA services',
-    footer_copy:'© New Media 2025. All rights reserved.',
+    footer_copy:'© All rights reserved by New Media.',
     fl_privacy:'Privacy', fl_terms:'Terms of Service', fl_refund:'Refund', fl_conf:'Confidentiality', fl_cookie:'Cookies',
     s01:`<h2><span>01</span> Acceptance & Agreement</h2><p>Your use of NEW MEDIA's services or entering into a contract with us constitutes explicit acceptance of these Terms and Conditions. If you represent a company or legal entity, you confirm that you have full authority to enter into this agreement on its behalf.</p><p>These terms apply to all services provided by NEW MEDIA, including: Growth & Performance, Digital Presence, Brand Identity, and Media Production.</p>`,
     s02:`<h2><span>02</span> Nature of Services</h2><p>NEW MEDIA provides comprehensive marketing services including:</p><ul><li>Digital marketing and paid advertising management</li><li>Social media account management</li><li>Brand identity and creative materials design</li><li>Visual production and media content</li><li>Website development and search engine optimization</li><li>Strategic marketing consultancy</li></ul><p>The details of each service are specified in a separate service contract or proposal signed between both parties.</p>`,

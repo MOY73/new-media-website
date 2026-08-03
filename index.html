@@ -36,7 +36,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
     --purple: #6600cc;
@@ -487,9 +487,18 @@
 
   .marquee-track {
     display: flex;
-    gap: 3rem;
-    animation: marquee 20s linear infinite;
+    gap: 1.75rem;
+    animation: marquee 24s linear infinite;
     width: max-content;
+    will-change: transform;
+    direction: ltr;
+  }
+
+  .marquee-group {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    flex-shrink: 0;
   }
 
   .marquee-item {
@@ -514,7 +523,7 @@
 
   @keyframes marquee {
     from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
+    to { transform: translateX(calc(-50% - 0.875rem)); }
   }
 
   /* SERVICES */
@@ -899,6 +908,7 @@
     100% { background-position: 0% 50%; }
   }
 </style>
+<link rel="stylesheet" href="/site-fixes.css">
 </head>
 <body>
 
@@ -957,18 +967,22 @@
 <!-- MARQUEE -->
 <div class="marquee-wrap">
   <div class="marquee-track">
-    <div class="marquee-item"><span class="dot"></span>Social Media Management</div>
-    <div class="marquee-item"><span class="dot"></span>Paid Advertising</div>
-    <div class="marquee-item"><span class="dot"></span>Brand Identity</div>
-    <div class="marquee-item"><span class="dot"></span>Content Creation</div>
-    <div class="marquee-item"><span class="dot"></span>SEO & SEM</div>
-    <div class="marquee-item"><span class="dot"></span>Performance Marketing</div>
-    <div class="marquee-item"><span class="dot"></span>Social Media Management</div>
-    <div class="marquee-item"><span class="dot"></span>Paid Advertising</div>
-    <div class="marquee-item"><span class="dot"></span>Brand Identity</div>
-    <div class="marquee-item"><span class="dot"></span>Content Creation</div>
-    <div class="marquee-item"><span class="dot"></span>SEO & SEM</div>
-    <div class="marquee-item"><span class="dot"></span>Performance Marketing</div>
+    <div class="marquee-group">
+      <div class="marquee-item"><span class="dot"></span>Social Media Management</div>
+      <div class="marquee-item"><span class="dot"></span>Paid Advertising</div>
+      <div class="marquee-item"><span class="dot"></span>Brand Identity</div>
+      <div class="marquee-item"><span class="dot"></span>Content Creation</div>
+      <div class="marquee-item"><span class="dot"></span>SEO & SEM</div>
+      <div class="marquee-item"><span class="dot"></span>Performance Marketing</div>
+    </div>
+    <div class="marquee-group" aria-hidden="true">
+      <div class="marquee-item"><span class="dot"></span>Social Media Management</div>
+      <div class="marquee-item"><span class="dot"></span>Paid Advertising</div>
+      <div class="marquee-item"><span class="dot"></span>Brand Identity</div>
+      <div class="marquee-item"><span class="dot"></span>Content Creation</div>
+      <div class="marquee-item"><span class="dot"></span>SEO & SEM</div>
+      <div class="marquee-item"><span class="dot"></span>Performance Marketing</div>
+    </div>
   </div>
 </div>
 
@@ -1163,7 +1177,7 @@
 
     <!-- Bottom bar -->
     <div style="display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;flex-wrap:wrap;gap:1rem;">
-      <p data-i18n="footer_copy" style="font-size:12px;color:var(--footer-text-dim);letter-spacing:0.05em;">© New Media 2025. جميع الحقوق محفوظة.</p>
+      <p data-i18n="footer_copy" style="font-size:12px;color:var(--footer-text-dim);letter-spacing:0.05em;">© جميع الحقوق محفوظة لدى New Media.</p>
       <div style="display:flex;gap:1.5rem;">
         <a href="privacy-policy.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--footer-text-dim);text-decoration:none;">Privacy</a>
         <a href="terms-of-service.html" style="font-family:'Alexandria',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:var(--footer-text-dim);text-decoration:none;">Terms</a>
@@ -1299,7 +1313,7 @@
       footer_pol3: 'سياسة الاسترداد', footer_pol4: 'اتفاقية السرية', footer_pol5: 'ملفات تعريف الارتباط',
       footer_contact_title: 'تواصل معنا',
       footer_location: 'جدة، المملكة العربية السعودية',
-      footer_copy: '© New Media 2025. جميع الحقوق محفوظة.',
+      footer_copy: '© جميع الحقوق محفوظة لدى New Media.',
       fdiv1: 'النمو والأداء', fdiv2: 'الحضور الرقمي', fdiv3: 'الهوية والتجربة', fdiv4: 'الاستديو الإبداعي',
     },
     en: {
@@ -1336,7 +1350,7 @@
       footer_pol3: 'Refund Policy', footer_pol4: 'Confidentiality', footer_pol5: 'Cookie Policy',
       footer_contact_title: 'Contact Us',
       footer_location: 'Jeddah, Saudi Arabia',
-      footer_copy: '© New Media 2025. All rights reserved.',
+      footer_copy: '© All rights reserved by New Media.',
       fdiv1: 'Growth & Performance', fdiv2: 'Digital Presence', fdiv3: 'Brand & Experience', fdiv4: 'Creative Production',
     }
   };

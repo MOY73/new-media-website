@@ -13,7 +13,7 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
   :root { --purple:#6600cc; --orange:#ff6600; --blend:#cc3366; --black:#050505; --white:#ffffff; --glass-bg:rgba(255,255,255,0.04); --glass-border:rgba(255,255,255,0.10); }
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -77,6 +77,7 @@
   html.light .cookie-table th, html.light .cookie-table td { border-color:rgba(0,0,0,0.06); }
   @media (max-width:768px) { nav { padding:1rem 1.5rem; } .page-hero { padding:8rem 1.5rem 3rem; } .content { padding:2rem 1.5rem 4rem; } .page-footer { flex-direction:column; padding:2rem 1.5rem; } .cookie-table { font-size:12px; } }
 </style>
+<link rel="stylesheet" href="/site-fixes.css">
 </head>
 <body>
 
@@ -156,7 +157,7 @@
       <a href="confidentiality.html" data-i18n="fl_conf">السرية</a>
       <a href="cookie-policy.html" data-i18n="fl_cookie">الكوكيز</a>
     </div>
-    <span class="footer-copy" data-i18n="footer_copy">© New Media 2025. جميع الحقوق محفوظة.</span>
+    <span class="footer-copy" data-i18n="footer_copy">© جميع الحقوق محفوظة لدى New Media.</span>
   </div>
 </footer>
 
@@ -167,7 +168,7 @@ const T = {
     nav_back:'← العودة للرئيسية',
     page_title:'سياسة ملفات تعريف الارتباط',
     page_meta:'آخر تحديث: مايو 2025 &nbsp;·&nbsp; يسري على موقع newmedia.sa',
-    footer_copy:'© New Media 2025. جميع الحقوق محفوظة.',
+    footer_copy:'© جميع الحقوق محفوظة لدى New Media.',
     fl_privacy:'الخصوصية', fl_terms:'شروط الخدمة', fl_refund:'الاسترداد', fl_conf:'السرية', fl_cookie:'الكوكيز',
     s01:`<h2><span>01</span> ما هي ملفات تعريف الارتباط؟</h2><p>ملفات تعريف الارتباط (Cookies) هي ملفات نصية صغيرة تُخزَّن على جهازك عند زيارة موقعنا. تُساعد هذه الملفات على تذكر تفضيلاتك وتحسين تجربة تصفحك وتحليل كيفية استخدام الزوار للموقع.</p>`,
     s02:`<h2><span>02</span> أنواع الكوكيز التي نستخدمها</h2><table class="cookie-table"><thead><tr><th>النوع</th><th>الغرض</th><th>المدة</th></tr></thead><tbody><tr><td>ضرورية</td><td>تشغيل الموقع بشكل صحيح وحفظ جلسة التصفح</td><td>الجلسة</td></tr><tr><td>تحليلية</td><td>قياس عدد الزوار وأنماط التصفح لتحسين المحتوى</td><td>12 شهراً</td></tr><tr><td>تفضيلية</td><td>حفظ اللغة والإعدادات التي تختارها</td><td>6 أشهر</td></tr><tr><td>تسويقية</td><td>عرض إعلانات ذات صلة باهتماماتك</td><td>30 يوماً</td></tr></tbody></table>`,
@@ -181,7 +182,7 @@ const T = {
     nav_back:'← Back to Home',
     page_title:'Cookie Policy',
     page_meta:'Last updated: May 2025 &nbsp;·&nbsp; Applies to newmedia.sa',
-    footer_copy:'© New Media 2025. All rights reserved.',
+    footer_copy:'© All rights reserved by New Media.',
     fl_privacy:'Privacy', fl_terms:'Terms of Service', fl_refund:'Refund', fl_conf:'Confidentiality', fl_cookie:'Cookies',
     s01:`<h2><span>01</span> What Are Cookies?</h2><p>Cookies are small text files stored on your device when you visit our website. These files help remember your preferences, improve your browsing experience, and analyze how visitors use the site.</p>`,
     s02:`<h2><span>02</span> Types of Cookies We Use</h2><table class="cookie-table"><thead><tr><th>Type</th><th>Purpose</th><th>Duration</th></tr></thead><tbody><tr><td>Essential</td><td>Operating the website properly and maintaining the browsing session</td><td>Session</td></tr><tr><td>Analytical</td><td>Measuring visitor count and browsing patterns to improve content</td><td>12 months</td></tr><tr><td>Preference</td><td>Saving language and settings you choose</td><td>6 months</td></tr><tr><td>Marketing</td><td>Displaying ads relevant to your interests</td><td>30 days</td></tr></tbody></table>`,
