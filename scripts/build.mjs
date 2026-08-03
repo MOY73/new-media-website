@@ -11,7 +11,7 @@ await rm(dist, { recursive: true, force: true });
 await mkdir(assets, { recursive: true });
 await mkdir(server, { recursive: true });
 
-const publicExtensions = new Set([".css", ".html", ".js", ".svg", ".txt", ".xml"]);
+const publicExtensions = new Set([".css", ".html", ".js", ".svg", ".png", ".txt", ".xml"]);
 const entries = await readdir(root, { withFileTypes: true });
 
 for (const entry of entries) {
