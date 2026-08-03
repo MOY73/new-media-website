@@ -78,6 +78,125 @@ html.light .footer-copy-404 {
   background: rgba(255,255,255,0.7);
 }
 
+/* A complete light palette shared by the home, division, legal, and 404 pages. */
+html.light {
+  --black: #f6f3f8;
+  --white: #201927;
+  --glass-bg: rgba(255,255,255,0.72);
+  --glass-border: rgba(55,37,69,0.13);
+  --tag-color: rgba(43,32,52,0.68);
+  --footer-text: rgba(32,25,39,0.76);
+  --footer-text-dim: rgba(32,25,39,0.52);
+  --light-ink: #201927;
+  --light-muted: rgba(32,25,39,0.68);
+  --light-soft: rgba(32,25,39,0.52);
+  --light-surface: rgba(255,255,255,0.74);
+  --light-border: rgba(55,37,69,0.13);
+}
+
+html.light body {
+  color: var(--light-ink);
+  background:
+    radial-gradient(circle at 12% 8%, rgba(102,0,204,0.07), transparent 32rem),
+    radial-gradient(circle at 88% 28%, rgba(255,102,0,0.07), transparent 30rem),
+    #f6f3f8;
+}
+
+html.light nav {
+  color: var(--light-ink);
+  background: rgba(255,255,255,0.84);
+  border-color: var(--light-border);
+  box-shadow: 0 14px 44px rgba(39,25,52,0.09);
+}
+
+html.light :is(
+  .nav-logo, .nav-logo .logo-text, .nav-links a:hover,
+  .hero-title, h1, .section-title, .sec-title,
+  .card-title, .step-title, .cta-title, .cta h2,
+  .page-title, .section h2, .work-title
+) { color: var(--light-ink); }
+
+html.light :is(
+  .hero-sub, .card-text, .card-sub, .step-text, .stat-label,
+  .cta p, .cta-sub, .page-meta, .section p, .section li,
+  .hi-text, .work-cat
+) { color: var(--light-muted); }
+
+html.light :is(.hero-num, .card-number, .marquee-item) {
+  color: var(--light-soft);
+}
+
+html.light :is(
+  .service-card, .card, .step, .stat-card, .work-card,
+  .cta-inner, .section, .highlight-box
+) {
+  background-color: var(--light-surface);
+  border-color: var(--light-border);
+  box-shadow: 0 16px 42px rgba(40,24,53,0.07);
+}
+
+html.light :is(.divider-sec, .marquee-wrap, .stats-section) {
+  background-color: rgba(255,255,255,0.42);
+  border-color: var(--light-border);
+}
+
+html.light :is(.nav-links a, .nav-back, .btn-g, .btn-ghost, .div-link) {
+  color: var(--light-muted);
+  border-color: rgba(55,37,69,0.2);
+}
+
+html.light :is(.nav-back, .btn-g, .btn-ghost, .div-link):hover {
+  color: var(--light-ink);
+  background: rgba(255,255,255,0.72);
+  border-color: rgba(102,0,204,0.34);
+}
+
+html.light :is(.theme-btn, .lang-btn, .theme-btn-404, .lang-btn-404) {
+  color: var(--light-ink);
+  background: rgba(255,255,255,0.76);
+  border-color: rgba(55,37,69,0.17);
+  box-shadow: 0 5px 16px rgba(40,24,53,0.06);
+}
+
+html.light :is(.theme-btn, .lang-btn, .theme-btn-404, .lang-btn-404):hover {
+  color: var(--light-ink);
+  background: #fff;
+  border-color: rgba(102,0,204,0.3);
+}
+
+/* White type is intentional only on saturated gradient calls to action. */
+html.light :is(.btn-primary, .btn-p, .nav-cta, .section h2 span) {
+  color: #fff;
+}
+
+html.light :is(.footer-copy, .foot-copy, .footer-copy-404) {
+  color: var(--light-soft);
+}
+
+html.light :is(.footer-links a, .foot-links a) {
+  color: var(--light-muted);
+}
+
+html.light :is(.footer-links a, .foot-links a):hover {
+  color: var(--light-ink);
+}
+
+html.light .section h2,
+html.light :is(.cookie-table th, .cookie-table td) {
+  border-color: rgba(55,37,69,0.1);
+}
+
+html.light .cookie-table th { color: var(--light-soft); }
+html.light .cookie-table td { color: var(--light-muted); }
+html.light .highlight-box p { color: var(--light-ink) !important; }
+
+html.light :is(footer, .page-footer) {
+  color: var(--light-ink);
+  border-color: var(--light-border);
+  background: rgba(255,255,255,0.78);
+  box-shadow: 0 18px 50px rgba(40,24,53,0.09);
+}
+
 @media (max-width: 700px) {
   html[lang="ar"] .hero-title,
   html[lang="ar"] h1 { line-height: 1.42; }
