@@ -197,10 +197,36 @@ html.light :is(footer, .page-footer) {
   box-shadow: 0 18px 50px rgba(40,24,53,0.09);
 }
 
+/* Keep the exact gap between the two hero actions on the page centerline. */
+.hero-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(440px, calc(100% - 2rem));
+  gap: 1rem;
+}
+
+.hero-buttons :is(.btn-primary, .btn-ghost) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  padding-inline: 1rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
 @media (max-width: 700px) {
   html[lang="ar"] .hero-title,
   html[lang="ar"] h1 { line-height: 1.42; }
   html[lang="ar"] :is(.section-title, .sec-title, .cta-title, .cta h2) { line-height: 1.52; }
   footer,
   .page-footer { width: calc(100% - 1rem); border-radius: 22px; }
+}
+
+@media (max-width: 420px) {
+  .hero-buttons :is(.btn-primary, .btn-ghost) {
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding-inline: 0.65rem;
+  }
 }
