@@ -47,4 +47,14 @@
     setLanguage: applyLanguage,
     setTheme: applyTheme,
   };
+
+  const chromeStyle = document.createElement('link');
+  chromeStyle.rel = 'stylesheet';
+  chromeStyle.href = '/site-chrome.css';
+  document.head.appendChild(chromeStyle);
+
+  const chromeScript = document.createElement('script');
+  chromeScript.src = '/site-chrome.js';
+  chromeScript.defer = true;
+  document.head.appendChild(chromeScript);
 })();

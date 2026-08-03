@@ -5,6 +5,18 @@ import { fileURLToPath } from "node:url";
 const root = dirname(dirname(fileURLToPath(import.meta.url)));
 const files = (await readdir(root)).filter((name) => name.endsWith(".html"));
 const problems = [];
+const preferencesSource = await readFile(join(root, "site-preferences.js"), "utf8");
+
+for (const sharedAsset of ["site-chrome.css", "site-chrome.js"]) {
+  try {
+    await readFile(join(root, sharedAsset), "utf8");
+  } catch {
+    problems.push(`missing shared site chrome asset: ${sharedAsset}`);
+  }
+  if (!preferencesSource.includes(`/${sharedAsset}`)) {
+    problems.push(`site-preferences.js does not load ${sharedAsset}`);
+  }
+}
 
 function translationBlocks(source) {
   const match = source.match(/\bar\s*:\s*\{([\s\S]*?)\n\s*\},\s*\n\s*en\s*:\s*\{([\s\S]*?)\n\s*\}\s*\n?\s*};/);
@@ -44,5 +56,5 @@ if (problems.length) {
   console.error(problems.join("\n"));
   process.exitCode = 1;
 } else {
-  console.log(`Checked ${files.length} pages: translation, theme persistence, and copyright are present everywhere.`);
+  console.log(`Checked ${files.length} pages: shared chrome, translation, theme persistence, and copyright are present everywhere.`);
 }
