@@ -3,6 +3,9 @@
   top: 20px;
   right: 3.5%;
   left: 3.5%;
+  width: auto;
+  max-width: none;
+  transform: none;
   z-index: 1000;
   height: 64px;
   padding: 0 2rem;
