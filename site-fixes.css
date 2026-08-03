@@ -258,6 +258,54 @@ html.light .icon-art img {
   filter: drop-shadow(0 13px 22px rgba(95, 35, 140, 0.2));
 }
 
+/* Service-card emoji keep their familiar colors; only their material becomes 3D balloon. */
+.service-card .card-icon.service-icon-art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 1.1rem;
+  background: none !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  overflow: visible;
+}
+
+.service-icon-art img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.28));
+  transition: transform 240ms ease, filter 240ms ease;
+}
+
+.service-card:hover .service-icon-art img {
+  transform: translateY(-3px) rotate(-2deg) scale(1.06);
+  filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.34));
+}
+
+html.light .service-icon-art img {
+  filter: drop-shadow(0 9px 14px rgba(35, 25, 45, 0.2));
+}
+
+.div-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.div-link-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 5px 8px rgba(0, 0, 0, 0.24));
+}
+
 @media (max-width: 700px) {
   html[lang="ar"] .hero-title,
   html[lang="ar"] h1 { line-height: 1.42; }
