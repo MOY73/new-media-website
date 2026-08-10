@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<script src="/site-preferences.js"></script>
+<title>ابدأ مشروعك — NEW MEDIA</title>
+<meta name="description" content="قدّم تفاصيل مشروعك إلى فريق NEW MEDIA من خلال نموذج اكتشاف شامل وآمن.">
+<meta name="robots" content="index,follow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site-fixes.css">
+<link rel="stylesheet" href="/contact-application.css">
+<script src="/contact-application.js" defer></script>
+</head>
+<body class="application-page">
+  <nav aria-label="التنقل الرئيسي">
+    <a href="/" aria-label="NEW MEDIA"><img src="/favicon.svg" alt="" width="42" height="38"></a>
+    <div class="application-nav-controls">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="تغيير المظهر">☽</button>
+      <button class="lang-btn" id="langBtn" type="button" aria-label="English">EN</button>
+    </div>
+  </nav>
+
+  <main class="application-shell">
+    <aside class="application-story" aria-label="معلومات التقديم">
+      <a class="application-brand" href="/"><img src="/favicon.svg" alt=""><span>NEW MEDIA</span></a>
+      <div class="story-copy">
+        <span class="story-kicker">PROJECT INTAKE / 01</span>
+        <h1>خلّنا نفهم<br><b>مشروعك من أول مرة.</b></h1>
+        <p>هذا النموذج مصمم ليجمع الصورة كاملة قبل أول مكالمة؛ الهدف، الخدمة، الجمهور، الميزانية والمواد المتوفرة.</p>
+      </div>
+      <ol class="story-steps" id="storySteps">
+        <li class="is-active" data-step-indicator="1"><i>01</i><span><b>بيانات التواصل</b><small>من أنت وكيف نتواصل معك؟</small></span></li>
+        <li data-step-indicator="2"><i>02</i><span><b>المشروع والخدمة</b><small>ماذا تريد أن نبني أو نحسّن؟</small></span></li>
+        <li data-step-indicator="3"><i>03</i><span><b>النطاق والميزانية</b><small>الوقت، الأولوية والاستثمار المتوقع.</small></span></li>
+        <li data-step-indicator="4"><i>04</i><span><b>الملفات والمراجعة</b><small>أرسل المواد وتأكد من الطلب.</small></span></li>
+      </ol>
+      <div class="story-trust"><span>خصوصية أولاً</span><p>تُحفظ بياناتك داخل نظام NEW MEDIA ولا تظهر إلا للفريق المخوّل.</p><small>© جميع الحقوق محفوظة لدى New Media.</small></div>
+    </aside>
+
+    <section class="application-workspace">
+      <header class="application-topbar">
+        <div><span>طلب مشروع جديد</span><b id="stepLabel">الخطوة 1 من 4</b></div>
+        <a href="/">العودة للموقع ↗</a>
+      </header>
+      <div class="application-progress"><i id="progressBar"></i></div>
+
+      <form id="applicationForm" enctype="multipart/form-data" novalidate>
+        <input class="application-honeypot" type="text" name="website_confirm" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <input type="hidden" name="form_started_at" id="formStartedAt">
+
+        <section class="form-step is-active" data-step="1" aria-labelledby="stepOneTitle">
+          <div class="step-heading"><span>01 / 04</span><h2 id="stepOneTitle">نبدأ بك وبمنظمتك.</h2><p>بيانات دقيقة تساعدنا نصل للشخص الصحيح ونفهم طبيعة النشاط بسرعة.</p></div>
+          <div class="field-grid">
+            <label class="field field--wide"><span>الاسم الثلاثي <em>مطلوب</em></span><input name="full_name" autocomplete="name" maxlength="120" placeholder="مثال: محمد أحمد الحربي" required><small>اكتب اسمك كما تحب أن نخاطبك.</small></label>
+            <label class="field"><span>البريد الإلكتروني للعمل <em>مطلوب</em></span><input name="email" type="email" autocomplete="email" maxlength="160" placeholder="name@company.com" dir="ltr" required></label>
+            <label class="field"><span>رقم الجوال / واتساب <em>مطلوب</em></span><input name="phone" type="tel" autocomplete="tel" maxlength="30" placeholder="+966 5X XXX XXXX" dir="ltr" required></label>
+            <label class="field"><span>اسم المنظمة أو العلامة <em>مطلوب</em></span><input name="organization" maxlength="140" placeholder="اسم الشركة أو المشروع" required></label>
+            <label class="field"><span>منصبك</span><input name="job_title" maxlength="100" placeholder="المؤسس، مدير التسويق..."></label>
+            <label class="field"><span>قطاع النشاط <em>مطلوب</em></span><select name="industry" required><option value="">اختر القطاع</option><option>التجزئة والتجارة الإلكترونية</option><option>المطاعم والمقاهي</option><option>العقار والضيافة</option><option>الصحة والجمال</option><option>التقنية والتطبيقات</option><option>التعليم والتدريب</option><option>الخدمات المهنية</option><option>الترفيه والفعاليات</option><option>منظمة غير ربحية</option><option>جهة حكومية</option><option>أخرى</option></select></label>
+            <label class="field"><span>المدينة / الدولة</span><input name="location" maxlength="100" placeholder="مكة المكرمة، السعودية"></label>
+            <label class="field"><span>الموقع الإلكتروني</span><input name="website_url" type="url" maxlength="240" placeholder="https://" dir="ltr"></label>
+            <label class="field field--wide"><span>حسابات المنظمة</span><textarea name="social_accounts" rows="3" maxlength="1000" placeholder="ضع روابط إنستغرام، تيك توك، سناب، لينكدإن أو أي قنوات نشطة — كل رابط في سطر."></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="2" aria-labelledby="stepTwoTitle">
+          <div class="step-heading"><span>02 / 04</span><h2 id="stepTwoTitle">ما النتيجة التي تريدها؟</h2><p>اختر كل ما تحتاجه، ثم اشرح المشروع بلغتك. لسنا نبحث عن مصطلحات مثالية؛ نبحث عن وضوح.</p></div>
+          <fieldset class="service-picker"><legend>الخدمات المطلوبة <em>اختر واحدة على الأقل</em></legend>
+            <label><input type="checkbox" name="services" value="النمو والأداء"><span><i>↗</i><b>النمو والأداء</b><small>إعلانات، تحليل، SEO، تحويل ومبيعات.</small></span></label>
+            <label><input type="checkbox" name="services" value="الحضور الرقمي"><span><i>◎</i><b>الحضور الرقمي</b><small>محتوى، منصات، مجتمع وسمعة.</small></span></label>
+            <label><input type="checkbox" name="services" value="الهوية والتجربة"><span><i>◇</i><b>الهوية والتجربة</b><small>استراتيجية علامة، هوية، UX/UI ومواقع.</small></span></label>
+            <label><input type="checkbox" name="services" value="الاستديو الإبداعي"><span><i>▶</i><b>الاستديو الإبداعي</b><small>تصوير، إنتاج، مونتاج وموشن.</small></span></label>
+          </fieldset>
+          <div class="field-grid">
+            <label class="field field--wide"><span>وصف مختصر للمطلوب <em>مطلوب</em></span><textarea name="project_summary" rows="3" maxlength="700" placeholder="مثال: نريد إطلاق علامة جديدة وبناء هويتها وموقعها وحملة الإطلاق." required></textarea><small>جملة أو فقرة تصف الخدمة بشكل عام.</small></label>
+            <label class="field field--wide"><span>التفاصيل الكاملة <em>مطلوب</em></span><textarea name="project_details" rows="7" maxlength="5000" placeholder="ما الموجود اليوم؟ ما الذي لا يعمل؟ ماذا تتوقع أن نسلّم؟ وما الذي سيجعل المشروع ناجحاً بالنسبة لك؟" required></textarea></label>
+            <label class="field"><span>الهدف الأساسي <em>مطلوب</em></span><select name="primary_goal" required><option value="">اختر الهدف</option><option>زيادة المبيعات أو العملاء المحتملين</option><option>إطلاق علامة أو منتج جديد</option><option>بناء الوعي والحضور</option><option>تطوير الهوية الحالية</option><option>تحسين الموقع أو تجربة المستخدم</option><option>إنتاج حملة أو محتوى</option><option>حل مشكلة تسويقية محددة</option></select></label>
+            <label class="field"><span>الجمهور المستهدف <em>مطلوب</em></span><input name="target_audience" maxlength="500" placeholder="من تريد الوصول إليه؟" required></label>
+            <label class="field field--wide"><span>التحدي الأكبر حالياً</span><textarea name="current_challenge" rows="4" maxlength="1600" placeholder="ما الذي يمنعك من الوصول للنتيجة الآن؟"></textarea></label>
+            <label class="field"><span>المنافسون أو المراجع</span><textarea name="competitors" rows="4" maxlength="1000" placeholder="أسماء أو روابط 2–3 منافسين."></textarea></label>
+            <label class="field"><span>أمثلة تعجبك</span><textarea name="references" rows="4" maxlength="1000" placeholder="علامات، مواقع أو حملات تمثل الاتجاه الذي تحبه."></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="3" aria-labelledby="stepThreeTitle">
+          <div class="step-heading"><span>03 / 04</span><h2 id="stepThreeTitle">لنضبط التوقعات من البداية.</h2><p>الميزانية والوقت ليست أسئلة بيع؛ هي ما يساعدنا نبني نطاقاً واقعياً يناسبك.</p></div>
+          <div class="field-grid">
+            <label class="field"><span>نوع التعاون <em>مطلوب</em></span><select name="engagement_type" required><option value="">اختر النوع</option><option>مشروع لمرة واحدة</option><option>تعاون شهري مستمر</option><option>حملة محددة</option><option>غير متأكد — أحتاج توصية</option></select></label>
+            <label class="field"><span>ميزانية المشروع/الخدمة <em>مطلوب</em></span><select name="budget_range" required><option value="">اختر النطاق</option><option>أقل من 5,000 ر.س</option><option>5,000 – 10,000 ر.س</option><option>10,000 – 25,000 ر.س</option><option>25,000 – 50,000 ر.س</option><option>50,000 – 100,000 ر.س</option><option>أكثر من 100,000 ر.س</option><option>أحتاج توصية وتقديراً</option></select></label>
+            <label class="field"><span>ميزانية الإعلان الشهرية</span><select name="media_budget"><option value="">لا يوجد / غير محدد</option><option>أقل من 5,000 ر.س</option><option>5,000 – 15,000 ر.س</option><option>15,000 – 50,000 ر.س</option><option>50,000 – 150,000 ر.س</option><option>أكثر من 150,000 ر.س</option></select></label>
+            <label class="field"><span>موعد البدء المفضل <em>مطلوب</em></span><select name="start_window" required><option value="">اختر الموعد</option><option>فوراً</option><option>خلال أسبوعين</option><option>خلال شهر</option><option>خلال 2–3 أشهر</option><option>أستكشف الخيارات حالياً</option></select></label>
+            <label class="field"><span>هل يوجد موعد نهائي؟</span><input name="deadline" type="date"></label>
+            <label class="field"><span>جاهزية القرار <em>مطلوب</em></span><select name="decision_readiness" required><option value="">اختر الحالة</option><option>أنا صاحب القرار</option><option>أشارك في القرار</option><option>أجمع عروضاً للإدارة</option><option>أبحث وأقارن فقط</option></select></label>
+            <label class="field"><span>كيف عرفت NEW MEDIA؟</span><select name="referral_source"><option value="">اختر إن رغبت</option><option>إنستغرام</option><option>بحث Google</option><option>توصية من شخص</option><option>عميل سابق</option><option>فعالية أو لقاء</option><option>أخرى</option></select></label>
+            <label class="field"><span>هل تعاملت مع وكالة سابقاً؟</span><select name="previous_agency"><option value="">اختر إن رغبت</option><option>نعم، والتجربة كانت جيدة</option><option>نعم، لكن نبحث عن بديل</option><option>لا، هذه أول مرة</option></select></label>
+            <label class="field field--wide"><span>ملاحظات عن النطاق أو الوقت</span><textarea name="scope_notes" rows="4" maxlength="1600" placeholder="أي متطلبات ثابتة، مواعيد إطلاق، موافقات داخلية أو قيود يجب أن نعرفها؟"></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="4" aria-labelledby="stepFourTitle">
+          <div class="step-heading"><span>04 / 04</span><h2 id="stepFourTitle">أرسل ما يساعدنا نبدأ أذكى.</h2><p>ارفع المواد المتوفرة فقط. يمكنك إرسال الطلب بدون ملفات وإضافتها لاحقاً عند التواصل.</p></div>
+          <label class="upload-zone" id="uploadZone">
+            <input id="attachments" name="attachments" type="file" multiple accept=".png,.jpg,.jpeg,.webp,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip">
+            <span class="upload-icon">↑</span><b>اسحب الملفات هنا أو اضغط للاختيار</b><small>الشعار، دليل الهوية، بريف سابق، صور، عروض أو مراجع. حتى 8 ملفات، 10MB لكل ملف.</small>
+          </label>
+          <div class="file-list" id="fileList" aria-live="polite"></div>
+          <div class="review-card" id="reviewCard">
+            <div><span>مقدم الطلب</span><b data-review="identity">—</b></div>
+            <div><span>المنظمة</span><b data-review="organization">—</b></div>
+            <div><span>الخدمات</span><b data-review="services">—</b></div>
+            <div><span>الميزانية</span><b data-review="budget">—</b></div>
+            <div><span>موعد البدء</span><b data-review="start">—</b></div>
+          </div>
+          <label class="consent-field"><input name="consent" type="checkbox" value="accepted" required><span>أؤكد أن المعلومات صحيحة، وأوافق على تواصل NEW MEDIA معي بخصوص هذا الطلب وفق <a href="/privacy-policy.html" target="_blank">سياسة الخصوصية</a>.</span></label>
+          <p class="submission-note">بعد الإرسال سيظهر طلبك مباشرة في مساحة عمل الفريق كعميل جديد ومهمة متابعة.</p>
+        </section>
+
+        <div class="form-alert" id="formAlert" role="alert" aria-live="assertive"></div>
+        <footer class="form-actions">
+          <button class="button-secondary" id="previousStep" type="button" hidden>السابق</button>
+          <span id="draftStatus">يُحفظ تقدمك على هذا الجهاز تلقائياً</span>
+          <button class="button-primary" id="nextStep" type="button"><span>التالي</span><b>←</b></button>
+          <button class="button-primary button-submit" id="submitApplication" type="submit" hidden><span>إرسال الطلب للفريق</span><b>↗</b></button>
+        </footer>
+      </form>
+
+      <section class="success-state" id="successState" hidden>
+        <span class="success-mark">✓</span><small>REQUEST RECEIVED</small><h2>وصلنا مشروعك.<br><b>والصورة أصبحت واضحة.</b></h2><p>تم تسجيل الطلب داخل مساحة عمل NEW MEDIA وتحويله إلى فرصة ومهمة متابعة للفريق.</p><div><span>رقم الطلب</span><strong id="applicationReference">—</strong></div><a href="/">العودة إلى الرئيسية ←</a>
+      </section>
+    </section>
+  </main>
+
+  <script src="/site-chrome.js"></script>
+</body>
+</html>

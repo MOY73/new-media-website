@@ -3,14 +3,14 @@
 
   const copy = {
     ar: {
-      services: 'خدماتنا', work: 'أعمالنا', about: 'من نحن', contact: 'تواصل معنا',
+      services: 'خدماتنا', work: 'أعمالنا', about: 'من نحن', contact: 'ابدأ مشروعك',
       desc: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.',
       divisions: 'أقسامنا', growth: 'النمو والأداء', digital: 'الحضور الرقمي', brand: 'الهوية والتجربة', creative: 'الاستديو الإبداعي',
       policies: 'السياسات', privacy: 'سياسة الخصوصية', terms: 'شروط الخدمة', refund: 'سياسة الاسترداد', confidentiality: 'اتفاقية السرية', cookies: 'ملفات تعريف الارتباط', employees: 'للموظفين',
       reach: 'تواصل معنا', location: 'مكة المكرمة، المملكة العربية السعودية', rights: '© جميع الحقوق محفوظة لدى New Media.'
     },
     en: {
-      services: 'Services', work: 'Work', about: 'About', contact: 'Contact Us',
+      services: 'Services', work: 'Work', about: 'About', contact: 'Start a Project',
       desc: 'A full-service marketing agency creating an unforgettable presence — from strategy to results.',
       divisions: 'Divisions', growth: 'Growth & Performance', digital: 'Digital Presence', brand: 'Brand & Experience', creative: 'Creative Studio',
       policies: 'Policies', privacy: 'Privacy Policy', terms: 'Terms of Service', refund: 'Refund Policy', confidentiality: 'Confidentiality', cookies: 'Cookie Policy', employees: 'Employees',
@@ -36,7 +36,7 @@
     nav.innerHTML = `
       <a class="nm-site-nav__brand" href="index.html" aria-label="New Media"><img src="/favicon.svg" alt=""><span>NEW MEDIA</span></a>
       <ul class="nm-site-nav__links"><li><a href="index.html#services" data-nm-label="services"></a></li><li><a href="index.html#work" data-nm-label="work"></a></li><li><a href="index.html#about" data-nm-label="about"></a></li></ul>
-      <div class="nm-site-nav__actions"><span data-nm-controls></span><a class="nm-site-nav__cta" href="index.html#contact" data-nm-label="contact"></a></div>`;
+      <div class="nm-site-nav__actions"><span data-nm-controls></span><a class="nm-site-nav__cta" href="/contact-application.html" data-nm-label="contact"></a></div>`;
     const controls = nav.querySelector('[data-nm-controls]');
     controls.replaceWith(themeButton, languageButton);
     if (oldNav) oldNav.replaceWith(nav);

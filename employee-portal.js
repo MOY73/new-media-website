@@ -122,6 +122,7 @@
     active: { label: 'عميل نشط', next: null },
   };
   const VIEW_TITLES = {
+    applications: 'طلبات التقديم عبر الموقع',
     clients: 'العملاء والفرص',
     chat: 'محادثة الفريق',
     packages: 'الباقات المعتمدة',
@@ -222,6 +223,8 @@
     });
     qs('#metricsGrid').replaceChildren(...cards);
     qs('#clientsBadge').textContent = String(stats.opportunities);
+    const applicationsBadge = qs('#applicationsBadge');
+    if (applicationsBadge) applicationsBadge.textContent = String(stats.newApplications || 0);
   }
 
   function renderMiniPipeline() {
@@ -365,6 +368,98 @@
     qs('#pipelineBoard').replaceChildren(...columns);
   }
 
+  const APPLICATION_STATUS = {
+    new: { label: 'جديد', next: 'reviewing' },
+    reviewing: { label: 'قيد المراجعة', next: 'contacted' },
+    contacted: { label: 'تم التواصل', next: 'qualified' },
+    qualified: { label: 'مؤهل', next: 'closed' },
+    closed: { label: 'مغلق', next: null },
+  };
+
+  function detailRow(label, value) {
+    if (!value || (Array.isArray(value) && !value.length)) return null;
+    const row = element('div', 'application-detail__row');
+    row.append(element('span', '', label), element('p', '', Array.isArray(value) ? value.join('، ') : value));
+    return row;
+  }
+
+  function applicationCard(application) {
+    const details = application.details || {};
+    const card = element('article', 'application-card');
+    const header = element('button', 'application-card__head');
+    header.type = 'button';
+    header.setAttribute('aria-expanded', 'false');
+    const identity = element('div', 'application-card__identity');
+    identity.append(element('span', '', application.reference), element('h3', '', application.organization || application.full_name), element('p', '', `${application.full_name} · ${application.services}`));
+    const meta = element('div', 'application-card__meta');
+    meta.append(element('span', `application-status application-status--${application.status}`, APPLICATION_STATUS[application.status]?.label || application.status), element('time', '', displayDate(application.created_at)), element('b', '', '+'));
+    header.append(identity, meta);
+
+    const body = element('div', 'application-card__body');
+    const summary = element('section', 'application-summary');
+    [
+      ['ملخص الطلب', application.project_summary], ['التواصل', `${application.phone} · ${application.email}`],
+      ['الميزانية', application.budget_range], ['موعد البدء', details.start_window],
+      ['الهدف', details.primary_goal], ['الجمهور', details.target_audience]
+    ].forEach(([label, value]) => { const row = detailRow(label, value); if (row) summary.append(row); });
+    const deep = element('section', 'application-detail');
+    [
+      ['التفاصيل الكاملة', details.project_details], ['التحدي الحالي', details.current_challenge],
+      ['نوع التعاون', details.engagement_type], ['ميزانية الإعلان', details.media_budget],
+      ['القطاع', details.industry], ['الموقع', details.location], ['منصب مقدم الطلب', details.job_title],
+      ['الموقع الإلكتروني', details.website_url], ['حسابات المنظمة', details.social_accounts],
+      ['المنافسون', details.competitors], ['مراجع تعجبه', details.references],
+      ['جاهزية القرار', details.decision_readiness], ['تعامل سابق مع وكالة', details.previous_agency],
+      ['مصدر المعرفة', details.referral_source], ['ملاحظات النطاق', details.scope_notes]
+    ].forEach(([label, value]) => { const row = detailRow(label, value); if (row) deep.append(row); });
+
+    const files = element('div', 'application-files');
+    if (application.files?.length) {
+      files.append(element('strong', '', `المرفقات (${application.files.length})`));
+      application.files.forEach((file) => {
+        const link = element('a', '', file.original_name);
+        link.href = `/api/employee/application-files/${encodeURIComponent(file.id)}`;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        const item = element('div');
+        item.append(link, element('small', '', `${Math.ceil(Number(file.size_bytes || 0) / 1024)} KB`));
+        files.append(item);
+      });
+    }
+
+    const actions = element('div', 'application-card__actions');
+    actions.append(element('span', '', application.email_status === 'sent' ? 'تم إرسال إشعار البريد' : 'محفوظ داخل النظام'));
+    const nextStatus = APPLICATION_STATUS[application.status]?.next;
+    if (nextStatus) {
+      const advance = element('button', '', `نقل إلى: ${APPLICATION_STATUS[nextStatus].label} ←`);
+      advance.type = 'button';
+      advance.addEventListener('click', async () => {
+        advance.disabled = true;
+        try {
+          await api(`/api/employee/applications/${encodeURIComponent(application.id)}`, { method: 'PATCH', body: JSON.stringify({ status: nextStatus }) });
+          await refreshData({ quiet: true });
+          showToast(`تم تحديث الطلب ${application.reference}.`);
+        } catch (error) { showToast(error.message, true); }
+        finally { advance.disabled = false; }
+      });
+      actions.append(advance);
+    }
+    body.append(summary, deep);
+    if (application.files?.length) body.append(files);
+    body.append(actions);
+    header.addEventListener('click', () => {
+      const open = card.classList.toggle('is-open');
+      header.setAttribute('aria-expanded', String(open));
+    });
+    card.append(header, body);
+    return card;
+  }
+
+  function renderApplications() {
+    const applications = state.data.applications || [];
+    qs('#applicationsList')?.replaceChildren(...(applications.length ? applications.map(applicationCard) : [emptyState('لم تصل طلبات عبر الموقع حتى الآن.') ]));
+  }
+
   function renderPackages() {
     const cards = state.data.knowledge.packages.map((item, index) => {
       const card = element('article', 'package-card');
@@ -451,6 +546,7 @@
     renderTasks();
     renderChat();
     renderPipeline();
+    renderApplications();
     if (!state.staticRendered) {
       renderPackages();
       renderPricing();

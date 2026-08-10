@@ -30,6 +30,7 @@
       </div>
       <nav class="app-nav" aria-label="أقسام مساحة العمل">
         <button class="app-nav__item is-active" type="button" data-view="overview"><span>⌂</span><b>نظرة عامة</b></button>
+        <button class="app-nav__item" type="button" data-view="applications"><span>↓</span><b>طلبات الموقع</b><em id="applicationsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="clients"><span>◇</span><b>العملاء والفرص</b><em id="clientsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="chat"><span>◌</span><b>محادثة الفريق</b></button>
         <div class="app-nav__label">مكتبة العمل</div>
@@ -79,6 +80,11 @@
               <span>PLAYBOOK</span><h3>المسار التشغيلي</h3><p>ثماني مراحل من تحديد الأولوية حتى الاحتفاظ والتوسع.</p><button type="button" data-jump-view="workflow">افتح الدليل ←</button>
             </section>
           </div>
+        </section>
+
+        <section class="app-view" data-view-panel="applications">
+          <div class="section-intro"><div><span>WEBSITE INTAKE</span><h2>طلبات التقديم عبر الموقع</h2><p>كل طلب يصل بكامل بيانات العميل، النطاق، الميزانية والملفات قبل أول تواصل.</p></div></div>
+          <div class="applications-list" id="applicationsList"></div>
         </section>
 
         <section class="app-view" data-view-panel="clients">

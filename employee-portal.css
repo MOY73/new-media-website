@@ -213,6 +213,40 @@ html.light .app-sidebar { background:#fff; }
 .client-card__actions button { padding:.35rem .55rem; border:1px solid var(--portal-line); border-radius:8px; color:var(--portal-muted); background:transparent; cursor:pointer; font-size:9px; }
 .client-card__actions button:hover { color:var(--portal-orange); border-color:rgba(255,107,16,.35); }
 
+/* Website applications */
+.applications-list { display:flex; flex-direction:column; gap:.8rem; }
+.application-card { border:1px solid var(--portal-line); border-radius:17px; overflow:hidden; background:var(--portal-panel); box-shadow:0 12px 35px rgba(0,0,0,.08); }
+.application-card__head { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:1rem; padding:1.2rem 1.3rem; border:0; color:inherit; background:transparent; cursor:pointer; text-align:inherit; font:inherit; }
+.application-card__identity span { color:var(--portal-orange); font-family:'Alexandria',sans-serif; font-size:8px; letter-spacing:.13em; }
+.application-card__identity h3 { margin:.38rem 0 .2rem; font-family:'Alexandria',sans-serif; font-size:1rem; }
+.application-card__identity p { margin:0; color:var(--portal-muted); font-size:10px; }
+.application-card__meta { display:flex; align-items:center; gap:.75rem; }
+.application-card__meta time { color:var(--portal-faint); font-size:9px; white-space:nowrap; }
+.application-card__meta>b { color:var(--portal-muted); font-size:1.2rem; transition:transform .25s; }
+.application-card.is-open .application-card__meta>b { transform:rotate(45deg); }
+.application-status { padding:.32rem .55rem; border:1px solid var(--portal-line); border-radius:8px; color:var(--portal-muted); background:var(--portal-panel-2); font-size:9px; white-space:nowrap; }
+.application-status--new { color:var(--portal-orange); border-color:rgba(255,107,16,.3); background:rgba(255,107,16,.08); }
+.application-status--qualified { color:var(--portal-green); border-color:rgba(83,225,159,.3); background:rgba(83,225,159,.08); }
+.application-card__body { display:none; grid-template-columns:.75fr 1.25fr; gap:1rem; padding:0 1.3rem 1.3rem; border-top:1px solid var(--portal-line); }
+.application-card.is-open .application-card__body { display:grid; }
+.application-summary,.application-detail { padding-top:1rem; }
+.application-summary { display:flex; flex-direction:column; gap:.55rem; }
+.application-detail { display:grid; grid-template-columns:1fr 1fr; gap:.55rem; }
+.application-detail__row { padding:.75rem; border:1px solid var(--portal-line); border-radius:11px; background:var(--portal-panel-2); }
+.application-detail__row span,.application-detail__row p { display:block; margin:0; }
+.application-detail__row span { color:var(--portal-faint); font-size:8px; }
+.application-detail__row p { margin-top:.3rem; color:var(--portal-muted); font-size:10px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere; }
+.application-files { grid-column:1/-1; display:flex; flex-wrap:wrap; align-items:center; gap:.5rem; padding:1rem; border:1px solid var(--portal-line); border-radius:12px; }
+.application-files>strong { width:100%; color:var(--portal-faint); font-size:9px; }
+.application-files>div { display:flex; align-items:center; gap:.5rem; padding:.45rem .6rem; border-radius:8px; background:var(--portal-panel-2); }
+.application-files a { color:var(--portal-text); font-size:9px; text-decoration:none; }
+.application-files a:hover { color:var(--portal-orange); }
+.application-files small { color:var(--portal-faint); font-size:8px; }
+.application-card__actions { grid-column:1/-1; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-top:1rem; border-top:1px solid var(--portal-line); }
+.application-card__actions span { color:var(--portal-faint); font-size:9px; }
+.application-card__actions button { padding:.55rem .8rem; border:1px solid rgba(165,21,232,.35); border-radius:9px; color:var(--portal-text); background:rgba(165,21,232,.09); cursor:pointer; font-size:9px; }
+.application-card__actions button:hover { color:#fff; background:var(--portal-purple); }
+
 /* Chat */
 .team-chat { width:min(920px,100%); height:calc(100vh - 235px); min-height:550px; display:grid; grid-template-rows:auto 1fr auto; margin:0 auto; border:1px solid var(--portal-line); border-radius:21px; overflow:hidden; background:var(--portal-panel); box-shadow:var(--portal-shadow); }
 .chat-room-head { display:grid; grid-template-columns:42px minmax(0,1fr) 9px; align-items:center; gap:.75rem; padding:1rem 1.25rem; border-bottom:1px solid var(--portal-line); }
@@ -350,4 +384,9 @@ html.light .app-sidebar { background:#fff; }
   .pricing-block__head { align-items:start; }
   .pricing-table th,.pricing-table td { padding:.7rem .45rem; }
   .service-card__columns { grid-template-columns:1fr; }
+  .application-card__head { align-items:start; grid-template-columns:1fr; }
+  .application-card__meta { justify-content:space-between; }
+  .application-card.is-open .application-card__body { grid-template-columns:1fr; }
+  .application-detail { grid-template-columns:1fr; }
+  .application-card__actions { align-items:stretch; flex-direction:column; }
 }

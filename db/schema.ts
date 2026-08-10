@@ -38,3 +38,23 @@ export interface EmployeeTask {
   created_at: number;
   updated_at: number;
 }
+
+export type ApplicationStatus = 'new' | 'reviewing' | 'contacted' | 'qualified' | 'closed';
+
+export interface ClientApplication {
+  id: string;
+  reference: string;
+  full_name: string;
+  organization: string;
+  email: string;
+  phone: string;
+  services: string;
+  budget_range: string;
+  project_summary: string;
+  payload_json: string;
+  status: ApplicationStatus;
+  attachment_count: number;
+  email_status: string;
+  created_at: number;
+  updated_at: number;
+}
