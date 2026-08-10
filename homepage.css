@@ -32,6 +32,17 @@ body.nm-home a,body.nm-home button{-webkit-tap-highlight-color:transparent}
 body.nm-home a:focus-visible,body.nm-home button:focus-visible,body.nm-home [tabindex]:focus-visible{outline:2px solid var(--nm-orange);outline-offset:4px}
 body.nm-home::selection{background:var(--nm-orange);color:#fff}
 
+.cursor,.cursor-ring{position:fixed;z-index:1600;top:0;left:0;pointer-events:none;opacity:0;transform:translate(-50%,-50%);will-change:left,top,width,height;transition:width .28s ease,height .28s ease,border-color .28s ease,opacity .18s ease}
+.cursor{width:12px;height:12px;border-radius:50%;background:var(--nm-orange);box-shadow:0 0 18px rgba(255,90,10,.72);mix-blend-mode:difference}
+.cursor-ring{width:36px;height:36px;border:1.5px solid rgba(255,102,0,.55);border-radius:50%;box-shadow:inset 0 0 12px rgba(255,90,10,.08),0 0 18px rgba(255,90,10,.08)}
+.cursor.is-visible,.cursor-ring.is-visible{opacity:1}
+.cursor.is-hovering{width:20px;height:20px}
+.cursor-ring.is-hovering{width:52px;height:52px;border-color:rgba(255,102,0,.9)}
+
+@media (hover:hover) and (pointer:fine){
+  body.nm-home,body.nm-home a,body.nm-home button,body.nm-home [role="button"]{cursor:none}
+}
+
 .nm-skip-link{position:fixed;z-index:2000;inset-block-start:8px;inset-inline-start:12px;padding:10px 16px;border-radius:10px;transform:translateY(-160%);background:#fff;color:#000;font:700 12px "Alexandria",sans-serif;text-decoration:none;transition:transform .2s ease}
 .nm-skip-link:focus{transform:translateY(0)}
 
@@ -197,4 +208,5 @@ body.nm-home>.nm-site-footer{margin-top:5rem}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   .nm-ripple-canvas{display:none}
+  .cursor-ring{transition:none}
 }

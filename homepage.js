@@ -344,6 +344,47 @@
     requestAnimationFrame(drawRipples);
   }
 
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  if (cursor && cursorRing && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
+    let mouseX = 0;
+    let mouseY = 0;
+    let ringX = 0;
+    let ringY = 0;
+    const revealCursor = () => {
+      cursor.classList.add('is-visible');
+      cursorRing.classList.add('is-visible');
+    };
+    document.addEventListener('mousemove', (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+      cursor.style.left = `${mouseX}px`;
+      cursor.style.top = `${mouseY}px`;
+      revealCursor();
+    }, { passive:true });
+    const animateCursorRing = () => {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      cursorRing.style.left = `${ringX}px`;
+      cursorRing.style.top = `${ringY}px`;
+      requestAnimationFrame(animateCursorRing);
+    };
+    animateCursorRing();
+    const interactiveSelector = 'a,button,[role="button"],.nm-service-card,.nm-work-card';
+    document.addEventListener('mouseover', (event) => {
+      if (event.target.closest(interactiveSelector)) {
+        cursor.classList.add('is-hovering');
+        cursorRing.classList.add('is-hovering');
+      }
+    });
+    document.addEventListener('mouseout', (event) => {
+      if (event.target.closest(interactiveSelector) && !event.relatedTarget?.closest?.(interactiveSelector)) {
+        cursor.classList.remove('is-hovering');
+        cursorRing.classList.remove('is-hovering');
+      }
+    });
+  }
+
   updateStory();
   body.classList.add('nm-ready');
 })();
