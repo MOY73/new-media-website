@@ -453,17 +453,19 @@ svg {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     width: 100%;
     margin: 0;
-    padding: 7px 0 0;
+    padding: 0;
     gap: 0.2rem;
     border-top: 1px solid rgba(255,255,255,0.08);
+    align-items: center;
   }
 
   .nm-site-nav__links li { min-width: 0; }
 
   .nm-site-nav__links a {
     display: block;
-    padding: 0.25rem 0.1rem;
+    padding: 0.15rem 0.1rem;
     font-size: 10px;
+    line-height: 1.2;
     letter-spacing: 0.02em;
     white-space: nowrap;
     text-align: center;
