@@ -246,6 +246,9 @@ html.light .app-sidebar { background:#fff; }
 .application-card__actions span { color:var(--portal-faint); font-size:9px; }
 .application-card__actions button { padding:.55rem .8rem; border:1px solid rgba(165,21,232,.35); border-radius:9px; color:var(--portal-text); background:rgba(165,21,232,.09); cursor:pointer; font-size:9px; }
 .application-card__actions button:hover { color:#fff; background:var(--portal-purple); }
+.application-card__buttons { display:flex; align-items:center; gap:.5rem; }
+.application-card__actions .application-delete { color:var(--portal-red); border-color:rgba(255,90,104,.3); background:rgba(255,90,104,.06); }
+.application-card__actions .application-delete:hover { color:#fff; background:var(--portal-red); }
 
 /* Chat */
 .team-chat { width:min(920px,100%); height:calc(100vh - 235px); min-height:550px; display:grid; grid-template-rows:auto 1fr auto; margin:0 auto; border:1px solid var(--portal-line); border-radius:21px; overflow:hidden; background:var(--portal-panel); box-shadow:var(--portal-shadow); }
@@ -389,4 +392,5 @@ html.light .app-sidebar { background:#fff; }
   .application-card.is-open .application-card__body { grid-template-columns:1fr; }
   .application-detail { grid-template-columns:1fr; }
   .application-card__actions { align-items:stretch; flex-direction:column; }
+  .application-card__buttons { align-items:stretch; flex-direction:column; }
 }

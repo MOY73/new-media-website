@@ -232,6 +232,10 @@ async function handleEmployeeApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateApplication(request, env, url.pathname.split('/').pop());
   }
+  if (url.pathname.startsWith('/api/employee/applications/') && request.method === 'DELETE') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return deleteApplication(env, url.pathname.split('/').pop());
+  }
   if (url.pathname === '/api/employee/messages' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return createMessage(request, env, user);
@@ -492,6 +496,25 @@ async function updateApplication(request, env, id) {
   if (!APPLICATION_STATUSES.includes(status)) return json({ error: 'حالة الطلب غير صحيحة.' }, 400);
   const result = await env.DB.prepare('UPDATE client_applications SET status = ?, updated_at = ? WHERE id = ?').bind(status, Date.now(), id).run();
   if (!result.meta?.changes) return json({ error: 'الطلب غير موجود.' }, 404);
+  return json({ ok: true });
+}
+
+async function deleteApplication(env, id) {
+  if (!isUuid(id)) return json({ error: 'معرّف الطلب غير صحيح.' }, 400);
+  const application = await env.DB.prepare('SELECT id, reference FROM client_applications WHERE id = ?').bind(id).first();
+  if (!application) return json({ error: 'الطلب غير موجود.' }, 404);
+  const files = await env.DB.prepare('SELECT object_key FROM client_application_files WHERE application_id = ?').bind(id).all();
+  if (env.UPLOADS) {
+    for (const file of files.results || []) {
+      await env.UPLOADS.delete(file.object_key);
+    }
+  }
+  await env.DB.batch([
+    env.DB.prepare('DELETE FROM client_application_files WHERE application_id = ?').bind(id),
+    env.DB.prepare('DELETE FROM client_applications WHERE id = ?').bind(id),
+    env.DB.prepare('DELETE FROM employee_clients WHERE id = ? AND created_by = ?').bind(id, 'WEBSITE'),
+    env.DB.prepare("DELETE FROM employee_tasks WHERE created_by = ? AND title LIKE ?").bind('WEBSITE', `%${application.reference}%`)
+  ]);
   return json({ ok: true });
 }
 

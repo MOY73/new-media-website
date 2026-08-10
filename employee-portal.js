@@ -429,6 +429,7 @@
 
     const actions = element('div', 'application-card__actions');
     actions.append(element('span', '', application.email_status === 'sent' ? 'تم إرسال إشعار البريد' : 'محفوظ داخل النظام'));
+    const actionButtons = element('div', 'application-card__buttons');
     const nextStatus = APPLICATION_STATUS[application.status]?.next;
     if (nextStatus) {
       const advance = element('button', '', `نقل إلى: ${APPLICATION_STATUS[nextStatus].label} ←`);
@@ -442,8 +443,23 @@
         } catch (error) { showToast(error.message, true); }
         finally { advance.disabled = false; }
       });
-      actions.append(advance);
+      actionButtons.append(advance);
     }
+    const remove = element('button', 'application-delete', 'حذف الطلب');
+    remove.type = 'button';
+    remove.addEventListener('click', async () => {
+      const confirmed = window.confirm(`حذف الطلب ${application.reference}؟\nسيُحذف طلب الموقع والفرصة والمهمة والمرفقات المرتبطة به نهائياً.`);
+      if (!confirmed) return;
+      remove.disabled = true;
+      try {
+        await api(`/api/employee/applications/${encodeURIComponent(application.id)}`, { method: 'DELETE' });
+        await refreshData({ quiet: true });
+        showToast(`تم حذف الطلب ${application.reference}.`);
+      } catch (error) { showToast(error.message, true); }
+      finally { remove.disabled = false; }
+    });
+    actionButtons.append(remove);
+    actions.append(actionButtons);
     body.append(summary, deep);
     if (application.files?.length) body.append(files);
     body.append(actions);
