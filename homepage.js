@@ -150,6 +150,33 @@
   document.getElementById('orbitNext').addEventListener('click', () => renderOrbit(activeCard + 1, true));
   renderOrbit(0, false);
 
+  const workCards = Array.from(document.querySelectorAll('.nm-work-card'));
+  let activeWork = 1;
+  let lastManualWorkChange = 0;
+
+  function renderWorkDeck(nextIndex, manual) {
+    activeWork = (nextIndex + workCards.length) % workCards.length;
+    workCards.forEach((card, index) => {
+      let slot = index - activeWork;
+      if (slot > 1) slot -= workCards.length;
+      if (slot < -1) slot += workCards.length;
+      card.dataset.workSlot = String(slot);
+      card.setAttribute('aria-pressed', slot === 0 ? 'true' : 'false');
+    });
+    if (manual) lastManualWorkChange = Date.now();
+  }
+
+  workCards.forEach((card, index) => {
+    const select = () => renderWorkDeck(index, true);
+    card.addEventListener('click', select);
+    card.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return;
+      event.preventDefault();
+      select();
+    });
+  });
+  renderWorkDeck(1, false);
+
   function clamp(value, min = 0, max = 1) { return Math.max(min, Math.min(max, value)); }
   function smooth(start, end, value) {
     const amount = clamp((value - start) / Math.max(0.0001, end - start));
@@ -217,6 +244,11 @@
       const desiredCard = Math.min(3, Math.floor(local * 4));
       if (desiredCard !== activeCard) renderOrbit(desiredCard, false);
     }
+    if (progress >= 0.81 && progress <= 0.915 && Date.now() - lastManualWorkChange > 1200) {
+      const workProgress = clamp((progress - 0.82) / 0.085);
+      const desiredWork = Math.min(2, Math.floor(workProgress * 3));
+      if (desiredWork !== activeWork) renderWorkDeck(desiredWork, false);
+    }
 
     let scene = 1;
     if (progress >= 0.09) scene = 2;
@@ -237,8 +269,8 @@
   window.addEventListener('resize', updateStory, { passive: true });
 
   function jumpToHash() {
-    const points = { '#about': 0.5, '#services': 0.68, '#work': 0.84 };
-    if (!points[location.hash]) return;
+    const points = { '#about': 0, '#services': 0.68, '#work': 0.84 };
+    if (!Object.prototype.hasOwnProperty.call(points, location.hash)) return;
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     window.scrollTo({ top: story.offsetTop + range * points[location.hash], behavior: reducedMotion ? 'auto' : 'smooth' });
   }

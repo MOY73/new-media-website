@@ -17,9 +17,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
   <!-- Shared loader: src="/site-preferences.js" (versioned below to invalidate stale homepage chrome). -->
-  <script src="/site-preferences.js?v=26"></script>
+  <script src="/site-preferences.js?v=28"></script>
   <link rel="stylesheet" href="/site-fixes.css">
-  <link rel="stylesheet" href="/homepage.css?v=27">
+  <link rel="stylesheet" href="/homepage.css?v=28">
 </head>
 <body class="nm-home">
   <a class="nm-skip-link" href="#story" data-i18n="skip_link">انتقل إلى التجربة</a>
@@ -131,9 +131,9 @@
             <h2 id="workTitle" data-i18n="work_title">أعمال<br><em>مختارة.</em></h2>
           </div>
           <div class="nm-work-deck">
-            <article class="nm-work-card nm-work-card--one"><span>01 / DIGITAL</span><strong>وميض</strong><p data-i18n="work1">هوية رقمية وحضور متكامل</p><i>↗</i></article>
-            <article class="nm-work-card nm-work-card--two"><span>02 / CAMPAIGN</span><strong>إطلاق</strong><p data-i18n="work2">حملة إطلاق من الاستراتيجية إلى النتيجة</p><i>↗</i></article>
-            <article class="nm-work-card nm-work-card--three"><span>03 / EXPERIENCE</span><strong>مدار</strong><p data-i18n="work3">تجربة علامة تعيش عبر كل نقطة اتصال</p><i>↗</i></article>
+            <article class="nm-work-card nm-work-card--one" tabindex="0" role="button" aria-label="عرض مشروع وميض"><span>01 / DIGITAL</span><strong>وميض</strong><p data-i18n="work1">هوية رقمية وحضور متكامل</p><i>↗</i></article>
+            <article class="nm-work-card nm-work-card--two" tabindex="0" role="button" aria-label="عرض مشروع إطلاق"><span>02 / CAMPAIGN</span><strong>إطلاق</strong><p data-i18n="work2">حملة إطلاق من الاستراتيجية إلى النتيجة</p><i>↗</i></article>
+            <article class="nm-work-card nm-work-card--three" tabindex="0" role="button" aria-label="عرض مشروع مدار"><span>03 / EXPERIENCE</span><strong>مدار</strong><p data-i18n="work3">تجربة علامة تعيش عبر كل نقطة اتصال</p><i>↗</i></article>
           </div>
         </section>
 
@@ -142,7 +142,7 @@
           <p class="nm-scene__eyebrow" data-i18n="cta_eyebrow">الآن دور إشارتك</p>
           <h2 id="ctaTitle" data-i18n="cta_title">جاهز تبدأ<br><em>مشروعك؟</em></h2>
           <p data-i18n="cta_sub">خلّنا نفهم مشروعك من أول مرة ونحوّل الفكرة إلى أثر حقيقي.</p>
-          <a href="/contact-application.html" class="nm-cta-button" data-i18n="cta_button">ابدأ معنا الآن <span>↗</span></a>
+          <a href="/contact-application.html" class="nm-cta-button" data-i18n="cta_button">ابدأ معنا الآن</a>
         </section>
 
         <div class="nm-scroll-cue" aria-hidden="true"><span data-i18n="scroll_label">مرّر لتبدأ الرحلة</span><i></i></div>
@@ -164,7 +164,7 @@
         s3_label:'BRAND & EXPERIENCE', s3_title:'الهوية والتجربة', s3_text:'نحوّل المشاريع إلى علامات وتجارب لا تُنسى.',
         s4_label:'CREATIVE STUDIO', s4_title:'الاستديو الإبداعي', s4_text:'نحوّل الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع.', open_division:'افتح القسم ↗',
         work_eyebrow:'إشارات صنعت أثرًا', work_title:'أعمال<br><em>مختارة.</em>', work1:'هوية رقمية وحضور متكامل', work2:'حملة إطلاق من الاستراتيجية إلى النتيجة', work3:'تجربة علامة تعيش عبر كل نقطة اتصال',
-        cta_eyebrow:'الآن دور إشارتك', cta_title:'جاهز تبدأ<br><em>مشروعك؟</em>', cta_sub:'خلّنا نفهم مشروعك من أول مرة ونحوّل الفكرة إلى أثر حقيقي.', cta_button:'ابدأ معنا الآن <span>↗</span>', scroll_label:'مرّر لتبدأ الرحلة'
+        cta_eyebrow:'الآن دور إشارتك', cta_title:'جاهز تبدأ<br><em>مشروعك؟</em>', cta_sub:'خلّنا نفهم مشروعك من أول مرة ونحوّل الفكرة إلى أثر حقيقي.', cta_button:'ابدأ معنا الآن', scroll_label:'مرّر لتبدأ الرحلة'
       },
       en: {
         skip_link:'Skip to the experience', quote_eyebrow:'We turn ideas into presence', quote_sub:'Strategy, creativity, and performance transformed into a result you can measure.',
@@ -175,10 +175,10 @@
         s3_label:'BRAND & EXPERIENCE', s3_title:'Brand & Experience', s3_text:'We transform businesses into brands and experiences people remember.',
         s4_label:'CREATIVE STUDIO', s4_title:'Creative Studio', s4_text:'We turn ideas into scenes that are watched, remembered, and sold.', open_division:'Open division ↗',
         work_eyebrow:'Signals that made impact', work_title:'Selected<br><em>work.</em>', work1:'A complete digital identity and presence', work2:'A launch campaign from strategy to outcome', work3:'A brand experience across every touchpoint',
-        cta_eyebrow:'Now it is your signal', cta_title:'Ready to start<br><em>your project?</em>', cta_sub:'Let us understand your project once and turn the idea into real impact.', cta_button:'Start with us <span>↗</span>', scroll_label:'Scroll to begin the journey'
+        cta_eyebrow:'Now it is your signal', cta_title:'Ready to start<br><em>your project?</em>', cta_sub:'Let us understand your project once and turn the idea into real impact.', cta_button:'Start with us', scroll_label:'Scroll to begin the journey'
       }
     };
   </script>
-  <script src="/homepage.js?v=27" defer></script>
+  <script src="/homepage.js?v=28" defer></script>
 </body>
 </html>
