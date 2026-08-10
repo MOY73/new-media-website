@@ -161,12 +161,14 @@ html.light .app-sidebar { background:#fff; }
 .mini-pipeline__stage strong { font-family:'Alexandria',sans-serif; font-size:1.35rem; }
 .mini-pipeline__stage span { color:var(--portal-muted); font-size:10px; }
 .task-list { display:flex; flex-direction:column; gap:.55rem; }
-.task-item { display:grid; grid-template-columns:28px minmax(0,1fr); align-items:start; gap:.65rem; padding:.65rem 0; border-bottom:1px solid var(--portal-line); }
+.task-item { display:grid; grid-template-columns:28px minmax(0,1fr) 28px; align-items:start; gap:.65rem; padding:.65rem 0; border-bottom:1px solid var(--portal-line); }
 .task-item:last-child { border-bottom:0; }
 .task-item button { width:22px; height:22px; border:1px solid var(--portal-line-strong); border-radius:7px; background:transparent; cursor:pointer; }
 .task-item button:hover { border-color:var(--portal-green); }
 .task-item.is-done button { color:#06140f; background:var(--portal-green); }
 .task-item.is-done strong { color:var(--portal-faint); text-decoration:line-through; }
+.task-item .task-delete { color:var(--portal-red)!important; border-color:rgba(255,90,104,.25)!important; background:transparent!important; }
+.task-item .task-delete:hover { color:#fff!important; background:var(--portal-red)!important; }
 .task-item strong,.task-item span { display:block; }
 .task-item strong { font-size:12px; }
 .task-item span { margin-top:.2rem; color:var(--portal-muted); font-size:9px; }
@@ -212,6 +214,8 @@ html.light .app-sidebar { background:#fff; }
 .client-card__owner i { display:grid; width:23px; height:23px; place-items:center; border-radius:7px; color:#fff; background:linear-gradient(135deg,var(--portal-purple),var(--portal-pink)); font-style:normal; }
 .client-card__actions button { padding:.35rem .55rem; border:1px solid var(--portal-line); border-radius:8px; color:var(--portal-muted); background:transparent; cursor:pointer; font-size:9px; }
 .client-card__actions button:hover { color:var(--portal-orange); border-color:rgba(255,107,16,.35); }
+.client-card__actions .client-delete { color:var(--portal-red); border-color:rgba(255,90,104,.28); background:rgba(255,90,104,.04); }
+.client-card__actions .client-delete:hover { color:#fff; border-color:var(--portal-red); background:var(--portal-red); }
 
 /* Website applications */
 .applications-list { display:flex; flex-direction:column; gap:.8rem; }

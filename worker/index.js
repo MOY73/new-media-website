@@ -248,6 +248,10 @@ async function handleEmployeeApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateClient(request, env, url.pathname.split('/').pop());
   }
+  if (url.pathname.startsWith('/api/employee/clients/') && request.method === 'DELETE') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return deleteClient(env, url.pathname.split('/').pop());
+  }
   if (url.pathname === '/api/employee/tasks' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return createTask(request, env, user);
@@ -255,6 +259,10 @@ async function handleEmployeeApi(request, env, url) {
   if (url.pathname.startsWith('/api/employee/tasks/') && request.method === 'PATCH') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateTask(request, env, url.pathname.split('/').pop());
+  }
+  if (url.pathname.startsWith('/api/employee/tasks/') && request.method === 'DELETE') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return deleteTask(env, url.pathname.split('/').pop());
   }
 
   return json({ error: 'المسار غير موجود.' }, 404);
@@ -637,6 +645,18 @@ async function updateClient(request, env, id) {
   return json({ ok: true });
 }
 
+async function deleteClient(env, id) {
+  if (!isUuid(id)) return json({ error: 'معرّف العميل غير صحيح.' }, 400);
+  const client = await env.DB.prepare('SELECT id, created_by FROM employee_clients WHERE id = ?').bind(id).first();
+  if (!client) return json({ error: 'العميل غير موجود.' }, 404);
+  if (client.created_by === 'WEBSITE') {
+    const application = await env.DB.prepare('SELECT id FROM client_applications WHERE id = ?').bind(id).first();
+    if (application) return deleteApplication(env, id);
+  }
+  await env.DB.prepare('DELETE FROM employee_clients WHERE id = ?').bind(id).run();
+  return json({ ok: true });
+}
+
 async function createTask(request, env, user) {
   const payload = await readJson(request, 8000);
   if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
@@ -670,6 +690,13 @@ async function updateTask(request, env, id) {
     `UPDATE employee_tasks SET title = ?, client_name = ?, assignee = ?, due_date = ?,
      priority = ?, status = ?, updated_at = ? WHERE id = ?`
   ).bind(merged.title, merged.clientName, merged.assignee, merged.dueDate, merged.priority, merged.status, Date.now(), id).run();
+  return json({ ok: true });
+}
+
+async function deleteTask(env, id) {
+  if (!isUuid(id)) return json({ error: 'معرّف المهمة غير صحيح.' }, 400);
+  const result = await env.DB.prepare('DELETE FROM employee_tasks WHERE id = ?').bind(id).run();
+  if (!result.meta?.changes) return json({ error: 'المهمة غير موجودة.' }, 404);
   return json({ ok: true });
 }
 

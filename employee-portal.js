@@ -265,7 +265,20 @@
       element('strong', '', task.title),
       element('span', '', [task.client_name, task.assignee, task.due_date].filter(Boolean).join(' • ') || 'بدون تفاصيل إضافية')
     );
-    row.append(toggle, copy);
+    const remove = element('button', 'task-delete', '×');
+    remove.type = 'button';
+    remove.setAttribute('aria-label', `حذف المهمة ${task.title}`);
+    remove.addEventListener('click', async () => {
+      if (!window.confirm(`حذف المهمة «${task.title}»؟`)) return;
+      remove.disabled = true;
+      try {
+        await api(`/api/employee/tasks/${encodeURIComponent(task.id)}`, { method: 'DELETE' });
+        await refreshData({ quiet: true });
+        showToast('تم حذف المهمة.');
+      } catch (error) { showToast(error.message, true); }
+      finally { remove.disabled = false; }
+    });
+    row.append(toggle, copy, remove);
     return row;
   }
 
@@ -348,6 +361,23 @@
       });
       actions.append(move);
     }
+    const remove = element('button', 'client-delete', 'حذف');
+    remove.type = 'button';
+    remove.addEventListener('click', async () => {
+      const linkedRequest = client.created_by === 'WEBSITE';
+      const warning = linkedRequest
+        ? `حذف «${client.name}»؟\nسيُحذف أيضاً طلب الموقع والمهمة والمرفقات المرتبطة به.`
+        : `حذف العميل «${client.name}» من مسار الفرص؟`;
+      if (!window.confirm(warning)) return;
+      remove.disabled = true;
+      try {
+        await api(`/api/employee/clients/${encodeURIComponent(client.id)}`, { method: 'DELETE' });
+        await refreshData({ quiet: true });
+        showToast(`تم حذف ${client.name}.`);
+      } catch (error) { showToast(error.message, true); }
+      finally { remove.disabled = false; }
+    });
+    actions.append(remove);
     card.append(actions);
     return card;
   }
