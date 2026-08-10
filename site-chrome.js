@@ -6,14 +6,14 @@
       services: 'خدماتنا', work: 'أعمالنا', about: 'من نحن', contact: 'تواصل معنا',
       desc: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.',
       divisions: 'أقسامنا', growth: 'النمو والأداء', digital: 'الحضور الرقمي', brand: 'الهوية والتجربة', creative: 'الاستديو الإبداعي',
-      policies: 'السياسات', privacy: 'سياسة الخصوصية', terms: 'شروط الخدمة', refund: 'سياسة الاسترداد', confidentiality: 'اتفاقية السرية', cookies: 'ملفات تعريف الارتباط',
+      policies: 'السياسات', privacy: 'سياسة الخصوصية', terms: 'شروط الخدمة', refund: 'سياسة الاسترداد', confidentiality: 'اتفاقية السرية', cookies: 'ملفات تعريف الارتباط', employees: 'للموظفين',
       reach: 'تواصل معنا', location: 'جدة، المملكة العربية السعودية', rights: '© جميع الحقوق محفوظة لدى New Media.'
     },
     en: {
       services: 'Services', work: 'Work', about: 'About', contact: 'Contact Us',
       desc: 'A full-service marketing agency creating an unforgettable presence — from strategy to results.',
       divisions: 'Divisions', growth: 'Growth & Performance', digital: 'Digital Presence', brand: 'Brand & Experience', creative: 'Creative Studio',
-      policies: 'Policies', privacy: 'Privacy Policy', terms: 'Terms of Service', refund: 'Refund Policy', confidentiality: 'Confidentiality', cookies: 'Cookie Policy',
+      policies: 'Policies', privacy: 'Privacy Policy', terms: 'Terms of Service', refund: 'Refund Policy', confidentiality: 'Confidentiality', cookies: 'Cookie Policy', employees: 'Employees',
       reach: 'Contact Us', location: 'Jeddah, Saudi Arabia', rights: '© All rights reserved by New Media.'
     }
   };
@@ -46,12 +46,11 @@
     footer.className = 'nm-site-footer';
     footer.innerHTML = `
       <div class="nm-site-footer__grid">
-        <div class="nm-site-footer__about"><div class="nm-site-footer__brand"><img src="/favicon.svg" alt=""><strong>NEW MEDIA</strong></div><p data-nm-label="desc"></p><div class="nm-site-footer__social"><a href="#!" aria-label="X">𝕏</a><a href="#!" aria-label="LinkedIn">in</a><a href="#!" aria-label="Instagram">◎</a></div></div>
+        <div class="nm-site-footer__about"><div class="nm-site-footer__brand"><img src="/favicon.svg" alt=""><strong>NEW MEDIA</strong></div><p data-nm-label="desc"></p><div class="nm-site-footer__social"><a href="https://www.instagram.com/newmedia.hc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — newmedia.hc" title="@newmedia.hc"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a></div><p class="nm-site-footer__rights" data-nm-label="rights"></p></div>
         <div><h3 data-nm-label="divisions"></h3><ul><li><a href="growth-performance.html" data-nm-label="growth"></a></li><li><a href="digital-presence.html" data-nm-label="digital"></a></li><li><a href="brand-experience.html" data-nm-label="brand"></a></li><li><a href="creative-production.html" data-nm-label="creative"></a></li></ul></div>
-        <div><h3 data-nm-label="policies"></h3><ul><li><a href="privacy-policy.html" data-nm-label="privacy"></a></li><li><a href="terms-of-service.html" data-nm-label="terms"></a></li><li><a href="refund-policy.html" data-nm-label="refund"></a></li><li><a href="confidentiality.html" data-nm-label="confidentiality"></a></li><li><a href="cookie-policy.html" data-nm-label="cookies"></a></li></ul></div>
-        <div><h3 data-nm-label="reach"></h3><ul><li><a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li><a href="tel:+966500000000" dir="ltr">+966 50 000 0000</a></li><li data-nm-label="location"></li></ul></div>
-      </div>
-      <div class="nm-site-footer__bottom"><p data-nm-label="rights"></p><div class="nm-site-footer__legal"><a href="privacy-policy.html">Privacy</a><a href="terms-of-service.html">Terms</a><a href="cookie-policy.html">Cookies</a></div></div>`;
+        <div><h3 data-nm-label="policies"></h3><ul><li><a href="privacy-policy.html" data-nm-label="privacy"></a></li><li><a href="terms-of-service.html" data-nm-label="terms"></a></li><li><a href="refund-policy.html" data-nm-label="refund"></a></li><li><a href="confidentiality.html" data-nm-label="confidentiality"></a></li><li><a href="cookie-policy.html" data-nm-label="cookies"></a></li><li><a href="employees.html" data-nm-label="employees"></a></li></ul></div>
+        <div><h3 data-nm-label="reach"></h3><ul><li><a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li><a href="https://wa.me/966544006084" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp: +966 54 400 6084" dir="ltr">+966 54 400 6084</a></li><li data-nm-label="location"></li></ul></div>
+      </div>`;
     if (oldFooter) oldFooter.replaceWith(footer);
     else {
       document.querySelector('.footer-copy-404')?.remove();

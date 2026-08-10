@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<script src="/site-preferences.js"></script>
+<title>للموظفين — NEW MEDIA</title>
+<meta name="description" content="بوابة التوظيف والموظفين في وكالة NEW MEDIA.">
+<link rel="canonical" href="https://newmedia.sa/employees.html">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/site-fixes.css">
+<style>
+  :root { --bg:#050505; --text:#fff; --muted:rgba(255,255,255,.52); --line:rgba(255,255,255,.11); --glass:rgba(255,255,255,.04); --orange:#ff6500; --purple:#7900d8; }
+  * { box-sizing:border-box; }
+  body { min-height:100vh; margin:0; overflow-x:hidden; color:var(--text); background:var(--bg); font-family:'Tajawal',sans-serif; }
+  body::before { position:fixed; inset:0; z-index:-1; content:''; pointer-events:none; background:radial-gradient(circle at 75% 12%,rgba(121,0,216,.14),transparent 28rem),radial-gradient(circle at 8% 72%,rgba(255,101,0,.11),transparent 30rem); }
+  nav { display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; }
+  nav a { color:inherit; text-decoration:none; }
+  .controls { display:flex; gap:.5rem; }
+  .theme-btn,.lang-btn { width:40px; height:40px; border:1px solid var(--line); border-radius:10px; color:inherit; background:var(--glass); cursor:pointer; }
+  main { width:min(1080px,calc(100% - 2rem)); margin:0 auto; padding:11rem 0 5rem; }
+  .hero { position:relative; min-height:390px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:4rem 2rem; overflow:hidden; text-align:center; border:1px solid var(--line); border-radius:30px; background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018)); box-shadow:0 25px 80px rgba(0,0,0,.3); }
+  .hero::after { position:absolute; width:280px; height:280px; border-radius:50%; content:''; background:linear-gradient(135deg,var(--purple),var(--orange)); filter:blur(90px); opacity:.2; }
+  .eyebrow,.hero h1,.hero p,.status { position:relative; z-index:1; }
+  .eyebrow { margin-bottom:1rem; color:var(--orange); font-family:'Alexandria',sans-serif; font-size:11px; font-weight:700; letter-spacing:.18em; }
+  h1 { max-width:720px; margin:0; font-family:'Alexandria',sans-serif; font-size:clamp(2.4rem,7vw,5.4rem); font-weight:900; line-height:1.15; }
+  .hero p { max-width:610px; margin:1.5rem auto 0; color:var(--muted); font-size:clamp(1rem,2vw,1.18rem); line-height:1.9; }
+  .status { display:inline-flex; align-items:center; gap:.55rem; margin-top:1.7rem; padding:.6rem 1rem; border:1px solid rgba(255,101,0,.25); border-radius:999px; color:rgba(255,255,255,.7); background:rgba(255,101,0,.08); font-size:12px; }
+  .status::before { width:7px; height:7px; border-radius:50%; content:''; background:var(--orange); box-shadow:0 0 14px var(--orange); }
+  .employee-area { display:grid; grid-template-columns:1.2fr .8fr; gap:1.25rem; margin-top:1.25rem; }
+  .panel { min-height:235px; padding:2.3rem; border:1px solid var(--line); border-radius:24px; background:var(--glass); }
+  .panel-num { display:block; margin-bottom:2rem; color:rgba(255,255,255,.25); font-family:'Alexandria',sans-serif; font-size:11px; letter-spacing:.15em; }
+  .panel h2 { margin:0 0 .9rem; font-family:'Alexandria',sans-serif; font-size:clamp(1.35rem,3vw,2rem); }
+  .panel p { max-width:570px; margin:0; color:var(--muted); line-height:1.9; }
+  .portal { background:linear-gradient(145deg,rgba(121,0,216,.12),rgba(255,101,0,.07)); }
+  html.light { --bg:#f5f3f7; --text:#211b26; --muted:rgba(33,27,38,.62); --line:rgba(50,35,60,.13); --glass:rgba(255,255,255,.7); }
+  html.light body::before { opacity:.65; }
+  html.light .status { color:rgba(33,27,38,.72); }
+  html.light .panel-num { color:rgba(33,27,38,.38); }
+  @media (max-width:720px) { main { padding-top:8rem; } .hero { min-height:350px; padding:3rem 1.25rem; border-radius:24px; } .employee-area { grid-template-columns:1fr; } .panel { padding:1.8rem; } }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html">NEW MEDIA</a>
+  <div class="controls"><button class="theme-btn" id="themeBtn" aria-label="تغيير المظهر">☽</button><button class="lang-btn" id="langBtn" aria-label="تغيير اللغة">EN</button></div>
+</nav>
+
+<main>
+  <section class="hero">
+    <span class="eyebrow" data-i18n="eyebrow">انضم إلى الفريق</span>
+    <h1 data-i18n="hero_title">حاب تصير موظف معانا؟</h1>
+    <p data-i18n="hero_text">نجهّز حاليًا تجربة التقديم على الفرص والانضمام إلى فريق NEW MEDIA. قريبًا ستجد هنا الوظائف المتاحة وطريقة التقديم.</p>
+    <span class="status" data-i18n="coming_soon">قسم التوظيف قيد التجهيز</span>
+  </section>
+
+  <section class="employee-area">
+    <article class="panel">
+      <span class="panel-num">01 / CAREERS</span>
+      <h2 data-i18n="careers_title">فرص العمل</h2>
+      <p data-i18n="careers_text">سيظهر هنا كل ما يخص الوظائف، متطلبات الانضمام، وخطوات التقديم عند اعتمادها.</p>
+    </article>
+    <article class="panel portal">
+      <span class="panel-num">02 / TEAM</span>
+      <h2 data-i18n="portal_title">قسم خاص بالموظفين</h2>
+      <p data-i18n="portal_text">مساحة داخلية للموظفين سيتم بناء إجراءاتها وأدواتها في المرحلة القادمة.</p>
+    </article>
+  </section>
+</main>
+
+<footer><span data-i18n="footer_copy">© جميع الحقوق محفوظة لدى New Media.</span></footer>
+
+<script>
+const T = {
+  ar: {
+    dir:'rtl', lang:'ar', btn:'EN',
+    eyebrow:'انضم إلى الفريق', hero_title:'حاب تصير موظف معانا؟',
+    hero_text:'نجهّز حاليًا تجربة التقديم على الفرص والانضمام إلى فريق NEW MEDIA. قريبًا ستجد هنا الوظائف المتاحة وطريقة التقديم.',
+    coming_soon:'قسم التوظيف قيد التجهيز', careers_title:'فرص العمل',
+    careers_text:'سيظهر هنا كل ما يخص الوظائف، متطلبات الانضمام، وخطوات التقديم عند اعتمادها.',
+    portal_title:'قسم خاص بالموظفين', portal_text:'مساحة داخلية للموظفين سيتم بناء إجراءاتها وأدواتها في المرحلة القادمة.',
+    footer_copy:'© جميع الحقوق محفوظة لدى New Media.'
+  },
+  en: {
+    dir:'ltr', lang:'en', btn:'ع',
+    eyebrow:'JOIN THE TEAM', hero_title:'Want to work with us?',
+    hero_text:'We are currently preparing the NEW MEDIA careers experience. Open roles and application steps will appear here soon.',
+    coming_soon:'Careers section in progress', careers_title:'Career opportunities',
+    careers_text:'Open positions, requirements, and application steps will appear here once approved.',
+    portal_title:'Employee area', portal_text:'A dedicated internal employee space whose workflows and tools will be built in the next phase.',
+    footer_copy:'© All rights reserved by New Media.'
+  }
+};
+let curLang='ar';
+function applyLang(lang){
+  const t=T[lang];
+  document.documentElement.lang=t.lang;
+  document.documentElement.dir=t.dir;
+  document.getElementById('langBtn').textContent=t.btn;
+  document.querySelectorAll('[data-i18n]').forEach((element)=>{ const key=element.dataset.i18n; if(t[key]!==undefined) element.textContent=t[key]; });
+  curLang=lang;
+  window.NMPreferences?.setLanguage(lang);
+}
+const langBtn=document.getElementById('langBtn');
+langBtn.addEventListener('click',()=>applyLang(curLang==='ar'?'en':'ar'));
+applyLang(window.NMPreferences?.getLanguage()||'ar');
+const themeBtn=document.getElementById('themeBtn');
+function renderTheme(theme){ document.documentElement.classList.toggle('light',theme==='light'); themeBtn.textContent=theme==='light'?'☀':'☽'; window.NMPreferences?.setTheme(theme); }
+renderTheme(window.NMPreferences?.getTheme()||'dark');
+themeBtn.addEventListener('click',()=>renderTheme(document.documentElement.classList.contains('light')?'dark':'light'));
+</script>
+</body>
+</html>
