@@ -4,6 +4,8 @@ const LOGIN_LIMIT = 5;
 const LOGIN_LOCK_SECONDS = 15 * 60;
 const encoder = new TextEncoder();
 const decoder = new TextDecoder();
+const EMPLOYEE_LOGIN_HTML = '';
+const EMPLOYEE_DASHBOARD_HTML = '';
 
 const CLIENT_STATUSES = ['lead', 'discovery', 'proposal', 'won', 'active'];
 const TASK_STATUSES = ['open', 'done'];
@@ -124,15 +126,23 @@ export default {
     }
 
     if (/^\/employee-dashboard(?:\.html)?\/?$/.test(url.pathname)) {
-      const user = await readSession(request, env);
-      if (!user) return Response.redirect(new URL('/employee-login', url), 302);
-      return employeeAssetResponse(request, env);
+      return Response.redirect(new URL('/team/workspace', url), 302);
     }
 
     if (/^\/employee-login(?:\.html)?\/?$/.test(url.pathname)) {
+      return Response.redirect(new URL('/team/login', url), 302);
+    }
+
+    if (/^\/team\/workspace\/?$/.test(url.pathname)) {
       const user = await readSession(request, env);
-      if (user) return Response.redirect(new URL('/employee-dashboard', url), 302);
-      return employeeAssetResponse(request, env);
+      if (!user) return Response.redirect(new URL('/team/login', url), 302);
+      return employeeHtmlResponse(EMPLOYEE_DASHBOARD_HTML);
+    }
+
+    if (/^\/team\/login\/?$/.test(url.pathname)) {
+      const user = await readSession(request, env);
+      if (user) return Response.redirect(new URL('/team/workspace', url), 302);
+      return employeeHtmlResponse(EMPLOYEE_LOGIN_HTML);
     }
 
     const response = await env.ASSETS.fetch(request);
@@ -399,16 +409,15 @@ function normalizeTask(payload) {
   };
 }
 
-async function employeeAssetResponse(request, env) {
-  const response = await env.ASSETS.fetch(request);
-  const headers = new Headers(response.headers);
+function employeeHtmlResponse(html) {
+  const headers = new Headers({ 'Content-Type': 'text/html; charset=utf-8' });
   headers.set('Cache-Control', 'no-store');
   headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'");
   headers.set('X-Content-Type-Options', 'nosniff');
   headers.set('X-Frame-Options', 'DENY');
   headers.set('Referrer-Policy', 'same-origin');
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
-  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+  return new Response(html, { status: 200, headers });
 }
 
 function json(data, status = 200, extraHeaders = {}) {

@@ -1,4 +1,4 @@
-import { cp, mkdir, readdir, rm } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { dirname, extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,12 +12,21 @@ await mkdir(assets, { recursive: true });
 await mkdir(server, { recursive: true });
 
 const publicExtensions = new Set([".css", ".html", ".js", ".svg", ".png", ".txt", ".xml"]);
+const privateEmployeePages = new Set(["employee-login.html", "employee-dashboard.html"]);
 const entries = await readdir(root, { withFileTypes: true });
 
 for (const entry of entries) {
-  if (entry.isFile() && publicExtensions.has(extname(entry.name))) {
+  if (entry.isFile() && publicExtensions.has(extname(entry.name)) && !privateEmployeePages.has(entry.name)) {
     await cp(join(root, entry.name), join(assets, entry.name));
   }
 }
 
-await cp(join(root, "worker", "index.js"), join(server, "index.js"));
+const [workerSource, loginHtml, dashboardHtml] = await Promise.all([
+  readFile(join(root, "worker", "index.js"), "utf8"),
+  readFile(join(root, "employee-login.html"), "utf8"),
+  readFile(join(root, "employee-dashboard.html"), "utf8"),
+]);
+const compiledWorker = workerSource
+  .replace("const EMPLOYEE_LOGIN_HTML = '';", `const EMPLOYEE_LOGIN_HTML = ${JSON.stringify(loginHtml)};`)
+  .replace("const EMPLOYEE_DASHBOARD_HTML = '';", `const EMPLOYEE_DASHBOARD_HTML = ${JSON.stringify(dashboardHtml)};`);
+await writeFile(join(server, "index.js"), compiledWorker, "utf8");
