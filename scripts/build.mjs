@@ -29,6 +29,7 @@ for (const file of [
   "tv-head-stage-03.webp",
   "tv-head-stage-04.webp",
   "tv-head-deconstructed.webp",
+  "tv-head-open-hands.webp",
   "new-media-social-preview.jpg",
 ]) {
   await cp(join(root, "assets", "homepage", file), join(homepageAssets, file));

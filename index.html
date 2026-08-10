@@ -4,329 +4,178 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#050505">
-  <meta name="description" content="NEW MEDIA — وكالة تسويق شاملة تصنع حضوراً لا يُنسى، من الاستراتيجية إلى الإبداع إلى النتائج.">
+  <meta name="description" content="NEW MEDIA — نحوّل الفكرة إلى تأثير قابل للقياس.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="NEW MEDIA — نحن نصنع التأثير">
-  <meta property="og:description" content="وكالة تسويق شاملة تصنع حضوراً لا يُنسى.">
+  <meta property="og:title" content="NEW MEDIA — تأثير قابل للقياس">
+  <meta property="og:description" content="وكالة تسويق شاملة تحوّل الفكرة إلى حضور، والحضور إلى نتيجة.">
   <meta property="og:image" content="https://newmedia-agency.mohammedhijji.chatgpt.site/assets/homepage/new-media-social-preview.jpg">
   <meta property="og:url" content="https://newmedia-agency.mohammedhijji.chatgpt.site/">
   <meta name="twitter:card" content="summary_large_image">
-  <title>NEW MEDIA — نحن نصنع التأثير</title>
+  <title>NEW MEDIA — تأثير قابل للقياس</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script src="/site-preferences.js"></script>
+  <!-- Shared loader: src="/site-preferences.js" (versioned below to invalidate stale homepage chrome). -->
+  <script src="/site-preferences.js?v=26"></script>
   <link rel="stylesheet" href="/site-fixes.css">
   <link rel="stylesheet" href="/homepage.css">
 </head>
 <body class="nm-home">
-  <a class="nm-skip-link" href="#main-content" data-i18n="skip_link">انتقل إلى المحتوى</a>
+  <a class="nm-skip-link" href="#story" data-i18n="skip_link">انتقل إلى التجربة</a>
 
   <div class="nm-page-progress" aria-hidden="true"><span id="pageProgress"></span></div>
   <div class="nm-noise" aria-hidden="true"></div>
 
-  <nav class="nm-legacy-nav" aria-label="التنقل الرئيسي">
-    <a class="nm-legacy-nav__brand" href="/" aria-label="العودة للرئيسية">
-      <img src="/favicon.svg" alt="New Media" width="48" height="42">
-    </a>
-
-    <ul class="nav-links">
-      <li><a href="#services" data-i18n="nav_services">خدماتنا</a></li>
-      <li><a href="#work" data-i18n="nav_work">أعمالنا</a></li>
-      <li><a href="#about" data-i18n="nav_about">من نحن</a></li>
-    </ul>
-
-    <div class="nm-legacy-nav__actions">
-      <button class="theme-btn" id="themeBtn" type="button" aria-label="تبديل المظهر" title="Dark / Light"><span aria-hidden="true">☾</span></button>
+  <nav class="nm-shell-placeholder" aria-label="التنقل الرئيسي">
+    <a href="/" aria-label="New Media"><img src="/favicon.svg" alt="New Media"></a>
+    <div>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="تبديل المظهر"><span aria-hidden="true">☾</span></button>
       <button class="lang-btn" id="langBtn" type="button" aria-label="Switch language">EN</button>
-      <a class="nav-cta" href="/contact-application.html" data-i18n="nav_contact">ابدأ مشروعك</a>
     </div>
   </nav>
 
-  <main id="main-content">
-    <section class="nm-hero" aria-labelledby="hero-title">
-      <div class="nm-hero__stage">
-      <div class="nm-hero__visual" aria-hidden="true">
-        <img class="nm-hero__figure" data-frame="0" src="/assets/homepage/tv-head-hero.webp" alt="" fetchpriority="high">
-        <img class="nm-hero__figure" data-frame="1" src="/assets/homepage/tv-head-stage-02.webp" alt="">
-        <img class="nm-hero__figure" data-frame="2" src="/assets/homepage/tv-head-stage-03.webp" alt="">
-        <img class="nm-hero__figure" data-frame="3" src="/assets/homepage/tv-head-stage-04.webp" alt="">
-        <img class="nm-hero__figure" data-frame="4" src="/assets/homepage/tv-head-deconstructed.webp" alt="">
-        <div class="nm-hero__scan"></div>
-        <div class="nm-hero__vignette"></div>
-      </div>
+  <main>
+    <section class="nm-story" id="story" aria-label="رحلة NEW MEDIA">
+      <div class="nm-story__stage">
+        <canvas class="nm-ripple-canvas" id="rippleCanvas" aria-hidden="true"></canvas>
 
-      <div class="nm-hero__interface" aria-hidden="true">
-        <div class="nm-signal nm-signal--top"><span class="nm-signal__dot"></span> LIVE SIGNAL <b>01</b></div>
-        <div class="nm-coordinates">21.3891° N<br>39.8579° E</div>
-        <div class="nm-frame-mark nm-frame-mark--a"></div>
-        <div class="nm-frame-mark nm-frame-mark--b"></div>
-      </div>
-
-      <div class="nm-hero__copy">
-        <p class="nm-kicker nm-reveal" data-i18n="hero_eyebrow">وكالة تسويق شاملة — المملكة العربية السعودية</p>
-        <h1 class="nm-hero__title nm-reveal" id="hero-title">
-          <span data-i18n="hero_line1">نحن نصنع</span>
-          <strong data-i18n="hero_line2">التأثير</strong>
-        </h1>
-        <p class="nm-hero__sub nm-reveal" data-i18n="hero_sub">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى الإبداع إلى النتائج</p>
-        <div class="nm-hero__actions nm-reveal">
-          <a class="nm-btn nm-btn--primary" href="#work"><span data-i18n="hero_btn1">شوف أعمالنا</span><i aria-hidden="true">↙</i></a>
-          <a class="nm-btn nm-btn--ghost" href="/contact-application.html"><span data-i18n="hero_btn2">ابدأ مشروعك</span></a>
+        <div class="nm-story__visual" aria-hidden="true">
+          <img class="nm-story__frame" data-frame="0" src="/assets/homepage/tv-head-hero.webp" alt="" fetchpriority="high">
+          <img class="nm-story__frame" data-frame="1" src="/assets/homepage/tv-head-stage-02.webp" alt="">
+          <img class="nm-story__frame" data-frame="2" src="/assets/homepage/tv-head-stage-03.webp" alt="">
+          <img class="nm-story__frame" data-frame="3" src="/assets/homepage/tv-head-stage-04.webp" alt="">
+          <img class="nm-story__frame" data-frame="4" src="/assets/homepage/tv-head-deconstructed.webp" alt="">
+          <img class="nm-story__frame nm-story__frame--hands" data-frame="hands" src="/assets/homepage/tv-head-open-hands.webp" alt="">
+          <div class="nm-story__scan"></div>
+          <div class="nm-story__vignette"></div>
         </div>
-      </div>
 
-      <a class="nm-scroll-cue" href="#about">
-        <span data-i18n="scroll_label">مرّر للاكتشاف</span>
-        <i aria-hidden="true"></i>
-      </a>
-      </div>
-    </section>
-
-    <div class="nm-ticker" aria-label="New Media capabilities">
-      <div class="nm-ticker__track">
-        <span>STRATEGY</span><i>✦</i><span>CREATIVE</span><i>✦</i><span>PERFORMANCE</span><i>✦</i><span>EXPERIENCE</span><i>✦</i><span>PRODUCTION</span><i>✦</i>
-        <span>STRATEGY</span><i>✦</i><span>CREATIVE</span><i>✦</i><span>PERFORMANCE</span><i>✦</i><span>EXPERIENCE</span><i>✦</i><span>PRODUCTION</span><i>✦</i>
-      </div>
-    </div>
-
-    <section class="nm-manifesto" id="about" aria-labelledby="about-title">
-      <div class="nm-section-index nm-reveal"><span>ABOUT / 00</span><i></i><b>NEW MEDIA</b></div>
-      <div class="nm-manifesto__grid">
-        <p class="nm-kicker nm-reveal" data-i18n="about_kicker">لا نصنع ضجيجاً. نصنع إشارة تصل.</p>
-        <h2 class="nm-manifesto__title nm-reveal" id="about-title" data-i18n="about_title">نحوّل الفكرة إلى <em>حضور</em>، والحضور إلى نتيجة قابلة للقياس.</h2>
-        <p class="nm-manifesto__text nm-reveal" data-i18n="about_text">نبدأ من فهم مشروعك، ثم نبني له الاستراتيجية والهوية والمحتوى والتجربة التي تجعله واضحاً، مختلفاً، وقادراً على النمو.</p>
-      </div>
-
-      <div class="nm-stats" aria-label="إحصاءات NEW MEDIA">
-        <article class="nm-stat nm-reveal"><strong data-count="150" data-suffix="+">0</strong><span data-i18n="stat1">عميل راضٍ</span></article>
-        <article class="nm-stat nm-reveal"><strong data-count="5" data-suffix="X">0</strong><span data-i18n="stat2">متوسط عائد الاستثمار</span></article>
-        <article class="nm-stat nm-reveal"><strong data-count="3" data-suffix="M+">0</strong><span data-i18n="stat3">وصول شهري</span></article>
-        <article class="nm-stat nm-reveal"><strong data-count="98" data-suffix="%">0</strong><span data-i18n="stat4">معدل الاحتفاظ</span></article>
-      </div>
-    </section>
-
-    <section class="nm-services" id="services" aria-labelledby="services-title">
-      <div class="nm-section-index nm-reveal"><span>SERVICES / 01—04</span><i></i><b>SELECT A CHANNEL</b></div>
-      <div class="nm-services__heading">
-        <div>
-          <p class="nm-kicker nm-reveal" data-i18n="services_tag">أقسامنا</p>
-          <h2 class="nm-section-title nm-reveal" id="services-title" data-i18n="services_title">أربعة أقسام<br><span>تصنع الفارق</span></h2>
+        <div class="nm-story__hud" aria-hidden="true">
+          <div class="nm-live"><i></i><span>NEW MEDIA SIGNAL</span><b id="sceneNumber">01</b></div>
+          <div class="nm-coordinates">21.3891° N<br>39.8579° E</div>
+          <div class="nm-corner nm-corner--a"></div>
+          <div class="nm-corner nm-corner--b"></div>
         </div>
-        <p class="nm-services__intro nm-reveal" data-i18n="services_intro">حرّك المؤشر فوق كل قناة لتشاهد كيف تتحول من تخصص منفصل إلى جزء من منظومة واحدة.</p>
-      </div>
 
-      <div class="nm-channel-list">
-        <a class="nm-channel nm-reveal" href="/growth-performance.html" data-channel="01">
-          <span class="nm-channel__number">01</span>
-          <span class="nm-channel__icon"><img src="/icon-growth-3d.png" alt="" loading="lazy"></span>
-          <span class="nm-channel__body">
-            <small data-i18n="c1_sub">قسم النمو والأداء</small>
-            <strong data-i18n="ct1">النمو والأداء</strong>
-            <span data-i18n="c1_text">القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.</span>
-          </span>
-          <span class="nm-channel__tags"><i data-i18n="c1_t1">إعلانات ممولة</i><i data-i18n="c1_t2">تحليل البيانات</i><i data-i18n="c1_t3">عائد الاستثمار</i><i data-i18n="c1_t4">تطوير الأعمال</i></span>
-          <span class="nm-channel__arrow" aria-hidden="true">↗</span>
-        </a>
+        <section class="nm-scene nm-scene--quote is-active" data-scene="quote" aria-labelledby="quoteTitle">
+          <p class="nm-scene__eyebrow" data-i18n="quote_eyebrow">نحوّل الفكرة إلى حضور</p>
+          <h1 class="nm-quote" id="quoteTitle" aria-live="polite"><span id="typedQuote"></span><i aria-hidden="true"></i></h1>
+          <p class="nm-quote__sub" data-i18n="quote_sub">استراتيجية، إبداع، وأداء يتحول إلى نتيجة يمكن قياسها.</p>
+        </section>
 
-        <a class="nm-channel nm-reveal" href="/digital-presence.html" data-channel="02">
-          <span class="nm-channel__number">02</span>
-          <span class="nm-channel__icon"><img src="/icon-digital-3d.png" alt="" loading="lazy"></span>
-          <span class="nm-channel__body">
-            <small data-i18n="c2_sub">قسم الحضور الرقمي</small>
-            <strong data-i18n="ct2">الحضور الرقمي</strong>
-            <span data-i18n="c2_text">القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.</span>
-          </span>
-          <span class="nm-channel__tags"><i data-i18n="c2_t1">صناعة المحتوى</i><i data-i18n="c2_t2">سوشيال ميديا</i><i data-i18n="c2_t3">ذكاء اصطناعي</i><i data-i18n="c2_t4">إدارة المجتمعات</i></span>
-          <span class="nm-channel__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="nm-channel nm-reveal" href="/brand-experience.html" data-channel="03">
-          <span class="nm-channel__number">03</span>
-          <span class="nm-channel__icon"><img src="/icon-brand-3d.png" alt="" loading="lazy"></span>
-          <span class="nm-channel__body">
-            <small data-i18n="c3_sub">قسم الهوية والتجربة</small>
-            <strong data-i18n="ct3">الهوية والتجربة</strong>
-            <span data-i18n="c3_text">القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.</span>
-          </span>
-          <span class="nm-channel__tags"><i data-i18n="c3_t1">الهوية البصرية</i><i data-i18n="c3_t2">واجهة المستخدم</i><i data-i18n="c3_t3">مواقع ومتاجر</i><i data-i18n="c3_t4">صفحات الهبوط</i></span>
-          <span class="nm-channel__arrow" aria-hidden="true">↗</span>
-        </a>
-
-        <a class="nm-channel nm-reveal" href="/creative-production.html" data-channel="04">
-          <span class="nm-channel__number">04</span>
-          <span class="nm-channel__icon"><img src="/icon-creative-3d.png" alt="" loading="lazy"></span>
-          <span class="nm-channel__body">
-            <small data-i18n="c4_sub">الاستديو الإبداعي</small>
-            <strong data-i18n="ct4">الاستديو الإبداعي</strong>
-            <span data-i18n="c4_text">المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.</span>
-          </span>
-          <span class="nm-channel__tags"><i data-i18n="c4_t1">تصوير منتجات</i><i data-i18n="c4_t2">إنتاج إعلانات</i><i data-i18n="c4_t3">ريلز</i><i data-i18n="c4_t4">فيديو ذكاء اصطناعي</i></span>
-          <span class="nm-channel__arrow" aria-hidden="true">↗</span>
-        </a>
-      </div>
-    </section>
-
-    <section class="nm-work" id="work" aria-labelledby="work-title">
-      <div class="nm-section-index nm-reveal"><span>SELECTED / 01—03</span><i></i><b>CASE SIGNALS</b></div>
-      <div class="nm-work__heading">
-        <p class="nm-kicker nm-reveal" data-i18n="work_tag">ما صنعناه</p>
-        <h2 class="nm-section-title nm-reveal" id="work-title" data-i18n="work_title">أعمال<br><span>مختارة</span></h2>
-      </div>
-
-      <div class="nm-work-grid">
-        <article class="nm-project nm-project--lead nm-reveal">
-          <div class="nm-project__screen">
-            <div class="nm-project__orb nm-project__orb--a"></div>
-            <span class="nm-project__watermark">NM/01</span>
-            <div class="nm-project__mini-ui"><i></i><i></i><i></i></div>
+        <section class="nm-scene nm-scene--stats" id="about" data-scene="stats" aria-labelledby="statsTitle">
+          <div class="nm-scene__heading">
+            <p class="nm-scene__eyebrow" data-i18n="stats_eyebrow">الأثر بالأرقام</p>
+            <h2 id="statsTitle" data-i18n="stats_title">نتائج تتكلم<br><em>عن نفسها.</em></h2>
           </div>
-          <div class="nm-project__meta"><span>Brand Identity + Social</span><strong>Fashion House KSA</strong><b>01</b></div>
-        </article>
-
-        <article class="nm-project nm-reveal">
-          <div class="nm-project__screen">
-            <div class="nm-project__orb nm-project__orb--b"></div>
-            <span class="nm-project__watermark">5X</span>
-            <div class="nm-project__chart"><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="nm-stats-deck">
+            <article class="nm-stat-card" style="--order:0"><strong data-count="150" data-suffix="+">150+</strong><span data-i18n="stat1">عميل راضٍ</span></article>
+            <article class="nm-stat-card" style="--order:1"><strong data-count="5" data-suffix="X">5X</strong><span data-i18n="stat2">متوسط عائد الاستثمار</span></article>
+            <article class="nm-stat-card" style="--order:2"><strong data-count="3" data-suffix="M+">3M+</strong><span data-i18n="stat3">وصول شهري</span></article>
+            <article class="nm-stat-card" style="--order:3"><strong data-count="98" data-suffix="%">98%</strong><span data-i18n="stat4">معدل الاحتفاظ</span></article>
           </div>
-          <div class="nm-project__meta"><span>Paid Ads</span><strong>Tech Startup</strong><b>02</b></div>
-        </article>
+        </section>
 
-        <article class="nm-project nm-reveal">
-          <div class="nm-project__screen nm-project__screen--grid">
-            <div class="nm-project__orb nm-project__orb--c"></div>
-            <span class="nm-project__watermark">360°</span>
-            <div class="nm-project__cross" aria-hidden="true"></div>
+        <section class="nm-scene nm-scene--services" id="services" data-scene="services" aria-labelledby="servicesTitle">
+          <div class="nm-services-copy">
+            <p class="nm-scene__eyebrow" data-i18n="services_eyebrow">أربعة أقسام، منظومة واحدة</p>
+            <h2 id="servicesTitle" data-i18n="services_title">اختر القناة<br><em>التي تصنع فرقك.</em></h2>
+            <p data-i18n="services_sub">اضغط على بطاقة لتصبح في المقدمة، ثم افتح القسم واستكشف خدماته.</p>
           </div>
-          <div class="nm-project__meta"><span>Full Campaign</span><strong>Real Estate</strong><b>03</b></div>
-        </article>
-      </div>
-    </section>
 
-    <section class="nm-cta" id="contact" aria-labelledby="cta-title">
-      <div class="nm-cta__glow" aria-hidden="true"></div>
-      <div class="nm-section-index nm-reveal"><span>YOUR SIGNAL / NEXT</span><i></i><b>LET'S BUILD</b></div>
-      <div class="nm-cta__content">
-        <span class="nm-cta__code nm-reveal">PROJECT INTAKE / 01</span>
-        <h2 class="nm-reveal" id="cta-title" data-i18n="cta_title">جاهز تبدأ<br><span>مشروعك؟</span></h2>
-        <p class="nm-reveal" data-i18n="cta_sub">تواصل معنا اليوم ونبني معاً استراتيجية تسويقية تصنع فارقاً حقيقياً</p>
-        <a class="nm-btn nm-btn--primary nm-reveal" href="/contact-application.html"><span data-i18n="cta_btn">ابدأ معنا الآن →</span></a>
+          <div class="nm-card-orbit" id="serviceOrbit" aria-label="أقسام NEW MEDIA">
+            <article class="nm-service-card" data-card="0" tabindex="0">
+              <span class="nm-service-card__number">01</span>
+              <img src="/icon-growth-3d.png" alt="" loading="lazy">
+              <small data-i18n="s1_label">GROWTH & PERFORMANCE</small>
+              <h3 data-i18n="s1_title">النمو والأداء</h3>
+              <p data-i18n="s1_text">نحوّل الانتباه إلى أرباح، والبيانات إلى قرارات.</p>
+              <a href="/growth-performance.html" data-i18n="open_division">افتح القسم ↗</a>
+            </article>
+            <article class="nm-service-card" data-card="1" tabindex="0">
+              <span class="nm-service-card__number">02</span>
+              <img src="/icon-digital-3d.png" alt="" loading="lazy">
+              <small data-i18n="s2_label">DIGITAL PRESENCE</small>
+              <h3 data-i18n="s2_title">الحضور الرقمي</h3>
+              <p data-i18n="s2_text">نصنع صوت البراند وحضوره داخل العالم الرقمي.</p>
+              <a href="/digital-presence.html" data-i18n="open_division">افتح القسم ↗</a>
+            </article>
+            <article class="nm-service-card" data-card="2" tabindex="0">
+              <span class="nm-service-card__number">03</span>
+              <img src="/icon-brand-3d.png" alt="" loading="lazy">
+              <small data-i18n="s3_label">BRAND & EXPERIENCE</small>
+              <h3 data-i18n="s3_title">الهوية والتجربة</h3>
+              <p data-i18n="s3_text">نحوّل المشاريع إلى علامات وتجارب لا تُنسى.</p>
+              <a href="/brand-experience.html" data-i18n="open_division">افتح القسم ↗</a>
+            </article>
+            <article class="nm-service-card" data-card="3" tabindex="0">
+              <span class="nm-service-card__number">04</span>
+              <img src="/icon-creative-3d.png" alt="" loading="lazy">
+              <small data-i18n="s4_label">CREATIVE STUDIO</small>
+              <h3 data-i18n="s4_title">الاستديو الإبداعي</h3>
+              <p data-i18n="s4_text">نحوّل الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع.</p>
+              <a href="/creative-production.html" data-i18n="open_division">افتح القسم ↗</a>
+            </article>
+            <div class="nm-orbit-controls">
+              <button id="orbitPrev" type="button" aria-label="القسم السابق">←</button>
+              <span><b id="orbitCurrent">01</b> / 04</span>
+              <button id="orbitNext" type="button" aria-label="القسم التالي">→</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="nm-scene nm-scene--work" id="work" data-scene="work" aria-labelledby="workTitle">
+          <div class="nm-work-heading">
+            <p class="nm-scene__eyebrow" data-i18n="work_eyebrow">إشارات صنعت أثرًا</p>
+            <h2 id="workTitle" data-i18n="work_title">أعمال<br><em>مختارة.</em></h2>
+          </div>
+          <div class="nm-work-deck">
+            <article class="nm-work-card nm-work-card--one"><span>01 / DIGITAL</span><strong>وميض</strong><p data-i18n="work1">هوية رقمية وحضور متكامل</p><i>↗</i></article>
+            <article class="nm-work-card nm-work-card--two"><span>02 / CAMPAIGN</span><strong>إطلاق</strong><p data-i18n="work2">حملة إطلاق من الاستراتيجية إلى النتيجة</p><i>↗</i></article>
+            <article class="nm-work-card nm-work-card--three"><span>03 / EXPERIENCE</span><strong>مدار</strong><p data-i18n="work3">تجربة علامة تعيش عبر كل نقطة اتصال</p><i>↗</i></article>
+          </div>
+        </section>
+
+        <section class="nm-scene nm-scene--cta" data-scene="cta" aria-labelledby="ctaTitle">
+          <div class="nm-cta-glow" aria-hidden="true"></div>
+          <p class="nm-scene__eyebrow" data-i18n="cta_eyebrow">الآن دور إشارتك</p>
+          <h2 id="ctaTitle" data-i18n="cta_title">جاهز تبدأ<br><em>مشروعك؟</em></h2>
+          <p data-i18n="cta_sub">خلّنا نفهم مشروعك من أول مرة ونحوّل الفكرة إلى أثر حقيقي.</p>
+          <a href="/contact-application.html" class="nm-cta-button" data-i18n="cta_button">ابدأ معنا الآن <span>↗</span></a>
+        </section>
+
+        <div class="nm-scroll-cue" aria-hidden="true"><span data-i18n="scroll_label">مرّر لتبدأ الرحلة</span><i></i></div>
+        <div class="nm-scene-progress" aria-hidden="true"><span id="sceneProgress"></span></div>
       </div>
     </section>
   </main>
 
-  <footer class="nm-home-footer">
-    <div class="nm-home-footer__grid">
-      <div class="nm-home-footer__brand">
-        <a href="/" class="nm-footer-logo"><img src="/favicon.svg" alt="" width="44" height="40"><strong>NEW MEDIA</strong></a>
-        <p data-i18n="footer_desc">وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.</p>
-        <a class="nm-instagram" href="https://www.instagram.com/newmedia.hc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — newmedia.hc" title="@newmedia.hc">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
-          <span>@newmedia.hc</span>
-        </a>
-        <p class="nm-copyright" data-i18n="footer_copy">© جميع الحقوق محفوظة لدى New Media.</p>
-      </div>
-
-      <div class="nm-footer-column">
-        <h3 data-i18n="footer_div_title">أقسامنا</h3>
-        <ul>
-          <li><a href="/growth-performance.html" data-i18n="fdiv1">النمو والأداء</a></li>
-          <li><a href="/digital-presence.html" data-i18n="fdiv2">الحضور الرقمي</a></li>
-          <li><a href="/brand-experience.html" data-i18n="fdiv3">الهوية والتجربة</a></li>
-          <li><a href="/creative-production.html" data-i18n="fdiv4">الاستديو الإبداعي</a></li>
-        </ul>
-      </div>
-
-      <div class="nm-footer-column">
-        <h3 data-i18n="footer_pol_title">السياسات</h3>
-        <ul>
-          <li><a href="/privacy-policy.html" data-i18n="footer_pol1">سياسة الخصوصية</a></li>
-          <li><a href="/terms-of-service.html" data-i18n="footer_pol2">شروط الخدمة</a></li>
-          <li><a href="/refund-policy.html" data-i18n="footer_pol3">سياسة الاسترداد</a></li>
-          <li><a href="/confidentiality.html" data-i18n="footer_pol4">اتفاقية السرية</a></li>
-          <li><a href="/cookie-policy.html" data-i18n="footer_pol5">ملفات تعريف الارتباط</a></li>
-          <li><a href="/employees.html" data-i18n="footer_employees">للموظفين</a></li>
-        </ul>
-      </div>
-
-      <div class="nm-footer-column nm-footer-contact">
-        <h3 data-i18n="footer_contact_title">تواصل معنا</h3>
-        <ul>
-          <li><a href="mailto:newmediahc@gmail.com" dir="ltr">newmediahc@gmail.com</a></li>
-          <li><a href="https://wa.me/966544006084" target="_blank" rel="noopener noreferrer" dir="ltr">+966 54 400 6084</a></li>
-          <li data-i18n="footer_location">مكة المكرمة، المملكة العربية السعودية</li>
-        </ul>
-      </div>
-    </div>
-  </footer>
+  <footer><span class="nm-shell-copyright">© جميع الحقوق محفوظة لدى New Media.</span></footer>
 
   <script>
     const translations = {
       ar: {
-        skip_link: 'انتقل إلى المحتوى',
-        nav_services: 'خدماتنا', nav_work: 'أعمالنا', nav_about: 'من نحن', nav_contact: 'ابدأ مشروعك',
-        hero_eyebrow: 'وكالة تسويق شاملة — المملكة العربية السعودية',
-        hero_line1: 'نحن نصنع', hero_line2: 'التأثير',
-        hero_sub: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى الإبداع إلى النتائج',
-        hero_btn1: 'شوف أعمالنا', hero_btn2: 'ابدأ مشروعك', signal_toggle: 'فكّك الإشارة', scroll_label: 'مرّر للاكتشاف',
-        about_kicker: 'لا نصنع ضجيجاً. نصنع إشارة تصل.',
-        about_title: 'نحوّل الفكرة إلى <em>حضور</em>، والحضور إلى نتيجة قابلة للقياس.',
-        about_text: 'نبدأ من فهم مشروعك، ثم نبني له الاستراتيجية والهوية والمحتوى والتجربة التي تجعله واضحاً، مختلفاً، وقادراً على النمو.',
-        services_tag: 'أقسامنا', services_title: 'أربعة أقسام<br><span>تصنع الفارق</span>',
-        services_intro: 'حرّك المؤشر فوق كل قناة لتشاهد كيف تتحول من تخصص منفصل إلى جزء من منظومة واحدة.',
-        ct1: 'النمو والأداء', ct2: 'الحضور الرقمي', ct3: 'الهوية والتجربة', ct4: 'الاستديو الإبداعي',
-        c1_sub: 'قسم النمو والأداء', c1_text: 'القسم المسؤول عن تحويل الانتباه إلى أرباح، والبيانات إلى قرارات. يشمل الحملات الممولة، التحليل، المبيعات، وتطوير الأعمال.',
-        c1_t1: 'إعلانات ممولة', c1_t2: 'تحليل البيانات', c1_t3: 'عائد الاستثمار', c1_t4: 'تطوير الأعمال',
-        c2_sub: 'قسم الحضور الرقمي', c2_text: 'القسم الذي يصنع صوت البراند وحضوره داخل العالم الرقمي. يشمل صناعة المحتوى، إدارة السوشال ميديا، والذكاء الاصطناعي.',
-        c2_t1: 'صناعة المحتوى', c2_t2: 'سوشيال ميديا', c2_t3: 'ذكاء اصطناعي', c2_t4: 'إدارة المجتمعات',
-        c3_sub: 'قسم الهوية والتجربة', c3_text: 'القسم الذي يحول المشاريع إلى علامات لا تُنسى. يشمل الهوية البصرية، التصميم، وتطوير المواقع والمتاجر.',
-        c3_t1: 'الهوية البصرية', c3_t2: 'واجهة المستخدم', c3_t3: 'مواقع ومتاجر', c3_t4: 'صفحات الهبوط',
-        c4_sub: 'الاستديو الإبداعي', c4_text: 'المكان الذي تتحول فيه الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع. يشمل التصوير، الإنتاج، والفيديو بالذكاء الاصطناعي.',
-        c4_t1: 'تصوير منتجات', c4_t2: 'إنتاج إعلانات', c4_t3: 'ريلز', c4_t4: 'فيديو ذكاء اصطناعي',
-        stat1: 'عميل راضٍ', stat2: 'متوسط عائد الاستثمار', stat3: 'وصول شهري', stat4: 'معدل الاحتفاظ',
-        work_tag: 'ما صنعناه', work_title: 'أعمال<br><span>مختارة</span>',
-        cta_title: 'جاهز تبدأ<br><span>مشروعك؟</span>',
-        cta_sub: 'تواصل معنا اليوم ونبني معاً استراتيجية تسويقية تصنع فارقاً حقيقياً', cta_btn: 'ابدأ معنا الآن →',
-        footer_desc: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.',
-        footer_div_title: 'أقسامنا', footer_pol_title: 'السياسات',
-        footer_pol1: 'سياسة الخصوصية', footer_pol2: 'شروط الخدمة', footer_pol3: 'سياسة الاسترداد', footer_pol4: 'اتفاقية السرية', footer_pol5: 'ملفات تعريف الارتباط', footer_employees: 'للموظفين',
-        footer_contact_title: 'تواصل معنا', footer_location: 'مكة المكرمة، المملكة العربية السعودية',
-        footer_copy: '© جميع الحقوق محفوظة لدى New Media.',
-        fdiv1: 'النمو والأداء', fdiv2: 'الحضور الرقمي', fdiv3: 'الهوية والتجربة', fdiv4: 'الاستديو الإبداعي'
+        skip_link:'انتقل إلى التجربة', quote_eyebrow:'نحوّل الفكرة إلى حضور', quote_sub:'استراتيجية، إبداع، وأداء يتحول إلى نتيجة يمكن قياسها.',
+        stats_eyebrow:'الأثر بالأرقام', stats_title:'نتائج تتكلم<br><em>عن نفسها.</em>', stat1:'عميل راضٍ', stat2:'متوسط عائد الاستثمار', stat3:'وصول شهري', stat4:'معدل الاحتفاظ',
+        services_eyebrow:'أربعة أقسام، منظومة واحدة', services_title:'اختر القناة<br><em>التي تصنع فرقك.</em>', services_sub:'اضغط على بطاقة لتصبح في المقدمة، ثم افتح القسم واستكشف خدماته.',
+        s1_label:'GROWTH & PERFORMANCE', s1_title:'النمو والأداء', s1_text:'نحوّل الانتباه إلى أرباح، والبيانات إلى قرارات.',
+        s2_label:'DIGITAL PRESENCE', s2_title:'الحضور الرقمي', s2_text:'نصنع صوت البراند وحضوره داخل العالم الرقمي.',
+        s3_label:'BRAND & EXPERIENCE', s3_title:'الهوية والتجربة', s3_text:'نحوّل المشاريع إلى علامات وتجارب لا تُنسى.',
+        s4_label:'CREATIVE STUDIO', s4_title:'الاستديو الإبداعي', s4_text:'نحوّل الأفكار إلى مشاهد تُشاهد وتُحفظ وتُباع.', open_division:'افتح القسم ↗',
+        work_eyebrow:'إشارات صنعت أثرًا', work_title:'أعمال<br><em>مختارة.</em>', work1:'هوية رقمية وحضور متكامل', work2:'حملة إطلاق من الاستراتيجية إلى النتيجة', work3:'تجربة علامة تعيش عبر كل نقطة اتصال',
+        cta_eyebrow:'الآن دور إشارتك', cta_title:'جاهز تبدأ<br><em>مشروعك؟</em>', cta_sub:'خلّنا نفهم مشروعك من أول مرة ونحوّل الفكرة إلى أثر حقيقي.', cta_button:'ابدأ معنا الآن <span>↗</span>', scroll_label:'مرّر لتبدأ الرحلة'
       },
       en: {
-        skip_link: 'Skip to content',
-        nav_services: 'Services', nav_work: 'Work', nav_about: 'About', nav_contact: 'Start a Project',
-        hero_eyebrow: 'Full-Service Marketing Agency — Saudi Arabia',
-        hero_line1: 'WE CREATE', hero_line2: 'IMPACT',
-        hero_sub: 'A full-service marketing agency creating an unforgettable presence — from strategy to creativity to results.',
-        hero_btn1: 'View Our Work', hero_btn2: 'Start a Project', signal_toggle: 'Deconstruct Signal', scroll_label: 'Scroll to discover',
-        about_kicker: 'We do not make noise. We make signals that reach.',
-        about_title: 'We turn an idea into a <em>presence</em>, and presence into a measurable result.',
-        about_text: 'We begin by understanding your business, then build the strategy, identity, content, and experience that make it clear, distinctive, and ready to grow.',
-        services_tag: 'Our Divisions', services_title: 'Four Divisions<br><span>That Make a Difference</span>',
-        services_intro: 'Move across each channel to see how a specialist discipline becomes part of one connected system.',
-        ct1: 'Growth & Performance', ct2: 'Digital Presence', ct3: 'Brand & Experience', ct4: 'Creative Production Studio',
-        c1_sub: 'Growth & Performance Division', c1_text: 'The division responsible for converting attention into profits and data into decisions. Includes paid campaigns, analytics, sales, and business development.',
-        c1_t1: 'Paid Ads', c1_t2: 'Data Analytics', c1_t3: 'ROI', c1_t4: 'Business Dev',
-        c2_sub: 'Digital Presence Division', c2_text: "The division that builds the brand's voice and digital presence. Includes content creation, social media management, and AI.",
-        c2_t1: 'Content Creation', c2_t2: 'Social Media', c2_t3: 'AI & Automation', c2_t4: 'Community Mgmt',
-        c3_sub: 'Brand & Experience Division', c3_text: 'The division that transforms projects into unforgettable brands. Includes visual identity, design, and web and store development.',
-        c3_t1: 'Brand Identity', c3_t2: 'UI/UX', c3_t3: 'Websites & Stores', c3_t4: 'Landing Pages',
-        c4_sub: 'Creative Studio', c4_text: 'The place where ideas become scenes that are watched, remembered, and sold. Includes photography, production, and AI video.',
-        c4_t1: 'Product Photography', c4_t2: 'Ad Production', c4_t3: 'Reels', c4_t4: 'AI Video',
-        stat1: 'Happy Clients', stat2: 'Average ROI', stat3: 'Monthly Reach', stat4: 'Retention Rate',
-        work_tag: 'What We Built', work_title: 'Selected<br><span>Work</span>',
-        cta_title: 'Ready to Start<br><span>Your Project?</span>',
-        cta_sub: "Contact us today and together we'll build a marketing strategy that makes a real difference.", cta_btn: 'Start With Us Now →',
-        footer_desc: 'A full-service marketing agency creating an unforgettable presence — from strategy to results.',
-        footer_div_title: 'Our Divisions', footer_pol_title: 'Policies',
-        footer_pol1: 'Privacy Policy', footer_pol2: 'Terms of Service', footer_pol3: 'Refund Policy', footer_pol4: 'Confidentiality', footer_pol5: 'Cookie Policy', footer_employees: 'Employees',
-        footer_contact_title: 'Contact Us', footer_location: 'Makkah, Saudi Arabia',
-        footer_copy: '© All rights reserved by New Media.',
-        fdiv1: 'Growth & Performance', fdiv2: 'Digital Presence', fdiv3: 'Brand & Experience', fdiv4: 'Creative Production'
+        skip_link:'Skip to the experience', quote_eyebrow:'We turn ideas into presence', quote_sub:'Strategy, creativity, and performance transformed into a result you can measure.',
+        stats_eyebrow:'Impact in numbers', stats_title:'Results that<br><em>speak for themselves.</em>', stat1:'Happy Clients', stat2:'Average ROI', stat3:'Monthly Reach', stat4:'Retention Rate',
+        services_eyebrow:'Four divisions. One system.', services_title:'Choose the channel<br><em>that makes your difference.</em>', services_sub:'Select a card to bring it forward, then open the division and explore its services.',
+        s1_label:'GROWTH & PERFORMANCE', s1_title:'Growth & Performance', s1_text:'We turn attention into revenue and data into decisions.',
+        s2_label:'DIGITAL PRESENCE', s2_title:'Digital Presence', s2_text:'We build the brand voice and its place in the digital world.',
+        s3_label:'BRAND & EXPERIENCE', s3_title:'Brand & Experience', s3_text:'We transform businesses into brands and experiences people remember.',
+        s4_label:'CREATIVE STUDIO', s4_title:'Creative Studio', s4_text:'We turn ideas into scenes that are watched, remembered, and sold.', open_division:'Open division ↗',
+        work_eyebrow:'Signals that made impact', work_title:'Selected<br><em>work.</em>', work1:'A complete digital identity and presence', work2:'A launch campaign from strategy to outcome', work3:'A brand experience across every touchpoint',
+        cta_eyebrow:'Now it is your signal', cta_title:'Ready to start<br><em>your project?</em>', cta_sub:'Let us understand your project once and turn the idea into real impact.', cta_button:'Start with us <span>↗</span>', scroll_label:'Scroll to begin the journey'
       }
     };
   </script>
