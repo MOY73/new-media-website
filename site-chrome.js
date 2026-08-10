@@ -7,14 +7,14 @@
       desc: 'وكالة تسويق شاملة تصنع حضوراً لا يُنسى — من الاستراتيجية إلى النتائج.',
       divisions: 'أقسامنا', growth: 'النمو والأداء', digital: 'الحضور الرقمي', brand: 'الهوية والتجربة', creative: 'الاستديو الإبداعي',
       policies: 'السياسات', privacy: 'سياسة الخصوصية', terms: 'شروط الخدمة', refund: 'سياسة الاسترداد', confidentiality: 'اتفاقية السرية', cookies: 'ملفات تعريف الارتباط', employees: 'للموظفين',
-      reach: 'تواصل معنا', location: 'جدة، المملكة العربية السعودية', rights: '© جميع الحقوق محفوظة لدى New Media.'
+      reach: 'تواصل معنا', location: 'مكة المكرمة، المملكة العربية السعودية', rights: '© جميع الحقوق محفوظة لدى New Media.'
     },
     en: {
       services: 'Services', work: 'Work', about: 'About', contact: 'Contact Us',
       desc: 'A full-service marketing agency creating an unforgettable presence — from strategy to results.',
       divisions: 'Divisions', growth: 'Growth & Performance', digital: 'Digital Presence', brand: 'Brand & Experience', creative: 'Creative Studio',
       policies: 'Policies', privacy: 'Privacy Policy', terms: 'Terms of Service', refund: 'Refund Policy', confidentiality: 'Confidentiality', cookies: 'Cookie Policy', employees: 'Employees',
-      reach: 'Contact Us', location: 'Jeddah, Saudi Arabia', rights: '© All rights reserved by New Media.'
+      reach: 'Contact Us', location: 'Makkah, Saudi Arabia', rights: '© All rights reserved by New Media.'
     }
   };
 
