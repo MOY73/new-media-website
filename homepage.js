@@ -351,17 +351,14 @@
     let mouseY = 0;
     let ringX = 0;
     let ringY = 0;
-    const revealCursor = () => {
-      cursor.classList.add('is-visible');
-      cursorRing.classList.add('is-visible');
-    };
-    document.addEventListener('mousemove', (event) => {
+    const trackCursor = (event) => {
       mouseX = event.clientX;
       mouseY = event.clientY;
       cursor.style.left = `${mouseX}px`;
       cursor.style.top = `${mouseY}px`;
-      revealCursor();
-    }, { passive:true });
+    };
+    document.addEventListener('mousemove', trackCursor, { passive:true });
+    document.addEventListener('pointermove', trackCursor, { passive:true });
     const animateCursorRing = () => {
       ringX += (mouseX - ringX) * 0.12;
       ringY += (mouseY - ringY) * 0.12;
