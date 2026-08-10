@@ -151,13 +151,13 @@
   function updateReview() {
     const services = [...form.querySelectorAll('input[name="services"]:checked')].map((item) => item.value).join('، ');
     const values = {
-      identity: `${value('full_name')} — ${value('email')}`,
+      identity: `${value('full_name')}. ${value('email')}`,
       organization: value('organization'), services,
       budget: value('budget_range'), start: value('start_window'),
     };
     Object.entries(values).forEach(([key, val]) => {
       const node = document.querySelector(`[data-review="${key}"]`);
-      if (node) node.textContent = val || '—';
+      if (node) node.textContent = val || 'غير محدد';
     });
   }
 

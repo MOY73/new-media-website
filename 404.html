@@ -7,7 +7,7 @@
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="color-scheme" content="dark light">
 <script src="/site-preferences.js"></script>
-<title>404 — الصفحة غير موجودة | NEW MEDIA</title>
+<title>404. الصفحة غير موجودة | NEW MEDIA</title>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
 <style>
@@ -136,7 +136,7 @@
     const text=translations[currentLang];
     document.getElementById('langBtn').textContent=text.btn;
     document.querySelectorAll('[data-i18n]').forEach((element)=>{element.textContent=text[element.dataset.i18n];});
-    document.title=currentLang==='ar'?'404 — الصفحة غير موجودة | NEW MEDIA':'404 — Page Not Found | NEW MEDIA';
+    document.title=currentLang==='ar'?'404. الصفحة غير موجودة | NEW MEDIA':'404. Page Not Found | NEW MEDIA';
   }
   document.getElementById('langBtn').addEventListener('click',()=>applyLang(currentLang==='ar'?'en':'ar'));
   applyLang(currentLang);

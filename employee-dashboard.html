@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="color-scheme" content="dark light">
 <script src="/site-preferences.js"></script>
-<title>مساحة عمل الفريق — NEW MEDIA</title>
+<title>مساحة عمل الفريق. NEW MEDIA</title>
 <meta name="description" content="لوحة العمل الداخلية لفريق NEW MEDIA.">
 <meta name="robots" content="noindex,nofollow,noarchive">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -36,11 +36,11 @@
         <div class="app-nav__label">مكتبة العمل</div>
         <button class="app-nav__item" type="button" data-view="packages"><span>▦</span><b>الباقات</b></button>
         <button class="app-nav__item" type="button" data-view="pricing"><span>⌁</span><b>مرجع الأسعار</b></button>
-        <button class="app-nav__item" type="button" data-view="workflow"><span>↗</span><b>آلية العمل</b></button>
+        <button class="app-nav__item" type="button" data-view="workflow"><span>•</span><b>آلية العمل</b></button>
         <button class="app-nav__item" type="button" data-view="services"><span>✦</span><b>الأقسام والخدمات</b></button>
       </nav>
       <div class="sidebar-foot">
-        <button class="portal-quiet-button" id="logoutButton" type="button">تسجيل الخروج <span>↗</span></button>
+        <button class="portal-quiet-button" id="logoutButton" type="button">تسجيل الخروج</button>
       </div>
     </aside>
 
@@ -65,7 +65,7 @@
           <div class="metrics-grid" id="metricsGrid"></div>
           <div class="overview-grid">
             <section class="workspace-card workspace-card--wide">
-              <div class="card-heading"><div><span>PIPELINE</span><h3>حركة الفرص</h3></div><button type="button" data-jump-view="clients">عرض الكل ←</button></div>
+              <div class="card-heading"><div><span>PIPELINE</span><h3>حركة الفرص</h3></div><button type="button" data-jump-view="clients">عرض الكل </button></div>
               <div class="mini-pipeline" id="miniPipeline"></div>
             </section>
             <section class="workspace-card">
@@ -73,11 +73,11 @@
               <div class="task-list" id="overviewTasks"></div>
             </section>
             <section class="workspace-card workspace-card--wide">
-              <div class="card-heading"><div><span>TEAM CHAT</span><h3>آخر ما قاله الفريق</h3></div><button type="button" data-jump-view="chat">فتح المحادثة ←</button></div>
+              <div class="card-heading"><div><span>TEAM CHAT</span><h3>آخر ما قاله الفريق</h3></div><button type="button" data-jump-view="chat">فتح المحادثة </button></div>
               <div class="chat-preview" id="chatPreview"></div>
             </section>
             <section class="workspace-card knowledge-shortcut">
-              <span>PLAYBOOK</span><h3>المسار التشغيلي</h3><p>ثماني مراحل من تحديد الأولوية حتى الاحتفاظ والتوسع.</p><button type="button" data-jump-view="workflow">افتح الدليل ←</button>
+              <span>PLAYBOOK</span><h3>المسار التشغيلي</h3><p>ثماني مراحل من تحديد الأولوية حتى الاحتفاظ والتوسع.</p><button type="button" data-jump-view="workflow">افتح الدليل </button>
             </section>
           </div>
         </section>
@@ -97,7 +97,7 @@
           <div class="team-chat">
             <div class="chat-room-head"><div class="chat-room-logo">NM</div><div><strong>الفريق العام</strong><span>مساحة داخلية مشتركة</span></div><i></i></div>
             <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
-            <form class="chat-composer" id="chatForm"><textarea id="chatInput" maxlength="1000" rows="1" placeholder="اكتب تحديثًا للفريق..." required></textarea><button type="submit" aria-label="إرسال الرسالة">←</button></form>
+            <form class="chat-composer" id="chatForm"><textarea id="chatInput" maxlength="1000" rows="1" placeholder="اكتب تحديثًا للفريق..." required></textarea><button type="submit" aria-label="إرسال الرسالة"></button></form>
           </div>
         </section>
 
@@ -135,7 +135,7 @@
         <div class="form-grid"><label>المرحلة<select name="status"><option value="lead">فرصة جديدة</option><option value="discovery">اكتشاف</option><option value="proposal">عرض مرسل</option><option value="won">تم الإغلاق</option><option value="active">عميل نشط</option></select></label><label>المسؤول<input name="owner" maxlength="60" placeholder="اسم المسؤول"></label></div>
         <label>الخطوة التالية<textarea name="nextStep" maxlength="300" rows="3" placeholder="مكالمة، عرض، متابعة..."></textarea></label>
         <p class="form-message" id="clientFormMessage" role="alert"></p>
-        <button class="portal-primary-button" type="submit"><span>حفظ في اللوحة</span><b>←</b></button>
+        <button class="portal-primary-button" type="submit"><span>حفظ في اللوحة</span></button>
       </form>
     </section>
   </div>
@@ -149,7 +149,7 @@
         <div class="form-grid"><label>العميل<input name="clientName" maxlength="120"></label><label>المسؤول<input name="assignee" maxlength="60"></label></div>
         <div class="form-grid"><label>الموعد<input name="dueDate" type="date"></label><label>الأولوية<select name="priority"><option value="normal">عادية</option><option value="high">عالية</option><option value="low">منخفضة</option></select></label></div>
         <p class="form-message" id="taskFormMessage" role="alert"></p>
-        <button class="portal-primary-button" type="submit"><span>إضافة المهمة</span><b>←</b></button>
+        <button class="portal-primary-button" type="submit"><span>إضافة المهمة</span></button>
       </form>
     </section>
   </div>

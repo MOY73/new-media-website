@@ -461,7 +461,7 @@ async function createPublicApplication(request, env, url, ctx) {
       `INSERT INTO employee_tasks
        (id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at)
        VALUES (?, ?, ?, '', '', 'high', 'open', 'WEBSITE', ?, ?)`
-    ).bind(taskId, `مراجعة طلب الموقع — ${reference}`, payload.organization || payload.full_name, now, now),
+    ).bind(taskId, `مراجعة طلب الموقع. ${reference}`, payload.organization || payload.full_name, now, now),
     env.DB.prepare(
       `INSERT INTO website_application_limits (attempt_key, last_created_at, updated_at)
        VALUES (?, ?, ?) ON CONFLICT(attempt_key) DO UPDATE SET last_created_at = excluded.last_created_at, updated_at = excluded.updated_at`
@@ -561,7 +561,7 @@ async function sendApplicationEmail(env, application) {
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: sender, to: [recipient], reply_to: application.email, subject: `طلب جديد ${application.reference} — ${application.organization}`, text })
+    body: JSON.stringify({ from: sender, to: [recipient], reply_to: application.email, subject: `طلب جديد ${application.reference}. ${application.organization}`, text })
   });
   return response.ok;
 }
@@ -574,10 +574,10 @@ function applicationReference(timestamp, id) {
 
 function budgetEstimate(range) {
   if (range.includes('أكثر من 100,000')) return 125000;
-  if (range.includes('50,000 – 100,000')) return 75000;
-  if (range.includes('25,000 – 50,000')) return 37500;
-  if (range.includes('10,000 – 25,000')) return 17500;
-  if (range.includes('5,000 – 10,000')) return 7500;
+  if (range.includes('50,000 إلى 100,000')) return 75000;
+  if (range.includes('25,000 إلى 50,000')) return 37500;
+  if (range.includes('10,000 إلى 25,000')) return 17500;
+  if (range.includes('5,000 إلى 10,000')) return 7500;
   if (range.includes('أقل من 5,000')) return 4000;
   return 0;
 }

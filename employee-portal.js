@@ -342,7 +342,7 @@
     actions.append(owner);
     const next = STATUS_META[client.status]?.next;
     if (next) {
-      const move = element('button', '', `نقل إلى ${STATUS_META[next].label} ←`);
+      const move = element('button', '', `نقل إلى ${STATUS_META[next].label} `);
       move.type = 'button';
       move.addEventListener('click', async () => {
         move.disabled = true;
@@ -462,7 +462,7 @@
     const actionButtons = element('div', 'application-card__buttons');
     const nextStatus = APPLICATION_STATUS[application.status]?.next;
     if (nextStatus) {
-      const advance = element('button', '', `نقل إلى: ${APPLICATION_STATUS[nextStatus].label} ←`);
+      const advance = element('button', '', `نقل إلى: ${APPLICATION_STATUS[nextStatus].label} `);
       advance.type = 'button';
       advance.addEventListener('click', async () => {
         advance.disabled = true;

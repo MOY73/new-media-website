@@ -22,16 +22,16 @@
 
   const quotes = {
     ar: [
-      'نحوّل الفكرة إلى تأثيرٍ قابل للقياس.',
-      'نصنع حضوراً يلفت، وتجربةً تُقنع، ونتيجةً تنمو.',
-      'من إشارة صغيرة إلى علامةٍ لا تُنسى.',
-      'نربط الإبداع بالأداء حتى يصبح الأثر رقماً.'
+      'نحوّل الفكرة إلى تأثير قابل للقياس',
+      'نصنع حضوراً يلفت ونتيجة تنمو',
+      'نحوّل المشاريع إلى علامات لا تُنسى',
+      'نربط الإبداع بالأداء حتى يصبح الأثر رقماً'
     ],
     en: [
-      'We turn ideas into measurable impact.',
-      'We build presence that attracts, experience that convinces, and results that grow.',
-      'From a small signal to an unforgettable brand.',
-      'We connect creativity to performance until impact becomes a number.'
+      'We turn ideas into measurable impact',
+      'We build presence that attracts and results that grow',
+      'We turn businesses into unforgettable brands',
+      'We connect creativity to performance until impact becomes a number'
     ]
   };
 
@@ -93,7 +93,7 @@
     });
     languageButton.textContent = value === 'ar' ? 'EN' : 'ع';
     languageButton.setAttribute('aria-label', value === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
-    document.title = value === 'ar' ? 'NEW MEDIA — تأثير قابل للقياس' : 'NEW MEDIA — Measurable Impact';
+    document.title = value === 'ar' ? 'NEW MEDIA | تأثير قابل للقياس' : 'NEW MEDIA | Measurable Impact';
     typeQuote(value, true);
   }
 

@@ -35,7 +35,7 @@
     nav.setAttribute('aria-label', 'Main navigation');
     nav.innerHTML = `
       <a class="nm-site-nav__brand" href="index.html" aria-label="New Media"><img src="/favicon.svg" alt=""><span>NEW MEDIA</span></a>
-      <ul class="nm-site-nav__links"><li><a href="index.html#about" data-nm-label="about"></a></li><li><a href="index.html#services" data-nm-label="services"></a></li><li><a href="index.html#work" data-nm-label="work"></a></li></ul>
+      <ul class="nm-site-nav__links"><li><a href="/index.html#about" data-nm-label="about"></a></li><li><a href="/index.html#services" data-nm-label="services"></a></li><li><a href="/index.html#work" data-nm-label="work"></a></li><li><a href="#policies" data-nm-label="policies"></a></li></ul>
       <div class="nm-site-nav__actions"><span data-nm-controls></span><a class="nm-site-nav__cta" href="/contact-application.html" data-nm-label="contact"></a></div>`;
     const controls = nav.querySelector('[data-nm-controls]');
     controls.replaceWith(themeButton, languageButton);
@@ -44,9 +44,10 @@
 
     const footer = document.createElement('footer');
     footer.className = 'nm-site-footer';
+    footer.id = 'policies';
     footer.innerHTML = `
       <div class="nm-site-footer__grid">
-        <div class="nm-site-footer__about"><div class="nm-site-footer__brand"><img src="/favicon.svg" alt=""><strong>NEW MEDIA</strong></div><p data-nm-label="desc"></p><div class="nm-site-footer__social"><a href="https://www.instagram.com/newmedia.hc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram — newmedia.hc" title="@newmedia.hc"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a></div><p class="nm-site-footer__rights" data-nm-label="rights"></p></div>
+        <div class="nm-site-footer__about"><div class="nm-site-footer__brand"><img src="/favicon.svg" alt=""><strong>NEW MEDIA</strong></div><p data-nm-label="desc"></p><div class="nm-site-footer__social"><a href="https://www.instagram.com/newmedia.hc/" target="_blank" rel="noopener noreferrer" aria-label="Instagram. newmedia.hc" title="@newmedia.hc"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a></div><p class="nm-site-footer__rights" data-nm-label="rights"></p></div>
         <div><h3 data-nm-label="divisions"></h3><ul><li><a href="growth-performance.html" data-nm-label="growth"></a></li><li><a href="digital-presence.html" data-nm-label="digital"></a></li><li><a href="brand-experience.html" data-nm-label="brand"></a></li><li><a href="creative-production.html" data-nm-label="creative"></a></li></ul></div>
         <div><h3 data-nm-label="policies"></h3><ul><li><a href="privacy-policy.html" data-nm-label="privacy"></a></li><li><a href="terms-of-service.html" data-nm-label="terms"></a></li><li><a href="refund-policy.html" data-nm-label="refund"></a></li><li><a href="confidentiality.html" data-nm-label="confidentiality"></a></li><li><a href="cookie-policy.html" data-nm-label="cookies"></a></li><li><a href="employees.html" data-nm-label="employees"></a></li></ul></div>
         <div><h3 data-nm-label="reach"></h3><ul><li><a href="mailto:newmediahc@gmail.com">newmediahc@gmail.com</a></li><li><a href="https://wa.me/966544006084" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp: +966 54 400 6084" dir="ltr">+966 54 400 6084</a></li><li data-nm-label="location"></li></ul></div>
