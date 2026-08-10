@@ -3,11 +3,12 @@
 
   const root = document.documentElement;
   const body = document.body;
+  root.classList.add('nm-home-root');
   const hero = document.querySelector('.nm-hero');
-  const nav = document.querySelector('.nm-home-nav');
+  const heroFrames = Array.from(document.querySelectorAll('.nm-hero__figure[data-frame]'));
+  const signalStage = document.querySelector('.nm-signal--top b');
   const languageButton = document.getElementById('langBtn');
   const themeButton = document.getElementById('themeBtn');
-  const transmissionButton = document.getElementById('transmissionToggle');
   const progressBar = document.getElementById('pageProgress');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -65,24 +66,6 @@
     applyTheme(root.classList.contains('light') ? 'dark' : 'light');
   });
 
-  function setTransmission(open) {
-    hero.classList.toggle('is-deconstructed', open);
-    transmissionButton.setAttribute('aria-pressed', String(open));
-  }
-
-  transmissionButton.addEventListener('click', () => {
-    setTransmission(transmissionButton.getAttribute('aria-pressed') !== 'true');
-  });
-
-  if (!reducedMotion) {
-    window.setTimeout(() => {
-      if (window.scrollY < 80 && transmissionButton.getAttribute('aria-pressed') !== 'true') {
-        setTransmission(true);
-        window.setTimeout(() => setTransmission(false), 1650);
-      }
-    }, 1550);
-  }
-
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       if (!entry.isIntersecting) return;
@@ -130,7 +113,25 @@
     const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     const progress = Math.min(1, window.scrollY / max);
     progressBar.style.width = `${progress * 100}%`;
-    nav.classList.toggle('is-scrolled', window.scrollY > 86);
+
+    const heroRange = Math.max(1, hero.offsetHeight - window.innerHeight);
+    const heroProgress = Math.max(0, Math.min(1, (window.scrollY - hero.offsetTop) / heroRange));
+    const framePosition = heroProgress * (heroFrames.length - 1);
+    const firstFrame = Math.floor(framePosition);
+    const nextFrame = Math.min(heroFrames.length - 1, firstFrame + 1);
+    const blend = reducedMotion ? 0 : framePosition - firstFrame;
+
+    heroFrames.forEach((frame, index) => {
+      let opacity = 0;
+      if (index === firstFrame) opacity = 1 - blend;
+      if (index === nextFrame) opacity = Math.max(opacity, blend);
+      frame.style.opacity = String(opacity);
+    });
+
+    const copyProgress = Math.max(0, Math.min(1, (heroProgress - 0.12) / 0.3));
+    hero.style.setProperty('--nm-copy-progress', String(copyProgress));
+    hero.style.setProperty('--nm-hero-progress', String(heroProgress));
+    if (signalStage) signalStage.textContent = String(Math.min(5, firstFrame + 1)).padStart(2, '0');
     frameRequested = false;
   }
 

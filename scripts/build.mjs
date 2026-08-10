@@ -23,7 +23,14 @@ for (const entry of entries) {
 
 const homepageAssets = join(assets, "assets", "homepage");
 await mkdir(homepageAssets, { recursive: true });
-for (const file of ["tv-head-hero.webp", "tv-head-deconstructed.webp", "new-media-social-preview.jpg"]) {
+for (const file of [
+  "tv-head-hero.webp",
+  "tv-head-stage-02.webp",
+  "tv-head-stage-03.webp",
+  "tv-head-stage-04.webp",
+  "tv-head-deconstructed.webp",
+  "new-media-social-preview.jpg",
+]) {
   await cp(join(root, "assets", "homepage", file), join(homepageAssets, file));
 }
 

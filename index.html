@@ -26,30 +26,33 @@
   <div class="nm-page-progress" aria-hidden="true"><span id="pageProgress"></span></div>
   <div class="nm-noise" aria-hidden="true"></div>
 
-  <nav class="nm-home-nav" aria-label="التنقل الرئيسي">
-    <a class="nm-home-nav__brand" href="/" aria-label="NEW MEDIA — الرئيسية">
-      <img src="/favicon.svg" alt="" width="42" height="38">
-      <span>NEW MEDIA</span>
+  <nav class="nm-legacy-nav" aria-label="التنقل الرئيسي">
+    <a class="nm-legacy-nav__brand" href="/" aria-label="العودة للرئيسية">
+      <img src="/favicon.svg" alt="New Media" width="48" height="42">
     </a>
 
-    <ul class="nm-home-nav__links">
+    <ul class="nav-links">
       <li><a href="#services" data-i18n="nav_services">خدماتنا</a></li>
       <li><a href="#work" data-i18n="nav_work">أعمالنا</a></li>
       <li><a href="#about" data-i18n="nav_about">من نحن</a></li>
     </ul>
 
-    <div class="nm-home-nav__actions">
-      <button class="nm-control" id="themeBtn" type="button" aria-label="تبديل المظهر" title="تبديل المظهر"><span aria-hidden="true">☾</span></button>
-      <button class="nm-control nm-control--lang" id="langBtn" type="button" aria-label="Switch language">EN</button>
-      <a class="nm-nav-cta" href="/contact-application.html" data-i18n="nav_contact">ابدأ مشروعك</a>
+    <div class="nm-legacy-nav__actions">
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="تبديل المظهر" title="Dark / Light"><span aria-hidden="true">☾</span></button>
+      <button class="lang-btn" id="langBtn" type="button" aria-label="Switch language">EN</button>
+      <a class="nav-cta" href="/contact-application.html" data-i18n="nav_contact">ابدأ مشروعك</a>
     </div>
   </nav>
 
   <main id="main-content">
     <section class="nm-hero" aria-labelledby="hero-title">
+      <div class="nm-hero__stage">
       <div class="nm-hero__visual" aria-hidden="true">
-        <img class="nm-hero__figure nm-hero__figure--calm" src="/assets/homepage/tv-head-hero.webp" alt="" fetchpriority="high">
-        <img class="nm-hero__figure nm-hero__figure--open" src="/assets/homepage/tv-head-deconstructed.webp" alt="">
+        <img class="nm-hero__figure" data-frame="0" src="/assets/homepage/tv-head-hero.webp" alt="" fetchpriority="high">
+        <img class="nm-hero__figure" data-frame="1" src="/assets/homepage/tv-head-stage-02.webp" alt="">
+        <img class="nm-hero__figure" data-frame="2" src="/assets/homepage/tv-head-stage-03.webp" alt="">
+        <img class="nm-hero__figure" data-frame="3" src="/assets/homepage/tv-head-stage-04.webp" alt="">
+        <img class="nm-hero__figure" data-frame="4" src="/assets/homepage/tv-head-deconstructed.webp" alt="">
         <div class="nm-hero__scan"></div>
         <div class="nm-hero__vignette"></div>
       </div>
@@ -74,16 +77,11 @@
         </div>
       </div>
 
-      <button class="nm-transmission" id="transmissionToggle" type="button" aria-pressed="false">
-        <span class="nm-transmission__icon" aria-hidden="true"><i></i><i></i><i></i></span>
-        <span data-i18n="signal_toggle">فكّك الإشارة</span>
-        <b>CTRL / 01</b>
-      </button>
-
       <a class="nm-scroll-cue" href="#about">
         <span data-i18n="scroll_label">مرّر للاكتشاف</span>
         <i aria-hidden="true"></i>
       </a>
+      </div>
     </section>
 
     <div class="nm-ticker" aria-label="New Media capabilities">
