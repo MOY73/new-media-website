@@ -123,15 +123,15 @@ export default {
       return handleEmployeeApi(request, env, url);
     }
 
-    if (url.pathname === '/employee-dashboard.html') {
+    if (/^\/employee-dashboard(?:\.html)?\/?$/.test(url.pathname)) {
       const user = await readSession(request, env);
-      if (!user) return Response.redirect(new URL('/employee-login.html', url), 302);
+      if (!user) return Response.redirect(new URL('/employee-login', url), 302);
       return employeeAssetResponse(request, env);
     }
 
-    if (url.pathname === '/employee-login.html') {
+    if (/^\/employee-login(?:\.html)?\/?$/.test(url.pathname)) {
       const user = await readSession(request, env);
-      if (user) return Response.redirect(new URL('/employee-dashboard.html', url), 302);
+      if (user) return Response.redirect(new URL('/employee-dashboard', url), 302);
       return employeeAssetResponse(request, env);
     }
 
@@ -205,6 +205,9 @@ async function ensureSchema(env) {
 }
 
 async function login(request, env) {
+  if (!env.EMPLOYEE_AUTH_CONFIG || !env.EMPLOYEE_SESSION_SECRET || !env.EMPLOYEE_PASSWORD_PEPPER) {
+    return json({ error: 'تهيئة الأمان غير مكتملة حاليًا.' }, 503);
+  }
   const payload = await readJson(request, 4000);
   if (!payload) return json({ error: 'بيانات الدخول غير صحيحة.' }, 400);
 
@@ -229,7 +232,7 @@ async function login(request, env) {
   const account = config.users[username];
   const comparisonAccount = account || config.dummy || Object.values(config.users)[0];
   const verified = comparisonAccount
-    ? await verifyPassword(password, comparisonAccount)
+    ? await verifyPassword(password, comparisonAccount, env.EMPLOYEE_PASSWORD_PEPPER)
     : false;
 
   if (!account || !verified) {
@@ -456,15 +459,21 @@ function readAuthConfig(env) {
   }
 }
 
-async function verifyPassword(password, account) {
-  const iterations = Math.max(100000, Math.min(Number(account.iterations || 160000), 300000));
-  const key = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveBits']);
-  const derived = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', hash: 'SHA-256', salt: base64UrlToBytes(account.salt), iterations },
-    key,
-    256
-  );
-  return constantTimeEqual(new Uint8Array(derived), base64UrlToBytes(account.hash));
+async function verifyPassword(password, account, pepper) {
+  if (!pepper) return false;
+  try {
+    const iterations = Math.max(100000, Math.min(Number(account.iterations || 100000), 100000));
+    const secretInput = `${password}\u0000${pepper}`;
+    const key = await crypto.subtle.importKey('raw', encoder.encode(secretInput), 'PBKDF2', false, ['deriveBits']);
+    const derived = await crypto.subtle.deriveBits(
+      { name: 'PBKDF2', hash: 'SHA-256', salt: base64UrlToBytes(account.salt), iterations },
+      key,
+      256
+    );
+    return constantTimeEqual(new Uint8Array(derived), base64UrlToBytes(account.hash));
+  } catch {
+    return false;
+  }
 }
 
 async function createSession(user, env) {

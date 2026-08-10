@@ -99,7 +99,7 @@
           method: 'POST',
           body: JSON.stringify({ username: userValue, password: password.value }),
         });
-        window.location.replace('/employee-dashboard.html');
+        window.location.replace('/employee-dashboard');
       } catch (error) {
         password.value = '';
         password.focus();
@@ -472,7 +472,7 @@
       sync.parentElement?.classList.remove('is-error');
     } catch (error) {
       if (error.status === 401) {
-        window.location.replace('/employee-login.html');
+        window.location.replace('/employee-login');
         return;
       }
       sync.textContent = 'تعذر التزامن';
@@ -505,7 +505,7 @@
       try {
         await api('/api/employee/logout', { method: 'POST' });
       } finally {
-        window.location.replace('/employee-login.html');
+        window.location.replace('/employee-login');
       }
     });
 
