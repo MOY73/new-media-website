@@ -21,6 +21,12 @@ for (const entry of entries) {
   }
 }
 
+const homepageAssets = join(assets, "assets", "homepage");
+await mkdir(homepageAssets, { recursive: true });
+for (const file of ["tv-head-hero.webp", "tv-head-deconstructed.webp", "new-media-social-preview.jpg"]) {
+  await cp(join(root, "assets", "homepage", file), join(homepageAssets, file));
+}
+
 const [workerSource, loginHtml, dashboardHtml] = await Promise.all([
   readFile(join(root, "worker", "index.js"), "utf8"),
   readFile(join(root, "employee-login.html"), "utf8"),
