@@ -190,6 +190,13 @@
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     const progress = clamp((window.scrollY - story.offsetTop) / range);
     sceneProgress.style.width = `${progress * 100}%`;
+    const introPointerActive = progress <= 0.002;
+    canvas.classList.toggle('is-suppressed', !introPointerActive);
+    if (!introPointerActive) {
+      ripples.length = 0;
+      stage.style.setProperty('--nm-pointer-x', '0px');
+      stage.style.setProperty('--nm-pointer-y', '0px');
+    }
 
     let sequencePosition = 0;
     if (progress >= 0.09 && progress < 0.29) sequencePosition = smooth(0.09, 0.29, progress) * 4;
@@ -297,6 +304,7 @@
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas, { passive: true });
     stage.addEventListener('pointermove', (event) => {
+      if (window.scrollY > story.offsetTop + 2) return;
       if (performance.now() - lastRipple < 62) return;
       lastRipple = performance.now();
       addRipple(event.clientX, event.clientY);
