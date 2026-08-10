@@ -124,11 +124,13 @@
   const VIEW_TITLES = {
     applications: 'طلبات التقديم عبر الموقع',
     clients: 'العملاء والفرص',
+    leads: 'فرص مكة',
     chat: 'محادثة الفريق',
     packages: 'الباقات المعتمدة',
     pricing: 'مرجع الأسعار الداخلي',
     workflow: 'آلية العمل الموحّدة',
     services: 'الأقسام والخدمات',
+    library: 'مكتبة ملفات الموظفين',
   };
   const state = {
     data: null,
@@ -136,6 +138,7 @@
     loading: false,
     pollId: null,
     staticRendered: false,
+    leadFilters: { search: '', neighborhood: 'all', priority: 'all', status: 'all' },
   };
 
   function initials(value) {
@@ -225,6 +228,8 @@
     qs('#clientsBadge').textContent = String(stats.opportunities);
     const applicationsBadge = qs('#applicationsBadge');
     if (applicationsBadge) applicationsBadge.textContent = String(stats.newApplications || 0);
+    const leadsBadge = qs('#leadsBadge');
+    if (leadsBadge) leadsBadge.textContent = String(stats.untouchedLeads || 0);
   }
 
   function renderMiniPipeline() {
@@ -585,6 +590,141 @@
     qs('#servicesGrid').replaceChildren(...cards);
   }
 
+  const LEAD_STATUS_META = {
+    new: 'جديد', working: 'قيد العمل', contacted: 'تم التواصل', interested: 'مهتم',
+    follow_up: 'متابعة', not_interested: 'غير مهتم', converted: 'تم التحويل',
+  };
+  const LEAD_OUTCOME_META = {
+    not_contacted: 'لم يتم التواصل', no_answer: 'لم يرد', follow_up: 'يحتاج متابعة',
+    interested: 'مهتم', not_interested: 'غير مهتم', converted: 'تم التحويل',
+  };
+  const TEAM_MEMBERS = ['', 'MOY', 'AK', 'AZOZ', 'EMAD'];
+
+  function leadSelect(className, values, selected, labels) {
+    const select = element('select', className);
+    values.forEach((value) => {
+      const option = element('option', '', labels[value] || value || 'غير مسند');
+      option.value = value;
+      option.selected = value === selected;
+      select.append(option);
+    });
+    return select;
+  }
+
+  async function updateLead(lead, payload, successMessage) {
+    await api(`/api/employee/leads/${encodeURIComponent(lead.id)}`, {
+      method: 'PATCH', body: JSON.stringify(payload),
+    });
+    await refreshData({ quiet: true });
+    showToast(successMessage);
+  }
+
+  function leadCard(lead) {
+    const card = element('article', `lead-card lead-card--p${lead.priority}`);
+    const top = element('div', 'lead-card__top');
+    const identity = element('div');
+    identity.append(
+      element('span', 'lead-card__ref', `${lead.id} · ${lead.neighborhood}`),
+      element('h3', '', lead.name),
+      element('p', '', lead.activity)
+    );
+    top.append(identity, element('b', 'lead-priority', `P${lead.priority}`));
+
+    const score = element('div', 'lead-score');
+    score.append(element('span', '', 'درجة الملاءمة'), element('strong', '', `${lead.score}/100`));
+    const contact = element('div', 'lead-contact');
+    if (lead.phone) {
+      const phone = element('a', '', lead.phone); phone.href = `tel:${lead.phone.replace(/\s/g, '')}`; contact.append(phone);
+    }
+    if (lead.email) {
+      const email = element('a', '', lead.email); email.href = `mailto:${lead.email}`; contact.append(email);
+    }
+    if (!lead.phone && !lead.email) contact.append(element('span', '', 'لا توجد بيانات تواصل مباشرة'));
+
+    const service = element('div', 'lead-service');
+    service.append(element('small', '', 'الخدمة المقترحة'), element('p', '', lead.recommended_service));
+    const controls = element('div', 'lead-controls');
+    const owner = leadSelect('lead-owner', TEAM_MEMBERS, lead.owner || '', Object.fromEntries(TEAM_MEMBERS.map((item) => [item, item || 'غير مسند'])));
+    const status = leadSelect('lead-state', Object.keys(LEAD_STATUS_META), lead.contact_status, LEAD_STATUS_META);
+    const outcome = leadSelect('lead-outcome', Object.keys(LEAD_OUTCOME_META), lead.outcome, LEAD_OUTCOME_META);
+    const save = element('button', 'lead-save', 'حفظ الحالة'); save.type = 'button';
+    save.addEventListener('click', async () => {
+      save.disabled = true;
+      try { await updateLead(lead, { owner: owner.value, contactStatus: status.value, outcome: outcome.value }, `تم تحديث ${lead.name}.`); }
+      catch (error) { showToast(error.message, true); } finally { save.disabled = false; }
+    });
+    controls.append(owner, status, outcome, save);
+
+    const actions = element('div', 'lead-actions');
+    const maps = element('a', '', 'فتح الخرائط'); maps.href = lead.maps_url; maps.target = '_blank'; maps.rel = 'noopener';
+    const website = lead.website ? element('a', '', 'الموقع') : null;
+    if (website) { website.href = lead.website; website.target = '_blank'; website.rel = 'noopener'; }
+    const task = element('button', '', lead.converted_task_id ? 'مضافة للمهام' : 'تحويل لمهمة'); task.type = 'button'; task.disabled = Boolean(lead.converted_task_id);
+    task.addEventListener('click', async () => {
+      task.disabled = true;
+      try {
+        await api(`/api/employee/leads/${encodeURIComponent(lead.id)}/convert-task`, { method: 'POST', body: JSON.stringify({ owner: owner.value }) });
+        await refreshData({ quiet: true }); showToast(`أضيفت مهمة التواصل مع ${lead.name}.`);
+      } catch (error) { task.disabled = false; showToast(error.message, true); }
+    });
+    const client = element('button', 'lead-convert', lead.converted_client_id ? 'مضاف للعملاء' : 'تحويل لعميل'); client.type = 'button'; client.disabled = Boolean(lead.converted_client_id);
+    client.addEventListener('click', async () => {
+      if (!window.confirm(`تحويل ${lead.name} إلى مسار العملاء؟`)) return;
+      client.disabled = true;
+      try {
+        await api(`/api/employee/leads/${encodeURIComponent(lead.id)}/convert-client`, { method: 'POST', body: JSON.stringify({ owner: owner.value }) });
+        await refreshData({ quiet: true }); showToast(`أضيف ${lead.name} إلى مسار العملاء.`);
+      } catch (error) { client.disabled = false; showToast(error.message, true); }
+    });
+    actions.append(maps); if (website) actions.append(website); actions.append(task, client);
+    card.append(top, score, contact, service, controls, actions);
+    return card;
+  }
+
+  function renderLeads() {
+    const allLeads = state.data.leads || [];
+    const neighborhoods = [...new Set(allLeads.map((lead) => lead.neighborhood))];
+    const neighborhoodSelect = qs('#leadNeighborhood');
+    if (neighborhoodSelect && neighborhoodSelect.options.length === 1) {
+      neighborhoods.forEach((name) => { const option = element('option', '', name); option.value = name; neighborhoodSelect.append(option); });
+    }
+    const filters = state.leadFilters;
+    const query = filters.search.trim().toLowerCase();
+    const leads = allLeads.filter((lead) => {
+      const haystack = `${lead.name} ${lead.activity} ${lead.phone} ${lead.email} ${lead.neighborhood}`.toLowerCase();
+      return (!query || haystack.includes(query)) &&
+        (filters.neighborhood === 'all' || lead.neighborhood === filters.neighborhood) &&
+        (filters.priority === 'all' || String(lead.priority) === filters.priority) &&
+        (filters.status === 'all' || lead.contact_status === filters.status);
+    });
+    const contacted = allLeads.filter((lead) => lead.contact_status !== 'new').length;
+    const converted = allLeads.filter((lead) => lead.contact_status === 'converted').length;
+    const p1 = allLeads.filter((lead) => Number(lead.priority) === 1).length;
+    const kpis = [
+      ['كل الفرص', allLeads.length], ['شركات P1', p1], ['بدأ التواصل', contacted], ['تحولت لعملاء', converted],
+    ].map(([label, value]) => { const item = element('article'); item.append(element('span', '', label), element('strong', '', formatNumber.format(value))); return item; });
+    qs('#leadsKpis')?.replaceChildren(...kpis);
+    qs('#leadsGrid')?.replaceChildren(...(leads.length ? leads.map(leadCard) : [emptyState('لا توجد فرص مطابقة لهذه التصفية.') ]));
+  }
+
+  function renderLibrary() {
+    const documents = [
+      ['نموذج عمل الوكالة', 'التشغيل والمسار العملي', 'new-media-agency-work-model.pdf'],
+      ['باقات العملاء', 'نسخة الباقات العربية', 'new-media-client-packages-ar.pdf'],
+      ['الحوكمة والقواعد', 'قواعد الشركة والاعتمادات', 'new-media-company-governance-rules.pdf'],
+      ['الأقسام والأدوار', 'دليل مسؤوليات الفريق', 'new-media-departments-roles-handbook.pdf'],
+      ['الخدمات والباقات والأسعار', 'مرجع التسعير الداخلي', 'new-media-service-packages-pricing.pdf'],
+      ['دليل الخدمات والأقسام', 'النسخة العربية الشاملة', 'new-media-services-departments-guide-ar.pdf'],
+    ];
+    const cards = documents.map(([title, note, file], index) => {
+      const card = element('article', 'document-card');
+      card.append(element('span', '', `PDF / ${String(index + 1).padStart(2, '0')}`), element('h3', '', title), element('p', '', note));
+      const link = element('a', '', 'فتح المرجع'); link.href = `/team/library/${file}`; link.target = '_blank'; link.rel = 'noopener'; card.append(link);
+      return card;
+    });
+    qs('#documentLibrary')?.replaceChildren(...cards);
+  }
+
   function renderAll() {
     renderIdentity();
     renderMetrics();
@@ -593,11 +733,13 @@
     renderChat();
     renderPipeline();
     renderApplications();
+    renderLeads();
     if (!state.staticRendered) {
       renderPackages();
       renderPricing();
       renderWorkflow();
       renderServices();
+      renderLibrary();
       state.staticRendered = true;
     }
   }
@@ -637,6 +779,14 @@
     qs('#quickAddClient')?.addEventListener('click', () => openModal('clientModal'));
     qs('#addClientFromView')?.addEventListener('click', () => openModal('clientModal'));
     qs('#quickAddTask')?.addEventListener('click', () => openModal('taskModal'));
+    const leadFilterBindings = [
+      ['#leadSearch', 'search', 'input'], ['#leadNeighborhood', 'neighborhood', 'change'],
+      ['#leadPriority', 'priority', 'change'], ['#leadStatus', 'status', 'change'],
+    ];
+    leadFilterBindings.forEach(([selector, key, eventName]) => qs(selector)?.addEventListener(eventName, (event) => {
+      state.leadFilters[key] = event.currentTarget.value;
+      renderLeads();
+    }));
     qsa('[data-close-modal]').forEach((button) => button.addEventListener('click', () => closeModal(button.dataset.closeModal)));
 
     document.addEventListener('keydown', (event) => {

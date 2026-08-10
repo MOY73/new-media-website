@@ -11,6 +11,10 @@ const CLIENT_STATUSES = ['lead', 'discovery', 'proposal', 'won', 'active'];
 const TASK_STATUSES = ['open', 'done'];
 const TASK_PRIORITIES = ['low', 'normal', 'high'];
 const APPLICATION_STATUSES = ['new', 'reviewing', 'contacted', 'qualified', 'closed'];
+const LEAD_STATUSES = ['new', 'working', 'contacted', 'interested', 'follow_up', 'not_interested', 'converted'];
+const LEAD_OUTCOMES = ['not_contacted', 'no_answer', 'follow_up', 'interested', 'not_interested', 'converted'];
+const TEAM_USERNAMES = ['MOY', 'AK', 'AZOZ', 'EMAD'];
+const BUSINESS_LEAD_SEED = [];
 const MAX_APPLICATION_FILES = 8;
 const MAX_APPLICATION_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_FILE_EXTENSIONS = new Set(['png','jpg','jpeg','webp','pdf','doc','docx','ppt','pptx','xls','xlsx','zip']);
@@ -99,7 +103,38 @@ const SCHEMA_STATEMENTS = [
     attempt_key TEXT PRIMARY KEY,
     last_created_at INTEGER NOT NULL,
     updated_at INTEGER NOT NULL
-  )`
+  )`,
+  `CREATE TABLE IF NOT EXISTS business_leads (
+    id TEXT PRIMARY KEY,
+    neighborhood TEXT NOT NULL,
+    name TEXT NOT NULL,
+    activity TEXT NOT NULL,
+    category TEXT NOT NULL,
+    phone TEXT NOT NULL DEFAULT '',
+    email TEXT NOT NULL DEFAULT '',
+    address TEXT NOT NULL DEFAULT '',
+    website TEXT NOT NULL DEFAULT '',
+    maps_url TEXT NOT NULL,
+    priority INTEGER NOT NULL CHECK(priority IN (1,2,3)),
+    score INTEGER NOT NULL DEFAULT 0,
+    recommended_service TEXT NOT NULL DEFAULT '',
+    contact_status TEXT NOT NULL DEFAULT 'new' CHECK(contact_status IN ('new','working','contacted','interested','follow_up','not_interested','converted')),
+    owner TEXT NOT NULL DEFAULT '',
+    outcome TEXT NOT NULL DEFAULT 'not_contacted' CHECK(outcome IN ('not_contacted','no_answer','follow_up','interested','not_interested','converted')),
+    last_contact_at INTEGER NOT NULL DEFAULT 0,
+    notes TEXT NOT NULL DEFAULT '',
+    source TEXT NOT NULL DEFAULT 'Google Maps',
+    researched_at TEXT NOT NULL,
+    converted_client_id TEXT NOT NULL DEFAULT '',
+    converted_task_id TEXT NOT NULL DEFAULT '',
+    updated_by TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_business_leads_neighborhood_priority
+   ON business_leads(neighborhood, priority, score DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_business_leads_status_updated
+   ON business_leads(contact_status, updated_at DESC)`
 ];
 
 const KNOWLEDGE = {
@@ -169,6 +204,24 @@ export default {
 
     if (url.pathname.startsWith('/api/employee/')) {
       return handleEmployeeApi(request, env, url);
+    }
+
+    if (url.pathname.startsWith('/assets/team-library/')) {
+      return new Response('Not found', { status: 404 });
+    }
+
+    if (url.pathname.startsWith('/team/library/')) {
+      const user = await readSession(request, env);
+      if (!user) return Response.redirect(new URL('/team/login', url), 302);
+      const fileName = decodeURIComponent(url.pathname.split('/').pop() || '');
+      if (!/^[a-z0-9._-]+$/i.test(fileName)) return new Response('Not found', { status: 404 });
+      const assetUrl = new URL(`/assets/team-library/${fileName}`, url);
+      const asset = await env.ASSETS.fetch(new Request(assetUrl, request));
+      if (asset.status === 404) return new Response('Not found', { status: 404 });
+      const headers = new Headers(asset.headers);
+      headers.set('Cache-Control', 'private, max-age=300');
+      headers.set('Content-Disposition', `inline; filename="${fileName}"`);
+      return new Response(asset.body, { status: asset.status, headers });
     }
 
     if (/^\/employee-dashboard(?:\.html)?\/?$/.test(url.pathname)) {
@@ -264,6 +317,18 @@ async function handleEmployeeApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return deleteTask(env, url.pathname.split('/').pop());
   }
+  if (/^\/api\/employee\/leads\/[^/]+$/.test(url.pathname) && request.method === 'PATCH') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateBusinessLead(request, env, user, url.pathname.split('/').pop());
+  }
+  if (/^\/api\/employee\/leads\/[^/]+\/convert-task$/.test(url.pathname) && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return convertBusinessLeadToTask(request, env, user, url.pathname.split('/')[4]);
+  }
+  if (/^\/api\/employee\/leads\/[^/]+\/convert-client$/.test(url.pathname) && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return convertBusinessLeadToClient(request, env, user, url.pathname.split('/')[4]);
+  }
 
   return json({ error: 'المسار غير موجود.' }, 404);
 }
@@ -276,6 +341,20 @@ async function ensureSchema(env) {
      (id, author_username, author_name, body, created_at)
      VALUES (?, ?, ?, ?, ?)`
   ).bind('system-welcome', 'SYSTEM', 'NEW MEDIA', 'أهلًا بالفريق. هذه مساحة العمل الداخلية المشتركة.', Date.now()).run();
+  if (BUSINESS_LEAD_SEED.length) {
+    const now = Date.now();
+    await env.DB.batch(BUSINESS_LEAD_SEED.map((lead) => env.DB.prepare(
+      `INSERT OR IGNORE INTO business_leads
+       (id, neighborhood, name, activity, category, phone, email, address, website, maps_url,
+        priority, score, recommended_service, contact_status, owner, outcome, last_contact_at,
+        notes, source, researched_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(lead.id, lead.neighborhood, lead.name, lead.activity, lead.category, lead.phone || '',
+      lead.email || '', lead.address || '', lead.website || '', lead.maps_url, Number(lead.priority || 3),
+      Number(lead.score || 0), lead.recommended_service || '', lead.status || 'new', lead.owner || '',
+      lead.outcome || 'not_contacted', Number(lead.last_contact_at || 0), lead.notes || '', lead.source || 'Google Maps',
+      lead.researched_at || '2026-08-10', now, now)));
+  }
   schemaReady = true;
 }
 
@@ -334,12 +413,14 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at FROM employee_clients ORDER BY updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at FROM employee_tasks ORDER BY status ASC, due_date ASC, updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, reference, full_name, organization, email, phone, services, budget_range, project_summary, payload_json, status, attachment_count, email_status, created_at, updated_at FROM client_applications ORDER BY created_at DESC LIMIT 250'),
-    env.DB.prepare('SELECT id, application_id, original_name, content_type, size_bytes, created_at FROM client_application_files ORDER BY created_at ASC LIMIT 1000')
+    env.DB.prepare('SELECT id, application_id, original_name, content_type, size_bytes, created_at FROM client_application_files ORDER BY created_at ASC LIMIT 1000'),
+    env.DB.prepare('SELECT * FROM business_leads ORDER BY priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 1000')
   ]);
   const messages = [...(results[0].results || [])].reverse();
   const clients = results[1].results || [];
   const tasks = results[2].results || [];
   const files = results[4].results || [];
+  const leads = results[5].results || [];
   const applications = (results[3].results || []).map((application) => ({
     ...application,
     details: safeJsonParse(application.payload_json),
@@ -352,13 +433,16 @@ async function getPortalData(env, user) {
     clients,
     tasks,
     applications,
+    leads,
     stats: {
       clients: clients.length,
       opportunities: clients.filter((item) => ['lead', 'discovery', 'proposal'].includes(item.status)).length,
       active: clients.filter((item) => item.status === 'active').length,
       openTasks: tasks.filter((item) => item.status === 'open').length,
       pipelineValue,
-      newApplications: applications.filter((item) => item.status === 'new').length
+      newApplications: applications.filter((item) => item.status === 'new').length,
+      businessLeads: leads.length,
+      untouchedLeads: leads.filter((item) => item.contact_status === 'new').length
     },
     knowledge: KNOWLEDGE,
     serverTime: Date.now()
@@ -698,6 +782,74 @@ async function deleteTask(env, id) {
   const result = await env.DB.prepare('DELETE FROM employee_tasks WHERE id = ?').bind(id).run();
   if (!result.meta?.changes) return json({ error: 'المهمة غير موجودة.' }, 404);
   return json({ ok: true });
+}
+
+async function updateBusinessLead(request, env, user, id) {
+  if (!/^MKB1-\d{3}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  const payload = await readJson(request, 12000);
+  if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
+  const current = await env.DB.prepare('SELECT * FROM business_leads WHERE id = ?').bind(id).first();
+  if (!current) return json({ error: 'الفرصة غير موجودة.' }, 404);
+  const contactStatus = LEAD_STATUSES.includes(payload.contactStatus) ? payload.contactStatus : current.contact_status;
+  const outcome = LEAD_OUTCOMES.includes(payload.outcome) ? payload.outcome : current.outcome;
+  const requestedOwner = cleanString(payload.owner, 32).toUpperCase();
+  const owner = requestedOwner && TEAM_USERNAMES.includes(requestedOwner) ? requestedOwner : current.owner;
+  const notes = payload.notes === undefined ? current.notes : cleanString(payload.notes, 1200);
+  const shouldStamp = payload.markContacted === true || ['contacted', 'interested', 'follow_up', 'not_interested'].includes(contactStatus);
+  await env.DB.prepare(
+    `UPDATE business_leads SET contact_status = ?, owner = ?, outcome = ?, last_contact_at = ?,
+     notes = ?, updated_by = ?, updated_at = ? WHERE id = ?`
+  ).bind(contactStatus, owner, outcome, shouldStamp ? Date.now() : Number(current.last_contact_at || 0),
+    notes, user.username, Date.now(), id).run();
+  return json({ ok: true });
+}
+
+async function convertBusinessLeadToTask(request, env, user, id) {
+  if (!/^MKB1-\d{3}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  const payload = await readJson(request, 5000) || {};
+  const lead = await env.DB.prepare('SELECT * FROM business_leads WHERE id = ?').bind(id).first();
+  if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
+  if (lead.converted_task_id) return json({ ok: true, id: lead.converted_task_id, alreadyConverted: true });
+  const requestedOwner = cleanString(payload.owner, 32).toUpperCase();
+  const owner = TEAM_USERNAMES.includes(requestedOwner) ? requestedOwner : (lead.owner || user.username);
+  const now = Date.now();
+  const taskId = crypto.randomUUID();
+  await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO employee_tasks
+       (id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at)
+       VALUES (?, ?, ?, ?, '', ?, 'open', ?, ?, ?)`
+    ).bind(taskId, `التواصل مع ${lead.name}`, lead.name, owner, Number(lead.priority) === 1 ? 'high' : 'normal', user.username, now, now),
+    env.DB.prepare(
+      `UPDATE business_leads SET contact_status = 'working', owner = ?, converted_task_id = ?, updated_by = ?, updated_at = ? WHERE id = ?`
+    ).bind(owner, taskId, user.username, now, id)
+  ]);
+  return json({ ok: true, id: taskId }, 201);
+}
+
+async function convertBusinessLeadToClient(request, env, user, id) {
+  if (!/^MKB1-\d{3}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  const payload = await readJson(request, 5000) || {};
+  const lead = await env.DB.prepare('SELECT * FROM business_leads WHERE id = ?').bind(id).first();
+  if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
+  if (lead.converted_client_id) return json({ ok: true, id: lead.converted_client_id, alreadyConverted: true });
+  const requestedOwner = cleanString(payload.owner, 32).toUpperCase();
+  const owner = TEAM_USERNAMES.includes(requestedOwner) ? requestedOwner : (lead.owner || user.username);
+  const now = Date.now();
+  const clientId = crypto.randomUUID();
+  const contact = [lead.phone, lead.email].filter(Boolean).join(' · ');
+  await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO employee_clients
+       (id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at)
+       VALUES (?, ?, ?, ?, 0, 'lead', ?, ?, ?, ?, ?)`
+    ).bind(clientId, lead.name, contact, lead.recommended_service, `مراجعة فرصة ${lead.id} وتحديد موعد اكتشاف`, owner, user.username, now, now),
+    env.DB.prepare(
+      `UPDATE business_leads SET contact_status = 'converted', outcome = 'converted', owner = ?,
+       converted_client_id = ?, last_contact_at = ?, updated_by = ?, updated_at = ? WHERE id = ?`
+    ).bind(owner, clientId, now, user.username, now, id)
+  ]);
+  return json({ ok: true, id: clientId }, 201);
 }
 
 function normalizeClient(payload) {

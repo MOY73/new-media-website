@@ -327,6 +327,48 @@ html.light .app-sidebar { background:#fff; }
 .service-card__columns strong { display:block; margin-bottom:.55rem; color:var(--portal-faint); font-size:9px; }
 .service-card__columns span { display:block; margin:.32rem 0; color:var(--portal-muted); font-size:10px; }
 
+/* Makkah prospecting */
+.leads-kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.8rem; margin-bottom:1rem; }
+.leads-kpis article { padding:1rem 1.15rem; border:1px solid var(--portal-line); border-radius:15px; background:var(--portal-panel); }
+.leads-kpis span,.leads-kpis strong { display:block; }
+.leads-kpis span { color:var(--portal-muted); font-size:10px; }
+.leads-kpis strong { margin-top:.35rem; font-family:'Alexandria',sans-serif; font-size:1.6rem; }
+.leads-toolbar { display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:.7rem; margin-bottom:1rem; padding:.85rem; border:1px solid var(--portal-line); border-radius:16px; background:var(--portal-panel); }
+.leads-toolbar label { display:flex; flex-direction:column; gap:.35rem; }
+.leads-toolbar label span { color:var(--portal-faint); font-size:9px; }
+.leads-toolbar input,.leads-toolbar select,.lead-controls select { min-width:0; height:42px; padding:0 .75rem; border:1px solid var(--portal-line); border-radius:10px; outline:none; color:var(--portal-text); background:var(--portal-panel-2); }
+.leads-toolbar input:focus,.leads-toolbar select:focus,.lead-controls select:focus { border-color:rgba(165,21,232,.58); }
+.leads-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.85rem; }
+.lead-card { position:relative; display:flex; flex-direction:column; gap:.9rem; padding:1.2rem; overflow:hidden; border:1px solid var(--portal-line); border-radius:18px; background:var(--portal-panel); }
+.lead-card::before { position:absolute; inset:0 0 auto; height:3px; content:''; background:linear-gradient(90deg,var(--portal-purple),var(--portal-pink)); }
+.lead-card--p1::before { background:linear-gradient(90deg,var(--portal-orange),var(--portal-pink)); }
+.lead-card__top { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.lead-card__ref { color:var(--portal-orange); font-family:'Alexandria',sans-serif; font-size:8px; letter-spacing:.08em; }
+.lead-card h3 { margin:.5rem 0 .35rem; font-family:'Alexandria',sans-serif; font-size:1rem; line-height:1.45; }
+.lead-card__top p,.lead-service p { margin:0; color:var(--portal-muted); font-size:10px; line-height:1.6; }
+.lead-priority { display:grid; flex:0 0 44px; height:44px; place-items:center; border:1px solid rgba(255,107,16,.28); border-radius:12px; color:var(--portal-orange); background:rgba(255,107,16,.07); font-family:'Alexandria',sans-serif; font-size:11px; }
+.lead-score,.lead-contact { display:flex; align-items:center; justify-content:space-between; gap:.7rem; padding:.65rem .75rem; border-radius:10px; background:var(--portal-panel-2); }
+.lead-score span,.lead-contact span { color:var(--portal-muted); font-size:9px; }
+.lead-score strong { color:var(--portal-green); font-family:'Alexandria',sans-serif; font-size:11px; }
+.lead-contact { justify-content:flex-start; flex-wrap:wrap; }
+.lead-contact a { color:var(--portal-text); font-size:10px; text-decoration:none; direction:ltr; }
+.lead-contact a:hover { color:var(--portal-orange); }
+.lead-service small { display:block; margin-bottom:.3rem; color:var(--portal-faint); font-size:8px; }
+.lead-controls { display:grid; grid-template-columns:.7fr 1fr 1fr auto; gap:.45rem; }
+.lead-controls select { height:38px; padding:0 .45rem; font-size:9px; }
+.lead-save,.lead-actions button,.lead-actions a { display:inline-flex; min-height:38px; align-items:center; justify-content:center; padding:.45rem .65rem; border:1px solid var(--portal-line); border-radius:9px; color:var(--portal-text); background:var(--portal-panel-2); cursor:pointer; font-size:9px; text-decoration:none; }
+.lead-save:hover,.lead-actions button:hover,.lead-actions a:hover { border-color:rgba(165,21,232,.55); color:#fff; }
+.lead-actions { display:flex; flex-wrap:wrap; gap:.45rem; padding-top:.8rem; border-top:1px solid var(--portal-line); }
+.lead-actions .lead-convert { margin-right:auto; border-color:rgba(70,214,157,.3); color:var(--portal-green); }
+.lead-actions button:disabled { opacity:.45; cursor:default; }
+.document-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+.document-card { min-height:235px; display:flex; flex-direction:column; padding:1.3rem; border:1px solid var(--portal-line); border-radius:18px; background:linear-gradient(145deg,rgba(165,21,232,.06),transparent 45%),var(--portal-panel); }
+.document-card>span { color:var(--portal-orange); font-family:'Alexandria',sans-serif; font-size:8px; letter-spacing:.14em; }
+.document-card h3 { margin:1.5rem 0 .45rem; font-family:'Alexandria',sans-serif; font-size:1rem; }
+.document-card p { margin:0; color:var(--portal-muted); font-size:11px; }
+.document-card a { align-self:flex-start; margin-top:auto; padding:.6rem .8rem; border:1px solid var(--portal-line); border-radius:9px; text-decoration:none; font-size:10px; }
+.document-card a:hover { border-color:var(--portal-purple); color:#fff; }
+
 /* Modals & toast */
 .portal-modal { position:fixed; inset:0; z-index:100; display:none; place-items:center; padding:1rem; }
 .portal-body.has-portal-modal { overflow:hidden; }
@@ -352,6 +394,7 @@ html.light .app-sidebar { background:#fff; }
   .metrics-grid { grid-template-columns:repeat(3,1fr); }
   .package-grid { grid-template-columns:repeat(2,1fr); }
   .workflow-grid { grid-template-columns:repeat(2,1fr); }
+  .leads-grid { grid-template-columns:1fr; }
 }
 
 @media (max-width:900px) {
@@ -369,6 +412,8 @@ html.light .app-sidebar { background:#fff; }
   .hero-strip__date { display:none; }
   .rules-panel { grid-template-columns:1fr; }
   .services-grid { grid-template-columns:1fr; }
+  .leads-toolbar { grid-template-columns:repeat(2,1fr); }
+  .document-grid { grid-template-columns:repeat(2,1fr); }
 }
 
 @media (max-width:650px) {
@@ -397,4 +442,8 @@ html.light .app-sidebar { background:#fff; }
   .application-detail { grid-template-columns:1fr; }
   .application-card__actions { align-items:stretch; flex-direction:column; }
   .application-card__buttons { align-items:stretch; flex-direction:column; }
+  .leads-kpis { grid-template-columns:repeat(2,1fr); }
+  .leads-toolbar,.lead-controls,.document-grid { grid-template-columns:1fr; }
+  .lead-actions { align-items:stretch; flex-direction:column; }
+  .lead-actions .lead-convert { margin-right:0; }
 }

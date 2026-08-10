@@ -35,12 +35,20 @@ for (const file of [
   await cp(join(root, "assets", "homepage", file), join(homepageAssets, file));
 }
 
-const [workerSource, loginHtml, dashboardHtml] = await Promise.all([
+const teamLibraryAssets = join(assets, "assets", "team-library");
+await mkdir(teamLibraryAssets, { recursive: true });
+for (const file of await readdir(join(root, "assets", "team-library"))) {
+  await cp(join(root, "assets", "team-library", file), join(teamLibraryAssets, file));
+}
+
+const [workerSource, loginHtml, dashboardHtml, businessLeadSeed] = await Promise.all([
   readFile(join(root, "worker", "index.js"), "utf8"),
   readFile(join(root, "employee-login.html"), "utf8"),
   readFile(join(root, "employee-dashboard.html"), "utf8"),
+  readFile(join(root, "data", "makkah-business-leads-batch-1.json"), "utf8"),
 ]);
 const compiledWorker = workerSource
   .replace("const EMPLOYEE_LOGIN_HTML = '';", `const EMPLOYEE_LOGIN_HTML = ${JSON.stringify(loginHtml)};`)
-  .replace("const EMPLOYEE_DASHBOARD_HTML = '';", `const EMPLOYEE_DASHBOARD_HTML = ${JSON.stringify(dashboardHtml)};`);
+  .replace("const EMPLOYEE_DASHBOARD_HTML = '';", `const EMPLOYEE_DASHBOARD_HTML = ${JSON.stringify(dashboardHtml)};`)
+  .replace("const BUSINESS_LEAD_SEED = [];", `const BUSINESS_LEAD_SEED = ${businessLeadSeed};`);
 await writeFile(join(server, "index.js"), compiledWorker, "utf8");

@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site-fixes.css?v=34">
-<link rel="stylesheet" href="/employee-portal.css">
-<script src="/employee-portal.js" defer></script>
+<link rel="stylesheet" href="/employee-portal.css?v=35">
+<script src="/employee-portal.js?v=35" defer></script>
 </head>
 <body class="portal-body portal-dashboard-page" data-portal-page="dashboard">
   <div class="app-shell">
@@ -32,12 +32,14 @@
         <button class="app-nav__item is-active" type="button" data-view="overview"><span>⌂</span><b>نظرة عامة</b></button>
         <button class="app-nav__item" type="button" data-view="applications"><span>↓</span><b>طلبات الموقع</b><em id="applicationsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="clients"><span>◇</span><b>العملاء والفرص</b><em id="clientsBadge">0</em></button>
+        <button class="app-nav__item" type="button" data-view="leads"><span>◎</span><b>فرص مكة</b><em id="leadsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="chat"><span>◌</span><b>محادثة الفريق</b></button>
         <div class="app-nav__label">مكتبة العمل</div>
         <button class="app-nav__item" type="button" data-view="packages"><span>▦</span><b>الباقات</b></button>
         <button class="app-nav__item" type="button" data-view="pricing"><span>⌁</span><b>مرجع الأسعار</b></button>
         <button class="app-nav__item" type="button" data-view="workflow"><span>•</span><b>آلية العمل</b></button>
         <button class="app-nav__item" type="button" data-view="services"><span>✦</span><b>الأقسام والخدمات</b></button>
+        <button class="app-nav__item" type="button" data-view="library"><span>▤</span><b>مكتبة الملفات</b></button>
       </nav>
       <div class="sidebar-foot">
         <button class="portal-quiet-button" id="logoutButton" type="button">تسجيل الخروج</button>
@@ -92,6 +94,18 @@
           <div class="pipeline-board" id="pipelineBoard"></div>
         </section>
 
+        <section class="app-view" data-view-panel="leads">
+          <div class="section-intro leads-intro"><div><span>MAKKAH PROSPECTING / BATCH 01</span><h2>فرص مكة</h2><p>دفعة أولى من الشركات والمطاعم في خمسة أحياء. وزّع الفرص وسجّل نتيجة كل تواصل ليشاهدها الفريق مباشرة.</p></div><a class="portal-primary-button portal-primary-button--small" href="/team/library/makkah-business-leads-batch-1.xlsx" target="_blank" rel="noopener"><span>فتح ملف Excel</span></a></div>
+          <div class="leads-kpis" id="leadsKpis"></div>
+          <div class="leads-toolbar" aria-label="تصفية الفرص">
+            <label><span>بحث</span><input id="leadSearch" type="search" placeholder="اسم النشاط أو الرقم"></label>
+            <label><span>الحي</span><select id="leadNeighborhood"><option value="all">كل الأحياء</option></select></label>
+            <label><span>الأولوية</span><select id="leadPriority"><option value="all">كل الأولويات</option><option value="1">P1 الشركات</option><option value="2">P2 المطاعم</option><option value="3">P3 أنشطة أخرى</option></select></label>
+            <label><span>الحالة</span><select id="leadStatus"><option value="all">كل الحالات</option><option value="new">جديد</option><option value="working">قيد العمل</option><option value="contacted">تم التواصل</option><option value="interested">مهتم</option><option value="follow_up">متابعة</option><option value="not_interested">غير مهتم</option><option value="converted">تم التحويل</option></select></label>
+          </div>
+          <div class="leads-grid" id="leadsGrid"></div>
+        </section>
+
         <section class="app-view" data-view-panel="chat">
           <div class="section-intro"><div><span>PRIVATE CHANNEL</span><h2>محادثة الفريق</h2><p>رسائل قصيرة ومباشرة تظهر لكل أعضاء الفريق.</p></div></div>
           <div class="team-chat">
@@ -120,6 +134,11 @@
         <section class="app-view" data-view-panel="services">
           <div class="section-intro"><div><span>DIVISIONS</span><h2>الأقسام والخدمات</h2><p>وكالة واحدة، أربعة أقسام، وملكية واضحة لكل مخرج.</p></div></div>
           <div class="services-grid" id="servicesGrid"></div>
+        </section>
+
+        <section class="app-view" data-view-panel="library">
+          <div class="section-intro"><div><span>PRIVATE TEAM LIBRARY</span><h2>مكتبة ملفات الموظفين</h2><p>ستة مراجع داخلية مرتبة للفريق. تفتح الملفات داخل المساحة بعد تسجيل الدخول.</p></div></div>
+          <div class="document-grid" id="documentLibrary"></div>
         </section>
       </main>
     </div>
