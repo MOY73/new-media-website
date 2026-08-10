@@ -37,6 +37,8 @@
   .panel h2 { margin:0 0 .9rem; font-family:'Alexandria',sans-serif; font-size:clamp(1.35rem,3vw,2rem); }
   .panel p { max-width:570px; margin:0; color:var(--muted); line-height:1.9; }
   .portal { background:linear-gradient(145deg,rgba(121,0,216,.12),rgba(255,101,0,.07)); }
+  .portal-link { display:inline-flex; align-items:center; gap:.55rem; margin-top:1.35rem; padding:.75rem 1.1rem; border-radius:11px; color:#fff; background:linear-gradient(100deg,var(--purple),var(--orange)); font-weight:700; text-decoration:none; box-shadow:0 10px 24px rgba(121,0,216,.2); transition:transform .25s ease,box-shadow .25s ease; }
+  .portal-link:hover { transform:translateY(-2px); box-shadow:0 14px 30px rgba(121,0,216,.3); }
   html.light { --bg:#f5f3f7; --text:#211b26; --muted:rgba(33,27,38,.62); --line:rgba(50,35,60,.13); --glass:rgba(255,255,255,.7); }
   html.light body::before { opacity:.65; }
   html.light .status { color:rgba(33,27,38,.72); }
@@ -67,7 +69,8 @@
     <article class="panel portal">
       <span class="panel-num">02 / TEAM</span>
       <h2 data-i18n="portal_title">قسم خاص بالموظفين</h2>
-      <p data-i18n="portal_text">مساحة داخلية للموظفين سيتم بناء إجراءاتها وأدواتها في المرحلة القادمة.</p>
+      <p data-i18n="portal_text">مساحة العمل الداخلية للفريق: العملاء، المهام، المحادثة، الباقات وآلية التنفيذ.</p>
+      <a class="portal-link" href="employee-login.html" data-i18n="portal_button">تسجيل دخول الموظفين ←</a>
     </article>
   </section>
 </main>
@@ -82,7 +85,7 @@ const T = {
     hero_text:'نجهّز حاليًا تجربة التقديم على الفرص والانضمام إلى فريق NEW MEDIA. قريبًا ستجد هنا الوظائف المتاحة وطريقة التقديم.',
     coming_soon:'قسم التوظيف قيد التجهيز', careers_title:'فرص العمل',
     careers_text:'سيظهر هنا كل ما يخص الوظائف، متطلبات الانضمام، وخطوات التقديم عند اعتمادها.',
-    portal_title:'قسم خاص بالموظفين', portal_text:'مساحة داخلية للموظفين سيتم بناء إجراءاتها وأدواتها في المرحلة القادمة.',
+    portal_title:'قسم خاص بالموظفين', portal_text:'مساحة العمل الداخلية للفريق: العملاء، المهام، المحادثة، الباقات وآلية التنفيذ.', portal_button:'تسجيل دخول الموظفين ←',
     footer_copy:'© جميع الحقوق محفوظة لدى New Media.'
   },
   en: {
@@ -91,7 +94,7 @@ const T = {
     hero_text:'We are currently preparing the NEW MEDIA careers experience. Open roles and application steps will appear here soon.',
     coming_soon:'Careers section in progress', careers_title:'Career opportunities',
     careers_text:'Open positions, requirements, and application steps will appear here once approved.',
-    portal_title:'Employee area', portal_text:'A dedicated internal employee space whose workflows and tools will be built in the next phase.',
+    portal_title:'Employee area', portal_text:'The team workspace for clients, tasks, internal chat, packages, and delivery workflow.', portal_button:'Employee sign in →',
     footer_copy:'© All rights reserved by New Media.'
   }
 };
