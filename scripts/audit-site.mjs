@@ -27,7 +27,7 @@ for (const file of files) {
   const source = await readFile(join(root, file), "utf8");
   const required = [
     ["shared preference loader", source.includes('src="/site-preferences.js"')],
-    ["shared typography and footer styles", source.includes('href="/site-fixes.css"')],
+    ["shared typography and footer styles", source.includes('href="/site-fixes.css')],
     ["language selector", source.includes('id="langBtn"')],
     ["theme selector", source.includes('id="themeBtn"')],
     ["copyright notice", source.includes("جميع الحقوق محفوظة لدى New Media")],
