@@ -134,16 +134,11 @@
     if (manual) lastManualCardChange = Date.now();
   }
 
-  serviceCards.forEach((card, index) => {
+  serviceCards.forEach((card) => {
     card.addEventListener('click', (event) => {
-      if (event.target.closest('a') && index === activeCard) return;
-      event.preventDefault();
-      renderOrbit(index, true);
-    });
-    card.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      renderOrbit(index, true);
+      if (event.target.closest('a')) return;
+      const serviceLink = card.querySelector('a');
+      if (serviceLink) window.location.assign(serviceLink.href);
     });
   });
   document.getElementById('orbitPrev').addEventListener('click', () => renderOrbit(activeCard - 1, true));
