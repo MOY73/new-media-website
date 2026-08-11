@@ -117,6 +117,62 @@
     renderBrand();
   }
 
+  function designFrameMarkup(cardIndex, frameIndex) {
+    const identity = [
+      ['نَبْت', 'NABT / BOTANICAL', 'ينمو معك.', 'Grows with you.'],
+      ['مَدى', 'MADA / CULTURE', 'صوتٌ يتّسع.', 'A voice that expands.'],
+      ['سُرى', 'SURA / HOSPITALITY', 'دفءٌ يُرى.', 'Warmth you can see.'],
+      ['أثَر', 'ATHAR / ARCHITECTURE', 'مكانٌ يبقى.', 'A place that remains.'],
+      ['نَوَاة', 'NAWA / TECHNOLOGY', 'من الفكرة يبدأ.', 'It starts with an idea.'],
+    ];
+    const social = [
+      [['رَشْف','RASHF'],['',''],['08:00','08:00'],['',''],['قهوة\nبمزاج','COFFEE\nWITH MOOD'],['',''],['↓','↓'],['',''],['كل يوم','EVERY DAY']],
+      [['دَرْب','DARB'],['اكتشف','DISCOVER'],['24°','24°'],['وجهة','DESTINATION'],['',''],['رحلة','JOURNEY'],['03','03'],['',''],['امشِ أبعد','GO FURTHER']],
+      [['نُور','NOOR'],['LIVE','LIVE'],['+48%','+48%'],['',''],['تقنية\nأبسط','SIMPLER\nTECH'],['SYNC','SYNC'],['01','01'],['',''],['الآن','NOW']],
+      [['بَيْت','BAYT'],['مساحة','SPACE'],['120M²','120M²'],['',''],['حياة\nأهدأ','CALMER\nLIVING'],['',''],['↗','↗'],['تفاصيل','DETAILS'],['ابدأ هنا','START HERE']],
+      [['مَشْهَد','MASHHAD'],['08','08'],['اقرأ','READ'],['صوت','AUDIO'],['فكرة\nتتحرك','IDEAS\nIN MOTION'],['',''],['مدينة','CITY'],['',''],['عدد جديد','NEW ISSUE']],
+    ];
+    const packs = [
+      { type:'care', label:['لُمى · عناية','LUMA · CARE'], items:'<i class="nm-pack-object nm-pack-object--carton"><b>LUMA</b></i><i class="nm-pack-object nm-pack-object--bottle"><b>L</b></i><i class="nm-pack-object nm-pack-object--tube"><b>L</b></i>' },
+      { type:'coffee', label:['رَشْف · قهوة','RASHF · COFFEE'], items:'<i class="nm-pack-object nm-pack-object--pouch"><b>رشف</b></i><i class="nm-pack-object nm-pack-object--cup"><b>R</b></i><i class="nm-pack-object nm-pack-object--sleeve"><b>08</b></i>' },
+      { type:'drink', label:['مَوْج · مشروب','MAWJ · DRINK'], items:'<i class="nm-pack-object nm-pack-object--can"><b>M</b></i><i class="nm-pack-object nm-pack-object--can nm-pack-object--tall"><b>W</b></i><i class="nm-pack-object nm-pack-object--can"><b>J</b></i>' },
+      { type:'rice', label:['سُنْبُل · أرز','SUNBUL · RICE'], items:'<i class="nm-pack-object nm-pack-object--rice"><b>سنبل</b><small>أرز بسمتي</small></i><i class="nm-pack-object nm-pack-object--bowl"><b>•••</b></i><i class="nm-pack-object nm-pack-object--sack"><b>S</b></i>' },
+      { type:'fragrance', label:['سُرى · عطر','SURA · FRAGRANCE'], items:'<i class="nm-pack-object nm-pack-object--perfume"><b>س</b></i><i class="nm-pack-object nm-pack-object--fragrance-box"><b>SURA</b></i><i class="nm-pack-object nm-pack-object--cap"><b>05</b></i>' },
+    ];
+    const info = [
+      { title:['كيف تنمو الفكرة؟','How does an idea grow?'], steps:[['نبحث','Research'],['نبني','Build'],['نطلق','Launch'],['نقيس','Measure']] },
+      { title:['رحلة العميل','The customer journey'], steps:[['يرى','See'],['يفهم','Understand'],['يختار','Choose'],['يعود','Return']] },
+      { title:['من الحبة إلى الكوب','From bean to cup'], steps:[['نزرع','Grow'],['نحمّص','Roast'],['نطحن','Grind'],['نصبّ','Pour']] },
+      { title:['نبض الحملة','Campaign pulse'], steps:[['وصول','Reach'],['تفاعل','Engage'],['طلب','Convert'],['ولاء','Retain']] },
+      { title:['خريطة المكان','A map of place'], steps:[['دخول','Enter'],['مسار','Navigate'],['تجربة','Experience'],['ذكرى','Remember']] },
+    ];
+    const decks = [
+      { label:'MADAR / 2026', ar:['نرى','الصورة','كاملة.'], en:['SEE','THE WHOLE','PICTURE.'], meta:'STRATEGY · PROFILE · PRESENTATION' },
+      { label:'SUKUN / PROFILE', ar:['رعاية','تبدأ','بالثقة.'], en:['CARE','STARTS WITH','TRUST.'], meta:'COMPANY · SERVICES · IMPACT' },
+      { label:'NIBRAS / PITCH', ar:['قرار','أوضح،','نمو أسرع.'], en:['CLEARER','DECISIONS,','FASTER GROWTH.'], meta:'PRODUCT · MARKET · TRACTION' },
+      { label:'MASHHAD / REPORT', ar:['عامٌ','صنع','المشهد.'], en:['A YEAR','THAT SHAPED','THE SCENE.'], meta:'ANNUAL · STORIES · NUMBERS' },
+      { label:'ATHAR / PROPOSAL', ar:['فكرة','تستحق','أن تُبنى.'], en:['AN IDEA','WORTH','BUILDING.'], meta:'VISION · SCOPE · ROADMAP' },
+    ];
+
+    if (cardIndex === 0) {
+      const item = identity[frameIndex];
+      return `<b>${item[0]}</b><span>${item[1]}</span><div><i></i><i></i><i></i><i></i></div><small data-work-ar="${item[2]}" data-work-en="${item[3]}">${item[2]}</small>`;
+    }
+    if (cardIndex === 1) {
+      return social[frameIndex].map(([ar, en]) => `<i data-work-ar="${ar}" data-work-en="${en}">${ar.replace('\n','<br>')}</i>`).join('');
+    }
+    if (cardIndex === 2) {
+      const item = packs[frameIndex];
+      return `<div class="nm-pack-stage-art nm-pack-stage-art--${item.type}">${item.items}<span data-work-ar="${item.label[0]}" data-work-en="${item.label[1]}">${item.label[0]}</span></div>`;
+    }
+    if (cardIndex === 3) {
+      const item = info[frameIndex];
+      return `<header><b data-work-ar="${item.title[0]}" data-work-en="${item.title[1]}">${item.title[0]}</b><span>0${frameIndex + 1} / INFO</span></header><ol>${item.steps.map((step, index) => `<li><i>0${index + 1}</i><span data-work-ar="${step[0]}" data-work-en="${step[1]}">${step[0]}</span></li>`).join('')}</ol><div><i></i><i></i><i></i><i></i><i></i></div>`;
+    }
+    const item = decks[frameIndex];
+    return `<div><span>${item.label}</span><b><span data-work-ar="${item.ar[0]}" data-work-en="${item.en[0]}">${item.ar[0]}</span><br><span data-work-ar="${item.ar[1]}" data-work-en="${item.en[1]}">${item.ar[1]}</span><br><em data-work-ar="${item.ar[2]}" data-work-en="${item.en[2]}">${item.ar[2]}</em></b></div><div><span>0${frameIndex + 1}—05</span><i></i><p>${item.meta.replaceAll(' · ','<br>')}</p></div>`;
+  }
+
   function installWorkRotators() {
     const contentImages = [
       ['product-02', 'product-03', 'product-04', 'product-05', 'product-06'],
@@ -153,6 +209,7 @@
       carousel.dataset.autoRotator = '';
       for (let frameIndex = 0; frameIndex < 5; frameIndex += 1) {
         const frame = original.cloneNode(true);
+        frame.innerHTML = designFrameMarkup(cardIndex, frameIndex);
         frame.classList.add('nm-rotator-frame', `nm-visual-variant--${frameIndex + 1}`);
         frame.classList.toggle('is-active', frameIndex === 0);
         frame.setAttribute('aria-hidden', frameIndex === 0 ? 'false' : 'true');
