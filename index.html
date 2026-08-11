@@ -173,7 +173,6 @@
       <div class="nm-showcase__aurora" aria-hidden="true"></div>
       <header class="nm-showcase__intro">
         <div>
-          <p class="nm-showcase__kicker" data-work-ar="أرشيف حيّ · 15 تجربة" data-work-en="Living archive · 15 experiences">أرشيف حيّ · 15 تجربة</p>
           <h2 id="showcaseTitle" data-work-ar="أعمال لا تُعرض فقط، بل تُعاش." data-work-en="Work you do not just view. You experience it.">أعمال لا تُعرض فقط، بل تُعاش.</h2>
         </div>
         <div class="nm-showcase__intro-copy">
@@ -277,15 +276,47 @@
           <p data-work-ar="اختر المجال والطابع واللون. سنركّب لك تصورًا سريعًا يوضح كيف يمكن أن تبدأ الهوية قبل بنائها بالكامل." data-work-en="Choose an industry, a mood, and a palette. We will assemble a quick direction for how the identity could begin.">اختر المجال والطابع واللون. سنركّب لك تصورًا سريعًا يوضح كيف يمكن أن تبدأ الهوية قبل بنائها بالكامل.</p>
           <form class="nm-brand-controls" id="brandLabForm">
             <label><span data-work-ar="اسم العلامة" data-work-en="Brand name">اسم العلامة</span><input id="brandName" type="text" maxlength="18" value="نَوَى" aria-label="اسم العلامة"></label>
-            <fieldset><legend data-work-ar="المجال" data-work-en="Industry">المجال</legend><div class="nm-choice-row"><button type="button" data-brand-type="food" class="is-active" data-work-ar="طعام" data-work-en="Food">طعام</button><button type="button" data-brand-type="beauty" data-work-ar="جمال" data-work-en="Beauty">جمال</button><button type="button" data-brand-type="tech" data-work-ar="تقنية" data-work-en="Tech">تقنية</button><button type="button" data-brand-type="culture" data-work-ar="ثقافة" data-work-en="Culture">ثقافة</button></div></fieldset>
-            <fieldset><legend data-work-ar="الطابع" data-work-en="Mood">الطابع</legend><div class="nm-choice-row"><button type="button" data-brand-mood="minimal" class="is-active" data-work-ar="بسيط" data-work-en="Minimal">بسيط</button><button type="button" data-brand-mood="bold" data-work-ar="جريء" data-work-en="Bold">جريء</button><button type="button" data-brand-mood="classic" data-work-ar="كلاسيك" data-work-en="Classic">كلاسيك</button><button type="button" data-brand-mood="playful" data-work-ar="مرح" data-work-en="Playful">مرح</button></div></fieldset>
-            <fieldset><legend data-work-ar="لوحة اللون" data-work-en="Palette">لوحة اللون</legend><div class="nm-palette-row"><button type="button" data-brand-palette="sand" class="is-active" aria-label="رملي"><i></i><i></i><i></i></button><button type="button" data-brand-palette="ember" aria-label="جمري"><i></i><i></i><i></i></button><button type="button" data-brand-palette="ocean" aria-label="محيطي"><i></i><i></i><i></i></button><button type="button" data-brand-palette="neon" aria-label="نيون"><i></i><i></i><i></i></button></div></fieldset>
+            <fieldset><legend data-work-ar="المجال" data-work-en="Industry">المجال</legend><div class="nm-industry-grid">
+              <button type="button" data-brand-type="food" class="is-active"><span style="--industry-image:url('/assets/work/campaign-wamda.webp')"></span><b data-work-ar="طعام" data-work-en="Food">طعام</b></button>
+              <button type="button" data-brand-type="beauty"><span style="--industry-image:url('/assets/work/product-perfume.jpg')"></span><b data-work-ar="جمال" data-work-en="Beauty">جمال</b></button>
+              <button type="button" data-brand-type="tech"><span class="nm-industry-graphic">01</span><b data-work-ar="تقنية" data-work-en="Tech">تقنية</b></button>
+              <button type="button" data-brand-type="culture"><span style="--industry-image:url('/assets/work/podcast-studio.webp')"></span><b data-work-ar="ثقافة" data-work-en="Culture">ثقافة</b></button>
+              <button type="button" data-brand-type="hospitality"><span style="--industry-image:url('/assets/work/architecture.jpg')"></span><b data-work-ar="ضيافة" data-work-en="Hospitality">ضيافة</b></button>
+              <button type="button" data-brand-type="realestate"><span style="--industry-image:url('/assets/work/architecture.jpg')"></span><b data-work-ar="عقار" data-work-en="Real Estate">عقار</b></button>
+              <button type="button" data-brand-type="education"><span class="nm-industry-graphic">أ</span><b data-work-ar="تعليم" data-work-en="Education">تعليم</b></button>
+              <button type="button" data-brand-type="wellness"><span class="nm-industry-graphic">+</span><b data-work-ar="عافية" data-work-en="Wellness">عافية</b></button>
+              <button type="button" data-brand-type="retail"><span style="--industry-image:url('/assets/work/ugc-studio.webp')"></span><b data-work-ar="تجزئة" data-work-en="Retail">تجزئة</b></button>
+              <button type="button" data-brand-type="finance"><span class="nm-industry-graphic">%</span><b data-work-ar="مال" data-work-en="Finance">مال</b></button>
+            </div></fieldset>
+            <fieldset><legend data-work-ar="الطابع" data-work-en="Mood">الطابع</legend><div class="nm-choice-row"><button type="button" data-brand-mood="minimal" class="is-active" data-work-ar="بسيط" data-work-en="Minimal">بسيط</button><button type="button" data-brand-mood="bold" data-work-ar="جريء" data-work-en="Bold">جريء</button><button type="button" data-brand-mood="classic" data-work-ar="كلاسيك" data-work-en="Classic">كلاسيك</button><button type="button" data-brand-mood="playful" data-work-ar="مرح" data-work-en="Playful">مرح</button><button type="button" data-brand-mood="luxury" data-work-ar="فاخر" data-work-en="Luxury">فاخر</button><button type="button" data-brand-mood="organic" data-work-ar="طبيعي" data-work-en="Organic">طبيعي</button><button type="button" data-brand-mood="editorial" data-work-ar="تحريري" data-work-en="Editorial">تحريري</button></div></fieldset>
+            <fieldset><legend data-work-ar="لوحة اللون · 20 اتجاهًا" data-work-en="Color palette · 20 directions">لوحة اللون · 20 اتجاهًا</legend><div class="nm-palette-row">
+              <button type="button" data-brand-palette="sand" class="is-active" style="--p1:#20221d;--p2:#e5d2b8;--p3:#d96a3b" aria-label="رملي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="ember" style="--p1:#2a0b12;--p2:#ff4d28;--p3:#ffbf53" aria-label="جمري"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="ocean" style="--p1:#071e34;--p2:#25a5c4;--p3:#b5f0e4" aria-label="محيطي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="neon" style="--p1:#17101e;--p2:#b8ff34;--p3:#a84ee3" aria-label="نيون"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="olive" style="--p1:#23271b;--p2:#a9b66d;--p3:#e7dec5" aria-label="زيتوني"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="desert" style="--p1:#3b2417;--p2:#c77b45;--p3:#f1d6a8" aria-label="صحراوي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="midnight" style="--p1:#080d1d;--p2:#4e6cff;--p3:#d7ddff" aria-label="منتصف الليل"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="coral" style="--p1:#34201f;--p2:#ff7668;--p3:#ffd2c9" aria-label="مرجاني"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="lavender" style="--p1:#241c37;--p2:#9c79dc;--p3:#ebe1ff" aria-label="لافندر"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="mono" style="--p1:#111;--p2:#f4f4f0;--p3:#777" aria-label="أحادي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="jade" style="--p1:#062a25;--p2:#30b98a;--p3:#d8f2de" aria-label="يشمي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="cobalt" style="--p1:#061b5c;--p2:#1459ff;--p3:#ffce35" aria-label="كوبالت"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="terracotta" style="--p1:#47251c;--p2:#bd5c3e;--p3:#f1c6a8" aria-label="تيراكوتا"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="rosewood" style="--p1:#3b101e;--p2:#a83355;--p3:#f1c3ca" aria-label="خشب وردي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="ice" style="--p1:#12313a;--p2:#9edce6;--p3:#eefbfc" aria-label="جليدي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="mustard" style="--p1:#2d2715;--p2:#d5a624;--p3:#f6e7a4" aria-label="خردلي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="forest" style="--p1:#10251c;--p2:#3f7554;--p3:#c7d9be" aria-label="غابة"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="plum" style="--p1:#2b142b;--p2:#893d80;--p3:#efcae7" aria-label="برقوقي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="sky" style="--p1:#143047;--p2:#58a9da;--p3:#e1f3fc" aria-label="سماوي"><i></i><i></i><i></i></button>
+              <button type="button" data-brand-palette="coffee" style="--p1:#261b16;--p2:#9b6848;--p3:#ead8c6" aria-label="قهوة"><i></i><i></i><i></i></button>
+            </div></fieldset>
           </form>
         </div>
         <div class="nm-brand-preview" id="brandPreview" data-type="food" data-mood="minimal" data-palette="sand" aria-live="polite">
           <div class="nm-brand-preview__top"><span data-work-ar="اتجاه بصري أولي" data-work-en="Initial visual direction">اتجاه بصري أولي</span><b>NM LAB / 01</b></div>
           <div class="nm-brand-preview__mark"><small id="brandSymbol">ن</small><h4 id="brandWordmark">نَوَى</h4><p id="brandTagline">صُنع ببساطة.</p></div>
-          <div class="nm-brand-preview__applications"><div class="nm-lab-card"><span id="labCardName">نَوَى</span><b id="labCardCode">FOOD / 01</b></div><div class="nm-lab-pack"><i></i><span id="labPackName">نَوَى</span></div><div class="nm-lab-social"><b id="labSocialSymbol">ن</b><span>NEW<br>STORY</span></div></div>
+          <div class="nm-brand-preview__applications"><div class="nm-lab-card"><span id="labCardName">نَوَى</span><b id="labCardCode">FOOD / 01</b></div><div class="nm-lab-pack"><i></i><span id="labPackName">نَوَى</span></div><div class="nm-lab-social"><b id="labSocialSymbol">ن</b><span>NEW<br>STORY</span></div><div class="nm-lab-photo" aria-hidden="true"></div><div class="nm-lab-pattern"><i id="labPatternSymbol">ن</i><i>✦</i><i id="labIndustryName">طعام</i></div></div>
           <div class="nm-brand-preview__swatches"><i></i><i></i><i></i><span id="brandPaletteName">SAND / WARM / GROUNDED</span></div>
         </div>
       </section>
