@@ -195,7 +195,6 @@
 
   function switchView(view) {
     if (!qs(`[data-view-panel="${view}"]`)) return;
-    const previousView = state.currentView;
     state.currentView = view;
     qsa('[data-view-panel]').forEach((panel) => panel.classList.toggle('is-active', panel.dataset.viewPanel === view));
     qsa('[data-view]').forEach((button) => button.classList.toggle('is-active', button.dataset.view === view && (!button.dataset.leadCity || button.dataset.leadCity === state.leadCity)));
@@ -208,9 +207,6 @@
     qs('#appSidebar')?.classList.remove('is-open');
     qs('#appContent')?.scrollTo({ top: 0, behavior: 'smooth' });
     window.history.replaceState(null, '', view === 'overview' ? '#overview' : `#${view}`);
-    if (state.data && previousView !== view) {
-      api('/api/employee/activity', { method: 'POST', body: JSON.stringify({ action: 'فتح قسم', detail: title }) }).catch(() => {});
-    }
   }
 
   function renderIdentity() {
@@ -897,7 +893,6 @@
       state.leadPage = 1;
       switchView('leads');
       renderLeads();
-      api('/api/employee/activity', { method: 'POST', body: JSON.stringify({ action: 'فتح مدينة فرص', detail: button.textContent.trim() }) }).catch(() => {});
     }));
     qs('#leadsNavToggle')?.addEventListener('click', () => {
       const group = qs('#leadsNavGroup');

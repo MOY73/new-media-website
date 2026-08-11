@@ -310,16 +310,11 @@ async function handleEmployeeApi(request, env, url) {
   }
   if (url.pathname === '/api/employee/logout' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    await recordActivity(env, user, 'تسجيل الخروج', 'session', user.username);
     await env.DB.prepare('DELETE FROM employee_presence WHERE username = ?').bind(user.username).run();
     return json({ ok: true }, 200, { 'Set-Cookie': clearSessionCookie() });
   }
   if (url.pathname === '/api/employee/data' && request.method === 'GET') {
     return getPortalData(env, user);
-  }
-  if (url.pathname === '/api/employee/activity' && request.method === 'POST') {
-    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return createActivityEvent(request, env, user);
   }
   if (url.pathname.startsWith('/api/employee/application-files/') && request.method === 'GET') {
     return getApplicationFile(env, url.pathname.split('/').pop());
@@ -466,7 +461,6 @@ async function login(request, env) {
   await env.DB.prepare('DELETE FROM employee_login_attempts WHERE attempt_key = ?').bind(attemptKey).run();
   const user = { username, name: cleanString(account.name || username, 60), role: roleForUsername(username) };
   const token = await createSession(user, env);
-  await recordActivity(env, user, 'تسجيل الدخول', 'session', username);
   return json({ user }, 200, { 'Set-Cookie': sessionCookie(token) });
 }
 
@@ -665,7 +659,6 @@ async function updateApplication(request, env, user, id) {
   if (!APPLICATION_STATUSES.includes(status)) return json({ error: 'حالة الطلب غير صحيحة.' }, 400);
   const result = await env.DB.prepare('UPDATE client_applications SET status = ?, updated_at = ? WHERE id = ?').bind(status, Date.now(), id).run();
   if (!result.meta?.changes) return json({ error: 'الطلب غير موجود.' }, 404);
-  await recordActivity(env, user, 'تحديث حالة طلب', 'application', id, status);
   return json({ ok: true });
 }
 
@@ -767,7 +760,6 @@ async function createMessage(request, env, user) {
   await env.DB.prepare(
     'INSERT INTO employee_messages (id, author_username, author_name, body, created_at) VALUES (?, ?, ?, ?, ?)'
   ).bind(message.id, message.author_username, message.author_name, message.body, message.created_at).run();
-  await recordActivity(env, user, 'إرسال رسالة للفريق', 'message', message.id);
   return json({ message }, 201);
 }
 
@@ -807,7 +799,6 @@ async function updateClient(request, env, user, id) {
     `UPDATE employee_clients SET name = ?, contact = ?, service = ?, value = ?, status = ?,
      next_step = ?, owner = ?, updated_at = ? WHERE id = ?`
   ).bind(merged.name, merged.contact, merged.service, merged.value, merged.status, merged.nextStep, merged.owner, Date.now(), id).run();
-  await recordActivity(env, user, 'تحديث عميل', 'client', id, merged.name);
   return json({ ok: true });
 }
 
@@ -836,7 +827,6 @@ async function createTask(request, env, user) {
      (id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(id, task.title, task.clientName, task.assignee, task.dueDate, task.priority, task.status, user.username, now, now).run();
-  await recordActivity(env, user, 'إضافة مهمة', 'task', id, task.title);
   return json({ ok: true, id }, 201);
 }
 
@@ -858,7 +848,6 @@ async function updateTask(request, env, user, id) {
     `UPDATE employee_tasks SET title = ?, client_name = ?, assignee = ?, due_date = ?,
      priority = ?, status = ?, updated_at = ? WHERE id = ?`
   ).bind(merged.title, merged.clientName, merged.assignee, merged.dueDate, merged.priority, merged.status, Date.now(), id).run();
-  await recordActivity(env, user, 'تحديث مهمة', 'task', id, merged.title);
   return json({ ok: true });
 }
 
@@ -887,7 +876,6 @@ async function updateBusinessLead(request, env, user, id) {
      notes = ?, updated_by = ?, updated_at = ? WHERE id = ?`
   ).bind(contactStatus, owner, outcome, shouldStamp ? Date.now() : Number(current.last_contact_at || 0),
     notes, user.username, Date.now(), id).run();
-  await recordActivity(env, user, 'تحديث فرصة', 'lead', id, `${contactStatus} · ${owner || 'غير مسند'}`);
   return json({ ok: true });
 }
 
@@ -926,16 +914,6 @@ async function assignLeadCategory(request, env, user) {
   return json({ ok: true, count });
 }
 
-async function createActivityEvent(request, env, user) {
-  const payload = await readJson(request, 3000);
-  if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
-  const action = cleanString(payload.action, 100);
-  const detail = cleanString(payload.detail, 300);
-  if (!action) return json({ error: 'النشاط غير مكتمل.' }, 400);
-  await recordActivity(env, user, action, 'interface', '', detail);
-  return json({ ok: true }, 201);
-}
-
 async function recordActivity(env, user, action, entityType = '', entityId = '', detail = '') {
   await env.DB.prepare(
     `INSERT INTO employee_activity_log
@@ -965,7 +943,6 @@ async function convertBusinessLeadToTask(request, env, user, id) {
       `UPDATE business_leads SET contact_status = 'working', owner = ?, converted_task_id = ?, updated_by = ?, updated_at = ? WHERE id = ?`
     ).bind(owner, taskId, user.username, now, id)
   ]);
-  await recordActivity(env, user, 'تحويل فرصة إلى مهمة', 'lead', id, lead.name);
   return json({ ok: true, id: taskId }, 201);
 }
 
