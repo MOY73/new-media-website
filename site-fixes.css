@@ -1,6 +1,6 @@
 /* Arabic display type needs extra vertical room for dots, hamzas, and descenders. */
 html[lang="ar"] :is(.hero-title, h1, .section-title, .sec-title, .cta-title, .cta h2, .page-title) {
-  font-family: 'Tajawal', sans-serif;
+  font-family: 'Alexandria', sans-serif;
   font-weight: 900;
   letter-spacing: 0;
   text-transform: none;
@@ -30,6 +30,9 @@ html[lang="ar"] :is(.hero-title .line-1, .hero-title .line-2) {
 html[lang="ar"] :is(
   .section-title .accent,
   .sec-title .g,
+  .section-title .gradient,
+  .division-hero h1 .gradient,
+  .division-cta h2 .gradient,
   .cta-title .gradient-text,
   .cta h2 .gr
 ) {
