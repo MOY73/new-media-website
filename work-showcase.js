@@ -162,7 +162,11 @@
   }
 
   function choose(selector, key, value) {
-    root.querySelectorAll(selector).forEach((button) => button.classList.toggle('is-active', button.dataset[key] === value));
+    root.querySelectorAll(selector).forEach((button) => {
+      const active = button.dataset[key] === value;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', String(active));
+    });
   }
 
   root.querySelectorAll('[data-brand-type]').forEach((button) => {
@@ -190,9 +194,11 @@
     });
   });
 
+  let renderFrame = 0;
   nameInput.addEventListener('input', () => {
     ui.nameTouched = true;
-    renderBrand();
+    cancelAnimationFrame(renderFrame);
+    renderFrame = requestAnimationFrame(renderBrand);
   });
 
   const languageObserver = new MutationObserver((records) => {
@@ -217,5 +223,8 @@
     revealTargets.forEach((element) => element.classList.add('is-work-visible'));
   }
 
+  choose('[data-brand-type]', 'brandType', ui.type);
+  choose('[data-brand-mood]', 'brandMood', ui.mood);
+  choose('[data-brand-palette]', 'brandPalette', ui.palette);
   setLocalizedText();
 })();
