@@ -1,4 +1,9 @@
 /* Arabic display type needs extra vertical room for dots, hamzas, and descenders. */
+html body,
+html body :is(button,input,textarea,select) {
+  font-family: 'Alexandria', sans-serif !important;
+}
+
 html[lang="ar"] :is(.hero-title, h1, .section-title, .sec-title, .cta-title, .cta h2, .page-title) {
   font-family: 'Alexandria', sans-serif;
   font-weight: 900;

@@ -242,17 +242,17 @@
     }
 
     let sequencePosition = 0;
-    if (progress >= 0.09 && progress < 0.29) sequencePosition = smooth(0.09, 0.29, progress) * 4;
-    else if (progress >= 0.29 && progress < 0.46) sequencePosition = (1 - smooth(0.29, 0.46, progress)) * 4;
-    const handsOpacity = smooth(0.585, 0.665, progress);
+    if (progress >= 0.07 && progress < 0.18) sequencePosition = smooth(0.07, 0.18, progress) * 4;
+    else if (progress >= 0.18 && progress < 0.28) sequencePosition = (1 - smooth(0.18, 0.28, progress)) * 4;
+    const handsOpacity = smooth(0.26, 0.32, progress);
     paintSequence(sequencePosition, handsOpacity);
 
-    showScene(scenes.quote, progress < 0.13 ? 1 - smooth(0.105, 0.15, progress) : 0);
-    const statsOpacity = fadeRange(progress, 0.4, 0.44, 0.555, 0.59);
+    showScene(scenes.quote, progress < 0.13 ? 1 - smooth(0.085, 0.125, progress) : 0);
+    const statsOpacity = fadeRange(progress, 0.3, 0.34, 0.45, 0.49);
     showScene(scenes.stats, statsOpacity);
-    scenes.stats.classList.toggle('is-visible-cards', progress > 0.435 && progress < 0.58);
-    showScene(scenes.services, fadeRange(progress, 0.57, 0.615, 0.77, 0.805));
-    const workOpacity = fadeRange(progress, 0.795, 0.835, 0.935, 0.965);
+    scenes.stats.classList.toggle('is-visible-cards', progress > 0.335 && progress < 0.48);
+    showScene(scenes.services, fadeRange(progress, 0.47, 0.52, 0.7, 0.75));
+    const workOpacity = fadeRange(progress, 0.73, 0.78, 0.91, 0.95);
     showScene(scenes.work, workOpacity);
     const shouldRunWorkAuto = workOpacity > 0.55;
     if (shouldRunWorkAuto !== workSceneVisible) {
@@ -260,20 +260,20 @@
       if (workSceneVisible) startWorkAuto();
       else stopWorkAuto();
     }
-    showScene(scenes.cta, smooth(0.955, 0.985, progress));
+    showScene(scenes.cta, smooth(0.935, 0.975, progress));
 
-    if (progress >= 0.62 && progress <= 0.78 && Date.now() - lastManualCardChange > 1000) {
-      const local = clamp((progress - 0.63) / 0.14);
+    if (progress >= 0.54 && progress <= 0.72 && Date.now() - lastManualCardChange > 1000) {
+      const local = clamp((progress - 0.55) / 0.16);
       const desiredCard = Math.min(3, Math.floor(local * 4));
       if (desiredCard !== activeCard) renderOrbit(desiredCard, false);
     }
     let scene = 1;
-    if (progress >= 0.09) scene = 2;
-    if (progress >= 0.29) scene = 3;
-    if (progress >= 0.4) scene = 4;
-    if (progress >= 0.57) scene = 5;
-    if (progress >= 0.795) scene = 6;
-    if (progress >= 0.955) scene = 7;
+    if (progress >= 0.07) scene = 2;
+    if (progress >= 0.18) scene = 3;
+    if (progress >= 0.3) scene = 4;
+    if (progress >= 0.47) scene = 5;
+    if (progress >= 0.73) scene = 6;
+    if (progress >= 0.935) scene = 7;
     sceneNumber.textContent = String(scene).padStart(2, '0');
     scrollCue.style.opacity = String(1 - smooth(0.025, 0.08, progress));
     scrollFrame = 0;
@@ -286,7 +286,7 @@
   window.addEventListener('resize', updateStory, { passive: true });
 
   function jumpToHash() {
-    const points = { '#about': 0, '#services': 0.68, '#work': 0.86 };
+    const points = { '#about': 0, '#services': 0.61, '#work': 0.84 };
     if (!Object.prototype.hasOwnProperty.call(points, location.hash)) return;
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     window.scrollTo({ top: story.offsetTop + range * points[location.hash], behavior: reducedMotion ? 'auto' : 'smooth' });

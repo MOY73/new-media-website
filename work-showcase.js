@@ -134,10 +134,10 @@
     ];
     const packs = [
       { type:'care', label:['لُمى · عناية','LUMA · CARE'], items:'<i class="nm-pack-object nm-pack-object--carton"><b>LUMA</b></i><i class="nm-pack-object nm-pack-object--bottle"><b>L</b></i><i class="nm-pack-object nm-pack-object--tube"><b>L</b></i>' },
-      { type:'coffee', label:['رَشْف · قهوة','RASHF · COFFEE'], items:'<i class="nm-pack-object nm-pack-object--pouch"><b>رشف</b></i><i class="nm-pack-object nm-pack-object--cup"><b>R</b></i><i class="nm-pack-object nm-pack-object--sleeve"><b>08</b></i>' },
+      { type:'coffee', label:['رَشْف · قهوة','RASHF · COFFEE'], items:'<i class="nm-pack-object nm-pack-object--pouch"><b>رشف</b></i><i class="nm-pack-object nm-pack-object--cup"><b>R</b></i><i class="nm-pack-object nm-pack-object--sleeve"><b>◆</b></i>' },
       { type:'drink', label:['مَوْج · مشروب','MAWJ · DRINK'], items:'<i class="nm-pack-object nm-pack-object--can"><b>M</b></i><i class="nm-pack-object nm-pack-object--can nm-pack-object--tall"><b>W</b></i><i class="nm-pack-object nm-pack-object--can"><b>J</b></i>' },
       { type:'rice', label:['سُنْبُل · أرز','SUNBUL · RICE'], items:'<i class="nm-pack-object nm-pack-object--rice"><b>سنبل</b><small>أرز بسمتي</small></i><i class="nm-pack-object nm-pack-object--bowl"><b>•••</b></i><i class="nm-pack-object nm-pack-object--sack"><b>S</b></i>' },
-      { type:'fragrance', label:['سُرى · عطر','SURA · FRAGRANCE'], items:'<i class="nm-pack-object nm-pack-object--perfume"><b>س</b></i><i class="nm-pack-object nm-pack-object--fragrance-box"><b>SURA</b></i><i class="nm-pack-object nm-pack-object--cap"><b>05</b></i>' },
+      { type:'fragrance', label:['سُرى · عطر','SURA · FRAGRANCE'], items:'<i class="nm-pack-object nm-pack-object--perfume"><b>س</b></i><i class="nm-pack-object nm-pack-object--fragrance-box"><b>SURA</b></i><i class="nm-pack-object nm-pack-object--cap"><b>✦</b></i>' },
     ];
     const info = [
       { title:['كيف تنمو الفكرة؟','How does an idea grow?'], steps:[['نبحث','Research'],['نبني','Build'],['نطلق','Launch'],['نقيس','Measure']] },
@@ -167,10 +167,53 @@
     }
     if (cardIndex === 3) {
       const item = info[frameIndex];
-      return `<header><b data-work-ar="${item.title[0]}" data-work-en="${item.title[1]}">${item.title[0]}</b><span>0${frameIndex + 1} / INFO</span></header><ol>${item.steps.map((step, index) => `<li><i>0${index + 1}</i><span data-work-ar="${step[0]}" data-work-en="${step[1]}">${step[0]}</span></li>`).join('')}</ol><div><i></i><i></i><i></i><i></i><i></i></div>`;
+      const kinds = ['steps','funnel','timeline','dashboard','map'];
+      return `<header><b data-work-ar="${item.title[0]}" data-work-en="${item.title[1]}">${item.title[0]}</b><span>0${frameIndex + 1} / INFO</span></header><section class="nm-info-scene nm-info-scene--${kinds[frameIndex]}"><ol>${item.steps.map((step, index) => `<li><i>0${index + 1}</i><span data-work-ar="${step[0]}" data-work-en="${step[1]}">${step[0]}</span><b>${[74,58,86,68][(index + frameIndex) % 4]}%</b></li>`).join('')}</ol><div class="nm-info-accent"><i></i><i></i><i></i><i></i><i></i></div></section>`;
     }
     const item = decks[frameIndex];
-    return `<div><span>${item.label}</span><b><span data-work-ar="${item.ar[0]}" data-work-en="${item.en[0]}">${item.ar[0]}</span><br><span data-work-ar="${item.ar[1]}" data-work-en="${item.en[1]}">${item.ar[1]}</span><br><em data-work-ar="${item.ar[2]}" data-work-en="${item.en[2]}">${item.ar[2]}</em></b></div><div><span>0${frameIndex + 1}—05</span><i></i><p>${item.meta.replaceAll(' · ','<br>')}</p></div>`;
+    const deckKinds = ['strategy','profile','pitch','report','proposal'];
+    return `<section class="nm-deck-layout nm-deck-layout--${deckKinds[frameIndex]}"><header><span>${item.label}</span><small>0${frameIndex + 1} / 05</small></header><div class="nm-deck-copy"><b><span data-work-ar="${item.ar[0]}" data-work-en="${item.en[0]}">${item.ar[0]}</span><br><span data-work-ar="${item.ar[1]}" data-work-en="${item.en[1]}">${item.ar[1]}</span><br><em data-work-ar="${item.ar[2]}" data-work-en="${item.en[2]}">${item.ar[2]}</em></b><p>${item.meta.replaceAll(' · ','<br>')}</p></div><div class="nm-deck-art"><i></i><i></i><i></i><i></i><strong>${['360°','4×','+38%','2026','12W'][frameIndex]}</strong></div></section>`;
+  }
+
+  function designFrameMeta(cardIndex, frameIndex) {
+    const groups = [
+      [
+        ['حزمة هوية نباتية','نظام مرن لعلامة طبيعية ينمو عبر كل نقطة اتصال.','Botanical identity system','A flexible natural brand designed to grow across every touchpoint.'],
+        ['هوية ثقافية تحريرية','صوت بصري جريء لمنصة ثقافة ومحتوى.','Editorial culture identity','A bold visual voice for a culture and content platform.'],
+        ['هوية ضيافة دافئة','تفاصيل هادئة تصنع إحساس المكان قبل الوصول.','Warm hospitality identity','Calm details that make the place felt before arrival.'],
+        ['نظام علامة معمارية','هندسة واضحة للهوية والمطبوعات والواجهات.','Architectural brand system','A precise identity spanning print, signage, and space.'],
+        ['هوية منتج تقني','علامة رقمية سريعة وواضحة وقابلة للتوسع.','Technology product identity','A clear, scalable identity built for a digital product.'],
+      ],
+      [
+        ['شبكة مقهى يومية','تسعة منشورات تعمل معًا كقصة واحدة.','Daily café social grid','Nine posts working together as one daily story.'],
+        ['سلسلة سفر واكتشاف','محتوى وجهات يحوّل الرحلة إلى حلقات مترابطة.','Travel discovery series','Destination content structured as a connected journey.'],
+        ['محتوى منتج تقني','نظام يشرح المزايا والأرقام بلغة بصرية سريعة.','Technology content system','A fast visual system for product benefits and metrics.'],
+        ['حملة مشروع سكني','منشورات تجمع المساحة والتفاصيل ودعوة المعاينة.','Residential campaign system','A social campaign connecting spaces, details, and visits.'],
+        ['نظام مجلة ثقافية','أغلفة واقتباسات وصوت تحريري متجدد.','Culture magazine system','Covers, quotes, and a living editorial voice.'],
+      ],
+      [
+        ['تغليف منتجات العناية','عائلة عبوات هادئة توحّد الرف والتجربة.','Care product packaging','A calm packaging family unifying shelf and experience.'],
+        ['تجربة قهوة متكاملة','كيس وكوب وملحقات تحمل شخصية واحدة.','Complete coffee packaging','A pouch, cup, and accessories sharing one personality.'],
+        ['هوية مشروبات جاهزة','مجموعة علب واضحة وسهلة التمييز.','Ready-to-drink packaging','A distinctive, easy-to-navigate can family.'],
+        ['تغليف أرز ومواد غذائية','حل عملي يوازن الوضوح مع حضور الرف.','Food and rice packaging','A practical system balancing clarity and shelf presence.'],
+        ['تغليف عطر فاخر','عبوة وصندوق وتفاصيل تجعل الفتح طقسًا.','Luxury fragrance packaging','A bottle and box designed as an opening ritual.'],
+      ],
+      [
+        ['مخطط مراحل النمو','خطوات متتابعة تحوّل العملية إلى مسار مفهوم.','Growth process infographic','A clear sequence turning process into an understandable path.'],
+        ['قمع رحلة العميل','مراحل قرار العميل في مشهد يتدرج نحو التحويل.','Customer journey funnel','A funnel showing the path from attention to conversion.'],
+        ['خط زمني من الحبة للكوب','قصة إنتاج تُقرأ رأسيًا من المصدر إلى التجربة.','Bean-to-cup timeline','A vertical production story from source to experience.'],
+        ['لوحة أداء الحملة','مؤشرات ودوائر ونسب تختصر قراءة النتائج.','Campaign performance board','Metrics, rings, and signals that summarize performance.'],
+        ['خريطة تجربة المكان','مسار ونقاط توقف تحول المكان إلى رحلة بصرية.','Experience map infographic','A mapped journey connecting movement and memorable stops.'],
+      ],
+      [
+        ['ملف استراتيجي شامل','رؤية واتجاه وأولويات في عرض تنفيذي واضح.','Strategic company deck','Vision, direction, and priorities in a decisive executive deck.'],
+        ['ملف شركة رعاية','قصة ثقة وخدمات وأثر بتكوين هادئ وإنساني.','Care company profile','Trust, services, and impact in a calm human profile.'],
+        ['عرض استثماري تقني','سوق ومنتج ونمو في شرائح مبنية على البيانات.','Technology investor pitch','Market, product, and growth in a data-led pitch.'],
+        ['تقرير سنوي تحريري','أرقام وقصص العام في تجربة تشبه المجلة.','Editorial annual report','A year of numbers and stories designed like a magazine.'],
+        ['عرض مشروع وتنفيذ','نطاق وزمن ومراحل تسهّل اتخاذ القرار.','Project proposal deck','Scope, timing, and milestones that make decisions easier.'],
+      ],
+    ];
+    return groups[cardIndex][frameIndex];
   }
 
   function installWorkRotators() {
@@ -209,10 +252,15 @@
       carousel.dataset.autoRotator = '';
       for (let frameIndex = 0; frameIndex < 5; frameIndex += 1) {
         const frame = original.cloneNode(true);
+        const meta = designFrameMeta(cardIndex, frameIndex);
         frame.innerHTML = designFrameMarkup(cardIndex, frameIndex);
         frame.classList.add('nm-rotator-frame', `nm-visual-variant--${frameIndex + 1}`);
         frame.classList.toggle('is-active', frameIndex === 0);
         frame.setAttribute('aria-hidden', frameIndex === 0 ? 'false' : 'true');
+        frame.dataset.metaArTitle = meta[0];
+        frame.dataset.metaArDescription = meta[1];
+        frame.dataset.metaEnTitle = meta[2];
+        frame.dataset.metaEnDescription = meta[3];
         carousel.appendChild(frame);
       }
       original.replaceWith(carousel);
@@ -242,6 +290,22 @@
           dot.classList.toggle('is-active', index === current);
           dot.setAttribute('aria-pressed', String(index === current));
         });
+        if (rotator.classList.contains('nm-design-rotator')) {
+          const card = rotator.closest('.nm-design-case');
+          const activeFrame = frames[current];
+          const title = card?.querySelector(':scope > footer h4');
+          const description = card?.querySelector(':scope > footer p');
+          const number = card?.querySelector(':scope > footer > span');
+          if (title && description && activeFrame) {
+            title.dataset.workAr = activeFrame.dataset.metaArTitle;
+            title.dataset.workEn = activeFrame.dataset.metaEnTitle;
+            description.dataset.workAr = activeFrame.dataset.metaArDescription;
+            description.dataset.workEn = activeFrame.dataset.metaEnDescription;
+            title.textContent = language() === 'en' ? activeFrame.dataset.metaEnTitle : activeFrame.dataset.metaArTitle;
+            description.textContent = language() === 'en' ? activeFrame.dataset.metaEnDescription : activeFrame.dataset.metaArDescription;
+          }
+          if (number) number.textContent = `0${current + 1} / 05`;
+        }
       };
 
       frames.forEach((_, index) => {
