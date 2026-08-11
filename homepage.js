@@ -125,7 +125,7 @@
     activeCard = (nextIndex + serviceCards.length) % serviceCards.length;
     serviceCards.forEach((card, index) => {
       let slot = index - activeCard;
-      if (slot > 1) slot -= serviceCards.length;
+      if (slot > 2) slot -= serviceCards.length;
       if (slot < -2) slot += serviceCards.length;
       card.dataset.slot = String(slot);
       card.setAttribute('aria-current', slot === 0 ? 'true' : 'false');
