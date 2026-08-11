@@ -273,7 +273,15 @@ export default {
     }
 
     const response = await env.ASSETS.fetch(request);
-    if (response.status !== 404) return response;
+    if (response.status !== 404) {
+      if ((url.pathname === '/' || url.pathname === '/index.html') && request.method === 'GET') {
+        const headers = new Headers(response.headers);
+        headers.set('Cache-Control', 'no-cache, max-age=0, must-revalidate');
+        headers.set('CDN-Cache-Control', 'no-cache');
+        return new Response(response.body, { status: response.status, headers });
+      }
+      return response;
+    }
 
     const notFoundUrl = new URL('/404.html', request.url);
     const notFoundPage = await env.ASSETS.fetch(new Request(notFoundUrl, request));
