@@ -119,11 +119,11 @@
 
   function installWorkRotators() {
     const contentImages = [
-      '/assets/work/content-product-02.webp',
-      '/assets/work/content-space-02.webp',
-      '/assets/work/content-campaign-02.webp',
-      '/assets/work/content-ugc-02.webp',
-      '/assets/work/content-podcast-02.webp',
+      ['product-02', 'product-03', 'product-04', 'product-05', 'product-06'],
+      ['space-02', 'space-03', 'space-04', 'space-05', 'space-06'],
+      ['campaign-02', 'campaign-03', 'campaign-04', 'campaign-05', 'campaign-06'],
+      ['ugc-02', 'ugc-03', 'ugc-04', 'ugc-05', 'ugc-06'],
+      ['podcast-02', 'podcast-03', 'podcast-04', 'podcast-05', 'podcast-06'],
     ];
 
     root.querySelectorAll('.nm-content-case').forEach((card, cardIndex) => {
@@ -132,11 +132,10 @@
       const carousel = document.createElement('div');
       carousel.className = 'nm-work-rotator nm-content-carousel';
       carousel.dataset.autoRotator = '';
-      const ordered = [contentImages[cardIndex], ...contentImages.filter((_, index) => index !== cardIndex)];
-      ordered.forEach((source, frameIndex) => {
+      contentImages[cardIndex].forEach((asset, frameIndex) => {
         const image = document.createElement('img');
         image.className = `nm-rotator-frame${frameIndex === 0 ? ' is-active' : ''}`;
-        image.src = source;
+        image.src = `/assets/work/content-${asset}.webp`;
         image.alt = frameIndex === 0 ? original.alt : '';
         image.loading = 'lazy';
         image.decoding = 'async';
