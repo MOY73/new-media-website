@@ -106,6 +106,7 @@ const SCHEMA_STATEMENTS = [
   )`,
   `CREATE TABLE IF NOT EXISTS business_leads (
     id TEXT PRIMARY KEY,
+    city TEXT NOT NULL DEFAULT 'مكة المكرمة',
     neighborhood TEXT NOT NULL,
     name TEXT NOT NULL,
     activity TEXT NOT NULL,
@@ -134,7 +135,12 @@ const SCHEMA_STATEMENTS = [
   `CREATE INDEX IF NOT EXISTS idx_business_leads_neighborhood_priority
    ON business_leads(neighborhood, priority, score DESC)`,
   `CREATE INDEX IF NOT EXISTS idx_business_leads_status_updated
-   ON business_leads(contact_status, updated_at DESC)`
+   ON business_leads(contact_status, updated_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS business_lead_deletions (
+    id TEXT PRIMARY KEY,
+    deleted_by TEXT NOT NULL,
+    deleted_at INTEGER NOT NULL
+  )`
 ];
 
 const KNOWLEDGE = {
@@ -322,6 +328,10 @@ async function handleEmployeeApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateBusinessLead(request, env, user, url.pathname.split('/').pop());
   }
+  if (/^\/api\/employee\/leads\/[^/]+$/.test(url.pathname) && request.method === 'DELETE') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return deleteBusinessLead(env, user, url.pathname.split('/').pop());
+  }
   if (/^\/api\/employee\/leads\/[^/]+\/convert-task$/.test(url.pathname) && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return convertBusinessLeadToTask(request, env, user, url.pathname.split('/')[4]);
@@ -337,6 +347,13 @@ async function handleEmployeeApi(request, env, url) {
 async function ensureSchema(env) {
   if (schemaReady) return;
   await env.DB.batch(SCHEMA_STATEMENTS.map((statement) => env.DB.prepare(statement)));
+  const leadColumns = await env.DB.prepare('PRAGMA table_info(business_leads)').all();
+  if (!(leadColumns.results || []).some((column) => column.name === 'city')) {
+    await env.DB.prepare("ALTER TABLE business_leads ADD COLUMN city TEXT NOT NULL DEFAULT 'مكة المكرمة'").run();
+  }
+  await env.DB.prepare(
+    'CREATE INDEX IF NOT EXISTS idx_business_leads_city_priority ON business_leads(city, priority, score DESC)'
+  ).run();
   await env.DB.prepare(
     `INSERT OR IGNORE INTO employee_messages
      (id, author_username, author_name, body, created_at)
@@ -348,15 +365,16 @@ async function ensureSchema(env) {
       const chunk = BUSINESS_LEAD_SEED.slice(offset, offset + 100);
       await env.DB.batch(chunk.map((lead) => env.DB.prepare(
         `INSERT OR IGNORE INTO business_leads
-         (id, neighborhood, name, activity, category, phone, email, address, website, maps_url,
+         (id, city, neighborhood, name, activity, category, phone, email, address, website, maps_url,
           priority, score, recommended_service, contact_status, owner, outcome, last_contact_at,
           notes, source, researched_at, created_at, updated_at)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-      ).bind(lead.id, lead.neighborhood, lead.name, lead.activity, lead.category, lead.phone || '',
+         SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+         WHERE NOT EXISTS (SELECT 1 FROM business_lead_deletions WHERE id = ?)`
+      ).bind(lead.id, lead.city || 'مكة المكرمة', lead.neighborhood, lead.name, lead.activity, lead.category, lead.phone || '',
         lead.email || '', lead.address || '', lead.website || '', lead.maps_url, Number(lead.priority || 3),
         Number(lead.score || 0), lead.recommended_service || '', lead.status || 'new', lead.owner || '',
         lead.outcome || 'not_contacted', Number(lead.last_contact_at || 0), lead.notes || '', lead.source || 'Google Maps',
-        lead.researched_at || '2026-08-10', now, now)));
+        lead.researched_at || '2026-08-10', now, now, lead.id)));
     }
   }
   schemaReady = true;
@@ -418,7 +436,7 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at FROM employee_tasks ORDER BY status ASC, due_date ASC, updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, reference, full_name, organization, email, phone, services, budget_range, project_summary, payload_json, status, attachment_count, email_status, created_at, updated_at FROM client_applications ORDER BY created_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, application_id, original_name, content_type, size_bytes, created_at FROM client_application_files ORDER BY created_at ASC LIMIT 1000'),
-    env.DB.prepare('SELECT * FROM business_leads ORDER BY priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 1000')
+    env.DB.prepare('SELECT * FROM business_leads ORDER BY city ASC, priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 5000')
   ]);
   const messages = [...(results[0].results || [])].reverse();
   const clients = results[1].results || [];
@@ -805,6 +823,22 @@ async function updateBusinessLead(request, env, user, id) {
      notes = ?, updated_by = ?, updated_at = ? WHERE id = ?`
   ).bind(contactStatus, owner, outcome, shouldStamp ? Date.now() : Number(current.last_contact_at || 0),
     notes, user.username, Date.now(), id).run();
+  return json({ ok: true });
+}
+
+async function deleteBusinessLead(env, user, id) {
+  if (!/^MKB1-\d{3,4}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  const lead = await env.DB.prepare('SELECT id FROM business_leads WHERE id = ?').bind(id).first();
+  if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
+  const now = Date.now();
+  await env.DB.batch([
+    env.DB.prepare(
+      `INSERT INTO business_lead_deletions (id, deleted_by, deleted_at)
+       VALUES (?, ?, ?)
+       ON CONFLICT(id) DO UPDATE SET deleted_by = excluded.deleted_by, deleted_at = excluded.deleted_at`
+    ).bind(id, user.username, now),
+    env.DB.prepare('DELETE FROM business_leads WHERE id = ?').bind(id)
+  ]);
   return json({ ok: true });
 }
 

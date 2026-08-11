@@ -132,6 +132,14 @@
     services: 'الأقسام والخدمات',
     library: 'مكتبة ملفات الموظفين',
   };
+  const LEAD_CITIES = [
+    ['مكة المكرمة', 'مكة'],
+    ['جدة', 'جدة'],
+    ['الرياض', 'الرياض'],
+    ['المدينة المنورة', 'المدينة'],
+    ['الخبر', 'الخبر'],
+    ['الدمام', 'الدمام'],
+  ];
   const state = {
     data: null,
     currentView: 'overview',
@@ -139,6 +147,7 @@
     pollId: null,
     staticRendered: false,
     leadFilters: { search: '', neighborhood: 'all', priority: 'all', status: 'all' },
+    leadCity: 'مكة المكرمة',
     leadVisible: 60,
   };
 
@@ -187,10 +196,12 @@
     if (!qs(`[data-view-panel="${view}"]`)) return;
     state.currentView = view;
     qsa('[data-view-panel]').forEach((panel) => panel.classList.toggle('is-active', panel.dataset.viewPanel === view));
-    qsa('[data-view]').forEach((button) => button.classList.toggle('is-active', button.dataset.view === view));
+    qsa('[data-view]').forEach((button) => button.classList.toggle('is-active', button.dataset.view === view && (!button.dataset.leadCity || button.dataset.leadCity === state.leadCity)));
     const title = view === 'overview'
       ? `مرحبًا، ${state.data?.user?.name || 'فريق NEW MEDIA'}`
-      : VIEW_TITLES[view];
+      : view === 'leads'
+        ? `فرص ${LEAD_CITIES.find(([city]) => city === state.leadCity)?.[1] || state.leadCity}`
+        : VIEW_TITLES[view];
     qs('#viewTitle').textContent = title;
     qs('#appSidebar')?.classList.remove('is-open');
     qs('#appContent')?.scrollTo({ top: 0, behavior: 'smooth' });
@@ -677,34 +688,63 @@
         await refreshData({ quiet: true }); showToast(`أضيف ${lead.name} إلى مسار العملاء.`);
       } catch (error) { client.disabled = false; showToast(error.message, true); }
     });
-    actions.append(maps); if (website) actions.append(website); actions.append(task, client);
+    const remove = element('button', 'lead-delete', 'حذف الفرصة'); remove.type = 'button';
+    remove.addEventListener('click', async () => {
+      if (!window.confirm(`حذف فرصة «${lead.name}» نهائيًا من قائمة الاستهداف؟`)) return;
+      remove.disabled = true;
+      try {
+        await api(`/api/employee/leads/${encodeURIComponent(lead.id)}`, { method: 'DELETE' });
+        await refreshData({ quiet: true });
+        showToast(`تم حذف فرصة ${lead.name}.`);
+      } catch (error) { remove.disabled = false; showToast(error.message, true); }
+    });
+    actions.append(maps); if (website) actions.append(website); actions.append(task, client, remove);
     card.append(top, score, contact, service, controls, actions);
     return card;
   }
 
   function renderLeads() {
     const allLeads = state.data.leads || [];
-    const neighborhoods = [...new Set(allLeads.map((lead) => lead.neighborhood))];
+    const leadCity = (lead) => lead.city || 'مكة المكرمة';
+    const cityLeads = allLeads.filter((lead) => leadCity(lead) === state.leadCity);
+    const neighborhoods = [...new Set(cityLeads.map((lead) => lead.neighborhood))].sort((a, b) => a.localeCompare(b, 'ar'));
     const neighborhoodSelect = qs('#leadNeighborhood');
-    if (neighborhoodSelect && neighborhoodSelect.options.length === 1) {
+    if (neighborhoodSelect) {
+      neighborhoodSelect.replaceChildren();
+      const allOption = element('option', '', 'كل الأحياء'); allOption.value = 'all'; neighborhoodSelect.append(allOption);
       neighborhoods.forEach((name) => { const option = element('option', '', name); option.value = name; neighborhoodSelect.append(option); });
+      if (neighborhoods.includes(state.leadFilters.neighborhood)) neighborhoodSelect.value = state.leadFilters.neighborhood;
+      else state.leadFilters.neighborhood = 'all';
     }
     const filters = state.leadFilters;
     const query = filters.search.trim().toLowerCase();
-    const leads = allLeads.filter((lead) => {
+    const leads = cityLeads.filter((lead) => {
       const haystack = `${lead.name} ${lead.activity} ${lead.phone} ${lead.email} ${lead.neighborhood}`.toLowerCase();
       return (!query || haystack.includes(query)) &&
         (filters.neighborhood === 'all' || lead.neighborhood === filters.neighborhood) &&
         (filters.priority === 'all' || String(lead.priority) === filters.priority) &&
         (filters.status === 'all' || lead.contact_status === filters.status);
     });
-    const contacted = allLeads.filter((lead) => lead.contact_status !== 'new').length;
-    const converted = allLeads.filter((lead) => lead.contact_status === 'converted').length;
-    const p1 = allLeads.filter((lead) => Number(lead.priority) === 1).length;
+    const p1 = cityLeads.filter((lead) => Number(lead.priority) === 1).length;
+    const p2 = cityLeads.filter((lead) => Number(lead.priority) === 2).length;
+    const p3 = cityLeads.filter((lead) => Number(lead.priority) === 3).length;
     const kpis = [
-      ['كل الفرص', allLeads.length], ['شركات P1', p1], ['بدأ التواصل', contacted], ['تحولت لعملاء', converted],
+      ['كل الفرص', cityLeads.length], ['أولوية P1', p1], ['أولوية P2', p2], ['أولوية P3', p3],
     ].map(([label, value]) => { const item = element('article'); item.append(element('span', '', label), element('strong', '', formatNumber.format(value))); return item; });
     qs('#leadsKpis')?.replaceChildren(...kpis);
+    const cityLabel = LEAD_CITIES.find(([city]) => city === state.leadCity)?.[1] || state.leadCity;
+    const isMakkah = state.leadCity === 'مكة المكرمة';
+    qs('#leadsIntroKicker').textContent = isMakkah ? 'MAKKAH PROSPECTING / 1,000 VERIFIED LEADS' : `${state.leadCity.toUpperCase()} PROSPECTING / READY FOR NEXT BATCH`;
+    qs('#leadsIntroTitle').textContent = `فرص ${cityLabel}`;
+    qs('#leadsIntroCopy').textContent = isMakkah
+      ? 'ألف منشأة عامة موزعة على 23 حيًا وقطاعات متعددة. لكل فرصة مصدر ورابط خرائط وتاريخ جمع؛ راجع بياناتها قبل التواصل ثم عيّن المسؤول وسجّل النتيجة.'
+      : `قسم ${cityLabel} جاهز لاستقبال دفعة الفرص القادمة. لن تظهر هنا أي بيانات حتى تتم إضافتها ومراجعتها.`;
+    qs('#leadsExcelLink').hidden = !isMakkah;
+    qsa('[data-lead-city]').forEach((button) => {
+      const cityCount = allLeads.filter((lead) => leadCity(lead) === button.dataset.leadCity).length;
+      const badge = qs('em', button); if (badge) badge.textContent = formatNumber.format(cityCount);
+      button.classList.toggle('is-active', state.currentView === 'leads' && button.dataset.leadCity === state.leadCity);
+    });
     const visibleLeads = leads.slice(0, state.leadVisible);
     qs('#leadsGrid')?.replaceChildren(...(visibleLeads.length ? visibleLeads.map(leadCard) : [emptyState('لا توجد فرص مطابقة لهذه التصفية.') ]));
     const count = qs('#leadsVisibleCount');
@@ -778,7 +818,20 @@
   }
 
   function bindDashboardEvents() {
-    qsa('[data-view]').forEach((button) => button.addEventListener('click', () => switchView(button.dataset.view)));
+    qsa('[data-view]:not([data-lead-city])').forEach((button) => button.addEventListener('click', () => switchView(button.dataset.view)));
+    qsa('[data-lead-city]').forEach((button) => button.addEventListener('click', () => {
+      state.leadCity = button.dataset.leadCity;
+      state.leadFilters.neighborhood = 'all';
+      state.leadVisible = 60;
+      switchView('leads');
+      renderLeads();
+    }));
+    qs('#leadsNavToggle')?.addEventListener('click', () => {
+      const group = qs('#leadsNavGroup');
+      const expanded = !group?.classList.contains('is-open');
+      group?.classList.toggle('is-open', expanded);
+      qs('#leadsNavToggle')?.setAttribute('aria-expanded', String(expanded));
+    });
     qsa('[data-jump-view]').forEach((button) => button.addEventListener('click', () => switchView(button.dataset.jumpView)));
     qs('#sidebarOpen')?.addEventListener('click', () => qs('#appSidebar')?.classList.add('is-open'));
     qs('#sidebarClose')?.addEventListener('click', () => qs('#appSidebar')?.classList.remove('is-open'));

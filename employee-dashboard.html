@@ -32,7 +32,17 @@
         <button class="app-nav__item is-active" type="button" data-view="overview"><span>⌂</span><b>نظرة عامة</b></button>
         <button class="app-nav__item" type="button" data-view="applications"><span>↓</span><b>طلبات الموقع</b><em id="applicationsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="clients"><span>◇</span><b>العملاء والفرص</b><em id="clientsBadge">0</em></button>
-        <button class="app-nav__item" type="button" data-view="leads"><span>◎</span><b>فرص مكة</b><em id="leadsBadge">0</em></button>
+        <div class="app-nav__group is-open" id="leadsNavGroup">
+          <button class="app-nav__group-toggle" id="leadsNavToggle" type="button" aria-expanded="true" aria-controls="leadsNavChildren"><span>◎</span><b>فرص الاستهداف</b><i>⌄</i></button>
+          <div class="app-nav__children" id="leadsNavChildren">
+            <button class="app-nav__item app-nav__city" type="button" data-view="leads" data-lead-city="مكة المكرمة"><span>•</span><b>مكة</b><em id="leadsBadge">0</em></button>
+            <button class="app-nav__item app-nav__city" type="button" data-view="leads" data-lead-city="جدة"><span>•</span><b>جدة</b><em>0</em></button>
+            <button class="app-nav__item app-nav__city" type="button" data-view="leads" data-lead-city="الرياض"><span>•</span><b>الرياض</b><em>0</em></button>
+            <button class="app-nav__item app-nav__city" type="button" data-view="leads" data-lead-city="المدينة المنورة"><span>•</span><b>المدينة</b><em>0</em></button>
+            <button class="app-nav__item app-nav__city" type="button" data-view="leads" data-lead-city="الخبر"><span>•</span><b>الخبر</b><em>0</em></button>
+            <button class="app-nav__item app-nav__city" type="button" data-view="leads" data-lead-city="الدمام"><span>•</span><b>الدمام</b><em>0</em></button>
+          </div>
+        </div>
         <button class="app-nav__item" type="button" data-view="chat"><span>◌</span><b>محادثة الفريق</b></button>
         <div class="app-nav__label">مكتبة العمل</div>
         <button class="app-nav__item" type="button" data-view="packages"><span>▦</span><b>الباقات</b></button>
@@ -95,12 +105,12 @@
         </section>
 
         <section class="app-view" data-view-panel="leads">
-          <div class="section-intro leads-intro"><div><span>MAKKAH PROSPECTING / 1,000 VERIFIED LEADS</span><h2>فرص مكة</h2><p>ألف منشأة عامة موزعة على 23 حيًا وقطاعات متعددة. لكل فرصة مصدر ورابط خرائط وتاريخ جمع؛ راجع بياناتها قبل التواصل ثم عيّن المسؤول وسجّل النتيجة.</p></div><a class="portal-primary-button portal-primary-button--small" href="/team/library/makkah-business-leads-batch-1.xlsx" target="_blank" rel="noopener"><span>فتح ملف Excel الكامل</span></a></div>
+          <div class="section-intro leads-intro"><div><span id="leadsIntroKicker">MAKKAH PROSPECTING / 1,000 VERIFIED LEADS</span><h2 id="leadsIntroTitle">فرص مكة</h2><p id="leadsIntroCopy">ألف منشأة عامة موزعة على 23 حيًا وقطاعات متعددة. لكل فرصة مصدر ورابط خرائط وتاريخ جمع؛ راجع بياناتها قبل التواصل ثم عيّن المسؤول وسجّل النتيجة.</p></div><a class="portal-primary-button portal-primary-button--small" id="leadsExcelLink" href="/team/library/makkah-business-leads-batch-1.xlsx" target="_blank" rel="noopener"><span>فتح ملف Excel الكامل</span></a></div>
           <div class="leads-kpis" id="leadsKpis"></div>
           <div class="leads-toolbar" aria-label="تصفية الفرص">
             <label><span>بحث</span><input id="leadSearch" type="search" placeholder="اسم النشاط أو الرقم"></label>
             <label><span>الحي</span><select id="leadNeighborhood"><option value="all">كل الأحياء</option></select></label>
-            <label><span>الأولوية</span><select id="leadPriority"><option value="all">كل الأولويات</option><option value="1">P1 الشركات</option><option value="2">P2 المطاعم</option><option value="3">P3 أنشطة أخرى</option></select></label>
+            <label><span>الأولوية</span><select id="leadPriority"><option value="all">كل الأولويات</option><option value="1">P1 أولوية أولى</option><option value="2">P2 أولوية ثانية</option><option value="3">P3 أولوية ثالثة</option></select></label>
             <label><span>الحالة</span><select id="leadStatus"><option value="all">كل الحالات</option><option value="new">جديد</option><option value="working">قيد العمل</option><option value="contacted">تم التواصل</option><option value="interested">مهتم</option><option value="follow_up">متابعة</option><option value="not_interested">غير مهتم</option><option value="converted">تم التحويل</option></select></label>
           </div>
           <div class="leads-grid" id="leadsGrid"></div>
