@@ -131,6 +131,7 @@
     workflow: 'آلية العمل الموحّدة',
     services: 'الأقسام والخدمات',
     library: 'مكتبة ملفات الموظفين',
+    activity: 'سجل نشاط الفريق',
   };
   const LEAD_CITIES = [
     ['مكة المكرمة', 'مكة'],
@@ -146,9 +147,9 @@
     loading: false,
     pollId: null,
     staticRendered: false,
-    leadFilters: { search: '', neighborhood: 'all', priority: 'all', status: 'all' },
+    leadFilters: { search: '', neighborhood: 'all', category: 'all', priority: 'all', status: 'all' },
     leadCity: 'مكة المكرمة',
-    leadVisible: 60,
+    leadPage: 1,
   };
 
   function initials(value) {
@@ -194,6 +195,7 @@
 
   function switchView(view) {
     if (!qs(`[data-view-panel="${view}"]`)) return;
+    const previousView = state.currentView;
     state.currentView = view;
     qsa('[data-view-panel]').forEach((panel) => panel.classList.toggle('is-active', panel.dataset.viewPanel === view));
     qsa('[data-view]').forEach((button) => button.classList.toggle('is-active', button.dataset.view === view && (!button.dataset.leadCity || button.dataset.leadCity === state.leadCity)));
@@ -206,6 +208,9 @@
     qs('#appSidebar')?.classList.remove('is-open');
     qs('#appContent')?.scrollTo({ top: 0, behavior: 'smooth' });
     window.history.replaceState(null, '', view === 'overview' ? '#overview' : `#${view}`);
+    if (state.data && previousView !== view) {
+      api('/api/employee/activity', { method: 'POST', body: JSON.stringify({ action: 'فتح قسم', detail: title }) }).catch(() => {});
+    }
   }
 
   function renderIdentity() {
@@ -213,12 +218,49 @@
     qs('#userName').textContent = user.name;
     qs('#userHandle').textContent = `@${user.username}`;
     qs('#userAvatar').textContent = initials(user.name);
+    qs('#userRole').textContent = user.role === 'super_admin' ? 'أعلى مدير' : user.role === 'manager' ? 'مدير' : 'موظف';
+    qs('#activityNavItem').hidden = user.role !== 'super_admin';
     qs('#viewTitle').textContent = `مرحبًا، ${user.name}`;
 
     const today = new Date(state.data.serverTime || Date.now());
     qs('#todayLabel').textContent = new Intl.DateTimeFormat('ar-SA', { weekday: 'long' }).format(today);
     qs('#todayNumber').textContent = new Intl.NumberFormat('ar-SA').format(today.getDate());
     qs('#todayMonth').textContent = new Intl.DateTimeFormat('ar-SA', { month: 'long', year: 'numeric' }).format(today);
+  }
+
+  function renderPresence() {
+    const users = state.data.onlineUsers || [];
+    const container = qs('#onlinePresence');
+    if (!container) return;
+    const nodes = users.slice(0, 20).map((user) => {
+      const avatar = element('span', 'online-person', initials(user.name || user.username));
+      avatar.title = `${user.name || user.username} · متصل الآن`;
+      return avatar;
+    });
+    if (users.length > 20) {
+      const more = element('button', 'online-more', `+${users.length - 20}`); more.type = 'button'; more.title = 'عرض بقية المتصلين'; nodes.push(more);
+    }
+    container.replaceChildren(...nodes);
+  }
+
+  function renderActivity() {
+    const list = qs('#activityList');
+    if (!list) return;
+    if (state.data.user.role !== 'super_admin') {
+      list.replaceChildren(emptyState('هذا السجل متاح لأعلى مدير فقط.'));
+      return;
+    }
+    const roleLabel = (role) => role === 'super_admin' ? 'أعلى مدير' : role === 'manager' ? 'مدير' : 'موظف';
+    const rows = (state.data.activityLog || []).map((entry) => {
+      const row = element('article', 'activity-row');
+      const user = element('div', 'activity-user');
+      user.append(element('strong', '', entry.actor_name), element('span', '', `${roleLabel(entry.actor_role)} · @${entry.actor_username}`));
+      const copy = [entry.action, entry.detail].filter(Boolean).join(' — ');
+      const time = element('time', '', displayDate(entry.created_at));
+      row.append(element('div', 'activity-avatar', initials(entry.actor_name)), user, element('div', 'activity-copy', copy), time);
+      return row;
+    });
+    list.replaceChildren(...(rows.length ? rows : [emptyState('لا يوجد نشاط مسجل بعد.') ]));
   }
 
   function renderMetrics() {
@@ -636,7 +678,7 @@
     const top = element('div', 'lead-card__top');
     const identity = element('div');
     identity.append(
-      element('span', 'lead-card__ref', `${lead.id} · ${lead.neighborhood}`),
+      element('span', 'lead-card__ref', `${lead.id} · ${lead.neighborhood} · ${lead.category}`),
       element('h3', '', lead.name),
       element('p', '', lead.activity)
     );
@@ -708,6 +750,7 @@
     const leadCity = (lead) => lead.city || 'مكة المكرمة';
     const cityLeads = allLeads.filter((lead) => leadCity(lead) === state.leadCity);
     const neighborhoods = [...new Set(cityLeads.map((lead) => lead.neighborhood))].sort((a, b) => a.localeCompare(b, 'ar'));
+    const categories = [...new Set(cityLeads.map((lead) => lead.category).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'ar'));
     const neighborhoodSelect = qs('#leadNeighborhood');
     if (neighborhoodSelect) {
       neighborhoodSelect.replaceChildren();
@@ -716,12 +759,21 @@
       if (neighborhoods.includes(state.leadFilters.neighborhood)) neighborhoodSelect.value = state.leadFilters.neighborhood;
       else state.leadFilters.neighborhood = 'all';
     }
+    const categorySelect = qs('#leadCategory');
+    if (categorySelect) {
+      categorySelect.replaceChildren();
+      const allOption = element('option', '', 'كل التصنيفات'); allOption.value = 'all'; categorySelect.append(allOption);
+      categories.forEach((name) => { const option = element('option', '', name); option.value = name; categorySelect.append(option); });
+      if (categories.includes(state.leadFilters.category)) categorySelect.value = state.leadFilters.category;
+      else state.leadFilters.category = 'all';
+    }
     const filters = state.leadFilters;
     const query = filters.search.trim().toLowerCase();
     const leads = cityLeads.filter((lead) => {
       const haystack = `${lead.name} ${lead.activity} ${lead.phone} ${lead.email} ${lead.neighborhood}`.toLowerCase();
       return (!query || haystack.includes(query)) &&
         (filters.neighborhood === 'all' || lead.neighborhood === filters.neighborhood) &&
+        (filters.category === 'all' || lead.category === filters.category) &&
         (filters.priority === 'all' || String(lead.priority) === filters.priority) &&
         (filters.status === 'all' || lead.contact_status === filters.status);
     });
@@ -745,12 +797,29 @@
       const badge = qs('em', button); if (badge) badge.textContent = formatNumber.format(cityCount);
       button.classList.toggle('is-active', state.currentView === 'leads' && button.dataset.leadCity === state.leadCity);
     });
-    const visibleLeads = leads.slice(0, state.leadVisible);
+    const pageSize = 50;
+    const pageCount = Math.max(1, Math.ceil(leads.length / pageSize));
+    state.leadPage = Math.min(Math.max(1, state.leadPage), pageCount);
+    const start = (state.leadPage - 1) * pageSize;
+    const visibleLeads = leads.slice(start, start + pageSize);
     qs('#leadsGrid')?.replaceChildren(...(visibleLeads.length ? visibleLeads.map(leadCard) : [emptyState('لا توجد فرص مطابقة لهذه التصفية.') ]));
     const count = qs('#leadsVisibleCount');
-    if (count) count.textContent = leads.length ? `يظهر ${formatNumber.format(visibleLeads.length)} من ${formatNumber.format(leads.length)} فرصة` : '';
-    const more = qs('#loadMoreLeads');
-    if (more) more.hidden = visibleLeads.length >= leads.length;
+    if (count) count.textContent = leads.length
+      ? `الصفحة ${formatNumber.format(state.leadPage)} من ${formatNumber.format(pageCount)} · ${formatNumber.format(start + 1)}–${formatNumber.format(start + visibleLeads.length)} من ${formatNumber.format(leads.length)} فرصة`
+      : 'لا توجد فرص في هذا التصنيف';
+    const pagination = qs('#leadPagination');
+    if (pagination) {
+      const buttons = [];
+      for (let page = 1; page <= pageCount; page += 1) {
+        const button = element('button', `page-button${page === state.leadPage ? ' is-active' : ''}`, formatNumber.format(page));
+        button.type = 'button'; button.setAttribute('aria-label', `الصفحة ${page}`);
+        button.addEventListener('click', () => { state.leadPage = page; renderLeads(); qs('#leadsGrid')?.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+        buttons.push(button);
+      }
+      pagination.replaceChildren(...(pageCount > 1 ? buttons : []));
+    }
+    const assignButton = qs('#assignLeadCategory');
+    if (assignButton) assignButton.disabled = filters.category === 'all' || !cityLeads.length;
   }
 
   function renderLibrary() {
@@ -773,6 +842,7 @@
 
   function renderAll() {
     renderIdentity();
+    renderPresence();
     renderMetrics();
     renderMiniPipeline();
     renderTasks();
@@ -780,6 +850,7 @@
     renderPipeline();
     renderApplications();
     renderLeads();
+    renderActivity();
     if (!state.staticRendered) {
       renderPackages();
       renderPricing();
@@ -822,9 +893,11 @@
     qsa('[data-lead-city]').forEach((button) => button.addEventListener('click', () => {
       state.leadCity = button.dataset.leadCity;
       state.leadFilters.neighborhood = 'all';
-      state.leadVisible = 60;
+      state.leadFilters.category = 'all';
+      state.leadPage = 1;
       switchView('leads');
       renderLeads();
+      api('/api/employee/activity', { method: 'POST', body: JSON.stringify({ action: 'فتح مدينة فرص', detail: button.textContent.trim() }) }).catch(() => {});
     }));
     qs('#leadsNavToggle')?.addEventListener('click', () => {
       const group = qs('#leadsNavGroup');
@@ -840,16 +913,25 @@
     qs('#quickAddTask')?.addEventListener('click', () => openModal('taskModal'));
     const leadFilterBindings = [
       ['#leadSearch', 'search', 'input'], ['#leadNeighborhood', 'neighborhood', 'change'],
+      ['#leadCategory', 'category', 'change'],
       ['#leadPriority', 'priority', 'change'], ['#leadStatus', 'status', 'change'],
     ];
     leadFilterBindings.forEach(([selector, key, eventName]) => qs(selector)?.addEventListener(eventName, (event) => {
       state.leadFilters[key] = event.currentTarget.value;
-      state.leadVisible = 60;
+      state.leadPage = 1;
       renderLeads();
     }));
-    qs('#loadMoreLeads')?.addEventListener('click', () => {
-      state.leadVisible += 60;
-      renderLeads();
+    qs('#assignLeadCategory')?.addEventListener('click', async () => {
+      const category = state.leadFilters.category;
+      const owner = qs('#leadCategoryOwner')?.value || '';
+      if (category === 'all' || !owner) { showToast('اختر تصنيفًا ومسؤولًا أولًا.', true); return; }
+      if (!window.confirm(`توزيع كل فرص تصنيف «${category}» في ${state.leadCity} على ${owner}؟`)) return;
+      const button = qs('#assignLeadCategory'); button.disabled = true;
+      try {
+        const result = await api('/api/employee/leads/assign-category', { method: 'POST', body: JSON.stringify({ city: state.leadCity, category, owner }) });
+        await refreshData({ quiet: true });
+        showToast(`تم توزيع ${formatNumber.format(result.count || 0)} فرصة على ${owner}.`);
+      } catch (error) { showToast(error.message, true); } finally { button.disabled = false; }
     });
     qsa('[data-close-modal]').forEach((button) => button.addEventListener('click', () => closeModal(button.dataset.closeModal)));
 

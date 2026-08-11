@@ -140,7 +140,28 @@ const SCHEMA_STATEMENTS = [
     id TEXT PRIMARY KEY,
     deleted_by TEXT NOT NULL,
     deleted_at INTEGER NOT NULL
-  )`
+  )`,
+  `CREATE TABLE IF NOT EXISTS employee_presence (
+    username TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    role TEXT NOT NULL,
+    last_seen_at INTEGER NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_employee_presence_last_seen
+   ON employee_presence(last_seen_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS employee_activity_log (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    actor_username TEXT NOT NULL,
+    actor_name TEXT NOT NULL,
+    actor_role TEXT NOT NULL,
+    action TEXT NOT NULL,
+    entity_type TEXT NOT NULL DEFAULT '',
+    entity_id TEXT NOT NULL DEFAULT '',
+    detail TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_employee_activity_log_created
+   ON employee_activity_log(created_at DESC)`
 ];
 
 const KNOWLEDGE = {
@@ -276,25 +297,32 @@ async function handleEmployeeApi(request, env, url) {
   if (!user) return json({ error: 'يجب تسجيل الدخول.' }, 401);
 
   if (url.pathname === '/api/employee/session' && request.method === 'GET') {
+    user.role = roleForUsername(user.username);
     return json({ user });
   }
   if (url.pathname === '/api/employee/logout' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    await recordActivity(env, user, 'تسجيل الخروج', 'session', user.username);
+    await env.DB.prepare('DELETE FROM employee_presence WHERE username = ?').bind(user.username).run();
     return json({ ok: true }, 200, { 'Set-Cookie': clearSessionCookie() });
   }
   if (url.pathname === '/api/employee/data' && request.method === 'GET') {
     return getPortalData(env, user);
+  }
+  if (url.pathname === '/api/employee/activity' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createActivityEvent(request, env, user);
   }
   if (url.pathname.startsWith('/api/employee/application-files/') && request.method === 'GET') {
     return getApplicationFile(env, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/applications/') && request.method === 'PATCH') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return updateApplication(request, env, url.pathname.split('/').pop());
+    return updateApplication(request, env, user, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/applications/') && request.method === 'DELETE') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return deleteApplication(env, url.pathname.split('/').pop());
+    return deleteApplication(env, user, url.pathname.split('/').pop());
   }
   if (url.pathname === '/api/employee/messages' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
@@ -306,11 +334,11 @@ async function handleEmployeeApi(request, env, url) {
   }
   if (url.pathname.startsWith('/api/employee/clients/') && request.method === 'PATCH') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return updateClient(request, env, url.pathname.split('/').pop());
+    return updateClient(request, env, user, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/clients/') && request.method === 'DELETE') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return deleteClient(env, url.pathname.split('/').pop());
+    return deleteClient(env, user, url.pathname.split('/').pop());
   }
   if (url.pathname === '/api/employee/tasks' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
@@ -318,11 +346,15 @@ async function handleEmployeeApi(request, env, url) {
   }
   if (url.pathname.startsWith('/api/employee/tasks/') && request.method === 'PATCH') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return updateTask(request, env, url.pathname.split('/').pop());
+    return updateTask(request, env, user, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/tasks/') && request.method === 'DELETE') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
-    return deleteTask(env, url.pathname.split('/').pop());
+    return deleteTask(env, user, url.pathname.split('/').pop());
+  }
+  if (url.pathname === '/api/employee/leads/assign-category' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return assignLeadCategory(request, env, user);
   }
   if (/^\/api\/employee\/leads\/[^/]+$/.test(url.pathname) && request.method === 'PATCH') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
@@ -424,25 +456,38 @@ async function login(request, env) {
   }
 
   await env.DB.prepare('DELETE FROM employee_login_attempts WHERE attempt_key = ?').bind(attemptKey).run();
-  const user = { username, name: cleanString(account.name || username, 60) };
+  const user = { username, name: cleanString(account.name || username, 60), role: roleForUsername(username) };
   const token = await createSession(user, env);
+  await recordActivity(env, user, 'تسجيل الدخول', 'session', username);
   return json({ user }, 200, { 'Set-Cookie': sessionCookie(token) });
 }
 
 async function getPortalData(env, user) {
+  user.role = roleForUsername(user.username);
+  const now = Date.now();
+  await env.DB.prepare(
+    `INSERT INTO employee_presence (username, name, role, last_seen_at) VALUES (?, ?, ?, ?)
+     ON CONFLICT(username) DO UPDATE SET name = excluded.name, role = excluded.role, last_seen_at = excluded.last_seen_at`
+  ).bind(user.username, user.name, user.role, now).run();
   const results = await env.DB.batch([
     env.DB.prepare('SELECT id, author_username, author_name, body, created_at FROM employee_messages ORDER BY created_at DESC LIMIT 80'),
     env.DB.prepare('SELECT id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at FROM employee_clients ORDER BY updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at FROM employee_tasks ORDER BY status ASC, due_date ASC, updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, reference, full_name, organization, email, phone, services, budget_range, project_summary, payload_json, status, attachment_count, email_status, created_at, updated_at FROM client_applications ORDER BY created_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, application_id, original_name, content_type, size_bytes, created_at FROM client_application_files ORDER BY created_at ASC LIMIT 1000'),
-    env.DB.prepare('SELECT * FROM business_leads ORDER BY city ASC, priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 5000')
+    env.DB.prepare('SELECT * FROM business_leads ORDER BY city ASC, priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 5000'),
+    env.DB.prepare('SELECT username, name, role, last_seen_at FROM employee_presence WHERE last_seen_at >= ? ORDER BY last_seen_at DESC LIMIT 20').bind(now - 90_000),
+    user.role === 'super_admin'
+      ? env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log ORDER BY created_at DESC LIMIT 250')
+      : env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log WHERE 0')
   ]);
   const messages = [...(results[0].results || [])].reverse();
   const clients = results[1].results || [];
   const tasks = results[2].results || [];
   const files = results[4].results || [];
   const leads = results[5].results || [];
+  const onlineUsers = results[6].results || [];
+  const activityLog = results[7].results || [];
   const applications = (results[3].results || []).map((application) => ({
     ...application,
     details: safeJsonParse(application.payload_json),
@@ -456,6 +501,8 @@ async function getPortalData(env, user) {
     tasks,
     applications,
     leads,
+    onlineUsers,
+    activityLog,
     stats: {
       clients: clients.length,
       opportunities: clients.filter((item) => ['lead', 'discovery', 'proposal'].includes(item.status)).length,
@@ -603,17 +650,18 @@ async function createPublicApplication(request, env, url, ctx) {
   return json({ ok: true, id, reference }, 201);
 }
 
-async function updateApplication(request, env, id) {
+async function updateApplication(request, env, user, id) {
   if (!isUuid(id)) return json({ error: 'معرّف الطلب غير صحيح.' }, 400);
   const payload = await readJson(request, 3000);
   const status = cleanString(payload?.status, 30);
   if (!APPLICATION_STATUSES.includes(status)) return json({ error: 'حالة الطلب غير صحيحة.' }, 400);
   const result = await env.DB.prepare('UPDATE client_applications SET status = ?, updated_at = ? WHERE id = ?').bind(status, Date.now(), id).run();
   if (!result.meta?.changes) return json({ error: 'الطلب غير موجود.' }, 404);
+  await recordActivity(env, user, 'تحديث حالة طلب', 'application', id, status);
   return json({ ok: true });
 }
 
-async function deleteApplication(env, id) {
+async function deleteApplication(env, user, id) {
   if (!isUuid(id)) return json({ error: 'معرّف الطلب غير صحيح.' }, 400);
   const application = await env.DB.prepare('SELECT id, reference FROM client_applications WHERE id = ?').bind(id).first();
   if (!application) return json({ error: 'الطلب غير موجود.' }, 404);
@@ -629,6 +677,7 @@ async function deleteApplication(env, id) {
     env.DB.prepare('DELETE FROM employee_clients WHERE id = ? AND created_by = ?').bind(id, 'WEBSITE'),
     env.DB.prepare("DELETE FROM employee_tasks WHERE created_by = ? AND title LIKE ?").bind('WEBSITE', `%${application.reference}%`)
   ]);
+  await recordActivity(env, user, 'حذف طلب موقع', 'application', id, application.reference);
   return json({ ok: true });
 }
 
@@ -710,6 +759,7 @@ async function createMessage(request, env, user) {
   await env.DB.prepare(
     'INSERT INTO employee_messages (id, author_username, author_name, body, created_at) VALUES (?, ?, ?, ?, ?)'
   ).bind(message.id, message.author_username, message.author_name, message.body, message.created_at).run();
+  await recordActivity(env, user, 'إرسال رسالة للفريق', 'message', message.id);
   return json({ message }, 201);
 }
 
@@ -725,10 +775,11 @@ async function createClient(request, env, user) {
      (id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(id, client.name, client.contact, client.service, client.value, client.status, client.nextStep, client.owner, user.username, now, now).run();
+  await recordActivity(env, user, 'إضافة عميل', 'client', id, client.name);
   return json({ ok: true, id }, 201);
 }
 
-async function updateClient(request, env, id) {
+async function updateClient(request, env, user, id) {
   if (!isUuid(id)) return json({ error: 'معرّف العميل غير صحيح.' }, 400);
   const payload = await readJson(request, 12000);
   if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
@@ -748,18 +799,20 @@ async function updateClient(request, env, id) {
     `UPDATE employee_clients SET name = ?, contact = ?, service = ?, value = ?, status = ?,
      next_step = ?, owner = ?, updated_at = ? WHERE id = ?`
   ).bind(merged.name, merged.contact, merged.service, merged.value, merged.status, merged.nextStep, merged.owner, Date.now(), id).run();
+  await recordActivity(env, user, 'تحديث عميل', 'client', id, merged.name);
   return json({ ok: true });
 }
 
-async function deleteClient(env, id) {
+async function deleteClient(env, user, id) {
   if (!isUuid(id)) return json({ error: 'معرّف العميل غير صحيح.' }, 400);
   const client = await env.DB.prepare('SELECT id, created_by FROM employee_clients WHERE id = ?').bind(id).first();
   if (!client) return json({ error: 'العميل غير موجود.' }, 404);
   if (client.created_by === 'WEBSITE') {
     const application = await env.DB.prepare('SELECT id FROM client_applications WHERE id = ?').bind(id).first();
-    if (application) return deleteApplication(env, id);
+    if (application) return deleteApplication(env, user, id);
   }
   await env.DB.prepare('DELETE FROM employee_clients WHERE id = ?').bind(id).run();
+  await recordActivity(env, user, 'حذف عميل', 'client', id);
   return json({ ok: true });
 }
 
@@ -775,10 +828,11 @@ async function createTask(request, env, user) {
      (id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at)
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(id, task.title, task.clientName, task.assignee, task.dueDate, task.priority, task.status, user.username, now, now).run();
+  await recordActivity(env, user, 'إضافة مهمة', 'task', id, task.title);
   return json({ ok: true, id }, 201);
 }
 
-async function updateTask(request, env, id) {
+async function updateTask(request, env, user, id) {
   if (!isUuid(id)) return json({ error: 'معرّف المهمة غير صحيح.' }, 400);
   const payload = await readJson(request, 8000);
   if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
@@ -796,13 +850,15 @@ async function updateTask(request, env, id) {
     `UPDATE employee_tasks SET title = ?, client_name = ?, assignee = ?, due_date = ?,
      priority = ?, status = ?, updated_at = ? WHERE id = ?`
   ).bind(merged.title, merged.clientName, merged.assignee, merged.dueDate, merged.priority, merged.status, Date.now(), id).run();
+  await recordActivity(env, user, 'تحديث مهمة', 'task', id, merged.title);
   return json({ ok: true });
 }
 
-async function deleteTask(env, id) {
+async function deleteTask(env, user, id) {
   if (!isUuid(id)) return json({ error: 'معرّف المهمة غير صحيح.' }, 400);
   const result = await env.DB.prepare('DELETE FROM employee_tasks WHERE id = ?').bind(id).run();
   if (!result.meta?.changes) return json({ error: 'المهمة غير موجودة.' }, 404);
+  await recordActivity(env, user, 'حذف مهمة', 'task', id);
   return json({ ok: true });
 }
 
@@ -823,6 +879,7 @@ async function updateBusinessLead(request, env, user, id) {
      notes = ?, updated_by = ?, updated_at = ? WHERE id = ?`
   ).bind(contactStatus, owner, outcome, shouldStamp ? Date.now() : Number(current.last_contact_at || 0),
     notes, user.username, Date.now(), id).run();
+  await recordActivity(env, user, 'تحديث فرصة', 'lead', id, `${contactStatus} · ${owner || 'غير مسند'}`);
   return json({ ok: true });
 }
 
@@ -839,7 +896,45 @@ async function deleteBusinessLead(env, user, id) {
     ).bind(id, user.username, now),
     env.DB.prepare('DELETE FROM business_leads WHERE id = ?').bind(id)
   ]);
+  await recordActivity(env, user, 'حذف فرصة', 'lead', id);
   return json({ ok: true });
+}
+
+async function assignLeadCategory(request, env, user) {
+  const payload = await readJson(request, 5000);
+  if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
+  const city = cleanString(payload.city, 80);
+  const category = cleanString(payload.category, 120);
+  const owner = cleanString(payload.owner, 32).toUpperCase();
+  if (!city || !category || !TEAM_USERNAMES.includes(owner)) {
+    return json({ error: 'اختر التصنيف والمسؤول أولًا.' }, 400);
+  }
+  const result = await env.DB.prepare(
+    `UPDATE business_leads SET owner = ?, updated_by = ?, updated_at = ?
+     WHERE city = ? AND category = ?`
+  ).bind(owner, user.username, Date.now(), city, category).run();
+  const count = Number(result.meta?.changes || 0);
+  await recordActivity(env, user, 'توزيع تصنيف فرص', 'lead_category', `${city}:${category}`, `${category} ← ${owner} (${count})`);
+  return json({ ok: true, count });
+}
+
+async function createActivityEvent(request, env, user) {
+  const payload = await readJson(request, 3000);
+  if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
+  const action = cleanString(payload.action, 100);
+  const detail = cleanString(payload.detail, 300);
+  if (!action) return json({ error: 'النشاط غير مكتمل.' }, 400);
+  await recordActivity(env, user, action, 'interface', '', detail);
+  return json({ ok: true }, 201);
+}
+
+async function recordActivity(env, user, action, entityType = '', entityId = '', detail = '') {
+  await env.DB.prepare(
+    `INSERT INTO employee_activity_log
+     (actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(user.username, user.name, roleForUsername(user.username), cleanString(action, 100),
+    cleanString(entityType, 60), cleanString(entityId, 160), cleanString(detail, 500), Date.now()).run();
 }
 
 async function convertBusinessLeadToTask(request, env, user, id) {
@@ -862,6 +957,7 @@ async function convertBusinessLeadToTask(request, env, user, id) {
       `UPDATE business_leads SET contact_status = 'working', owner = ?, converted_task_id = ?, updated_by = ?, updated_at = ? WHERE id = ?`
     ).bind(owner, taskId, user.username, now, id)
   ]);
+  await recordActivity(env, user, 'تحويل فرصة إلى مهمة', 'lead', id, lead.name);
   return json({ ok: true, id: taskId }, 201);
 }
 
@@ -887,6 +983,7 @@ async function convertBusinessLeadToClient(request, env, user, id) {
        converted_client_id = ?, last_contact_at = ?, updated_by = ?, updated_at = ? WHERE id = ?`
     ).bind(owner, clientId, now, user.username, now, id)
   ]);
+  await recordActivity(env, user, 'تحويل فرصة إلى عميل', 'lead', id, lead.name);
   return json({ ok: true, id: clientId }, 201);
 }
 
@@ -975,6 +1072,13 @@ function readAuthConfig(env) {
   } catch {
     return { users: {} };
   }
+}
+
+function roleForUsername(username) {
+  const normalized = String(username || '').toUpperCase();
+  if (normalized === 'MOY') return 'super_admin';
+  if (['AK', 'AZOZ', 'EMAD'].includes(normalized)) return 'manager';
+  return 'employee';
 }
 
 async function verifyPassword(password, account, pepper) {

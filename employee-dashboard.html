@@ -25,7 +25,7 @@
       </div>
       <div class="sidebar-user">
         <div class="sidebar-user__avatar" id="userAvatar">NM</div>
-        <div><strong id="userName">الفريق</strong><span id="userHandle">@newmedia</span></div>
+        <div><strong id="userName">الفريق</strong><span id="userHandle">@newmedia</span><small id="userRole">مدير</small></div>
         <i title="متصل"></i>
       </div>
       <nav class="app-nav" aria-label="أقسام مساحة العمل">
@@ -50,6 +50,7 @@
         <button class="app-nav__item" type="button" data-view="workflow"><span>•</span><b>آلية العمل</b></button>
         <button class="app-nav__item" type="button" data-view="services"><span>✦</span><b>الأقسام والخدمات</b></button>
         <button class="app-nav__item" type="button" data-view="library"><span>▤</span><b>مكتبة الملفات</b></button>
+        <button class="app-nav__item" id="activityNavItem" type="button" data-view="activity" hidden><span>≡</span><b>سجل النشاط</b></button>
       </nav>
       <div class="sidebar-foot">
         <button class="portal-quiet-button" id="logoutButton" type="button">تسجيل الخروج</button>
@@ -61,6 +62,7 @@
         <button class="sidebar-open" id="sidebarOpen" type="button" aria-label="فتح القائمة">☰</button>
         <div><span class="topbar-eyebrow" id="topbarEyebrow">مساحة العمل</span><h1 id="viewTitle">صباح الخير</h1></div>
         <div class="topbar-actions">
+          <div class="online-presence" id="onlinePresence" aria-label="الحسابات المتصلة"></div>
           <span class="sync-status"><i></i><b id="syncLabel">متزامن</b></span>
           <button class="portal-icon-button" id="themeBtn" type="button" aria-label="تغيير المظهر">☽</button>
           <button id="langBtn" type="button" hidden aria-hidden="true">AR</button>
@@ -108,13 +110,15 @@
           <div class="section-intro leads-intro"><div><span id="leadsIntroKicker">MAKKAH PROSPECTING / 1,000 VERIFIED LEADS</span><h2 id="leadsIntroTitle">فرص مكة</h2><p id="leadsIntroCopy">ألف منشأة عامة موزعة على 23 حيًا وقطاعات متعددة. لكل فرصة مصدر ورابط خرائط وتاريخ جمع؛ راجع بياناتها قبل التواصل ثم عيّن المسؤول وسجّل النتيجة.</p></div><a class="portal-primary-button portal-primary-button--small" id="leadsExcelLink" href="/team/library/makkah-business-leads-batch-1.xlsx" target="_blank" rel="noopener"><span>فتح ملف Excel الكامل</span></a></div>
           <div class="leads-kpis" id="leadsKpis"></div>
           <div class="leads-toolbar" aria-label="تصفية الفرص">
-            <label><span>بحث</span><input id="leadSearch" type="search" placeholder="اسم النشاط أو الرقم"></label>
+            <label><span>بحث بالنشاط</span><input id="leadSearch" type="search" placeholder="فندق، مطعم، شركة أو اسم النشاط"></label>
             <label><span>الحي</span><select id="leadNeighborhood"><option value="all">كل الأحياء</option></select></label>
+            <label><span>التصنيف</span><select id="leadCategory"><option value="all">كل التصنيفات</option></select></label>
             <label><span>الأولوية</span><select id="leadPriority"><option value="all">كل الأولويات</option><option value="1">P1 أولوية أولى</option><option value="2">P2 أولوية ثانية</option><option value="3">P3 أولوية ثالثة</option></select></label>
             <label><span>الحالة</span><select id="leadStatus"><option value="all">كل الحالات</option><option value="new">جديد</option><option value="working">قيد العمل</option><option value="contacted">تم التواصل</option><option value="interested">مهتم</option><option value="follow_up">متابعة</option><option value="not_interested">غير مهتم</option><option value="converted">تم التحويل</option></select></label>
           </div>
+          <div class="lead-assignment" id="leadAssignment"><div><span>توزيع التصنيف الحالي</span><p>عيّن كل فرص التصنيف المختار في المدينة لمسؤول واحد.</p></div><select id="leadCategoryOwner"><option value="">اختر المسؤول</option><option value="MOY">MOY</option><option value="AK">AK</option><option value="AZOZ">AZOZ</option><option value="EMAD">EMAD</option></select><button class="portal-primary-button portal-primary-button--small" id="assignLeadCategory" type="button"><span>توزيع الفرص</span></button></div>
           <div class="leads-grid" id="leadsGrid"></div>
-          <div class="leads-more"><span id="leadsVisibleCount"></span><button class="portal-primary-button portal-primary-button--small" id="loadMoreLeads" type="button"><span>عرض المزيد</span></button></div>
+          <div class="leads-pagination"><span id="leadsVisibleCount"></span><div id="leadPagination" aria-label="صفحات الفرص"></div></div>
         </section>
 
         <section class="app-view" data-view-panel="chat">
@@ -150,6 +154,11 @@
         <section class="app-view" data-view-panel="library">
           <div class="section-intro"><div><span>PRIVATE TEAM LIBRARY</span><h2>مكتبة ملفات الموظفين</h2><p>ستة مراجع داخلية مرتبة للفريق. تفتح الملفات داخل المساحة بعد تسجيل الدخول.</p></div></div>
           <div class="document-grid" id="documentLibrary"></div>
+        </section>
+
+        <section class="app-view" data-view-panel="activity">
+          <div class="section-intro"><div><span>SUPER ADMIN / AUDIT LOG</span><h2>سجل نشاط الفريق</h2><p>يظهر لأعلى مدير فقط: الدخول، فتح الأقسام، التعديلات، التحويلات وعمليات الحذف.</p></div></div>
+          <div class="activity-list" id="activityList"></div>
         </section>
       </main>
     </div>
