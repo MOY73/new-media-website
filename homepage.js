@@ -264,7 +264,7 @@
   window.addEventListener('resize', updateStory, { passive: true });
 
   function jumpToHash() {
-    const points = { '#about': 0, '#services': 0.68, '#work': 0.84 };
+    const points = { '#about': 0, '#services': 0.68 };
     if (!Object.prototype.hasOwnProperty.call(points, location.hash)) return;
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     window.scrollTo({ top: story.offsetTop + range * points[location.hash], behavior: reducedMotion ? 'auto' : 'smooth' });

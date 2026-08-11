@@ -41,6 +41,12 @@ for (const file of await readdir(join(root, "assets", "team-library"))) {
   await cp(join(root, "assets", "team-library", file), join(teamLibraryAssets, file));
 }
 
+const workAssets = join(assets, "assets", "work");
+await mkdir(workAssets, { recursive: true });
+for (const file of await readdir(join(root, "assets", "work"))) {
+  await cp(join(root, "assets", "work", file), join(workAssets, file));
+}
+
 const [workerSource, loginHtml, dashboardHtml, businessLeadSeed] = await Promise.all([
   readFile(join(root, "worker", "index.js"), "utf8"),
   readFile(join(root, "employee-login.html"), "utf8"),

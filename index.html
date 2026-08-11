@@ -20,6 +20,7 @@
   <script src="/site-preferences.js?v=33"></script>
   <link rel="stylesheet" href="/site-fixes.css?v=36">
   <link rel="stylesheet" href="/homepage.css?v=35">
+  <link rel="stylesheet" href="/work-showcase.css?v=1">
 </head>
 <body class="nm-home">
   <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -132,7 +133,7 @@
           </div>
         </section>
 
-        <section class="nm-scene nm-scene--work" id="work" data-scene="work" aria-labelledby="workTitle">
+        <section class="nm-scene nm-scene--work" id="workPreview" data-scene="work" aria-labelledby="workTitle">
           <div class="nm-work-heading">
             <p class="nm-scene__eyebrow" data-i18n="work_eyebrow">أعمال صنعت أثرًا</p>
             <h2 id="workTitle" data-i18n="work_title">أعمال<br><em>مختارة.</em></h2>
@@ -155,6 +156,130 @@
         <div class="nm-scroll-cue" aria-hidden="true"><span data-i18n="scroll_label">مرّر لتبدأ الرحلة</span><i></i></div>
         <div class="nm-scene-progress" aria-hidden="true"><span id="sceneProgress"></span></div>
       </div>
+    </section>
+
+    <section class="nm-showcase" id="work" aria-labelledby="showcaseTitle">
+      <div class="nm-showcase__aurora" aria-hidden="true"></div>
+      <header class="nm-showcase__intro">
+        <div>
+          <p class="nm-showcase__kicker" data-work-ar="أرشيف حيّ · 15 تجربة" data-work-en="Living archive · 15 experiences">أرشيف حيّ · 15 تجربة</p>
+          <h2 id="showcaseTitle" data-work-ar="أعمال لا تُعرض فقط، بل تُعاش." data-work-en="Work you do not just view. You experience it.">أعمال لا تُعرض فقط، بل تُعاش.</h2>
+        </div>
+        <div class="nm-showcase__intro-copy">
+          <p data-work-ar="صممنا هذا المكان ليغذّي الخيال: ادخل نماذج مواقع حقيقية، تصفّح أفكار إنتاج، وجرّب بناء ملامح علامتك بنفسك." data-work-en="A space built to feed imagination: enter real website concepts, explore production ideas, and shape the first look of your own brand.">صممنا هذا المكان ليغذّي الخيال: ادخل نماذج مواقع حقيقية، تصفّح أفكار إنتاج، وجرّب بناء ملامح علامتك بنفسك.</p>
+          <nav class="nm-showcase__jump" aria-label="أقسام الأعمال المختارة">
+            <a href="#work-sites" data-work-ar="مواقع" data-work-en="Websites">مواقع</a>
+            <a href="#work-content" data-work-ar="محتوى" data-work-en="Content">محتوى</a>
+            <a href="#work-design" data-work-ar="تصميم" data-work-en="Design">تصميم</a>
+            <a href="#brand-lab" data-work-ar="مختبر الهوية" data-work-en="Brand Lab">مختبر الهوية</a>
+          </nav>
+        </div>
+      </header>
+
+      <section class="nm-archive-block nm-archive-block--sites" id="work-sites" aria-labelledby="workSitesTitle">
+        <header class="nm-archive-heading">
+          <span>01</span>
+          <div><p data-work-ar="مواقع وتجارب رقمية" data-work-en="Websites & digital experiences">مواقع وتجارب رقمية</p><h3 id="workSitesTitle" data-work-ar="خمس أفكار. خمس شخصيات." data-work-en="Five ideas. Five personalities.">خمس أفكار. خمس شخصيات.</h3></div>
+          <p data-work-ar="كل بطاقة تفتح نموذجًا مستقلًا بصفحة واحدة. ادخل، جرّب الفكرة، ثم ارجع للمعرض." data-work-en="Every card opens an independent one-page concept. Enter, explore, then return to the archive.">كل بطاقة تفتح نموذجًا مستقلًا بصفحة واحدة. ادخل، جرّب الفكرة، ثم ارجع للمعرض.</p>
+        </header>
+
+        <div class="nm-site-gallery">
+          <a class="nm-site-case nm-site-case--atlas" href="/work-demo.html?project=atlas" aria-label="فتح نموذج أطلس للاستشارات">
+            <div class="nm-site-case__browser">
+              <div class="nm-site-case__bar"><i></i><i></i><i></i><span>atlas.partners</span></div>
+              <div class="nm-atlas-preview"><b>ATLAS®</b><em>Clarity builds momentum.</em><span>Strategy / Growth / Transformation</span><i>↗</i></div>
+            </div>
+            <div class="nm-site-case__meta"><span>01 / CORPORATE</span><h4 data-work-ar="أطلس للاستشارات" data-work-en="Atlas Consulting">أطلس للاستشارات</h4><p data-work-ar="موقع تعريفي" data-work-en="Corporate website">موقع تعريفي</p><b aria-hidden="true">↗</b></div>
+          </a>
+
+          <a class="nm-site-case nm-site-case--sukun" href="/work-demo.html?project=sukun" aria-label="فتح نموذج عيادة سكون">
+            <div class="nm-site-case__browser"><div class="nm-site-case__bar"><i></i><i></i><i></i><span>sukun.care</span></div><div class="nm-sukun-preview"><span>سُكون</span><div><b>موعدك، بهدوء.</b><small>رعاية متخصصة تبدأ من مساحة آمنة.</small><i>احجز الآن</i></div></div></div>
+            <div class="nm-site-case__meta"><span>02 / BOOKING</span><h4 data-work-ar="سُكون للرعاية" data-work-en="Sukun Care">سُكون للرعاية</h4><p data-work-ar="حجوزات وخدمات" data-work-en="Bookings & services">حجوزات وخدمات</p><b aria-hidden="true">↗</b></div>
+          </a>
+
+          <a class="nm-site-case nm-site-case--mashhad" href="/work-demo.html?project=mashhad" aria-label="فتح نموذج مجلة مشهد">
+            <div class="nm-site-case__browser"><div class="nm-site-case__bar"><i></i><i></i><i></i><span>mashhad.today</span></div><div class="nm-mashhad-preview"><header>مَشْهَد <span>14:36</span></header><div><b>الثقافة<br>وهي تتحرك.</b><i>اقرأ العدد 07</i></div></div></div>
+            <div class="nm-site-case__meta"><span>03 / EDITORIAL</span><h4 data-work-ar="مجلّة مَشهد" data-work-en="Mashhad Magazine">مجلّة مَشهد</h4><p data-work-ar="موقع محتوى" data-work-en="Content platform">موقع محتوى</p><b aria-hidden="true">↗</b></div>
+          </a>
+
+          <a class="nm-site-case nm-site-case--midad" href="/work-demo.html?project=midad" aria-label="فتح نموذج منصة مداد">
+            <div class="nm-site-case__browser"><div class="nm-site-case__bar"><i></i><i></i><i></i><span>midad.academy</span></div><div class="nm-midad-preview"><span>مِداد</span><div class="nm-midad-orbit"><i>فكرة</i><i>مهارة</i><i>تطبيق</i><b>تعلّم<br>يصنع فرقًا</b></div></div></div>
+            <div class="nm-site-case__meta"><span>04 / LEARNING</span><h4 data-work-ar="مِداد التعليمية" data-work-en="Midad Learning">مِداد التعليمية</h4><p data-work-ar="تعليم وعضويات" data-work-en="Learning & memberships">تعليم وعضويات</p><b aria-hidden="true">↗</b></div>
+          </a>
+
+          <a class="nm-site-case nm-site-case--nibras" href="/work-demo.html?project=nibras" aria-label="فتح نموذج منصة نبراس">
+            <div class="nm-site-case__browser"><div class="nm-site-case__bar"><i></i><i></i><i></i><span>nibras.app</span></div><div class="nm-nibras-preview"><header>NIBRAS <i>LIVE</i></header><div><b>+38.4%</b><span><i></i><i></i><i></i><i></i><i></i><i></i></span><small>Growth intelligence, simplified.</small></div></div></div>
+            <div class="nm-site-case__meta"><span>05 / SAAS</span><h4 data-work-ar="نبراس للنمو" data-work-en="Nibras Growth">نبراس للنمو</h4><p data-work-ar="تطبيق ويب / SaaS" data-work-en="Web app / SaaS">تطبيق ويب / SaaS</p><b aria-hidden="true">↗</b></div>
+          </a>
+        </div>
+      </section>
+
+      <section class="nm-archive-block nm-archive-block--content" id="work-content" aria-labelledby="workContentTitle">
+        <header class="nm-archive-heading">
+          <span>02</span>
+          <div><p data-work-ar="المحتوى والإنتاج" data-work-en="Content & production">المحتوى والإنتاج</p><h3 id="workContentTitle" data-work-ar="الفكرة حين تصبح مشهدًا." data-work-en="When an idea becomes a scene.">الفكرة حين تصبح مشهدًا.</h3></div>
+          <p data-work-ar="خمسة اتجاهات إنتاجية توضح كيف يمكن للقصة أن تتغيّر حسب المنتج والمنصة والجمهور." data-work-en="Five production directions showing how a story shifts with the product, platform, and audience.">خمسة اتجاهات إنتاجية توضح كيف يمكن للقصة أن تتغيّر حسب المنتج والمنصة والجمهور.</p>
+        </header>
+        <div class="nm-content-wall">
+          <article class="nm-content-case nm-content-case--hero"><img src="/assets/work/product-perfume.jpg" alt="تصوير منتج عطري" loading="lazy"><div><span>01 / PRODUCT</span><h4 data-work-ar="نُورا · لقطة منتج" data-work-en="Noura · Product still">نُورا · لقطة منتج</h4><p data-work-ar="تصوير منتجات بإضاءة تحريرية وهوية لونية كاملة." data-work-en="Editorial product photography with a complete color world.">تصوير منتجات بإضاءة تحريرية وهوية لونية كاملة.</p></div></article>
+          <article class="nm-content-case"><img src="/assets/work/architecture.jpg" alt="تصوير معماري" loading="lazy"><div><span>02 / SPACE</span><h4 data-work-ar="حَيّ · عمارة ومساحات" data-work-en="Hayy · Architecture & spaces">حَيّ · عمارة ومساحات</h4><p data-work-ar="منظور يحوّل المكان إلى تجربة." data-work-en="A perspective that turns space into experience.">منظور يحوّل المكان إلى تجربة.</p></div></article>
+          <article class="nm-content-case nm-content-case--portrait"><img src="/assets/work/fashion-campaign.jpg" alt="حملة إعلانية ملونة" loading="lazy"><div><span>03 / CAMPAIGN</span><h4 data-work-ar="طيف · إعلان تجاري" data-work-en="Tayf · Commercial campaign">طيف · إعلان تجاري</h4><p data-work-ar="حملة جريئة مبنية للفت الانتباه." data-work-en="A bold campaign engineered to stop the scroll.">حملة جريئة مبنية للفت الانتباه.</p></div></article>
+          <article class="nm-content-case nm-content-case--phone"><img src="/assets/work/ugc-creator.jpg" alt="صانعة محتوى أمام هاتف" loading="lazy"><div class="nm-reel-ui" aria-hidden="true"><i>♥</i><i>↗</i><i>•••</i></div><div><span>04 / UGC</span><h4 data-work-ar="قريب · محتوى UGC" data-work-en="Qareeb · UGC content">قريب · محتوى UGC</h4><p data-work-ar="محتوى طبيعي بصوت الناس." data-work-en="Native content in a human voice.">محتوى طبيعي بصوت الناس.</p></div></article>
+          <article class="nm-content-case nm-content-case--wide"><img src="/assets/work/podcast.jpg" alt="مقدمة بودكاست في الاستوديو" loading="lazy"><div class="nm-audio-wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div><span>05 / PODCAST</span><h4 data-work-ar="بين سطرين · مقابلات وبودكاست" data-work-en="Between Lines · Interviews & podcast">بين سطرين · مقابلات وبودكاست</h4><p data-work-ar="صورة وصوت ونظام بصري للحلقة." data-work-en="Picture, sound, and a visual system for every episode.">صورة وصوت ونظام بصري للحلقة.</p></div></article>
+        </div>
+      </section>
+
+      <section class="nm-archive-block nm-archive-block--design" id="work-design" aria-labelledby="workDesignTitle">
+        <header class="nm-archive-heading">
+          <span>03</span>
+          <div><p data-work-ar="التصميم والهوية" data-work-en="Design & identity">التصميم والهوية</p><h3 id="workDesignTitle" data-work-ar="نظام بصري، لا مجرد شكل." data-work-en="A visual system. Not just a look.">نظام بصري، لا مجرد شكل.</h3></div>
+          <p data-work-ar="خمس تطبيقات أساسية تبين كيف تعيش الهوية في الشعار، الشبكات، العبوة، المعلومة والعرض." data-work-en="Five essential applications showing how identity lives in logos, feeds, packaging, information, and decks.">خمس تطبيقات أساسية تبين كيف تعيش الهوية في الشعار، الشبكات، العبوة، المعلومة والعرض.</p>
+        </header>
+        <div class="nm-design-grid">
+          <article class="nm-design-case nm-design-case--identity">
+            <div class="nm-identity-board"><b>نَبْت</b><span>NABT / 01</span><div><i></i><i></i><i></i><i></i></div><small>ينمو معك.</small></div>
+            <footer><span>01</span><div><h4 data-work-ar="حزمة هوية بصرية" data-work-en="Brand identity package">حزمة هوية بصرية</h4><p data-work-ar="شعار، ألوان، خطوط وقواعد استخدام." data-work-en="Logo, color, type, and usage rules.">شعار، ألوان، خطوط وقواعد استخدام.</p></div></footer>
+          </article>
+          <article class="nm-design-case nm-design-case--social">
+            <div class="nm-social-grid" aria-label="شبكة من تسعة منشورات"><i>رَشْف</i><i></i><i>08:00</i><i></i><i>قهوة<br>بمزاج</i><i></i><i>↓</i><i></i><i>كل يوم</i></div>
+            <footer><span>02</span><div><h4 data-work-ar="نظام تواصل اجتماعي" data-work-en="Social media system">نظام تواصل اجتماعي</h4><p data-work-ar="شبكة 3×3 تتكامل منشوراتها بصريًا." data-work-en="A 3×3 grid with posts designed as one story.">شبكة 3×3 تتكامل منشوراتها بصريًا.</p></div></footer>
+          </article>
+          <article class="nm-design-case nm-design-case--packaging">
+            <div class="nm-package-stage"><span class="nm-box">LUMA<i>02</i></span><span class="nm-bottle nm-bottle--one">L</span><span class="nm-bottle nm-bottle--two">L</span><b>care, clearly.</b></div>
+            <footer><span>03</span><div><h4 data-work-ar="تغليف العبوات" data-work-en="Packaging design">تغليف العبوات</h4><p data-work-ar="عائلة منتجات موحدة وقابلة للتوسع." data-work-en="A unified, expandable product family.">عائلة منتجات موحدة وقابلة للتوسع.</p></div></footer>
+          </article>
+          <article class="nm-design-case nm-design-case--info">
+            <div class="nm-info-board"><header><b>كيف تنمو الفكرة؟</b><span>04 STEPS</span></header><ol><li><i>01</i><span>نبحث</span></li><li><i>02</i><span>نبني</span></li><li><i>03</i><span>نطلق</span></li><li><i>04</i><span>نقيس</span></li></ol><div><i></i><i></i><i></i><i></i><i></i></div></div>
+            <footer><span>04</span><div><h4 data-work-ar="إنفوجرافيك وأيقونات" data-work-en="Infographics & icons">إنفوجرافيك وأيقونات</h4><p data-work-ar="المعلومة المعقدة في رحلة بصرية واضحة." data-work-en="Complex information, made visually clear.">المعلومة المعقدة في رحلة بصرية واضحة.</p></div></footer>
+          </article>
+          <article class="nm-design-case nm-design-case--deck">
+            <div class="nm-deck-stage"><div><span>مدار / 2026</span><b>نرى<br>الصورة<br><em>كاملة.</em></b></div><div><span>12—24</span><i></i><p>STRATEGY<br>PROFILE<br>PRESENTATION</p></div></div>
+            <footer><span>05</span><div><h4 data-work-ar="ملف تعريفي وعروض" data-work-en="Profiles & presentations">ملف تعريفي وعروض</h4><p data-work-ar="عرض يروي القصة ويقود القرار." data-work-en="A deck that tells the story and moves decisions.">عرض يروي القصة ويقود القرار.</p></div></footer>
+          </article>
+        </div>
+      </section>
+
+      <section class="nm-brand-lab" id="brand-lab" aria-labelledby="brandLabTitle">
+        <div class="nm-brand-lab__copy">
+          <p class="nm-showcase__kicker" data-work-ar="أداة تفاعلية · بدون AI" data-work-en="Interactive tool · no AI">أداة تفاعلية · بدون AI</p>
+          <h3 id="brandLabTitle" data-work-ar="خذ أول لمحة عن علامتك." data-work-en="See the first glimpse of your brand.">خذ أول لمحة عن علامتك.</h3>
+          <p data-work-ar="اختر المجال والطابع واللون. سنركّب لك تصورًا سريعًا يوضح كيف يمكن أن تبدأ الهوية قبل بنائها بالكامل." data-work-en="Choose an industry, a mood, and a palette. We will assemble a quick direction for how the identity could begin.">اختر المجال والطابع واللون. سنركّب لك تصورًا سريعًا يوضح كيف يمكن أن تبدأ الهوية قبل بنائها بالكامل.</p>
+          <form class="nm-brand-controls" id="brandLabForm">
+            <label><span data-work-ar="اسم العلامة" data-work-en="Brand name">اسم العلامة</span><input id="brandName" type="text" maxlength="18" value="نَوَى" aria-label="اسم العلامة"></label>
+            <fieldset><legend data-work-ar="المجال" data-work-en="Industry">المجال</legend><div class="nm-choice-row"><button type="button" data-brand-type="food" class="is-active" data-work-ar="طعام" data-work-en="Food">طعام</button><button type="button" data-brand-type="beauty" data-work-ar="جمال" data-work-en="Beauty">جمال</button><button type="button" data-brand-type="tech" data-work-ar="تقنية" data-work-en="Tech">تقنية</button><button type="button" data-brand-type="culture" data-work-ar="ثقافة" data-work-en="Culture">ثقافة</button></div></fieldset>
+            <fieldset><legend data-work-ar="الطابع" data-work-en="Mood">الطابع</legend><div class="nm-choice-row"><button type="button" data-brand-mood="minimal" class="is-active" data-work-ar="بسيط" data-work-en="Minimal">بسيط</button><button type="button" data-brand-mood="bold" data-work-ar="جريء" data-work-en="Bold">جريء</button><button type="button" data-brand-mood="classic" data-work-ar="كلاسيك" data-work-en="Classic">كلاسيك</button><button type="button" data-brand-mood="playful" data-work-ar="مرح" data-work-en="Playful">مرح</button></div></fieldset>
+            <fieldset><legend data-work-ar="لوحة اللون" data-work-en="Palette">لوحة اللون</legend><div class="nm-palette-row"><button type="button" data-brand-palette="sand" class="is-active" aria-label="رملي"><i></i><i></i><i></i></button><button type="button" data-brand-palette="ember" aria-label="جمري"><i></i><i></i><i></i></button><button type="button" data-brand-palette="ocean" aria-label="محيطي"><i></i><i></i><i></i></button><button type="button" data-brand-palette="neon" aria-label="نيون"><i></i><i></i><i></i></button></div></fieldset>
+          </form>
+        </div>
+        <div class="nm-brand-preview" id="brandPreview" data-type="food" data-mood="minimal" data-palette="sand" aria-live="polite">
+          <div class="nm-brand-preview__top"><span data-work-ar="اتجاه بصري أولي" data-work-en="Initial visual direction">اتجاه بصري أولي</span><b>NM LAB / 01</b></div>
+          <div class="nm-brand-preview__mark"><small id="brandSymbol">ن</small><h4 id="brandWordmark">نَوَى</h4><p id="brandTagline">صُنع ببساطة.</p></div>
+          <div class="nm-brand-preview__applications"><div class="nm-lab-card"><span id="labCardName">نَوَى</span><b id="labCardCode">FOOD / 01</b></div><div class="nm-lab-pack"><i></i><span id="labPackName">نَوَى</span></div><div class="nm-lab-social"><b id="labSocialSymbol">ن</b><span>NEW<br>STORY</span></div></div>
+          <div class="nm-brand-preview__swatches"><i></i><i></i><i></i><span id="brandPaletteName">SAND / WARM / GROUNDED</span></div>
+        </div>
+      </section>
+
+      <div class="nm-showcase__closing"><p data-work-ar="الفكرة التالية قد تكون لك." data-work-en="The next idea could be yours.">الفكرة التالية قد تكون لك.</p><a href="/contact-application.html"><span data-work-ar="ابدأ مشروعك" data-work-en="Start your project">ابدأ مشروعك</span><i>↗</i></a></div>
     </section>
   </main>
 
@@ -188,6 +313,7 @@
       }
     };
   </script>
-  <script src="/homepage.js?v=33" defer></script>
+  <script src="/homepage.js?v=34" defer></script>
+  <script src="/work-showcase.js?v=1" defer></script>
 </body>
 </html>

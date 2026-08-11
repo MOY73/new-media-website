@@ -1,5 +1,5 @@
 (function () {
-  if (/\/(?:employee-(?:login|dashboard)(?:\.html)?|team\/(?:login|workspace))\/?$/.test(location.pathname)) return;
+  if (/\/(?:employee-(?:login|dashboard)(?:\.html)?|work-demo(?:\.html)?|team\/(?:login|workspace))\/?$/.test(location.pathname)) return;
 
   const copy = {
     ar: {
