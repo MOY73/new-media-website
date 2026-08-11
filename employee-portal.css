@@ -368,6 +368,8 @@ html.light .app-sidebar { background:#fff; }
 .document-card p { margin:0; color:var(--portal-muted); font-size:11px; }
 .document-card a { align-self:flex-start; margin-top:auto; padding:.6rem .8rem; border:1px solid var(--portal-line); border-radius:9px; text-decoration:none; font-size:10px; }
 .document-card a:hover { border-color:var(--portal-purple); color:#fff; }
+.leads-more { display:flex; align-items:center; justify-content:center; gap:1rem; margin:1.2rem 0 0; color:var(--portal-muted); font-size:12px; }
+.leads-more [hidden] { display:none; }
 
 /* Modals & toast */
 .portal-modal { position:fixed; inset:0; z-index:100; display:none; place-items:center; padding:1rem; }
@@ -446,4 +448,5 @@ html.light .app-sidebar { background:#fff; }
   .leads-toolbar,.lead-controls,.document-grid { grid-template-columns:1fr; }
   .lead-actions { align-items:stretch; flex-direction:column; }
   .lead-actions .lead-convert { margin-right:0; }
+  .leads-more { align-items:stretch; flex-direction:column; text-align:center; }
 }

@@ -139,6 +139,7 @@
     pollId: null,
     staticRendered: false,
     leadFilters: { search: '', neighborhood: 'all', priority: 'all', status: 'all' },
+    leadVisible: 60,
   };
 
   function initials(value) {
@@ -704,7 +705,12 @@
       ['كل الفرص', allLeads.length], ['شركات P1', p1], ['بدأ التواصل', contacted], ['تحولت لعملاء', converted],
     ].map(([label, value]) => { const item = element('article'); item.append(element('span', '', label), element('strong', '', formatNumber.format(value))); return item; });
     qs('#leadsKpis')?.replaceChildren(...kpis);
-    qs('#leadsGrid')?.replaceChildren(...(leads.length ? leads.map(leadCard) : [emptyState('لا توجد فرص مطابقة لهذه التصفية.') ]));
+    const visibleLeads = leads.slice(0, state.leadVisible);
+    qs('#leadsGrid')?.replaceChildren(...(visibleLeads.length ? visibleLeads.map(leadCard) : [emptyState('لا توجد فرص مطابقة لهذه التصفية.') ]));
+    const count = qs('#leadsVisibleCount');
+    if (count) count.textContent = leads.length ? `يظهر ${formatNumber.format(visibleLeads.length)} من ${formatNumber.format(leads.length)} فرصة` : '';
+    const more = qs('#loadMoreLeads');
+    if (more) more.hidden = visibleLeads.length >= leads.length;
   }
 
   function renderLibrary() {
@@ -785,8 +791,13 @@
     ];
     leadFilterBindings.forEach(([selector, key, eventName]) => qs(selector)?.addEventListener(eventName, (event) => {
       state.leadFilters[key] = event.currentTarget.value;
+      state.leadVisible = 60;
       renderLeads();
     }));
+    qs('#loadMoreLeads')?.addEventListener('click', () => {
+      state.leadVisible += 60;
+      renderLeads();
+    });
     qsa('[data-close-modal]').forEach((button) => button.addEventListener('click', () => closeModal(button.dataset.closeModal)));
 
     document.addEventListener('keydown', (event) => {

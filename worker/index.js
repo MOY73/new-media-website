@@ -148,22 +148,22 @@ const KNOWLEDGE = {
   ],
   pricing: [
     { title: 'المواقع والمتاجر', note: 'أسعار بدء قبل الاكتشاف، ولا تشمل الاستضافة والدومين والتطبيقات المدفوعة.', items: [
-      ['Landing page', '7,500 ر.س'], ['موقع تعريفي 5-7 صفحات', '18,000 ر.س'], ['موقع ثنائي اللغة', '24,000 ر.س'], ['متجر أساسي', '28,000 ر.س'], ['متجر مخصص', '45,000+ ر.س'], ['صيانة شهرية', '2,500-6,000 ر.س']
+      ['صفحة هبوط', '1,500-3,000 ر.س'], ['موقع تعريفي 5-7 صفحات', '3,500-6,500 ر.س'], ['موقع ثنائي اللغة', '5,500-9,000 ر.س'], ['متجر سلة أو زد أساسي', '2,500-5,000 ر.س'], ['متجر مخصص', '8,000-18,000 ر.س'], ['صيانة شهرية', '350-1,200 ر.س']
     ] },
     { title: 'الحضور والمحتوى', note: 'يعتمد السعر على عدد المنصات وعمق الإنتاج والمجتمع.', items: [
-      ['إدارة منصتين', '9,500 ر.س / شهر'], ['إدارة 3 منصات', '12,500 ر.س / شهر'], ['تقويم وكتابة فقط', '4,500 ر.س / شهر'], ['تصاميم فقط', '5,500 ر.س / شهر'], ['إدارة مجتمع', '3,500 ر.س / شهر'], ['منصة إضافية', '2,500 ر.س / شهر']
+      ['إدارة منصة واحدة', '999-1,800 ر.س / شهر'], ['إدارة منصتين', '2,300-3,500 ر.س / شهر'], ['إدارة 3 منصات', '3,300-5,000 ر.س / شهر'], ['تقويم وكتابة فقط', '900-1,500 ر.س / شهر'], ['تصاميم فقط', '1,200-2,500 ر.س / شهر'], ['إدارة مجتمع', '800-1,800 ر.س / شهر'], ['منصة إضافية', '600-1,000 ر.س / شهر']
     ] },
     { title: 'الحملات والأداء', note: 'رسوم الإدارة منفصلة عن ميزانية المنصات.', items: [
-      ['قناة واحدة حتى إنفاق 30k', '6,500 ر.س / شهر'], ['قناتان حتى إنفاق 75k', '10,000 ر.س / شهر'], ['3 قنوات حتى إنفاق 150k', '15,000 ر.س / شهر'], ['إنفاق أعلى', '12-15% من الإنفاق'], ['إعداد تتبع أساسي', '4,500 ر.س'], ['لوحة بيانات', '6,500+ ر.س']
+      ['قناة واحدة حتى إنفاق 20k', '1,500-2,500 ر.س / شهر'], ['قناتان حتى إنفاق 50k', '2,500-4,500 ر.س / شهر'], ['3 قنوات حتى إنفاق 100k', '4,000-6,500 ر.س / شهر'], ['إنفاق أعلى', '8-12% من الإنفاق'], ['إعداد تتبع أساسي', '1,000-2,500 ر.س'], ['لوحة بيانات', '1,500-3,500 ر.س']
     ] },
     { title: 'الهوية والاستراتيجية', note: 'لا نبيع شعارًا فقط عندما يحتاج العميل نظام علامة كاملًا.', items: [
-      ['شعار احترافي', '6,500 ر.س'], ['هوية مصغرة', '12,000 ر.س'], ['هوية متكاملة', '25,000 ر.س'], ['استراتيجية علامة', '28,000 ر.س'], ['تسمية وهوية لفظية', '15,000 ر.س'], ['UX/UI موقع', '18,000+ ر.س']
+      ['شعار احترافي', '1,500-3,500 ر.س'], ['هوية مصغرة', '2,500-5,000 ر.س'], ['هوية متكاملة', '4,500-9,000 ر.س'], ['استراتيجية علامة', '5,000-10,000 ر.س'], ['تسمية وهوية لفظية', '1,500-3,500 ر.س'], ['UX/UI موقع', '2,500-6,000 ر.س']
     ] },
     { title: 'الإنتاج الإبداعي', note: 'الأسعار تبدأ من وتثبت بعد المعالجة وقائمة الإنتاج.', items: [
-      ['فيديو قصير من مواد العميل', '1,500 ر.س'], ['Reel مصور خفيف', '3,500 ر.س'], ['يوم تصوير محتوى', '8,500 ر.س'], ['فيلم إعلاني', '25,000+ ر.س'], ['موشن 30-45 ثانية', '7,500 ر.س'], ['تصوير منتجات', '4,500+ ر.س']
+      ['فيديو قصير من مواد العميل', '250-600 ر.س'], ['Reel مصور خفيف', '600-1,200 ر.س'], ['نصف يوم تصوير محتوى', '1,500-3,000 ر.س'], ['فيلم إعلاني', '5,000+ ر.س'], ['موشن 30-45 ثانية', '1,200-3,000 ر.س'], ['تصوير منتجات', '1,000-2,500 ر.س']
     ] },
     { title: 'SEO والإضافات', note: 'النتائج تتأثر بالمنافسة والموقع والتنفيذ والوقت.', items: [
-      ['SEO أساسي', '5,500 ر.س / شهر'], ['SEO نمو', '9,500 ر.س / شهر'], ['SEO متقدم', '16,000+ ر.س / شهر'], ['تدقيق SEO', '6,500 ر.س'], ['لغة إضافية', '+20-30%'], ['دعم عاجل خلال 24 ساعة', '+25%'], ['ساعة تطوير', '550 ر.س']
+      ['SEO أساسي', '1,200-2,500 ر.س / شهر'], ['SEO نمو', '2,500-4,500 ر.س / شهر'], ['SEO متقدم', '4,500-8,000 ر.س / شهر'], ['تدقيق SEO', '1,000-2,500 ر.س'], ['لغة إضافية', '+20-30%'], ['دعم عاجل خلال 24 ساعة', '+25%'], ['ساعة تطوير', '200-350 ر.س']
     ] }
   ],
   workflow: [
@@ -344,17 +344,20 @@ async function ensureSchema(env) {
   ).bind('system-welcome', 'SYSTEM', 'NEW MEDIA', 'أهلًا بالفريق. هذه مساحة العمل الداخلية المشتركة.', Date.now()).run();
   if (BUSINESS_LEAD_SEED.length) {
     const now = Date.now();
-    await env.DB.batch(BUSINESS_LEAD_SEED.map((lead) => env.DB.prepare(
-      `INSERT OR IGNORE INTO business_leads
-       (id, neighborhood, name, activity, category, phone, email, address, website, maps_url,
-        priority, score, recommended_service, contact_status, owner, outcome, last_contact_at,
-        notes, source, researched_at, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).bind(lead.id, lead.neighborhood, lead.name, lead.activity, lead.category, lead.phone || '',
-      lead.email || '', lead.address || '', lead.website || '', lead.maps_url, Number(lead.priority || 3),
-      Number(lead.score || 0), lead.recommended_service || '', lead.status || 'new', lead.owner || '',
-      lead.outcome || 'not_contacted', Number(lead.last_contact_at || 0), lead.notes || '', lead.source || 'Google Maps',
-      lead.researched_at || '2026-08-10', now, now)));
+    for (let offset = 0; offset < BUSINESS_LEAD_SEED.length; offset += 100) {
+      const chunk = BUSINESS_LEAD_SEED.slice(offset, offset + 100);
+      await env.DB.batch(chunk.map((lead) => env.DB.prepare(
+        `INSERT OR IGNORE INTO business_leads
+         (id, neighborhood, name, activity, category, phone, email, address, website, maps_url,
+          priority, score, recommended_service, contact_status, owner, outcome, last_contact_at,
+          notes, source, researched_at, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(lead.id, lead.neighborhood, lead.name, lead.activity, lead.category, lead.phone || '',
+        lead.email || '', lead.address || '', lead.website || '', lead.maps_url, Number(lead.priority || 3),
+        Number(lead.score || 0), lead.recommended_service || '', lead.status || 'new', lead.owner || '',
+        lead.outcome || 'not_contacted', Number(lead.last_contact_at || 0), lead.notes || '', lead.source || 'Google Maps',
+        lead.researched_at || '2026-08-10', now, now)));
+    }
   }
   schemaReady = true;
 }
@@ -786,7 +789,7 @@ async function deleteTask(env, id) {
 }
 
 async function updateBusinessLead(request, env, user, id) {
-  if (!/^MKB1-\d{3}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  if (!/^MKB1-\d{3,4}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
   const payload = await readJson(request, 12000);
   if (!payload) return json({ error: 'تعذر قراءة البيانات.' }, 400);
   const current = await env.DB.prepare('SELECT * FROM business_leads WHERE id = ?').bind(id).first();
@@ -806,7 +809,7 @@ async function updateBusinessLead(request, env, user, id) {
 }
 
 async function convertBusinessLeadToTask(request, env, user, id) {
-  if (!/^MKB1-\d{3}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  if (!/^MKB1-\d{3,4}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
   const payload = await readJson(request, 5000) || {};
   const lead = await env.DB.prepare('SELECT * FROM business_leads WHERE id = ?').bind(id).first();
   if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
@@ -829,7 +832,7 @@ async function convertBusinessLeadToTask(request, env, user, id) {
 }
 
 async function convertBusinessLeadToClient(request, env, user, id) {
-  if (!/^MKB1-\d{3}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
+  if (!/^MKB1-\d{3,4}$/.test(id)) return json({ error: 'معرّف الفرصة غير صحيح.' }, 400);
   const payload = await readJson(request, 5000) || {};
   const lead = await env.DB.prepare('SELECT * FROM business_leads WHERE id = ?').bind(id).first();
   if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
