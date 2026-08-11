@@ -480,7 +480,10 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT * FROM business_leads ORDER BY city ASC, priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 5000'),
     env.DB.prepare('SELECT username, name, role, last_seen_at FROM employee_presence WHERE last_seen_at >= ? ORDER BY last_seen_at DESC LIMIT 20').bind(now - 90_000),
     user.role === 'super_admin'
-      ? env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log ORDER BY created_at DESC LIMIT 250')
+      ? env.DB.prepare(`SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at
+          FROM employee_activity_log
+          WHERE action IN ('حذف طلب موقع','إضافة عميل','حذف عميل','حذف مهمة','حذف فرصة','توزيع تصنيف فرص','تحويل فرصة إلى عميل')
+          ORDER BY created_at DESC LIMIT 250`)
       : env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log WHERE 0')
   ]);
   const messages = [...(results[0].results || [])].reverse();
