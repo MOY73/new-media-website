@@ -4,7 +4,7 @@ body.nm-work-archive-page{margin:0;min-width:320px;background:#070708;color:#f4f
 .nm-work-archive-page .nm-showcase{padding-top:clamp(150px,14vw,215px)}
 .nm-work-archive-page .nm-showcase__intro{padding-block-end:clamp(74px,10vw,150px)}
 .nm-work-archive-status{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;min-height:74vh;padding:150px 20px 70px;color:rgba(255,255,255,.66);font-size:13px;text-align:center}
-.nm-work-archive-status img{width:62px;height:62px;filter:drop-shadow(0 18px 34px rgba(179,30,207,.3));animation:nm-archive-pulse 1.5s ease-in-out infinite alternate}
+.nm-work-archive-status img{width:78px;height:52px;object-fit:contain;filter:drop-shadow(0 18px 34px rgba(179,30,207,.3));animation:nm-archive-pulse 1.5s ease-in-out infinite alternate}
 .nm-work-archive-error a{display:inline-flex;margin-top:10px;padding:11px 17px;border:1px solid rgba(255,104,31,.6);border-radius:999px;color:#ff681f;text-decoration:none}
 html.light body.nm-work-archive-page{background:#f6f2f7;color:#1d1721}
 html.light .nm-work-archive-status{color:rgba(29,23,33,.65)}

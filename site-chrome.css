@@ -30,7 +30,7 @@
   text-decoration: none;
 }
 
-.nm-site-nav__brand img { width: 42px; height: 38px; object-fit: contain; }
+.nm-site-nav__brand img { width: 54px; height: 36px; object-fit: contain; flex: 0 0 auto; }
 .nm-site-nav__brand span {
   font-family: 'Alexandria', sans-serif;
   font-size: 14px;
@@ -118,7 +118,7 @@
   padding-bottom:0;
 }
 .nm-site-footer__brand { display:flex; align-items:center; gap:.8rem; margin-bottom:1rem; }
-.nm-site-footer__brand img { width:42px; height:38px; object-fit:contain; }
+.nm-site-footer__brand img { width:58px; height:39px; object-fit:contain; flex:0 0 auto; }
 .nm-site-footer__brand strong {
   font-family:'Alexandria',sans-serif;
   font-size:18px;
@@ -176,7 +176,7 @@ body.nm-has-shared-chrome.nm-404-page .nm-site-footer { margin-top:3rem; }
 
 @media (max-width: 560px) {
   .nm-site-nav { height:102px; top:10px; grid-template-rows:55px 37px; border-radius:18px; }
-  .nm-site-nav__brand img { width:36px; height:32px; }
+  .nm-site-nav__brand img { width:46px; height:31px; }
   .nm-site-nav__cta { font-size:10px; padding:0 .6rem; }
   .nm-site-nav__links { gap:.35rem; }
   .nm-site-nav__links a { font-size:10px; }

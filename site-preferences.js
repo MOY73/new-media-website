@@ -50,11 +50,11 @@
 
   const chromeStyle = document.createElement('link');
   chromeStyle.rel = 'stylesheet';
-  chromeStyle.href = '/site-chrome.css?v=33';
+  chromeStyle.href = '/site-chrome.css?v=34';
   document.head.appendChild(chromeStyle);
 
   const chromeScript = document.createElement('script');
-  chromeScript.src = '/site-chrome.js?v=30';
+  chromeScript.src = '/site-chrome.js?v=31';
   chromeScript.defer = true;
   document.head.appendChild(chromeScript);
 })();

@@ -55,7 +55,7 @@
       await loadShowcaseScript();
     } catch (error) {
       const text = copy[language()];
-      mount.innerHTML = `<div class="nm-work-archive-status nm-work-archive-error" role="alert"><img src="/favicon.svg" alt=""><span>${text.error}</span><a href="/work-archive">${text.retry}</a></div>`;
+      mount.innerHTML = `<div class="nm-work-archive-status nm-work-archive-error" role="alert"><img src="/newmedia-logo.png" alt=""><span>${text.error}</span><a href="/work-archive">${text.retry}</a></div>`;
       console.error(error);
     }
   }

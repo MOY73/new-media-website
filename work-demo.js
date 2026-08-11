@@ -3,6 +3,7 @@
   const back = document.getElementById('demoBack');
   const note = document.getElementById('demoNote');
   const rights = document.getElementById('demoRights');
+  const markLabel = document.getElementById('demoMarkLabel');
   const languageButton = document.getElementById('langBtn');
   const themeButton = document.getElementById('themeBtn');
   if (!root || !languageButton || !themeButton) return;
@@ -84,6 +85,7 @@
     back.textContent = shared[lang].back;
     note.textContent = shared[lang].note;
     rights.textContent = shared[lang].rights;
+    if (markLabel) markLabel.textContent = lang === 'ar' ? 'نموذج أعمال' : 'WORK SHOWCASE';
     languageButton.textContent = shared[lang].lang;
     themeButton.setAttribute('aria-label', lang === 'ar' ? 'تبديل المظهر' : 'Toggle theme');
     root.querySelectorAll('.sukun-days button').forEach((button) => button.addEventListener('click', () => {

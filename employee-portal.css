@@ -39,7 +39,7 @@ html { min-height:100%; }
 .portal-audit-footer { position:absolute; width:1px; height:1px; padding:0; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 
 .portal-brand { display:inline-flex; align-items:center; gap:.75rem; text-decoration:none; }
-.portal-brand img { width:40px; height:34px; object-fit:contain; }
+.portal-brand img { width:52px; height:35px; object-fit:contain; flex:0 0 auto; }
 .portal-brand span { font-family:'Alexandria',sans-serif; font-size:15px; font-weight:800; letter-spacing:.08em; background:linear-gradient(90deg,#b525f2,#ff6812); -webkit-background-clip:text; background-clip:text; color:transparent; }
 .portal-kicker { color:var(--portal-orange); font-family:'Alexandria',sans-serif; font-size:10px; font-weight:700; letter-spacing:.22em; }
 .portal-icon-button { display:grid; width:39px; height:39px; padding:0; place-items:center; border:1px solid var(--portal-line); border-radius:11px; background:var(--portal-panel-2); cursor:pointer; transition:border-color .2s,transform .2s; }

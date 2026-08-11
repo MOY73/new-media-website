@@ -46,7 +46,7 @@ body.nm-home::selection{background:var(--nm-orange);color:#fff}
 .nm-skip-link:focus{transform:translateY(0)}
 
 .nm-shell-placeholder{position:fixed;z-index:1000;top:20px;left:50%;width:calc(100% - 48px);max-width:1200px;height:64px;padding:0 2rem;display:flex;align-items:center;justify-content:space-between;transform:translateX(-50%);border:1px solid var(--nm-line);border-radius:20px;background:rgba(5,5,5,.45);backdrop-filter:blur(24px)}
-.nm-shell-placeholder img{width:42px;height:38px}.nm-shell-placeholder>div{display:flex;gap:8px}
+.nm-shell-placeholder img{width:54px;height:36px;object-fit:contain}.nm-shell-placeholder>div{display:flex;gap:8px}
 .nm-shell-copyright{display:none}
 .theme-btn,.lang-btn{height:36px;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:rgba(255,255,255,.055);color:rgba(255,255,255,.72);font:700 12px "Alexandria",sans-serif;cursor:pointer}
 .theme-btn{width:38px;padding:0}.lang-btn{min-width:42px;padding:0 12px}
