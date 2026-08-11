@@ -22,7 +22,7 @@
 
   function install() {
     const oldNav = document.querySelector('nav');
-    const oldFooter = document.querySelector('footer');
+    const oldFooter = document.querySelector('body > footer');
     const themeButton = document.getElementById('themeBtn');
     const languageButton = document.getElementById('langBtn');
     if (!themeButton || !languageButton) return;

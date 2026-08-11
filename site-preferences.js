@@ -54,7 +54,7 @@
   document.head.appendChild(chromeStyle);
 
   const chromeScript = document.createElement('script');
-  chromeScript.src = '/site-chrome.js?v=29';
+  chromeScript.src = '/site-chrome.js?v=30';
   chromeScript.defer = true;
   document.head.appendChild(chromeScript);
 })();
