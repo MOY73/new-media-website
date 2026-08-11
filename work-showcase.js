@@ -117,6 +117,111 @@
     renderBrand();
   }
 
+  function installWorkRotators() {
+    const contentImages = [
+      '/assets/work/content-product-02.webp',
+      '/assets/work/content-space-02.webp',
+      '/assets/work/content-campaign-02.webp',
+      '/assets/work/content-ugc-02.webp',
+      '/assets/work/content-podcast-02.webp',
+    ];
+
+    root.querySelectorAll('.nm-content-case').forEach((card, cardIndex) => {
+      const original = card.querySelector(':scope > img');
+      if (!original) return;
+      const carousel = document.createElement('div');
+      carousel.className = 'nm-work-rotator nm-content-carousel';
+      carousel.dataset.autoRotator = '';
+      const ordered = [contentImages[cardIndex], ...contentImages.filter((_, index) => index !== cardIndex)];
+      ordered.forEach((source, frameIndex) => {
+        const image = document.createElement('img');
+        image.className = `nm-rotator-frame${frameIndex === 0 ? ' is-active' : ''}`;
+        image.src = source;
+        image.alt = frameIndex === 0 ? original.alt : '';
+        image.loading = 'lazy';
+        image.decoding = 'async';
+        image.setAttribute('aria-hidden', frameIndex === 0 ? 'false' : 'true');
+        carousel.appendChild(image);
+      });
+      original.replaceWith(carousel);
+    });
+
+    root.querySelectorAll('.nm-design-case').forEach((card, cardIndex) => {
+      const original = card.querySelector(':scope > div');
+      if (!original) return;
+      const carousel = document.createElement('div');
+      carousel.className = 'nm-work-rotator nm-design-rotator';
+      carousel.dataset.autoRotator = '';
+      for (let frameIndex = 0; frameIndex < 5; frameIndex += 1) {
+        const frame = original.cloneNode(true);
+        frame.classList.add('nm-rotator-frame', `nm-visual-variant--${frameIndex + 1}`);
+        frame.classList.toggle('is-active', frameIndex === 0);
+        frame.setAttribute('aria-hidden', frameIndex === 0 ? 'false' : 'true');
+        carousel.appendChild(frame);
+      }
+      original.replaceWith(carousel);
+      card.style.setProperty('--card-index', cardIndex);
+    });
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    root.querySelectorAll('[data-auto-rotator]').forEach((rotator, rotatorIndex) => {
+      const frames = Array.from(rotator.querySelectorAll(':scope > .nm-rotator-frame'));
+      if (frames.length < 2) return;
+      const dots = document.createElement('div');
+      dots.className = 'nm-rotator-dots';
+      dots.setAttribute('aria-label', language() === 'ar' ? 'اختيار النموذج' : 'Choose example');
+      let current = 0;
+      let timer = 0;
+      let inView = false;
+      let paused = false;
+
+      const show = (next) => {
+        current = (next + frames.length) % frames.length;
+        frames.forEach((frame, index) => {
+          const active = index === current;
+          frame.classList.toggle('is-active', active);
+          frame.setAttribute('aria-hidden', String(!active));
+        });
+        Array.from(dots.children).forEach((dot, index) => {
+          dot.classList.toggle('is-active', index === current);
+          dot.setAttribute('aria-pressed', String(index === current));
+        });
+      };
+
+      frames.forEach((_, index) => {
+        const dot = document.createElement('button');
+        dot.type = 'button';
+        dot.setAttribute('aria-label', `${index + 1} / ${frames.length}`);
+        dot.addEventListener('click', () => show(index));
+        dots.appendChild(dot);
+      });
+      rotator.appendChild(dots);
+      show(0);
+
+      const stop = () => { if (timer) window.clearTimeout(timer); timer = 0; };
+      const schedule = () => {
+        stop();
+        if (reduceMotion || !inView || paused) return;
+        timer = window.setTimeout(() => { show(current + 1); schedule(); }, 3800 + ((rotatorIndex % 5) * 420));
+      };
+      rotator.addEventListener('pointerenter', () => { paused = true; stop(); });
+      rotator.addEventListener('pointerleave', () => { paused = false; schedule(); });
+      rotator.addEventListener('focusin', () => { paused = true; stop(); });
+      rotator.addEventListener('focusout', () => { paused = false; schedule(); });
+
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(([entry]) => {
+          inView = entry.isIntersecting;
+          schedule();
+        }, { threshold: 0.15 });
+        observer.observe(rotator);
+      } else {
+        inView = true;
+        schedule();
+      }
+    });
+  }
+
   function cleanName(value) {
     return value.trim().replace(/\s+/g, ' ').slice(0, 18) || brandCopy[language()].defaults[ui.type];
   }
@@ -223,6 +328,7 @@
     revealTargets.forEach((element) => element.classList.add('is-work-visible'));
   }
 
+  installWorkRotators();
   choose('[data-brand-type]', 'brandType', ui.type);
   choose('[data-brand-mood]', 'brandMood', ui.mood);
   choose('[data-brand-palette]', 'brandPalette', ui.palette);
