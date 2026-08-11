@@ -69,8 +69,31 @@
     coffee: { colors: ['#ead8c6', '#261b16', '#9b6848'], ar: 'قهوة / دافئ / مألوف', en: 'COFFEE / WARM / FAMILIAR' },
   };
 
-  const typeImages = {
-    food: '/assets/work/campaign-wamda.webp', beauty: '/assets/work/product-perfume.jpg', tech: '/assets/work/ugc-studio.webp', culture: '/assets/work/podcast-studio.webp', hospitality: '/assets/work/architecture.jpg', realestate: '/assets/work/architecture.jpg', education: '/assets/work/ugc-studio.webp', wellness: '/assets/work/product-perfume.jpg', retail: '/assets/work/campaign-wamda.webp', finance: '/assets/work/architecture.jpg',
+  const experienceCopy = {
+    ar: {
+      food: { eyebrow:'مطعم ومخبز', title:'طازج، كما يجب.', body:'قائمة قصيرة بمكونات واضحة وتجربة طلب بلا تعقيد.', cta:'استكشف القائمة', one:'فطور اليوم', two:'مخبوزات', three:'قهوة مختصة', metric:'جاهز خلال 18 دقيقة' },
+      beauty: { eyebrow:'علامة عناية', title:'عناية تشبهك.', body:'منتجات واضحة، روتين بسيط، وتفاصيل ترفع الإحساس بالقيمة.', cta:'اكتشف المجموعة', one:'تنظيف', two:'ترطيب', three:'حماية', metric:'روتينك في 3 خطوات' },
+      tech: { eyebrow:'منتج تقني', title:'التقنية حين تصبح أبسط.', body:'واجهة تشرح القيمة سريعًا وتحوّل المزايا إلى نتيجة مفهومة.', cta:'جرّب المنتج', one:'نشط الآن', two:'الأتمتة', three:'التكاملات', metric:'99.9% استقرار' },
+      culture: { eyebrow:'منصة ثقافية', title:'أفكار تحرّك المشهد.', body:'قراءة واستماع واكتشاف في تجربة تحريرية لها صوت وشخصية.', cta:'اقرأ العدد', one:'قصة الغلاف', two:'صوت', three:'مدينة', metric:'العدد 08 · جديد' },
+      hospitality: { eyebrow:'تجربة ضيافة', title:'إقامتك تبدأ قبل الوصول.', body:'حجز هادئ، تفاصيل المكان، وخدمة تجعل الاختيار أسهل.', cta:'احجز إقامتك', one:'جناح هادئ', two:'إطلالة', three:'إفطار', metric:'التقييم 4.9' },
+      realestate: { eyebrow:'مشروع عقاري', title:'مكان يرفع قيمة يومك.', body:'وحدات واضحة، مخططات مفهومة، ومسار مباشر لطلب المعاينة.', cta:'استكشف الوحدات', one:'شقة 3 غرف', two:'مخطط الدور', three:'الموقع', metric:'ابتداءً من 780 ألف' },
+      education: { eyebrow:'منصة تعليم', title:'مسار واضح لمهارة حقيقية.', body:'دروس مركزة، تطبيق أسبوعي، وتقدم يمكن للمتعلم رؤيته.', cta:'ابدأ المسار', one:'الدرس 08', two:'المشروع', three:'المجتمع', metric:'78% مكتمل' },
+      wellness: { eyebrow:'علامة عافية', title:'يوم أخف. توازن أكثر.', body:'جلسات وبرامج يومية مصممة لتناسب الإيقاع الحقيقي للحياة.', cta:'احجز جلستك', one:'تنفّس', two:'حركة', three:'استشفاء', metric:'جلسة اليوم · 6:30' },
+      retail: { eyebrow:'متجر إلكتروني', title:'اختيار أسهل. تجربة أسرع.', body:'منتجات مرتبة، قرار شراء واضح، وسلة لا تعطل العميل.', cta:'تسوّق الآن', one:'الأكثر طلبًا', two:'وصل حديثًا', three:'عروض', metric:'توصيل خلال يومين' },
+      finance: { eyebrow:'منتج مالي', title:'أرقامك أوضح. قرارك أسرع.', body:'لوحة بسيطة تجمع الحركة والادخار والأهداف في مكان واحد.', cta:'افتح حسابك', one:'الرصيد', two:'الادخار', three:'المصروفات', metric:'+12.8% هذا الشهر' },
+    },
+    en: {
+      food: { eyebrow:'Restaurant & bakery', title:'Fresh, as it should be.', body:'A focused menu, clear ingredients, and ordering without friction.', cta:'Explore the menu', one:'Breakfast', two:'Bakery', three:'Coffee', metric:'Ready in 18 minutes' },
+      beauty: { eyebrow:'Care brand', title:'Care that feels like you.', body:'Clear products, a simple routine, and details that elevate value.', cta:'Explore the collection', one:'Cleanse', two:'Hydrate', three:'Protect', metric:'Your routine in 3 steps' },
+      tech: { eyebrow:'Technology product', title:'Technology made simpler.', body:'A product experience that turns features into an obvious result.', cta:'Try the product', one:'Live now', two:'Automation', three:'Integrations', metric:'99.9% uptime' },
+      culture: { eyebrow:'Culture platform', title:'Ideas moving the scene.', body:'Reading, listening, and discovery through a distinct editorial voice.', cta:'Read the issue', one:'Cover story', two:'Audio', three:'City', metric:'Issue 08 · New' },
+      hospitality: { eyebrow:'Hospitality experience', title:'Your stay starts before arrival.', body:'Calm booking, clear spaces, and service that makes choosing easy.', cta:'Book your stay', one:'Quiet suite', two:'View', three:'Breakfast', metric:'Rated 4.9' },
+      realestate: { eyebrow:'Real estate project', title:'A place adding value to every day.', body:'Clear units, readable plans, and a direct viewing request.', cta:'Explore units', one:'3-bedroom unit', two:'Floor plan', three:'Location', metric:'From SAR 780K' },
+      education: { eyebrow:'Learning platform', title:'A clear path to a real skill.', body:'Focused lessons, weekly practice, and visible progress.', cta:'Start the path', one:'Lesson 08', two:'Project', three:'Community', metric:'78% complete' },
+      wellness: { eyebrow:'Wellness brand', title:'A lighter day. Better balance.', body:'Sessions and daily programs designed around real life.', cta:'Book a session', one:'Breathe', two:'Move', three:'Recover', metric:'Today · 6:30 PM' },
+      retail: { eyebrow:'Online store', title:'Easier choice. Faster journey.', body:'Organized products, clear decisions, and a cart that never gets in the way.', cta:'Shop now', one:'Popular', two:'New in', three:'Offers', metric:'Delivery in two days' },
+      finance: { eyebrow:'Finance product', title:'Clearer numbers. Faster decisions.', body:'One simple view for transactions, savings, and goals.', cta:'Open an account', one:'Balance', two:'Savings', three:'Spending', metric:'+12.8% this month' },
+    },
   };
 
   const preview = document.getElementById('brandPreview');
@@ -78,13 +101,8 @@
   const wordmark = document.getElementById('brandWordmark');
   const symbol = document.getElementById('brandSymbol');
   const tagline = document.getElementById('brandTagline');
-  const cardName = document.getElementById('labCardName');
-  const cardCode = document.getElementById('labCardCode');
-  const packName = document.getElementById('labPackName');
-  const socialSymbol = document.getElementById('labSocialSymbol');
   const paletteName = document.getElementById('brandPaletteName');
-  const patternSymbol = document.getElementById('labPatternSymbol');
-  const industryName = document.getElementById('labIndustryName');
+  const experience = document.getElementById('brandExperience');
 
   function language() {
     return document.documentElement.lang === 'en' ? 'en' : 'ar';
@@ -103,6 +121,27 @@
     return value.trim().replace(/\s+/g, ' ').slice(0, 18) || brandCopy[language()].defaults[ui.type];
   }
 
+  function escapeHtml(value) {
+    return String(value).replace(/[&<>"']/g, (character) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#039;' }[character]));
+  }
+
+  function experienceMarkup(type, lang, name) {
+    const c = experienceCopy[lang][type];
+    const label = escapeHtml(name);
+    const copyBlock = `<div class="nm-lab-copy"><small>${c.eyebrow}</small><h5>${c.title}</h5><p>${c.body}</p><span>${c.cta} ↗</span></div>`;
+    const chips = `<div class="nm-lab-chips"><i>${c.one}</i><i>${c.two}</i><i>${c.three}</i></div>`;
+    if (type === 'food') return `<section class="nm-lab-scene nm-lab-scene--food">${copyBlock}<div class="nm-lab-food-art"><div class="nm-lab-plate"><i></i><i></i><i></i></div><b>${label}</b><small>${c.metric}</small></div>${chips}</section>`;
+    if (type === 'beauty') return `<section class="nm-lab-scene nm-lab-scene--beauty">${copyBlock}<div class="nm-lab-beauty-art"><i></i><i></i><b>${label}</b><small>${c.metric}</small></div>${chips}</section>`;
+    if (type === 'tech') return `<section class="nm-lab-scene nm-lab-scene--tech">${copyBlock}<div class="nm-lab-tech-panel"><header><span>${label} / LIVE</span><b>${c.metric}</b></header><div><strong>+48%</strong><span class="nm-lab-chart"><i></i><i></i><i></i><i></i><i></i><i></i></span></div><footer>${chips}</footer></div></section>`;
+    if (type === 'culture') return `<section class="nm-lab-scene nm-lab-scene--culture"><header><b>${label}</b><span>${c.metric}</span></header><div>${copyBlock}<aside><strong>ح</strong><span>${c.one}<br>${c.two}<br>${c.three}</span></aside></div></section>`;
+    if (type === 'hospitality') return `<section class="nm-lab-scene nm-lab-scene--hospitality">${copyBlock}<div class="nm-lab-stay"><header><b>${label}</b><span>${c.metric}</span></header><div class="nm-lab-arch"><i></i></div><footer>${chips}</footer></div></section>`;
+    if (type === 'realestate') return `<section class="nm-lab-scene nm-lab-scene--realestate">${copyBlock}<div class="nm-lab-property"><header><b>${c.one}</b><span>${c.metric}</span></header><div class="nm-lab-buildings"><i></i><i></i><i></i><i></i></div><footer><span>${c.two}</span><span>${c.three}</span><b>${label}</b></footer></div></section>`;
+    if (type === 'education') return `<section class="nm-lab-scene nm-lab-scene--education">${copyBlock}<div class="nm-lab-course"><header><b>${label}</b><span>${c.metric}</span></header><div><strong>${c.one}</strong><span><i style="width:78%"></i></span><small>${c.two} · ${c.three}</small></div></div></section>`;
+    if (type === 'wellness') return `<section class="nm-lab-scene nm-lab-scene--wellness">${copyBlock}<div class="nm-lab-breathe"><div><i></i><i></i><b>4—7—8</b></div><span>${c.metric}</span>${chips}</div></section>`;
+    if (type === 'retail') return `<section class="nm-lab-scene nm-lab-scene--retail"><header><b>${label}</b><span>${c.metric}</span></header>${copyBlock}<div class="nm-lab-products"><i><b>01</b><span>${c.one}</span></i><i><b>02</b><span>${c.two}</span></i><i><b>03</b><span>${c.three}</span></i></div></section>`;
+    return `<section class="nm-lab-scene nm-lab-scene--finance">${copyBlock}<div class="nm-lab-finance"><header><span>${c.one}</span><b>${c.metric}</b></header><strong>84,250</strong><small>SAR</small><div class="nm-lab-finance-chart"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><footer><span>${c.two}</span><span>${c.three}</span><b>${label}</b></footer></div></section>`;
+  }
+
   function renderBrand() {
     if (!preview) return;
     const lang = language();
@@ -113,18 +152,12 @@
     preview.dataset.palette = ui.palette;
     wordmark.textContent = name;
     symbol.textContent = firstCharacter;
-    socialSymbol.textContent = firstCharacter;
-    if (patternSymbol) patternSymbol.textContent = firstCharacter;
-    cardName.textContent = name;
-    packName.textContent = name;
     tagline.textContent = brandCopy[lang].taglines[ui.type][ui.mood] || brandCopy[lang].moodLines[ui.mood];
-    cardCode.textContent = `${brandCopy[lang].types[ui.type].toUpperCase()} / 01`;
-    if (industryName) industryName.textContent = brandCopy[lang].types[ui.type];
+    if (experience) experience.innerHTML = experienceMarkup(ui.type, lang, name);
     const palette = paletteData[ui.palette];
     preview.style.setProperty('--lab-bg', palette.colors[0]);
     preview.style.setProperty('--lab-ink', palette.colors[1]);
     preview.style.setProperty('--lab-accent', palette.colors[2]);
-    preview.style.setProperty('--lab-image', `url("${typeImages[ui.type]}")`);
     paletteName.textContent = palette[lang];
   }
 
