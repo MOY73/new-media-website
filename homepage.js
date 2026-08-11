@@ -146,31 +146,52 @@
   renderOrbit(0, false);
 
   const workCards = Array.from(document.querySelectorAll('.nm-work-card'));
-  let activeWork = 1;
-  let lastManualWorkChange = 0;
+  const workCurrent = document.getElementById('workCurrent');
+  const workDots = document.getElementById('workDots');
+  const workDeck = document.querySelector('.nm-work-deck');
+  let activeWork = 0;
+  let workTimer = 0;
+  let workSceneVisible = false;
+
+  workCards.forEach(() => workDots.appendChild(document.createElement('i')));
+  const workDotItems = Array.from(workDots.children);
+
+  function stopWorkAuto() {
+    if (!workTimer) return;
+    window.clearInterval(workTimer);
+    workTimer = 0;
+  }
+
+  function startWorkAuto() {
+    if (reducedMotion || !workSceneVisible || workTimer) return;
+    workTimer = window.setInterval(() => renderWorkDeck(activeWork + 1, false), 3400);
+  }
 
   function renderWorkDeck(nextIndex, manual) {
     activeWork = (nextIndex + workCards.length) % workCards.length;
     workCards.forEach((card, index) => {
-      let slot = index - activeWork;
-      if (slot > 1) slot -= workCards.length;
-      if (slot < -1) slot += workCards.length;
-      card.dataset.workSlot = String(slot);
-      card.setAttribute('aria-pressed', slot === 0 ? 'true' : 'false');
+      let offset = (index - activeWork + workCards.length) % workCards.length;
+      if (offset > workCards.length / 2) offset -= workCards.length;
+      const slot = offset >= -1 && offset <= 1 ? String(offset) : 'hidden';
+      card.dataset.workSlot = slot;
+      card.setAttribute('aria-current', slot === '0' ? 'true' : 'false');
+      card.tabIndex = slot === '0' ? 0 : -1;
     });
-    if (manual) lastManualWorkChange = Date.now();
+    workCurrent.textContent = String(activeWork + 1).padStart(2, '0');
+    workDotItems.forEach((dot, index) => dot.classList.toggle('is-active', index === activeWork));
+    if (manual) {
+      stopWorkAuto();
+      startWorkAuto();
+    }
   }
 
-  workCards.forEach((card, index) => {
-    const select = () => renderWorkDeck(index, true);
-    card.addEventListener('click', select);
-    card.addEventListener('keydown', (event) => {
-      if (event.key !== 'Enter' && event.key !== ' ') return;
-      event.preventDefault();
-      select();
-    });
-  });
-  renderWorkDeck(1, false);
+  document.getElementById('workPrev').addEventListener('click', () => renderWorkDeck(activeWork - 1, true));
+  document.getElementById('workNext').addEventListener('click', () => renderWorkDeck(activeWork + 1, true));
+  workDeck.addEventListener('pointerenter', stopWorkAuto);
+  workDeck.addEventListener('pointerleave', startWorkAuto);
+  workDeck.addEventListener('focusin', stopWorkAuto);
+  workDeck.addEventListener('focusout', startWorkAuto);
+  renderWorkDeck(0, false);
 
   function clamp(value, min = 0, max = 1) { return Math.max(min, Math.min(max, value)); }
   function smooth(start, end, value) {
@@ -231,7 +252,14 @@
     showScene(scenes.stats, statsOpacity);
     scenes.stats.classList.toggle('is-visible-cards', progress > 0.475 && progress < 0.605);
     showScene(scenes.services, fadeRange(progress, 0.615, 0.66, 0.775, 0.82));
-    showScene(scenes.work, fadeRange(progress, 0.795, 0.835, 0.89, 0.925));
+    const workOpacity = fadeRange(progress, 0.795, 0.835, 0.89, 0.925);
+    showScene(scenes.work, workOpacity);
+    const shouldRunWorkAuto = workOpacity > 0.55;
+    if (shouldRunWorkAuto !== workSceneVisible) {
+      workSceneVisible = shouldRunWorkAuto;
+      if (workSceneVisible) startWorkAuto();
+      else stopWorkAuto();
+    }
     showScene(scenes.cta, smooth(0.905, 0.95, progress));
 
     if (progress >= 0.64 && progress <= 0.8 && Date.now() - lastManualCardChange > 1000) {
@@ -239,12 +267,6 @@
       const desiredCard = Math.min(3, Math.floor(local * 4));
       if (desiredCard !== activeCard) renderOrbit(desiredCard, false);
     }
-    if (progress >= 0.81 && progress <= 0.915 && Date.now() - lastManualWorkChange > 1200) {
-      const workProgress = clamp((progress - 0.82) / 0.085);
-      const desiredWork = Math.min(2, Math.floor(workProgress * 3));
-      if (desiredWork !== activeWork) renderWorkDeck(desiredWork, false);
-    }
-
     let scene = 1;
     if (progress >= 0.09) scene = 2;
     if (progress >= 0.29) scene = 3;
@@ -264,7 +286,7 @@
   window.addEventListener('resize', updateStory, { passive: true });
 
   function jumpToHash() {
-    const points = { '#about': 0, '#services': 0.68 };
+    const points = { '#about': 0, '#services': 0.68, '#work': 0.84 };
     if (!Object.prototype.hasOwnProperty.call(points, location.hash)) return;
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     window.scrollTo({ top: story.offsetTop + range * points[location.hash], behavior: reducedMotion ? 'auto' : 'smooth' });
