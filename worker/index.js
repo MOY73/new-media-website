@@ -14,6 +14,9 @@ const APPLICATION_STATUSES = ['new', 'reviewing', 'contacted', 'qualified', 'clo
 const LEAD_STATUSES = ['new', 'working', 'contacted', 'interested', 'follow_up', 'not_interested', 'converted'];
 const LEAD_OUTCOMES = ['not_contacted', 'no_answer', 'follow_up', 'interested', 'not_interested', 'converted'];
 const TEAM_USERNAMES = ['MOY', 'AK', 'AZOZ', 'EMAD'];
+const CHAT_GROUPS = ['general', 'digital-presence', 'creative-content', 'brand-identity', 'web-experience', 'growth-performance'];
+const MAX_CHAT_MESSAGES_PER_GROUP = 100;
+const MAX_CHAT_PDF_SIZE = 8 * 1024 * 1024;
 const BUSINESS_LEAD_SEED = [];
 const MAX_APPLICATION_FILES = 8;
 const MAX_APPLICATION_FILE_SIZE = 10 * 1024 * 1024;
@@ -22,9 +25,14 @@ const ALLOWED_FILE_EXTENSIONS = new Set(['png','jpg','jpeg','webp','pdf','doc','
 const SCHEMA_STATEMENTS = [
   `CREATE TABLE IF NOT EXISTS employee_messages (
     id TEXT PRIMARY KEY,
+    group_id TEXT NOT NULL DEFAULT 'general',
     author_username TEXT NOT NULL,
     author_name TEXT NOT NULL,
     body TEXT NOT NULL CHECK(length(body) BETWEEN 1 AND 1000),
+    attachment_key TEXT NOT NULL DEFAULT '',
+    attachment_name TEXT NOT NULL DEFAULT '',
+    attachment_type TEXT NOT NULL DEFAULT '',
+    attachment_size INTEGER NOT NULL DEFAULT 0,
     created_at INTEGER NOT NULL
   )`,
   `CREATE INDEX IF NOT EXISTS idx_employee_messages_created_at
@@ -319,6 +327,9 @@ async function handleEmployeeApi(request, env, url) {
   if (url.pathname.startsWith('/api/employee/application-files/') && request.method === 'GET') {
     return getApplicationFile(env, url.pathname.split('/').pop());
   }
+  if (url.pathname.startsWith('/api/employee/message-files/') && request.method === 'GET') {
+    return getMessageFile(env, url.pathname.split('/').pop());
+  }
   if (url.pathname.startsWith('/api/employee/applications/') && request.method === 'PATCH') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateApplication(request, env, user, url.pathname.split('/').pop());
@@ -382,6 +393,22 @@ async function handleEmployeeApi(request, env, url) {
 async function ensureSchema(env) {
   if (schemaReady) return;
   await env.DB.batch(SCHEMA_STATEMENTS.map((statement) => env.DB.prepare(statement)));
+  const messageColumns = await env.DB.prepare('PRAGMA table_info(employee_messages)').all();
+  const messageColumnNames = new Set((messageColumns.results || []).map((column) => column.name));
+  for (const [name, definition] of [
+    ['group_id', "TEXT NOT NULL DEFAULT 'general'"],
+    ['attachment_key', "TEXT NOT NULL DEFAULT ''"],
+    ['attachment_name', "TEXT NOT NULL DEFAULT ''"],
+    ['attachment_type', "TEXT NOT NULL DEFAULT ''"],
+    ['attachment_size', 'INTEGER NOT NULL DEFAULT 0']
+  ]) {
+    if (!messageColumnNames.has(name)) await env.DB.prepare(`ALTER TABLE employee_messages ADD COLUMN ${name} ${definition}`).run();
+  }
+  await env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_employee_messages_group_created ON employee_messages(group_id, created_at)').run();
+  await env.DB.prepare(
+    'DELETE FROM employee_activity_log WHERE id NOT IN (SELECT id FROM employee_activity_log ORDER BY created_at DESC LIMIT 100)'
+  ).run();
+  for (const groupId of CHAT_GROUPS) await pruneChatGroup(env, groupId);
   const leadColumns = await env.DB.prepare('PRAGMA table_info(business_leads)').all();
   if (!(leadColumns.results || []).some((column) => column.name === 'city')) {
     await env.DB.prepare("ALTER TABLE business_leads ADD COLUMN city TEXT NOT NULL DEFAULT 'مكة المكرمة'").run();
@@ -472,7 +499,7 @@ async function getPortalData(env, user) {
      ON CONFLICT(username) DO UPDATE SET name = excluded.name, role = excluded.role, last_seen_at = excluded.last_seen_at`
   ).bind(user.username, user.name, user.role, now).run();
   const results = await env.DB.batch([
-    env.DB.prepare('SELECT id, author_username, author_name, body, created_at FROM employee_messages ORDER BY created_at DESC LIMIT 80'),
+    env.DB.prepare('SELECT id, group_id, author_username, author_name, body, attachment_name, attachment_type, attachment_size, created_at FROM employee_messages ORDER BY created_at DESC LIMIT 600'),
     env.DB.prepare('SELECT id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at FROM employee_clients ORDER BY updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at FROM employee_tasks ORDER BY status ASC, due_date ASC, updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, reference, full_name, organization, email, phone, services, budget_range, project_summary, payload_json, status, attachment_count, email_status, created_at, updated_at FROM client_applications ORDER BY created_at DESC LIMIT 250'),
@@ -483,7 +510,7 @@ async function getPortalData(env, user) {
       ? env.DB.prepare(`SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at
           FROM employee_activity_log
           WHERE action IN ('حذف طلب موقع','إضافة عميل','حذف عميل','حذف مهمة','حذف فرصة','توزيع تصنيف فرص','تحويل فرصة إلى عميل')
-          ORDER BY created_at DESC LIMIT 250`)
+          ORDER BY created_at DESC LIMIT 100`)
       : env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log WHERE 0')
   ]);
   const messages = [...(results[0].results || [])].reverse();
@@ -750,20 +777,98 @@ function safeJsonParse(value) {
 }
 
 async function createMessage(request, env, user) {
-  const payload = await readJson(request, 5000);
-  const body = cleanString(payload?.body, 1000);
-  if (!body) return json({ error: 'اكتب رسالة أولًا.' }, 400);
+  const contentType = request.headers.get('Content-Type') || '';
+  let body = '';
+  let groupId = 'general';
+  let file = null;
+  if (contentType.includes('multipart/form-data')) {
+    const form = await request.formData().catch(() => null);
+    if (!form) return json({ error: 'تعذر قراءة الرسالة.' }, 400);
+    body = cleanString(form.get('body'), 1000);
+    groupId = cleanString(form.get('groupId'), 60);
+    const candidate = form.get('pdf');
+    if (candidate && typeof candidate === 'object' && 'size' in candidate && candidate.size > 0) file = candidate;
+  } else {
+    const payload = await readJson(request, 5000);
+    body = cleanString(payload?.body, 1000);
+    groupId = cleanString(payload?.groupId, 60);
+  }
+  if (!CHAT_GROUPS.includes(groupId)) groupId = 'general';
+  if (!body && !file) return json({ error: 'اكتب رسالة أو أرفق ملف PDF.' }, 400);
+  if (file && (!env.UPLOADS || file.size > MAX_CHAT_PDF_SIZE || (file.type !== 'application/pdf' && !String(file.name).toLowerCase().endsWith('.pdf')))) {
+    return json({ error: file?.size > MAX_CHAT_PDF_SIZE ? 'حجم ملف PDF يجب ألا يتجاوز 8 ميجابايت.' : 'المرفق يجب أن يكون ملف PDF.' }, 400);
+  }
   const message = {
     id: crypto.randomUUID(),
+    group_id: groupId,
     author_username: user.username,
     author_name: user.name,
-    body,
+    body: body || `ملف PDF: ${cleanFileName(file.name)}`,
+    attachment_key: '',
+    attachment_name: '',
+    attachment_type: '',
+    attachment_size: 0,
     created_at: Date.now()
   };
-  await env.DB.prepare(
-    'INSERT INTO employee_messages (id, author_username, author_name, body, created_at) VALUES (?, ?, ?, ?, ?)'
-  ).bind(message.id, message.author_username, message.author_name, message.body, message.created_at).run();
+  if (file) {
+    message.attachment_name = cleanFileName(file.name);
+    message.attachment_type = 'application/pdf';
+    message.attachment_size = file.size;
+    message.attachment_key = `team-chat/${groupId}/${message.id}-${message.attachment_name}`;
+    await env.UPLOADS.put(message.attachment_key, await file.arrayBuffer(), {
+      httpMetadata: { contentType: 'application/pdf' },
+      customMetadata: { messageId: message.id, groupId, originalName: message.attachment_name }
+    });
+  }
+  try {
+    await env.DB.prepare(
+      `INSERT INTO employee_messages
+       (id, group_id, author_username, author_name, body, attachment_key, attachment_name, attachment_type, attachment_size, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+    ).bind(message.id, message.group_id, message.author_username, message.author_name, message.body,
+      message.attachment_key, message.attachment_name, message.attachment_type, message.attachment_size, message.created_at).run();
+  } catch (error) {
+    if (message.attachment_key) await env.UPLOADS.delete(message.attachment_key);
+    throw error;
+  }
+  await pruneChatGroup(env, groupId);
   return json({ message }, 201);
+}
+
+async function getMessageFile(env, id) {
+  if (!isUuid(id)) return json({ error: 'معرّف المرفق غير صحيح.' }, 400);
+  if (!env.UPLOADS) return json({ error: 'مخزن الملفات غير متاح.' }, 503);
+  const message = await env.DB.prepare(
+    'SELECT attachment_key, attachment_name, attachment_type FROM employee_messages WHERE id = ?'
+  ).bind(id).first();
+  if (!message?.attachment_key) return json({ error: 'المرفق غير موجود.' }, 404);
+  const object = await env.UPLOADS.get(message.attachment_key);
+  if (!object) return json({ error: 'المرفق غير موجود.' }, 404);
+  const headers = new Headers();
+  headers.set('Content-Type', message.attachment_type || 'application/pdf');
+  headers.set('Content-Disposition', `attachment; filename="${cleanFileName(message.attachment_name)}"`);
+  headers.set('Cache-Control', 'private, no-store');
+  headers.set('X-Content-Type-Options', 'nosniff');
+  return new Response(object.body, { headers });
+}
+
+async function createSystemMessage(env, body) {
+  const id = crypto.randomUUID();
+  await env.DB.prepare(
+    `INSERT INTO employee_messages (id, group_id, author_username, author_name, body, created_at)
+     VALUES (?, 'general', 'SYSTEM', 'NEW MEDIA SYSTEM', ?, ?)`
+  ).bind(id, cleanString(body, 1000), Date.now()).run();
+  await pruneChatGroup(env, 'general');
+}
+
+async function pruneChatGroup(env, groupId) {
+  const overflow = await env.DB.prepare(
+    `SELECT id, attachment_key FROM employee_messages WHERE group_id = ?
+     ORDER BY created_at DESC LIMIT 1000 OFFSET ?`
+  ).bind(groupId, MAX_CHAT_MESSAGES_PER_GROUP).all();
+  const rows = overflow.results || [];
+  for (const row of rows) if (row.attachment_key && env.UPLOADS) await env.UPLOADS.delete(row.attachment_key);
+  if (rows.length) await env.DB.batch(rows.map((row) => env.DB.prepare('DELETE FROM employee_messages WHERE id = ?').bind(row.id)));
 }
 
 async function createClient(request, env, user) {
@@ -779,6 +884,7 @@ async function createClient(request, env, user) {
      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(id, client.name, client.contact, client.service, client.value, client.status, client.nextStep, client.owner, user.username, now, now).run();
   await recordActivity(env, user, 'إضافة عميل', 'client', id, client.name);
+  if (client.status === 'won') await createSystemMessage(env, `🎉 مبروك! تم إقفال صفقة «${client.name}» بنجاح.`);
   return json({ ok: true, id }, 201);
 }
 
@@ -802,6 +908,9 @@ async function updateClient(request, env, user, id) {
     `UPDATE employee_clients SET name = ?, contact = ?, service = ?, value = ?, status = ?,
      next_step = ?, owner = ?, updated_at = ? WHERE id = ?`
   ).bind(merged.name, merged.contact, merged.service, merged.value, merged.status, merged.nextStep, merged.owner, Date.now(), id).run();
+  if (current.status !== 'won' && merged.status === 'won') {
+    await createSystemMessage(env, `🎉 مبروك! تم إقفال صفقة «${merged.name}» بنجاح.`);
+  }
   return json({ ok: true });
 }
 
@@ -924,6 +1033,9 @@ async function recordActivity(env, user, action, entityType = '', entityId = '',
      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`
   ).bind(user.username, user.name, roleForUsername(user.username), cleanString(action, 100),
     cleanString(entityType, 60), cleanString(entityId, 160), cleanString(detail, 500), Date.now()).run();
+  await env.DB.prepare(
+    'DELETE FROM employee_activity_log WHERE id NOT IN (SELECT id FROM employee_activity_log ORDER BY created_at DESC LIMIT 100)'
+  ).run();
 }
 
 async function convertBusinessLeadToTask(request, env, user, id) {

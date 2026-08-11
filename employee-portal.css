@@ -273,7 +273,10 @@ html.light .app-sidebar { background:#fff; }
 .application-card__actions .application-delete:hover { color:#fff; background:var(--portal-red); }
 
 /* Chat */
-.team-chat { width:min(920px,100%); height:calc(100vh - 235px); min-height:550px; display:grid; grid-template-rows:auto 1fr auto; margin:0 auto; border:1px solid var(--portal-line); border-radius:21px; overflow:hidden; background:var(--portal-panel); box-shadow:var(--portal-shadow); }
+.team-chat { width:min(1040px,100%); height:calc(100vh - 220px); min-height:610px; display:grid; grid-template-rows:auto auto 1fr auto; margin:0 auto; border:1px solid var(--portal-line); border-radius:21px; overflow:hidden; background:var(--portal-panel); box-shadow:var(--portal-shadow); }
+.chat-groups { display:flex; gap:.45rem; padding:.75rem; overflow-x:auto; border-bottom:1px solid var(--portal-line); background:var(--portal-panel-2); scrollbar-width:thin; }
+.chat-group-button { flex:0 0 auto; min-height:36px; padding:0 .8rem; border:1px solid var(--portal-line); border-radius:10px; color:var(--portal-muted); background:var(--portal-panel); cursor:pointer; font-size:10px; font-weight:700; }
+.chat-group-button.is-active { color:#fff; border-color:transparent; background:linear-gradient(100deg,var(--portal-purple),var(--portal-pink)); }
 .chat-room-head { display:grid; grid-template-columns:42px minmax(0,1fr) 9px; align-items:center; gap:.75rem; padding:1rem 1.25rem; border-bottom:1px solid var(--portal-line); }
 .chat-room-logo { display:grid; width:42px; height:42px; place-items:center; border-radius:12px; color:#fff; background:linear-gradient(135deg,var(--portal-purple),var(--portal-orange)); font-family:'Alexandria',sans-serif; font-size:10px; font-weight:800; }
 .chat-room-head strong,.chat-room-head span { display:block; }
@@ -291,10 +294,20 @@ html.light .app-sidebar { background:#fff; }
 .chat-message__meta strong { color:var(--portal-muted); }
 .chat-message__bubble { padding:.72rem .9rem; border:1px solid var(--portal-line); border-radius:4px 13px 13px 13px; color:var(--portal-text); background:var(--portal-panel-2); font-size:12px; line-height:1.7; white-space:pre-wrap; overflow-wrap:anywhere; }
 .chat-message.is-own .chat-message__bubble { border-radius:13px 4px 13px 13px; color:#fff; background:linear-gradient(135deg,rgba(165,21,232,.9),rgba(223,45,117,.84)); }
-.chat-composer { display:grid; grid-template-columns:minmax(0,1fr) 48px; gap:.65rem; padding:1rem; border-top:1px solid var(--portal-line); }
+.chat-message.is-system { align-self:center; grid-template-columns:1fr; max-width:90%; text-align:center; }
+.chat-message.is-system .chat-message__avatar,.chat-message.is-system .chat-message__meta { display:none; }
+.chat-message.is-system .chat-message__bubble { border-color:rgba(70,214,157,.28); color:var(--portal-green); background:rgba(70,214,157,.07); font-weight:700; }
+.chat-attachment { display:flex; align-items:center; gap:.65rem; margin-top:.45rem; padding:.65rem .75rem; border:1px solid rgba(255,255,255,.12); border-radius:10px; color:inherit; background:rgba(0,0,0,.16); text-decoration:none; }
+.chat-attachment b { font-size:15px; }
+.chat-attachment span { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:10px; }
+.chat-composer { display:grid; grid-template-columns:48px minmax(0,1fr) 48px; gap:.65rem; padding:1rem; border-top:1px solid var(--portal-line); }
 .chat-composer textarea { min-height:48px; max-height:130px; padding:.8rem 1rem; border:1px solid var(--portal-line); border-radius:13px; outline:none; color:var(--portal-text); background:var(--portal-panel-2); resize:none; }
 .chat-composer textarea:focus { border-color:rgba(165,21,232,.55); }
 .chat-composer button { border:0; border-radius:13px; color:#fff; background:linear-gradient(135deg,var(--portal-purple),var(--portal-pink)); cursor:pointer; font-size:1.25rem; }
+.chat-composer button span { display:block; transform:rotate(180deg); }
+.chat-attach { display:grid; width:48px; height:48px; place-items:center; border:1px solid var(--portal-line); border-radius:13px; color:var(--portal-orange); background:var(--portal-panel-2); cursor:pointer; font-size:1.3rem; }
+.chat-attach input { display:none; }
+.chat-composer small { grid-column:1/-1; min-height:0; color:var(--portal-muted); font-size:9px; }
 
 /* Knowledge */
 .package-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }

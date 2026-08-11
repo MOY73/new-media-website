@@ -122,11 +122,12 @@
         </section>
 
         <section class="app-view" data-view-panel="chat">
-          <div class="section-intro"><div><span>PRIVATE CHANNEL</span><h2>محادثة الفريق</h2><p>رسائل قصيرة ومباشرة تظهر لكل أعضاء الفريق.</p></div></div>
+          <div class="section-intro"><div><span>TEAM ROOMS / 100 MESSAGES MAX</span><h2>محادثات الفريق</h2><p>الغرفة العامة وخمس غرف للأقسام. كل غرفة تحتفظ بآخر 100 رسالة ومرفق فقط.</p></div></div>
           <div class="team-chat">
-            <div class="chat-room-head"><div class="chat-room-logo">NM</div><div><strong>الفريق العام</strong><span>مساحة داخلية مشتركة</span></div><i></i></div>
+            <div class="chat-groups" id="chatGroups" aria-label="غرف المحادثة"></div>
+            <div class="chat-room-head"><div class="chat-room-logo" id="chatRoomLogo">NM</div><div><strong id="chatRoomTitle">العام</strong><span id="chatRoomDescription">مساحة داخلية مشتركة</span></div><i></i></div>
             <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
-            <form class="chat-composer" id="chatForm"><textarea id="chatInput" maxlength="1000" rows="1" placeholder="اكتب تحديثًا للفريق..." required></textarea><button type="submit" aria-label="إرسال الرسالة"></button></form>
+            <form class="chat-composer" id="chatForm"><label class="chat-attach" for="chatPdf" title="إرفاق PDF">＋<input id="chatPdf" type="file" accept="application/pdf,.pdf"></label><textarea id="chatInput" maxlength="1000" rows="1" placeholder="اكتب رسالة أو أرفق PDF..."></textarea><button type="submit" aria-label="إرسال الرسالة"><span>➤</span></button><small id="chatFileName"></small></form>
           </div>
         </section>
 

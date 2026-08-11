@@ -47,7 +47,9 @@
 
   async function api(path, options = {}) {
     const headers = new Headers(options.headers || {});
-    if (options.body && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+    if (options.body && !(options.body instanceof FormData) && !headers.has('Content-Type')) {
+      headers.set('Content-Type', 'application/json');
+    }
     const response = await fetch(path, {
       credentials: 'same-origin',
       ...options,
@@ -133,6 +135,14 @@
     library: 'مكتبة ملفات الموظفين',
     activity: 'سجل نشاط الفريق',
   };
+  const CHAT_GROUPS = [
+    { id: 'general', label: 'العام', short: 'NM', description: 'مساحة الفريق المشتركة' },
+    { id: 'digital-presence', label: 'الحضور الرقمي', short: 'DP', description: 'إدارة المنصات والمجتمع' },
+    { id: 'creative-content', label: 'المحتوى والإنتاج', short: 'CP', description: 'الأفكار والتصميم والتصوير' },
+    { id: 'brand-identity', label: 'الهوية والعلامة', short: 'BI', description: 'الاستراتيجية والنظام البصري' },
+    { id: 'web-experience', label: 'المواقع والتجارب', short: 'WX', description: 'المواقع والواجهات والتطوير' },
+    { id: 'growth-performance', label: 'النمو والأداء', short: 'GP', description: 'الحملات والقياس والتحسين' },
+  ];
   const LEAD_CITIES = [
     ['مكة المكرمة', 'مكة'],
     ['جدة', 'جدة'],
@@ -150,6 +160,7 @@
     leadFilters: { search: '', neighborhood: 'all', category: 'all', priority: 'all', status: 'all' },
     leadCity: 'مكة المكرمة',
     leadPage: 1,
+    chatGroup: 'general',
   };
 
   function initials(value) {
@@ -344,23 +355,53 @@
 
   function createChatNode(message) {
     const own = message.author_username === state.data.user.username;
-    const row = element('article', `chat-message${own ? ' is-own' : ''}`);
+    const system = message.author_username === 'SYSTEM';
+    const row = element('article', `chat-message${own ? ' is-own' : ''}${system ? ' is-system' : ''}`);
     const avatar = element('div', 'chat-message__avatar', initials(message.author_name));
     const content = element('div', 'chat-message__content');
     const meta = element('div', 'chat-message__meta');
     meta.append(element('strong', '', message.author_name), element('span', '', displayDate(message.created_at)));
-    content.append(meta, element('div', 'chat-message__bubble', message.body));
+    const bubble = element('div', 'chat-message__bubble', message.body);
+    if (message.attachment_name) {
+      const attachment = element('a', 'chat-attachment');
+      attachment.href = `/api/employee/message-files/${encodeURIComponent(message.id)}`;
+      attachment.download = message.attachment_name;
+      attachment.append(element('b', '', 'PDF'), element('span', '', message.attachment_name));
+      bubble.append(attachment);
+    }
+    content.append(meta, bubble);
     row.append(avatar, content);
     return row;
   }
 
   function renderChat() {
-    const messages = state.data.messages;
-    const fullChat = qs('#chatMessages');
-    fullChat.replaceChildren(...(messages.length ? messages.map(createChatNode) : [emptyState('ابدأ أول تحديث مع الفريق.') ]));
-    fullChat.scrollTop = fullChat.scrollHeight;
+    const room = CHAT_GROUPS.find((item) => item.id === state.chatGroup) || CHAT_GROUPS[0];
+    const groups = qs('#chatGroups');
+    groups?.replaceChildren(...CHAT_GROUPS.map((item) => {
+      const button = element('button', `chat-group-button${item.id === room.id ? ' is-active' : ''}`);
+      button.type = 'button';
+      button.append(element('b', '', item.short), element('span', '', item.label));
+      button.addEventListener('click', () => {
+        state.chatGroup = item.id;
+        renderChat();
+        qs('#chatInput')?.focus();
+      });
+      return button;
+    }));
+    if (qs('#chatRoomLogo')) qs('#chatRoomLogo').textContent = room.short;
+    if (qs('#chatRoomTitle')) qs('#chatRoomTitle').textContent = room.label;
+    if (qs('#chatRoomDescription')) qs('#chatRoomDescription').textContent = room.description;
+    if (qs('#chatInput')) qs('#chatInput').placeholder = `اكتب في ${room.label} أو أرفق PDF...`;
 
-    const previewRows = messages.slice(-3).reverse().map((message) => {
+    const messages = (state.data.messages || []).filter((message) => (message.group_id || 'general') === room.id);
+    const fullChat = qs('#chatMessages');
+    const shouldStick = !fullChat?.dataset.ready || (fullChat.scrollHeight - fullChat.scrollTop - fullChat.clientHeight < 120);
+    fullChat.replaceChildren(...(messages.length ? messages.map(createChatNode) : [emptyState('ابدأ أول تحديث مع الفريق.') ]));
+    if (shouldStick) fullChat.scrollTop = fullChat.scrollHeight;
+    fullChat.dataset.ready = 'true';
+
+    const generalMessages = (state.data.messages || []).filter((message) => (message.group_id || 'general') === 'general');
+    const previewRows = generalMessages.slice(-3).reverse().map((message) => {
       const row = element('article', 'chat-preview__row');
       const copy = element('div');
       copy.append(element('strong', '', message.author_name), element('span', '', message.body));
@@ -988,18 +1029,50 @@
       event.preventDefault();
       const input = qs('#chatInput');
       const body = input.value.trim();
-      if (!body) return;
+      const fileInput = qs('#chatPdf');
+      const file = fileInput?.files?.[0];
+      if (!body && !file) return;
+      if (file && (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf'))) {
+        showToast('المرفق يجب أن يكون ملف PDF.', true);
+        return;
+      }
+      if (file && file.size > 8 * 1024 * 1024) {
+        showToast('حجم ملف PDF يجب ألا يتجاوز 8 ميجابايت.', true);
+        return;
+      }
       const button = qs('button[type="submit"]', event.currentTarget);
       button.disabled = true;
       try {
-        await api('/api/employee/messages', { method: 'POST', body: JSON.stringify({ body }) });
+        const payload = new FormData();
+        payload.append('body', body);
+        payload.append('groupId', state.chatGroup);
+        if (file) payload.append('pdf', file);
+        await api('/api/employee/messages', { method: 'POST', body: payload });
         input.value = '';
+        if (fileInput) fileInput.value = '';
+        if (qs('#chatFileName')) qs('#chatFileName').textContent = '';
         await refreshData({ quiet: true });
       } catch (error) {
         showToast(error.message, true);
       } finally {
         button.disabled = false;
       }
+    });
+
+    qs('#chatPdf')?.addEventListener('change', (event) => {
+      const file = event.currentTarget.files?.[0];
+      const label = qs('#chatFileName');
+      if (!file) {
+        if (label) label.textContent = '';
+        return;
+      }
+      if ((file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) || file.size > 8 * 1024 * 1024) {
+        event.currentTarget.value = '';
+        if (label) label.textContent = '';
+        showToast(file.size > 8 * 1024 * 1024 ? 'حجم ملف PDF يجب ألا يتجاوز 8 ميجابايت.' : 'المرفق يجب أن يكون ملف PDF.', true);
+        return;
+      }
+      if (label) label.textContent = file.name;
     });
 
     document.addEventListener('visibilitychange', () => {
