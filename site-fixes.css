@@ -805,3 +805,51 @@ svg {
     justify-content: start;
   }
 }
+
+/* Mobile chrome: keep navigation readable instead of collapsing it into one cramped row. */
+.nm-site-nav__links a,
+.nm-site-nav__cta,
+body:not(.nm-has-shared-chrome) :is(.nav-links a,.nav-cta) {
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .nm-site-nav {
+    top: 8px;
+    height: 112px;
+    padding: 0 .75rem 8px;
+    grid-template-columns: auto minmax(0,1fr);
+    grid-template-rows: 61px 42px;
+    gap: 0 .55rem;
+  }
+
+  .nm-site-nav__brand img { width: 48px; height: 34px; }
+  .nm-site-nav__actions { width: 100%; justify-content: flex-end; gap: .4rem; }
+  html[dir="rtl"] .nm-site-nav__actions { justify-self: start; }
+  .nm-site-nav__links { padding-inline: 2px; gap: .25rem; }
+  .nm-site-nav__links a { font-size: 10.5px; line-height: 1.25; }
+  .nm-site-nav__cta { min-width: 108px; height: 39px; padding-inline: .75rem; font-size: 10.5px; }
+  .nm-site-nav__actions :is(.theme-btn,.lang-btn,.theme-btn-404,.lang-btn-404) { height: 36px; }
+  body.nm-has-shared-chrome .nm-showcase { padding-top: 145px !important; }
+}
+
+@media (max-width: 430px) {
+  .nm-site-nav {
+    height: 108px;
+    grid-template-rows: 58px 41px;
+  }
+
+  .nm-site-nav__brand img { width: 44px; height: 31px; }
+  .nm-site-nav__links a { font-size: 9.5px; }
+  .nm-site-nav__actions :is(.theme-btn,.lang-btn,.theme-btn-404,.lang-btn-404) {
+    min-width: 34px;
+    width: 34px;
+  }
+  .nm-site-nav__cta {
+    max-width: none;
+    min-width: 104px;
+    padding-inline: .55rem;
+    overflow: visible;
+    text-overflow: clip;
+  }
+}

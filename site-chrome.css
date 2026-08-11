@@ -53,7 +53,7 @@
 .nm-site-nav__links a {
   color: rgba(255,255,255,.58);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
   text-decoration: none;
   transition: color .25s;
 }
@@ -89,7 +89,7 @@
   background:linear-gradient(100deg,#8c05d5,#fa334d,#ff6500);
   box-shadow:0 8px 24px rgba(153,0,204,.25);
   font-size:13px;
-  font-weight:700;
+  font-weight:800;
   text-decoration:none;
 }
 

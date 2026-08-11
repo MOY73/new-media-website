@@ -248,11 +248,11 @@
     paintSequence(sequencePosition, handsOpacity);
 
     showScene(scenes.quote, progress < 0.13 ? 1 - smooth(0.105, 0.15, progress) : 0);
-    const statsOpacity = fadeRange(progress, 0.445, 0.48, 0.575, 0.615);
+    const statsOpacity = fadeRange(progress, 0.4, 0.44, 0.555, 0.59);
     showScene(scenes.stats, statsOpacity);
-    scenes.stats.classList.toggle('is-visible-cards', progress > 0.475 && progress < 0.605);
-    showScene(scenes.services, fadeRange(progress, 0.615, 0.66, 0.775, 0.82));
-    const workOpacity = fadeRange(progress, 0.795, 0.835, 0.89, 0.925);
+    scenes.stats.classList.toggle('is-visible-cards', progress > 0.435 && progress < 0.58);
+    showScene(scenes.services, fadeRange(progress, 0.57, 0.615, 0.77, 0.805));
+    const workOpacity = fadeRange(progress, 0.795, 0.835, 0.935, 0.965);
     showScene(scenes.work, workOpacity);
     const shouldRunWorkAuto = workOpacity > 0.55;
     if (shouldRunWorkAuto !== workSceneVisible) {
@@ -260,20 +260,20 @@
       if (workSceneVisible) startWorkAuto();
       else stopWorkAuto();
     }
-    showScene(scenes.cta, smooth(0.905, 0.95, progress));
+    showScene(scenes.cta, smooth(0.955, 0.985, progress));
 
-    if (progress >= 0.64 && progress <= 0.8 && Date.now() - lastManualCardChange > 1000) {
-      const local = clamp((progress - 0.65) / 0.135);
+    if (progress >= 0.62 && progress <= 0.78 && Date.now() - lastManualCardChange > 1000) {
+      const local = clamp((progress - 0.63) / 0.14);
       const desiredCard = Math.min(3, Math.floor(local * 4));
       if (desiredCard !== activeCard) renderOrbit(desiredCard, false);
     }
     let scene = 1;
     if (progress >= 0.09) scene = 2;
     if (progress >= 0.29) scene = 3;
-    if (progress >= 0.445) scene = 4;
-    if (progress >= 0.615) scene = 5;
+    if (progress >= 0.4) scene = 4;
+    if (progress >= 0.57) scene = 5;
     if (progress >= 0.795) scene = 6;
-    if (progress >= 0.905) scene = 7;
+    if (progress >= 0.955) scene = 7;
     sceneNumber.textContent = String(scene).padStart(2, '0');
     scrollCue.style.opacity = String(1 - smooth(0.025, 0.08, progress));
     scrollFrame = 0;
@@ -286,7 +286,7 @@
   window.addEventListener('resize', updateStory, { passive: true });
 
   function jumpToHash() {
-    const points = { '#about': 0, '#services': 0.68, '#work': 0.84 };
+    const points = { '#about': 0, '#services': 0.68, '#work': 0.86 };
     if (!Object.prototype.hasOwnProperty.call(points, location.hash)) return;
     const range = Math.max(1, story.offsetHeight - window.innerHeight);
     window.scrollTo({ top: story.offsetTop + range * points[location.hash], behavior: reducedMotion ? 'auto' : 'smooth' });

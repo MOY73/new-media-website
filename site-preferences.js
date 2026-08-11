@@ -50,7 +50,7 @@
 
   const chromeStyle = document.createElement('link');
   chromeStyle.rel = 'stylesheet';
-  chromeStyle.href = '/site-chrome.css?v=34';
+  chromeStyle.href = '/site-chrome.css?v=35';
   document.head.appendChild(chromeStyle);
 
   const chromeScript = document.createElement('script');
