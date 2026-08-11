@@ -93,7 +93,7 @@
     });
     languageButton.textContent = value === 'ar' ? 'EN' : 'ع';
     languageButton.setAttribute('aria-label', value === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
-    document.title = value === 'ar' ? 'NEW MEDIA | تأثير قابل للقياس' : 'NEW MEDIA | Measurable Impact';
+    document.title = 'New Media';
     typeQuote(value, true);
   }
 
