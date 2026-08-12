@@ -1177,7 +1177,7 @@ function readAuthConfig(env) {
 function roleForUsername(username) {
   const normalized = String(username || '').toUpperCase();
   if (normalized === 'MOY') return 'super_admin';
-  if (['AK', 'AZOZ', 'EMAD'].includes(normalized)) return 'manager';
+  if (['AK', 'AZOZ', 'EMAD', 'TURKI'].includes(normalized)) return 'manager';
   return 'employee';
 }
 
