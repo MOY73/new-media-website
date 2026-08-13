@@ -36,7 +36,7 @@
     nav.innerHTML = `
       <a class="nm-site-nav__brand" href="index.html" aria-label="New Media"><img src="/newmedia-logo.png" alt=""><span>NEW MEDIA</span></a>
       <ul class="nm-site-nav__links"><li><a href="/index.html#about" data-nm-label="about"></a></li><li><a href="/index.html#services" data-nm-label="services"></a></li><li><a href="/index.html#work" data-nm-label="work"></a></li><li><a href="#policies" data-nm-label="policies"></a></li></ul>
-      <div class="nm-site-nav__actions"><span data-nm-controls></span><a class="nm-site-nav__cta" href="/contact-application.html" data-nm-label="contact"></a></div>`;
+      <div class="nm-site-nav__actions"><span data-nm-controls></span><a class="nm-site-nav__cta" href="/client/login?next=%2Fcontact-application.html" data-nm-label="contact"></a></div>`;
     const controls = nav.querySelector('[data-nm-controls]');
     controls.replaceWith(themeButton, languageButton);
     if (oldNav) oldNav.replaceWith(nav);

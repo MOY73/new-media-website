@@ -32,6 +32,7 @@
         <button class="app-nav__item is-active" type="button" data-view="overview"><span>⌂</span><b>نظرة عامة</b></button>
         <button class="app-nav__item" type="button" data-view="applications"><span>↓</span><b>طلبات الموقع</b><em id="applicationsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="clients"><span>◇</span><b>العملاء والفرص</b><em id="clientsBadge">0</em></button>
+        <button class="app-nav__item" type="button" data-view="clientspace"><span>◈</span><b>بوابة العملاء</b><em id="clientPortalBadge">0</em></button>
         <div class="app-nav__group is-open" id="leadsNavGroup">
           <button class="app-nav__group-toggle" id="leadsNavToggle" type="button" aria-expanded="true" aria-controls="leadsNavChildren"><span>◎</span><b>فرص الاستهداف</b><i>⌄</i></button>
           <div class="app-nav__children" id="leadsNavChildren">
@@ -104,6 +105,17 @@
         <section class="app-view" data-view-panel="clients">
           <div class="section-intro"><div><span>CRM / PIPELINE</span><h2>العملاء والفرص</h2><p>حرّك كل فرصة من أول تواصل حتى التشغيل الفعلي.</p></div><button class="portal-primary-button portal-primary-button--small" id="addClientFromView" type="button"><span>إضافة عميل</span><b>+</b></button></div>
           <div class="pipeline-board" id="pipelineBoard"></div>
+        </section>
+
+        <section class="app-view" data-view-panel="clientspace">
+          <div class="section-intro"><div><span>CLIENT DELIVERY HUB</span><h2>بوابة العملاء والتسليم</h2><p>أنشئ مشروعًا داخل حساب العميل، تابع طلباته، وارفع النسخ الجاهزة له من مكان واحد.</p></div><div class="clientspace-actions"><button class="portal-primary-button portal-primary-button--small" id="openClientProjectModal" type="button"><span>مشروع جديد</span><b>+</b></button><button class="portal-primary-button portal-primary-button--small is-secondary" id="openClientDeliveryModal" type="button"><span>رفع تسليم</span><b>↑</b></button></div></div>
+          <div class="clientspace-summary" id="clientspaceSummary"></div>
+          <div class="clientspace-layout">
+            <section class="workspace-card"><div class="card-heading"><div><span>CLIENT ACCOUNTS</span><h3>حسابات العملاء</h3></div></div><div class="clientspace-list" id="clientPortalClients"></div></section>
+            <section class="workspace-card workspace-card--wide"><div class="card-heading"><div><span>PROJECTS</span><h3>المشاريع المشتركة</h3></div></div><div class="clientspace-list" id="clientPortalProjects"></div></section>
+            <section class="workspace-card workspace-card--wide"><div class="card-heading"><div><span>REQUESTS</span><h3>طلبات العملاء الداخلية</h3></div></div><div class="clientspace-list" id="clientPortalRequests"></div></section>
+            <section class="workspace-card"><div class="card-heading"><div><span>DELIVERIES</span><h3>آخر التسليمات</h3></div></div><div class="clientspace-list" id="clientPortalDeliveries"></div></section>
+          </div>
         </section>
 
         <section class="app-view" data-view-panel="leads">
@@ -190,6 +202,36 @@
         <div class="form-grid"><label>الموعد<input name="dueDate" type="date"></label><label>الأولوية<select name="priority"><option value="normal">عادية</option><option value="high">عالية</option><option value="low">منخفضة</option></select></label></div>
         <p class="form-message" id="taskFormMessage" role="alert"></p>
         <button class="portal-primary-button" type="submit"><span>إضافة المهمة</span></button>
+      </form>
+    </section>
+  </div>
+
+  <div class="portal-modal" id="clientProjectModal" aria-hidden="true">
+    <div class="portal-modal__backdrop" data-close-modal="clientProjectModal"></div>
+    <section class="portal-modal__card" role="dialog" aria-modal="true" aria-labelledby="clientProjectModalTitle">
+      <div class="modal-head"><div><span>CLIENT PROJECT</span><h2 id="clientProjectModalTitle">إضافة مشروع للعميل</h2></div><button type="button" data-close-modal="clientProjectModal" aria-label="إغلاق">×</button></div>
+      <form class="portal-form modal-form" id="clientProjectForm">
+        <label>حساب العميل<select name="clientUid" id="clientProjectUser" required></select></label>
+        <div class="form-grid"><label>اسم المشروع<input name="title" maxlength="160" required></label><label>الخدمة<input name="service" maxlength="160"></label></div>
+        <label>ملخص المشروع<textarea name="summary" maxlength="1800" rows="3"></textarea></label>
+        <div class="form-grid"><label>الحالة<select name="status"><option value="new">جديد</option><option value="scheduled">مجدول</option><option value="in_progress">قيد التنفيذ</option><option value="waiting_client">بانتظار العميل</option><option value="completed">مكتمل</option></select></label><label>نسبة الإنجاز<input name="progress" type="number" min="0" max="100" value="0"></label></div>
+        <div class="form-grid"><label>المرحلة الحالية<input name="currentStage" maxlength="160"></label><label>الموعد<input name="deadline" type="date"></label></div>
+        <p class="form-message" id="clientProjectFormMessage" role="alert"></p><button class="portal-primary-button" type="submit"><span>إضافة المشروع</span></button>
+      </form>
+    </section>
+  </div>
+
+  <div class="portal-modal" id="clientDeliveryModal" aria-hidden="true">
+    <div class="portal-modal__backdrop" data-close-modal="clientDeliveryModal"></div>
+    <section class="portal-modal__card" role="dialog" aria-modal="true" aria-labelledby="clientDeliveryModalTitle">
+      <div class="modal-head"><div><span>CLIENT DELIVERY</span><h2 id="clientDeliveryModalTitle">رفع تسليم للعميل</h2></div><button type="button" data-close-modal="clientDeliveryModal" aria-label="إغلاق">×</button></div>
+      <form class="portal-form modal-form" id="clientDeliveryForm">
+        <label>حساب العميل<select name="clientUid" id="clientDeliveryUser" required></select></label>
+        <label>المشروع<select name="projectId" id="clientDeliveryProject"><option value="">بدون مشروع محدد</option></select></label>
+        <label>عنوان التسليم<input name="title" maxlength="160" required></label>
+        <label>رسالة للعميل<textarea name="message" maxlength="2000" rows="3"></textarea></label>
+        <label>ملف التسليم (حتى 20MB)<input name="file" type="file" accept=".png,.jpg,.jpeg,.webp,.pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip" required></label>
+        <p class="form-message" id="clientDeliveryFormMessage" role="alert"></p><button class="portal-primary-button" type="submit"><span>إرسال التسليم</span></button>
       </form>
     </section>
   </div>

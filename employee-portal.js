@@ -126,6 +126,7 @@
   const VIEW_TITLES = {
     applications: 'طلبات التقديم عبر الموقع',
     clients: 'العملاء والفرص',
+    clientspace: 'بوابة العملاء والتسليم',
     leads: 'فرص مكة',
     chat: 'محادثة الفريق',
     packages: 'الباقات المعتمدة',
@@ -602,6 +603,39 @@
     qs('#applicationsList')?.replaceChildren(...(applications.length ? applications.map(applicationCard) : [emptyState('لم تصل طلبات عبر الموقع حتى الآن.') ]));
   }
 
+  const CLIENT_PROJECT_STATUS = { new: 'جديد', scheduled: 'مجدول', in_progress: 'قيد التنفيذ', waiting_client: 'بانتظار العميل', completed: 'مكتمل', cancelled: 'ملغي' };
+  const CLIENT_REQUEST_STATUS = { new: 'جديد', reviewing: 'قيد المراجعة', in_progress: 'قيد التنفيذ', waiting_client: 'بانتظار العميل', completed: 'مكتمل', cancelled: 'ملغي' };
+  function clientName(uid) {
+    const profile = (state.data.clientProfiles || []).find((item) => item.firebase_uid === uid);
+    return profile?.display_name || profile?.organization || profile?.email || 'عميل';
+  }
+  function renderClientWorkspace() {
+    const profiles = state.data.clientProfiles || [], projects = state.data.clientProjects || [], requests = state.data.clientRequests || [], deliveries = state.data.clientDeliveries || [];
+    qs('#clientPortalBadge').textContent = String(profiles.length);
+    const summary = [
+      ['حسابات العملاء', profiles.length], ['مشاريع نشطة', projects.filter((p) => !['completed','cancelled'].includes(p.status)).length],
+      ['طلبات مفتوحة', requests.filter((r) => !['completed','cancelled'].includes(r.status)).length], ['تسليمات بانتظار الاعتماد', deliveries.filter((d) => d.status === 'delivered').length]
+    ].map(([label, value]) => { const node = element('article'); node.append(element('span', '', label), element('strong', '', String(value))); return node; });
+    qs('#clientspaceSummary')?.replaceChildren(...summary);
+    const clientNodes = profiles.map((profile) => { const card = element('article', 'clientspace-item'); card.append(element('div', 'clientspace-avatar', initials(profile.display_name || profile.email)), element('div', 'clientspace-copy')); const copy = qs('.clientspace-copy', card); copy.append(element('strong', '', profile.display_name || 'عميل جديد'), element('span', '', profile.organization || profile.email), element('small', '', `${projects.filter((p) => p.client_uid === profile.firebase_uid).length} مشروع`)); return card; });
+    qs('#clientPortalClients')?.replaceChildren(...(clientNodes.length ? clientNodes : [emptyState('تظهر حسابات العملاء هنا بعد أول تسجيل دخول.') ]));
+    const projectNodes = projects.map((project) => { const card = element('article', 'clientspace-project'); const head = element('div'); head.append(element('strong', '', project.title), element('span', '', clientName(project.client_uid))); const controls = element('div', 'clientspace-controls'); const status = leadSelect('', Object.keys(CLIENT_PROJECT_STATUS), project.status, CLIENT_PROJECT_STATUS); const progress = element('input'); progress.type='number'; progress.min='0'; progress.max='100'; progress.value=project.progress; progress.setAttribute('aria-label','نسبة الإنجاز'); const save=element('button','','حفظ'); save.type='button'; save.addEventListener('click', async()=>{ save.disabled=true; try { await api(`/api/employee/client-projects/${project.id}`,{method:'PATCH',body:JSON.stringify({status:status.value,progress:Number(progress.value)})}); await refreshData({quiet:true}); showToast('تم تحديث المشروع.'); } catch(error){showToast(error.message,true);} finally{save.disabled=false;} }); controls.append(status,progress,save); card.append(head, element('p','',project.current_stage || project.service || 'بانتظار تحديد المرحلة'), controls); return card; });
+    qs('#clientPortalProjects')?.replaceChildren(...(projectNodes.length ? projectNodes : [emptyState('لا توجد مشاريع مشتركة بعد.') ]));
+    const requestNodes = requests.map((request) => { const card=element('article','clientspace-request'); const copy=element('div'); copy.append(element('strong','',request.title),element('span','',clientName(request.client_uid)),element('p','',request.details)); const controls=element('div','clientspace-controls'); const status=leadSelect('',Object.keys(CLIENT_REQUEST_STATUS),request.status,CLIENT_REQUEST_STATUS); const note=element('input'); note.value=request.employee_note||''; note.placeholder='ملاحظة للعميل'; const save=element('button','','تحديث'); save.type='button'; save.addEventListener('click',async()=>{save.disabled=true;try{await api(`/api/employee/client-requests/${request.id}`,{method:'PATCH',body:JSON.stringify({status:status.value,employeeNote:note.value})});await refreshData({quiet:true});showToast('تم تحديث طلب العميل.');}catch(error){showToast(error.message,true);}finally{save.disabled=false;}}); controls.append(status,note,save); card.append(copy,controls); return card; });
+    qs('#clientPortalRequests')?.replaceChildren(...(requestNodes.length ? requestNodes : [emptyState('لا توجد طلبات داخلية بعد.') ]));
+    const deliveryNodes = deliveries.map((delivery)=>{ const card=element('article','clientspace-item'); const icon=element('div','clientspace-avatar','↓'); const copy=element('div','clientspace-copy'); copy.append(element('strong','',delivery.title),element('span','',clientName(delivery.client_uid)),element('small','',`${delivery.original_name} · ${delivery.status==='approved'?'اعتمده العميل':'بانتظار الاعتماد'}`)); card.append(icon,copy); return card; });
+    qs('#clientPortalDeliveries')?.replaceChildren(...(deliveryNodes.length ? deliveryNodes : [emptyState('لم ترفع تسليمات بعد.') ]));
+    const options = profiles.map((profile)=>{const option=element('option','',`${profile.display_name||profile.email} · ${profile.email}`); option.value=profile.firebase_uid; return option;});
+    for (const select of [qs('#clientProjectUser'),qs('#clientDeliveryUser')]) { if (!select) continue; const selected=select.value; select.replaceChildren(element('option','','اختر العميل'),...options.map((option)=>option.cloneNode(true))); select.firstElementChild.value=''; select.value=profiles.some((p)=>p.firebase_uid===selected)?selected:''; }
+    refreshClientDeliveryProjects();
+  }
+
+  function refreshClientDeliveryProjects() {
+    const select=qs('#clientDeliveryProject'), uid=qs('#clientDeliveryUser')?.value||''; if(!select)return;
+    const options=(state.data?.clientProjects||[]).filter((project)=>project.client_uid===uid).map((project)=>{const option=element('option','',project.title);option.value=project.id;return option;});
+    const empty=element('option','','بدون مشروع محدد');empty.value='';select.replaceChildren(empty,...options);
+  }
+
   function renderPackages() {
     const cards = state.data.knowledge.packages.map((item, index) => {
       const card = element('article', 'package-card');
@@ -910,6 +944,7 @@
     renderChat();
     renderPipeline();
     renderApplications();
+    renderClientWorkspace();
     renderLeads();
     renderActivity();
     if (!state.staticRendered) {
@@ -971,6 +1006,9 @@
     qs('#quickAddClient')?.addEventListener('click', () => openModal('clientModal'));
     qs('#addClientFromView')?.addEventListener('click', () => openModal('clientModal'));
     qs('#quickAddTask')?.addEventListener('click', () => openModal('taskModal'));
+    qs('#openClientProjectModal')?.addEventListener('click', () => openModal('clientProjectModal'));
+    qs('#openClientDeliveryModal')?.addEventListener('click', () => openModal('clientDeliveryModal'));
+    qs('#clientDeliveryUser')?.addEventListener('change', refreshClientDeliveryProjects);
     const leadFilterBindings = [
       ['#leadSearch', 'search', 'input'], ['#leadNeighborhood', 'neighborhood', 'change'],
       ['#leadCategory', 'category', 'change'],
@@ -1047,6 +1085,18 @@
       } finally {
         button.disabled = false;
       }
+    });
+
+    qs('#clientProjectForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault(); const form=event.currentTarget, button=qs('button[type="submit"]',form), message=qs('#clientProjectFormMessage'); button.disabled=true; setMessage(message,'جاري إنشاء المشروع...');
+      try { await api('/api/employee/client-projects',{method:'POST',body:JSON.stringify(formPayload(form))}); form.reset(); setMessage(message,''); closeModal('clientProjectModal'); await refreshData({quiet:true}); showToast('ظهر المشروع الآن في حساب العميل.'); }
+      catch(error){setMessage(message,error.message,true);} finally{button.disabled=false;}
+    });
+
+    qs('#clientDeliveryForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault(); const form=event.currentTarget, button=qs('button[type="submit"]',form), message=qs('#clientDeliveryFormMessage'); button.disabled=true; setMessage(message,'جاري رفع التسليم...');
+      try { await api('/api/employee/client-deliveries',{method:'POST',body:new FormData(form)}); form.reset(); refreshClientDeliveryProjects(); setMessage(message,''); closeModal('clientDeliveryModal'); await refreshData({quiet:true}); showToast('وصل التسليم إلى حساب العميل.'); }
+      catch(error){setMessage(message,error.message,true);} finally{button.disabled=false;}
     });
 
     qs('#chatForm')?.addEventListener('submit', async (event) => {

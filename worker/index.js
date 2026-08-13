@@ -6,6 +6,10 @@ const encoder = new TextEncoder();
 const decoder = new TextDecoder();
 const EMPLOYEE_LOGIN_HTML = '';
 const EMPLOYEE_DASHBOARD_HTML = '';
+const CLIENT_LOGIN_HTML = '';
+const CLIENT_PORTAL_HTML = '';
+const CLIENT_SESSION_COOKIE = 'nm_client_session';
+const CLIENT_SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 
 const CLIENT_STATUSES = ['lead', 'discovery', 'proposal', 'won', 'active'];
 const TASK_STATUSES = ['open', 'done'];
@@ -20,6 +24,8 @@ const BUSINESS_LEAD_SEED = [];
 const MAX_APPLICATION_FILES = 8;
 const MAX_APPLICATION_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_FILE_EXTENSIONS = new Set(['png','jpg','jpeg','webp','pdf','doc','docx','ppt','pptx','xls','xlsx','zip']);
+const CLIENT_PROJECT_STATUSES = ['new','scheduled','in_progress','waiting_client','completed','cancelled'];
+const CLIENT_REQUEST_STATUSES = ['new','reviewing','in_progress','waiting_client','completed','cancelled'];
 
 const SCHEMA_STATEMENTS = [
   `CREATE TABLE IF NOT EXISTS employee_messages (
@@ -75,6 +81,7 @@ const SCHEMA_STATEMENTS = [
    ON employee_login_attempts(updated_at)`,
   `CREATE TABLE IF NOT EXISTS client_applications (
     id TEXT PRIMARY KEY,
+    client_uid TEXT NOT NULL DEFAULT '',
     reference TEXT NOT NULL UNIQUE,
     full_name TEXT NOT NULL,
     organization TEXT NOT NULL,
@@ -170,7 +177,75 @@ const SCHEMA_STATEMENTS = [
     created_at INTEGER NOT NULL
   )`,
   `CREATE INDEX IF NOT EXISTS idx_employee_activity_log_created
-   ON employee_activity_log(created_at DESC)`
+   ON employee_activity_log(created_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS client_profiles (
+    firebase_uid TEXT PRIMARY KEY,
+    email TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL DEFAULT '',
+    organization TEXT NOT NULL DEFAULT '',
+    phone TEXT NOT NULL DEFAULT '',
+    photo_url TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+  )`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_client_profiles_email ON client_profiles(email)`,
+  `CREATE TABLE IF NOT EXISTS client_projects (
+    id TEXT PRIMARY KEY,
+    client_uid TEXT NOT NULL,
+    title TEXT NOT NULL,
+    service TEXT NOT NULL DEFAULT '',
+    summary TEXT NOT NULL DEFAULT '',
+    status TEXT NOT NULL DEFAULT 'new' CHECK(status IN ('new','scheduled','in_progress','waiting_client','completed','cancelled')),
+    progress INTEGER NOT NULL DEFAULT 0 CHECK(progress BETWEEN 0 AND 100),
+    current_stage TEXT NOT NULL DEFAULT '',
+    deadline TEXT NOT NULL DEFAULT '',
+    created_by TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    FOREIGN KEY(client_uid) REFERENCES client_profiles(firebase_uid) ON DELETE CASCADE
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_client_projects_uid_updated ON client_projects(client_uid, updated_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS client_requests (
+    id TEXT PRIMARY KEY,
+    client_uid TEXT NOT NULL,
+    project_id TEXT NOT NULL DEFAULT '',
+    title TEXT NOT NULL,
+    type TEXT NOT NULL DEFAULT 'change',
+    details TEXT NOT NULL,
+    priority TEXT NOT NULL DEFAULT 'normal' CHECK(priority IN ('low','normal','high')),
+    status TEXT NOT NULL DEFAULT 'new' CHECK(status IN ('new','reviewing','in_progress','waiting_client','completed','cancelled')),
+    employee_note TEXT NOT NULL DEFAULT '',
+    updated_by TEXT NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    FOREIGN KEY(client_uid) REFERENCES client_profiles(firebase_uid) ON DELETE CASCADE
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_client_requests_uid_status ON client_requests(client_uid, status, updated_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS client_deliveries (
+    id TEXT PRIMARY KEY,
+    client_uid TEXT NOT NULL,
+    project_id TEXT NOT NULL DEFAULT '',
+    title TEXT NOT NULL,
+    message TEXT NOT NULL DEFAULT '',
+    object_key TEXT NOT NULL UNIQUE,
+    original_name TEXT NOT NULL,
+    content_type TEXT NOT NULL,
+    size_bytes INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'delivered' CHECK(status IN ('delivered','approved')),
+    created_by TEXT NOT NULL,
+    approved_at INTEGER NOT NULL DEFAULT 0,
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    FOREIGN KEY(client_uid) REFERENCES client_profiles(firebase_uid) ON DELETE CASCADE
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_client_deliveries_uid_created ON client_deliveries(client_uid, created_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS client_progress (
+    client_uid TEXT PRIMARY KEY,
+    visited_sections TEXT NOT NULL DEFAULT '[]',
+    score INTEGER NOT NULL DEFAULT 0,
+    updated_at INTEGER NOT NULL,
+    FOREIGN KEY(client_uid) REFERENCES client_profiles(firebase_uid) ON DELETE CASCADE
+  )`
 ];
 
 const KNOWLEDGE = {
@@ -235,8 +310,17 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
-    if (url.pathname === '/api/applications' && request.method === 'POST') {
+  if (url.pathname === '/api/applications' && request.method === 'POST') {
       return createPublicApplication(request, env, url, ctx);
+    }
+
+    if (/^\/contact-application(?:\.html)?\/?$/.test(url.pathname)) {
+      const client = await readClientSession(request, env);
+      if (!client) return Response.redirect(new URL(`/client/login?next=${encodeURIComponent(url.pathname + url.search)}`, url), 302);
+    }
+
+    if (url.pathname.startsWith('/api/client/')) {
+      return handleClientApi(request, env, url);
     }
 
     if (url.pathname.startsWith('/api/employee/')) {
@@ -269,6 +353,10 @@ export default {
       return Response.redirect(new URL('/team/login', url), 302);
     }
 
+    if (/^\/client-(?:login|portal)(?:\.html)?\/?$/.test(url.pathname)) {
+      return Response.redirect(new URL(url.pathname.includes('portal') ? '/client/portal' : '/client/login', url), 302);
+    }
+
     if (/^\/team\/workspace\/?$/.test(url.pathname)) {
       const user = await readSession(request, env);
       if (!user) return Response.redirect(new URL('/team/login', url), 302);
@@ -279,6 +367,18 @@ export default {
       const user = await readSession(request, env);
       if (user) return Response.redirect(new URL('/team/workspace', url), 302);
       return employeeHtmlResponse(EMPLOYEE_LOGIN_HTML);
+    }
+
+    if (/^\/client\/portal\/?$/.test(url.pathname)) {
+      const client = await readClientSession(request, env);
+      if (!client) return Response.redirect(new URL(`/client/login?next=${encodeURIComponent('/client/portal' + url.hash)}`, url), 302);
+      return privateHtmlResponse(CLIENT_PORTAL_HTML);
+    }
+
+    if (/^\/client\/login\/?$/.test(url.pathname)) {
+      const client = await readClientSession(request, env);
+      if (client) return Response.redirect(new URL('/client/portal', url), 302);
+      return privateHtmlResponse(CLIENT_LOGIN_HTML);
     }
 
     const response = await env.ASSETS.fetch(request);
@@ -318,6 +418,22 @@ async function handleEmployeeApi(request, env, url) {
   }
   if (url.pathname === '/api/employee/data' && request.method === 'GET') {
     return getPortalData(env, user);
+  }
+  if (url.pathname === '/api/employee/client-projects' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createClientProjectByEmployee(request, env, user);
+  }
+  if (/^\/api\/employee\/client-projects\/[^/]+$/.test(url.pathname) && request.method === 'PATCH') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateClientProjectByEmployee(request, env, user, url.pathname.split('/').pop());
+  }
+  if (/^\/api\/employee\/client-requests\/[^/]+$/.test(url.pathname) && request.method === 'PATCH') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateClientRequestByEmployee(request, env, user, url.pathname.split('/').pop());
+  }
+  if (url.pathname === '/api/employee/client-deliveries' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createClientDelivery(request, env, user);
   }
   if (url.pathname.startsWith('/api/employee/application-files/') && request.method === 'GET') {
     return getApplicationFile(env, url.pathname.split('/').pop());
@@ -408,6 +524,11 @@ async function ensureSchema(env) {
     if (!messageColumnNames.has(name)) await env.DB.prepare(`ALTER TABLE employee_messages ADD COLUMN ${name} ${definition}`).run();
   }
   await env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_employee_messages_group_created ON employee_messages(group_id, created_at)').run();
+  const applicationColumns = await env.DB.prepare('PRAGMA table_info(client_applications)').all();
+  if (!(applicationColumns.results || []).some((column) => column.name === 'client_uid')) {
+    await env.DB.prepare("ALTER TABLE client_applications ADD COLUMN client_uid TEXT NOT NULL DEFAULT ''").run();
+  }
+  await env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_client_applications_uid_created ON client_applications(client_uid, created_at DESC)').run();
   await env.DB.prepare(
     'DELETE FROM employee_activity_log WHERE id NOT IN (SELECT id FROM employee_activity_log ORDER BY created_at DESC LIMIT 100)'
   ).run();
@@ -443,6 +564,206 @@ async function ensureSchema(env) {
     }
   }
   schemaReady = true;
+}
+
+async function handleClientApi(request, env, url) {
+  if (!env.DB) return json({ error: 'قاعدة البيانات غير متاحة حاليًا.' }, 503);
+  await ensureSchema(env);
+
+  if (url.pathname === '/api/client/session' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    const payload = await readJson(request, 8000);
+    const identity = await verifyFirebaseToken(cleanString(payload?.token, 7000), env);
+    if (!identity) return json({ error: 'تعذر التحقق من حساب العميل.' }, 401);
+    const now = Date.now();
+    await env.DB.prepare(
+      `INSERT INTO client_profiles (firebase_uid,email,display_name,photo_url,created_at,updated_at)
+       VALUES (?,?,?,?,?,?) ON CONFLICT(firebase_uid) DO UPDATE SET email=excluded.email,
+       display_name=CASE WHEN client_profiles.display_name='' THEN excluded.display_name ELSE client_profiles.display_name END,
+       photo_url=excluded.photo_url,updated_at=excluded.updated_at`
+    ).bind(identity.uid, identity.email, identity.name, identity.picture, now, now).run();
+    const token = await createClientSession(identity, env);
+    return json({ ok: true }, 200, { 'Set-Cookie': clientSessionCookie(token) });
+  }
+
+  const client = await readClientSession(request, env);
+  if (!client) return json({ error: 'يجب تسجيل الدخول كعميل.' }, 401);
+
+  if (url.pathname === '/api/client/logout' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return json({ ok: true }, 200, { 'Set-Cookie': clearClientSessionCookie() });
+  }
+  if (url.pathname === '/api/client/data' && request.method === 'GET') return getClientData(env, client);
+  if (url.pathname === '/api/client/profile' && request.method === 'PATCH') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateClientProfile(request, env, client);
+  }
+  if (url.pathname === '/api/client/requests' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createClientRequest(request, env, client);
+  }
+  if (url.pathname === '/api/client/progress' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateClientProgress(request, env, client);
+  }
+  if (/^\/api\/client\/deliveries\/[^/]+\/approve$/.test(url.pathname) && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return approveClientDelivery(env, client, url.pathname.split('/')[4]);
+  }
+  if (/^\/api\/client\/deliveries\/[^/]+\/file$/.test(url.pathname) && request.method === 'GET') {
+    return getClientDeliveryFile(env, client, url.pathname.split('/')[4]);
+  }
+  return json({ error: 'المسار غير موجود.' }, 404);
+}
+
+async function verifyFirebaseToken(token, env) {
+  if (!token || token.length > 7000) return null;
+  try {
+    const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${encodeURIComponent(env.FIREBASE_WEB_API_KEY || '')}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ idToken: token })
+    });
+    if (!response.ok) return null;
+    const data = await response.json();
+    const user = data.users?.[0];
+    const email = cleanString(user?.email, 160).toLowerCase();
+    if (!user?.localId || !email || !email.includes('@')) return null;
+    return { uid: cleanString(user.localId, 128), email, name: cleanString(user.displayName || email.split('@')[0], 100), picture: cleanString(user.photoUrl || '', 500) };
+  } catch { return null; }
+}
+
+async function getClientData(env, client) {
+  const results = await env.DB.batch([
+    env.DB.prepare('SELECT firebase_uid,email,display_name,organization,phone,photo_url,created_at,updated_at FROM client_profiles WHERE firebase_uid=?').bind(client.uid),
+    env.DB.prepare('SELECT id,title,service,summary,status,progress,current_stage,deadline,created_at,updated_at FROM client_projects WHERE client_uid=? ORDER BY updated_at DESC').bind(client.uid),
+    env.DB.prepare('SELECT id,project_id,title,type,details,priority,status,employee_note,created_at,updated_at FROM client_requests WHERE client_uid=? ORDER BY updated_at DESC LIMIT 100').bind(client.uid),
+    env.DB.prepare('SELECT id,project_id,title,message,original_name,content_type,size_bytes,status,approved_at,created_at,updated_at FROM client_deliveries WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid),
+    env.DB.prepare('SELECT visited_sections,score,updated_at FROM client_progress WHERE client_uid=?').bind(client.uid),
+    env.DB.prepare('SELECT id,reference,services,budget_range,project_summary,status,created_at,updated_at FROM client_applications WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid)
+  ]);
+  const profile = results[0].results?.[0];
+  if (!profile) return json({ error: 'ملف العميل غير موجود.' }, 404);
+  const progressRow = results[4].results?.[0] || { visited_sections: '[]', score: 0 };
+  return json({ profile, projects: results[1].results || [], requests: results[2].results || [], deliveries: results[3].results || [], applications: results[5].results || [], progress: { visited_sections: safeJsonParse(progressRow.visited_sections) || [], score: Number(progressRow.score || 0) }, serverTime: Date.now() });
+}
+
+async function updateClientProfile(request, env, client) {
+  const payload = await readJson(request, 3000);
+  const displayName = cleanString(payload?.displayName, 100);
+  if (!displayName) return json({ error: 'اكتب الاسم الكامل.' }, 400);
+  await env.DB.prepare('UPDATE client_profiles SET display_name=?,organization=?,phone=?,updated_at=? WHERE firebase_uid=?')
+    .bind(displayName, cleanString(payload.organization, 120), cleanString(payload.phone, 30), Date.now(), client.uid).run();
+  return json({ ok: true });
+}
+
+async function createClientRequest(request, env, client) {
+  const payload = await readJson(request, 5000);
+  const title = cleanString(payload?.title, 140), details = cleanString(payload?.details, 2500);
+  if (!title || !details) return json({ error: 'اكتب عنوان الطلب وتفاصيله.' }, 400);
+  const projectId = cleanString(payload.projectId, 64);
+  if (projectId) {
+    const owned = await env.DB.prepare('SELECT id FROM client_projects WHERE id=? AND client_uid=?').bind(projectId, client.uid).first();
+    if (!owned) return json({ error: 'المشروع غير موجود.' }, 404);
+  }
+  const id = crypto.randomUUID(), now = Date.now();
+  const priority = ['low','normal','high'].includes(payload.priority) ? payload.priority : 'normal';
+  await env.DB.prepare('INSERT INTO client_requests (id,client_uid,project_id,title,type,details,priority,status,created_at,updated_at) VALUES (?,?,?,?,?,?,?,?,?,?)')
+    .bind(id, client.uid, projectId, title, cleanString(payload.type, 30) || 'change', details, priority, 'new', now, now).run();
+  return json({ id }, 201);
+}
+
+async function updateClientProgress(request, env, client) {
+  const payload = await readJson(request, 500);
+  const allowed = ['services','work','about','digital','creative','brand','web','growth'];
+  const section = cleanString(payload?.section, 30);
+  if (!allowed.includes(section)) return json({ error: 'قسم غير صالح.' }, 400);
+  const current = await env.DB.prepare('SELECT visited_sections FROM client_progress WHERE client_uid=?').bind(client.uid).first();
+  const sections = new Set(Array.isArray(safeJsonParse(current?.visited_sections)) ? safeJsonParse(current.visited_sections) : []);
+  sections.add(section);
+  const visited = [...sections].filter((item) => allowed.includes(item)), score = Math.min(100, visited.length * 12 + (visited.length === allowed.length ? 4 : 0));
+  await env.DB.prepare(`INSERT INTO client_progress (client_uid,visited_sections,score,updated_at) VALUES (?,?,?,?) ON CONFLICT(client_uid) DO UPDATE SET visited_sections=excluded.visited_sections,score=excluded.score,updated_at=excluded.updated_at`)
+    .bind(client.uid, JSON.stringify(visited), score, Date.now()).run();
+  return json({ visited, score });
+}
+
+async function approveClientDelivery(env, client, id) {
+  const result = await env.DB.prepare("UPDATE client_deliveries SET status='approved',approved_at=?,updated_at=? WHERE id=? AND client_uid=?").bind(Date.now(), Date.now(), id, client.uid).run();
+  if (!result.meta?.changes) return json({ error: 'التسليم غير موجود.' }, 404);
+  return json({ ok: true });
+}
+
+async function getClientDeliveryFile(env, client, id) {
+  const file = await env.DB.prepare('SELECT object_key,original_name,content_type FROM client_deliveries WHERE id=? AND client_uid=?').bind(id, client.uid).first();
+  if (!file) return new Response('Not found', { status: 404 });
+  const object = await env.UPLOADS.get(file.object_key);
+  if (!object) return new Response('Not found', { status: 404 });
+  return new Response(object.body, { headers: { 'Content-Type': file.content_type, 'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.original_name)}`, 'Cache-Control': 'private, no-store', 'X-Content-Type-Options': 'nosniff' } });
+}
+
+async function createClientProjectByEmployee(request, env, user) {
+  const payload = await readJson(request, 7000);
+  const clientUid = cleanString(payload?.clientUid, 128);
+  const title = cleanString(payload?.title, 160);
+  if (!clientUid || !title) return json({ error: 'اختر العميل واكتب اسم المشروع.' }, 400);
+  const client = await env.DB.prepare('SELECT firebase_uid FROM client_profiles WHERE firebase_uid=?').bind(clientUid).first();
+  if (!client) return json({ error: 'حساب العميل غير موجود.' }, 404);
+  const id = crypto.randomUUID(), now = Date.now();
+  const status = CLIENT_PROJECT_STATUSES.includes(payload.status) ? payload.status : 'new';
+  const progress = Math.max(0, Math.min(100, Number(payload.progress || 0)));
+  const deadline = /^\d{4}-\d{2}-\d{2}$/.test(String(payload.deadline || '')) ? payload.deadline : '';
+  await env.DB.prepare(`INSERT INTO client_projects
+    (id,client_uid,title,service,summary,status,progress,current_stage,deadline,created_by,created_at,updated_at)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id, clientUid, title, cleanString(payload.service, 160), cleanString(payload.summary, 1800), status, progress, cleanString(payload.currentStage, 160), deadline, user.username, now, now).run();
+  return json({ id }, 201);
+}
+
+async function updateClientProjectByEmployee(request, env, user, id) {
+  if (!isUuid(id)) return json({ error: 'معرّف المشروع غير صحيح.' }, 400);
+  const current = await env.DB.prepare('SELECT * FROM client_projects WHERE id=?').bind(id).first();
+  if (!current) return json({ error: 'المشروع غير موجود.' }, 404);
+  const payload = await readJson(request, 7000);
+  const status = CLIENT_PROJECT_STATUSES.includes(payload.status) ? payload.status : current.status;
+  const progress = Number.isFinite(Number(payload.progress)) ? Math.max(0, Math.min(100, Number(payload.progress))) : current.progress;
+  const deadline = payload.deadline === undefined ? current.deadline : (/^\d{4}-\d{2}-\d{2}$/.test(String(payload.deadline || '')) ? payload.deadline : '');
+  await env.DB.prepare(`UPDATE client_projects SET title=?,service=?,summary=?,status=?,progress=?,current_stage=?,deadline=?,updated_at=? WHERE id=?`)
+    .bind(cleanString(payload.title ?? current.title, 160), cleanString(payload.service ?? current.service, 160), cleanString(payload.summary ?? current.summary, 1800), status, progress, cleanString(payload.currentStage ?? current.current_stage, 160), deadline, Date.now(), id).run();
+  return json({ ok: true });
+}
+
+async function updateClientRequestByEmployee(request, env, user, id) {
+  if (!isUuid(id)) return json({ error: 'معرّف الطلب غير صحيح.' }, 400);
+  const current = await env.DB.prepare('SELECT id,status,employee_note FROM client_requests WHERE id=?').bind(id).first();
+  if (!current) return json({ error: 'الطلب غير موجود.' }, 404);
+  const payload = await readJson(request, 3500);
+  const status = CLIENT_REQUEST_STATUSES.includes(payload.status) ? payload.status : current.status;
+  await env.DB.prepare('UPDATE client_requests SET status=?,employee_note=?,updated_by=?,updated_at=? WHERE id=?')
+    .bind(status, cleanString(payload.employeeNote ?? current.employee_note, 2000), user.username, Date.now(), id).run();
+  return json({ ok: true });
+}
+
+async function createClientDelivery(request, env, user) {
+  if (!env.UPLOADS) return json({ error: 'مخزن الملفات غير متاح.' }, 503);
+  const form = await request.formData();
+  const clientUid = cleanString(form.get('clientUid'), 128);
+  const title = cleanString(form.get('title'), 160);
+  const projectId = cleanString(form.get('projectId'), 64);
+  const file = form.get('file');
+  if (!clientUid || !title || !file || typeof file.arrayBuffer !== 'function' || !file.size) return json({ error: 'اختر العميل وأرفق ملف التسليم.' }, 400);
+  if (file.size > 20 * 1024 * 1024) return json({ error: 'ملف التسليم يجب ألا يتجاوز 20MB.' }, 400);
+  const extension = cleanString(file.name, 180).split('.').pop()?.toLowerCase() || '';
+  if (!ALLOWED_FILE_EXTENSIONS.has(extension) || !await fileSignatureAllowed(file, extension)) return json({ error: 'نوع ملف التسليم غير مسموح أو محتواه غير صحيح.' }, 400);
+  const profile = await env.DB.prepare('SELECT firebase_uid FROM client_profiles WHERE firebase_uid=?').bind(clientUid).first();
+  if (!profile) return json({ error: 'حساب العميل غير موجود.' }, 404);
+  if (projectId) {
+    const project = await env.DB.prepare('SELECT id FROM client_projects WHERE id=? AND client_uid=?').bind(projectId, clientUid).first();
+    if (!project) return json({ error: 'المشروع لا يتبع هذا العميل.' }, 400);
+  }
+  const id = crypto.randomUUID(), now = Date.now(), safeName = cleanFileName(file.name);
+  const objectKey = `client-deliveries/${clientUid}/${id}-${safeName}`;
+  await env.UPLOADS.put(objectKey, await file.arrayBuffer(), { httpMetadata: { contentType: cleanString(file.type, 120) || 'application/octet-stream' }, customMetadata: { clientUid, originalName: safeName, uploadedBy: user.username } });
+  await env.DB.prepare(`INSERT INTO client_deliveries
+    (id,client_uid,project_id,title,message,object_key,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at)
+    VALUES (?,?,?,?,?,?,?,?,?,'delivered',?,0,?,?)`).bind(id, clientUid, projectId, title, cleanString(form.get('message'), 2000), objectKey, safeName, cleanString(file.type, 120) || 'application/octet-stream', file.size, user.username, now, now).run();
+  return json({ id }, 201);
 }
 
 async function login(request, env) {
@@ -514,7 +835,11 @@ async function getPortalData(env, user) {
           FROM employee_activity_log
           WHERE action IN ('حذف طلب موقع','إضافة عميل','حذف عميل','حذف مهمة','حذف فرصة','توزيع تصنيف فرص','تحويل فرصة إلى عميل')
           ORDER BY created_at DESC LIMIT 100`)
-      : env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log WHERE 0')
+      : env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log WHERE 0'),
+    env.DB.prepare('SELECT firebase_uid,email,display_name,organization,phone,photo_url,created_at,updated_at FROM client_profiles ORDER BY updated_at DESC LIMIT 500'),
+    env.DB.prepare('SELECT id,client_uid,title,service,summary,status,progress,current_stage,deadline,created_by,created_at,updated_at FROM client_projects ORDER BY updated_at DESC LIMIT 1000'),
+    env.DB.prepare('SELECT id,client_uid,project_id,title,type,details,priority,status,employee_note,updated_by,created_at,updated_at FROM client_requests ORDER BY updated_at DESC LIMIT 1000'),
+    env.DB.prepare('SELECT id,client_uid,project_id,title,message,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at FROM client_deliveries ORDER BY created_at DESC LIMIT 1000')
   ]);
   const messages = [...(results[0].results || [])].reverse();
   const clients = results[1].results || [];
@@ -523,6 +848,10 @@ async function getPortalData(env, user) {
   const leads = results[5].results || [];
   const onlineUsers = results[6].results || [];
   const activityLog = results[7].results || [];
+  const clientProfiles = results[8].results || [];
+  const clientProjects = results[9].results || [];
+  const clientRequests = results[10].results || [];
+  const clientDeliveries = results[11].results || [];
   const authConfig = readAuthConfig(env);
   const teamMembers = Object.entries(authConfig.users || {}).map(([username, account]) => ({
     username: String(username).toUpperCase(),
@@ -545,6 +874,10 @@ async function getPortalData(env, user) {
     onlineUsers,
     teamMembers,
     activityLog,
+    clientProfiles,
+    clientProjects,
+    clientRequests,
+    clientDeliveries,
     stats: {
       clients: clients.length,
       opportunities: clients.filter((item) => ['lead', 'discovery', 'proposal'].includes(item.status)).length,
@@ -564,6 +897,8 @@ async function createPublicApplication(request, env, url, ctx) {
   if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
   if (!env.DB) return json({ error: 'تعذر استقبال الطلب الآن. حاول مرة أخرى لاحقاً.' }, 503);
   await ensureSchema(env);
+  const client = await readClientSession(request, env);
+  if (!client) return json({ error: 'سجّل دخولك كعميل أولًا.' }, 401);
 
   const contentLength = Number(request.headers.get('Content-Length') || 0);
   if (contentLength > 85 * 1024 * 1024) return json({ error: 'حجم الطلب والملفات أكبر من الحد المسموح.' }, 413);
@@ -642,10 +977,10 @@ async function createPublicApplication(request, env, url, ctx) {
   await env.DB.batch([
     env.DB.prepare(
       `INSERT INTO client_applications
-       (id, reference, full_name, organization, email, phone, services, budget_range, project_summary,
+       (id, client_uid, reference, full_name, organization, email, phone, services, budget_range, project_summary,
         payload_json, status, attachment_count, email_status, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?, ?, ?)`
-    ).bind(id, reference, payload.full_name, payload.organization, payload.email, payload.phone, serviceLabel,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?, ?, ?)`
+    ).bind(id, client.uid, reference, payload.full_name, payload.organization, payload.email, payload.phone, serviceLabel,
       payload.budget_range, payload.project_summary, JSON.stringify(payload), files.length, emailStatus, now, now),
     env.DB.prepare(
       `INSERT INTO employee_clients
@@ -1133,6 +1468,12 @@ function employeeHtmlResponse(html) {
   return new Response(html, { status: 200, headers });
 }
 
+function privateHtmlResponse(html) {
+  const headers = securityHeaders(new Headers({ 'Content-Type': 'text/html; charset=utf-8' }), { html: true, firebase: true });
+  headers.set('Cache-Control', 'no-store');
+  return new Response(html, { status: 200, headers });
+}
+
 function json(data, status = 200, extraHeaders = {}) {
   const headers = new Headers({
     'Content-Type': 'application/json; charset=utf-8',
@@ -1205,7 +1546,7 @@ function securityHeaders(input = new Headers(), options = {}) {
   headers.set('X-Frame-Options', 'DENY');
   headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()');
-  headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+  headers.set('Cross-Origin-Opener-Policy', options.firebase ? 'same-origin-allow-popups' : 'same-origin');
   headers.set('Cross-Origin-Resource-Policy', options.html ? 'same-origin' : 'same-site');
   if (options.html) {
     const inlineScriptHashes = [
@@ -1223,7 +1564,10 @@ function securityHeaders(input = new Headers(), options = {}) {
       "'sha256-ZZVWUGtMU4LhKuJ935X/H1HFrjvUo6DVGylLXJbTAx4='",
       "'sha256-grU1SQdF1J2/VRMQajNGeYpCR9gQaL1C1z+CmbplNPM='"
     ].join(' ');
-    headers.set('Content-Security-Policy', `default-src 'self'; script-src 'self' ${inlineScriptHashes}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; media-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests`);
+    const firebaseScripts = options.firebase ? ' https://www.gstatic.com' : '';
+    const firebaseConnect = options.firebase ? ' https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com' : '';
+    const firebaseFrames = options.firebase ? 'frame-src https://*.firebaseapp.com https://accounts.google.com;' : '';
+    headers.set('Content-Security-Policy', `default-src 'self'; script-src 'self'${firebaseScripts} ${inlineScriptHashes}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'${firebaseConnect}; media-src 'self'; ${firebaseFrames} base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests`);
   }
   return headers;
 }
@@ -1280,6 +1624,35 @@ async function createSession(user, env) {
   })));
   const signature = await hmac(payload, env.EMPLOYEE_SESSION_SECRET, 'sign');
   return `${payload}.${bytesToBase64Url(signature)}`;
+}
+
+async function createClientSession(identity, env) {
+  const now = Math.floor(Date.now() / 1000);
+  const payload = bytesToBase64Url(encoder.encode(JSON.stringify({
+    sub: identity.uid,
+    email: identity.email,
+    aud: 'newmedia-client',
+    iat: now,
+    exp: now + CLIENT_SESSION_MAX_AGE,
+    nonce: crypto.randomUUID()
+  })));
+  const signature = await hmac(payload, env.EMPLOYEE_SESSION_SECRET, 'sign');
+  return `${payload}.${bytesToBase64Url(signature)}`;
+}
+
+async function readClientSession(request, env) {
+  if (!env.EMPLOYEE_SESSION_SECRET) return null;
+  const token = readCookie(request.headers.get('Cookie') || '', CLIENT_SESSION_COOKIE);
+  if (!token) return null;
+  const [payload, signature, extra] = token.split('.');
+  if (!payload || !signature || extra) return null;
+  try {
+    if (!await hmac(payload, env.EMPLOYEE_SESSION_SECRET, 'verify', base64UrlToBytes(signature))) return null;
+    const value = JSON.parse(decoder.decode(base64UrlToBytes(payload)));
+    const now = Math.floor(Date.now() / 1000);
+    if (!value.sub || !value.email || value.aud !== 'newmedia-client' || !value.exp || value.exp <= now) return null;
+    return { uid: cleanString(value.sub, 128), email: cleanString(value.email, 160) };
+  } catch { return null; }
 }
 
 async function readSession(request, env) {
@@ -1353,4 +1726,12 @@ function sessionCookie(token) {
 
 function clearSessionCookie() {
   return `${SESSION_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Strict`;
+}
+
+function clientSessionCookie(token) {
+  return `${CLIENT_SESSION_COOKIE}=${token}; Path=/; Max-Age=${CLIENT_SESSION_MAX_AGE}; HttpOnly; Secure; SameSite=Lax`;
+}
+
+function clearClientSessionCookie() {
+  return `${CLIENT_SESSION_COOKIE}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`;
 }

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<script src="/site-preferences.js"></script>
+<title>دخول العملاء. New Media</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="icon" type="image/png" href="/newmedia-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/client-portal.css?v=1">
+</head>
+<body class="client-auth-page">
+  <main class="client-auth-shell">
+    <section class="client-auth-story">
+      <a class="client-brand" href="/"><img src="/newmedia-logo.png" alt=""><span>New Media</span></a>
+      <div class="client-auth-copy">
+        <span>NEW MEDIA / CLIENT SPACE</span>
+        <h1>كل مشروعك.<br><b>في مكان واحد.</b></h1>
+        <p>قدّم طلبك، تابع العمل، واستلم الملفات النهائية من فريقك مباشرة.</p>
+      </div>
+      <div class="client-auth-orbit" aria-hidden="true"><i></i><i></i><i></i><strong>NM</strong></div>
+      <small>هذه البوابة للعملاء فقط. دخول الموظفين لم يتغير.</small>
+    </section>
+
+    <section class="client-auth-card" aria-labelledby="clientLoginTitle">
+      <a class="client-auth-back" href="/">العودة للموقع ←</a>
+      <header><span>مرحبًا بك</span><h2 id="clientLoginTitle">ادخل إلى مساحة مشروعك.</h2><p>استخدم Google أو بريدك الإلكتروني. إذا كانت هذه أول مرة، سننشئ حساب العميل تلقائيًا.</p></header>
+      <button class="google-auth-button" id="googleLogin" type="button"><b>G</b><span>المتابعة باستخدام Google</span></button>
+      <div class="auth-divider"><span>أو بالبريد الإلكتروني</span></div>
+      <form id="clientAuthForm">
+        <label><span>البريد الإلكتروني</span><input id="clientEmail" type="email" autocomplete="email" required placeholder="name@company.com" dir="ltr"></label>
+        <label><span>كلمة المرور</span><input id="clientPassword" type="password" autocomplete="current-password" minlength="8" required placeholder="8 أحرف على الأقل" dir="ltr"></label>
+        <button class="client-primary-button" id="emailLogin" type="submit">تسجيل الدخول</button>
+      </form>
+      <div class="auth-secondary-actions">
+        <button id="createAccount" type="button">إنشاء حساب جديد</button>
+        <button id="resetPassword" type="button">نسيت كلمة المرور؟</button>
+      </div>
+      <p class="client-form-message" id="authMessage" role="alert"></p>
+      <footer><i></i><span>اتصال مشفّر وحساب محمي بواسطة Firebase</span></footer>
+    </section>
+  </main>
+  <script type="module" src="/client-login.js?v=1"></script>
+</body>
+</html>

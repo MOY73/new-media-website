@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<script src="/site-preferences.js"></script>
+<title>مساحة العميل. New Media</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<link rel="icon" type="image/png" href="/newmedia-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@500;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/client-portal.css?v=1">
+</head>
+<body class="client-portal-page">
+  <div class="client-app-shell">
+    <aside class="client-sidebar" id="clientSidebar">
+      <div class="client-sidebar-head"><a class="client-brand" href="/"><img src="/newmedia-logo.png" alt=""><span>New Media</span></a><button id="closeClientNav" type="button" aria-label="إغلاق القائمة">×</button></div>
+      <div class="client-identity"><div id="clientAvatar">NM</div><strong id="clientName">عميل New Media</strong><span id="clientEmail"></span><small>حساب عميل</small></div>
+      <nav aria-label="أقسام مساحة العميل">
+        <button class="is-active" data-client-view="overview"><i>01</i><span>نظرة عامة</span></button>
+        <button data-client-view="projects"><i>02</i><span>مشاريعي</span><em id="projectsCount">0</em></button>
+        <button data-client-view="requests"><i>03</i><span>طلباتي</span><em id="requestsCount">0</em></button>
+        <button data-client-view="deliveries"><i>04</i><span>التسليمات</span><em id="deliveriesCount">0</em></button>
+        <button data-client-view="explore"><i>05</i><span>مستواي والباقات</span></button>
+        <button data-client-view="profile"><i>06</i><span>الملف الشخصي</span></button>
+      </nav>
+      <div class="client-sidebar-foot"><a href="/">تصفح الموقع</a><button id="clientLogout" type="button">تسجيل الخروج</button></div>
+    </aside>
+
+    <section class="client-workspace">
+      <header class="client-topbar"><button id="openClientNav" type="button" aria-label="فتح القائمة">☰</button><div><span>CLIENT SPACE</span><h1 id="clientViewTitle">مساحتك مع New Media</h1></div><button class="client-new-request" data-open-request type="button">+ طلب جديد</button></header>
+      <main class="client-main" id="clientMain">
+        <section class="client-view is-active" data-client-panel="overview">
+          <div class="client-welcome-card"><div><span id="welcomeKicker">أهلًا بك</span><h2>الفكرة بدأت.<br><b>والآن نبنيها معًا.</b></h2><p>تابع مشاريعك، ارفع طلبًا للفريق، واعتمد التسليمات من مكان واحد.</p><button class="client-primary-button" data-open-request type="button">ابدأ طلبًا جديدًا</button></div><div class="client-progress-ring" id="progressRing"><strong id="progressPercent">0%</strong><span>اكتمال الرحلة</span></div></div>
+          <div class="client-metrics" id="clientMetrics"></div>
+          <div class="client-overview-grid"><section class="client-panel client-panel--wide"><div class="client-panel-head"><div><span>PROJECTS</span><h3>آخر حركة في مشاريعك</h3></div><button data-jump-client="projects">عرض الكل</button></div><div id="overviewProjects"></div></section><section class="client-panel"><div class="client-panel-head"><div><span>DELIVERIES</span><h3>جاهز للاستلام</h3></div><button data-jump-client="deliveries">فتح</button></div><div id="overviewDeliveries"></div></section></div>
+        </section>
+
+        <section class="client-view" data-client-panel="projects"><div class="client-section-title"><span>YOUR PROJECTS</span><h2>المشاريع التي نعمل عليها معك.</h2><p>كل مرحلة واضحة، وكل تسليم مربوط بمشروعه.</p></div><div class="client-card-grid" id="clientProjects"></div></section>
+        <section class="client-view" data-client-panel="requests"><div class="client-section-title"><div><span>REQUESTS</span><h2>طلباتك للفريق.</h2><p>أضف طلبًا جديدًا أو تابع حالة الطلبات السابقة.</p></div><button class="client-primary-button" data-open-request type="button">+ طلب جديد</button></div><div class="client-list" id="clientRequests"></div></section>
+        <section class="client-view" data-client-panel="deliveries"><div class="client-section-title"><span>READY FOR YOU</span><h2>ملفاتك وتسليماتك.</h2><p>حمّل الملف، راجعه، ثم أكّد الاستلام للفريق.</p></div><div class="client-list" id="clientDeliveries"></div></section>
+        <section class="client-view" data-client-panel="explore"><div class="client-section-title"><span>EXPLORE & LEVEL UP</span><h2>كلما عرفتَنا أكثر،<br>عرفنا ما يناسبك أكثر.</h2><p>استكشف أقسام الوكالة. عند إكمال الجولة تظهر لك الباقات المناسبة.</p></div><div class="client-level-layout"><section class="client-panel"><div class="client-level-number"><span>مستواك الحالي</span><strong id="clientLevel">01</strong><small id="levelName">البداية</small></div><div class="client-progress-track"><i id="levelTrack"></i></div><div class="explore-checklist" id="exploreChecklist"></div></section><section class="client-panel client-packages-panel" id="clientPackages"></section></div></section>
+        <section class="client-view" data-client-panel="profile"><div class="client-section-title"><span>PROFILE</span><h2>بيانات حسابك.</h2><p>تُستخدم هذه المعلومات لتنسيق المشاريع والتواصل معك.</p></div><form class="client-profile-form client-panel" id="clientProfileForm"><label>الاسم الكامل<input name="displayName" maxlength="100" required></label><label>اسم الشركة أو العلامة<input name="organization" maxlength="120"></label><label>رقم التواصل<input name="phone" maxlength="30" dir="ltr"></label><label>البريد الإلكتروني<input name="email" readonly dir="ltr"></label><button class="client-primary-button" type="submit">حفظ البيانات</button><p class="client-form-message" id="profileMessage"></p></form></section>
+      </main>
+    </section>
+  </div>
+
+  <div class="client-modal" id="requestModal" aria-hidden="true"><div class="client-modal-backdrop" data-close-request></div><section role="dialog" aria-modal="true" aria-labelledby="requestModalTitle"><header><div><span>NEW REQUEST</span><h2 id="requestModalTitle">ماذا تحتاج من الفريق؟</h2></div><button type="button" data-close-request aria-label="إغلاق">×</button></header><form id="clientRequestForm"><label>عنوان الطلب<input name="title" maxlength="140" required placeholder="مثال: تعديل صفحة الحملة"></label><div class="client-form-row"><label>النوع<select name="type"><option value="change">تعديل أو إضافة</option><option value="content">محتوى أو تصميم</option><option value="meeting">طلب اجتماع</option><option value="support">دعم واستفسار</option></select></label><label>الأولوية<select name="priority"><option value="normal">عادية</option><option value="high">عاجلة</option><option value="low">غير مستعجلة</option></select></label></div><label>المشروع<select name="projectId" id="requestProject"><option value="">طلب عام</option></select></label><label>تفاصيل الطلب<textarea name="details" rows="6" maxlength="2500" required placeholder="اكتب التفاصيل والنتيجة التي تتوقعها بوضوح..."></textarea></label><button class="client-primary-button" type="submit">إرسال الطلب للفريق</button><p class="client-form-message" id="requestMessage"></p></form></section></div>
+  <div class="client-toast" id="clientToast" role="status"></div>
+  <script type="module" src="/client-portal.js?v=1"></script>
+</body>
+</html>
