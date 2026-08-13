@@ -36,9 +36,9 @@
     nav.className = 'nm-site-nav';
     nav.setAttribute('aria-label', 'Main navigation');
     nav.innerHTML = `
-      <a class="nm-site-nav__brand" href="/" aria-label="New Media"><img src="/newmedia-logo.png" alt=""></a>
+      <div class="nm-site-nav__identity"><a class="nm-site-nav__brand" href="/" aria-label="New Media"><img src="/newmedia-logo.png" alt=""></a><span data-nm-language></span></div>
       <ul class="nm-site-nav__links"><li><a href="/" data-nm-label="home"></a></li><li><a href="/#services" data-nm-label="services"></a></li><li><a href="/#work" data-nm-label="work"></a></li><li><a href="#policies" data-nm-label="policies"></a></li></ul>
-      <div class="nm-site-nav__actions"><a class="nm-site-nav__cta" href="/client/login?next=%2Fcontact-application.html" data-nm-label="contact"></a><span data-nm-language></span><div class="nm-account" data-nm-account><a class="nm-account__login" data-nm-login href="/client/login" data-nm-label="login"></a></div></div>`;
+      <div class="nm-site-nav__actions"><div class="nm-account" data-nm-account><a class="nm-account__login" data-nm-login href="/client/login" data-nm-label="login"></a></div><a class="nm-site-nav__cta" href="/client/login?next=%2Fcontact-application.html" data-nm-label="contact"></a></div>`;
     nav.querySelector('[data-nm-language]').replaceWith(languageButton);
     themeButton.remove();
     if (oldNav) oldNav.replaceWith(nav);
