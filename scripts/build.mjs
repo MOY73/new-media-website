@@ -49,20 +49,22 @@ for (const file of await readdir(join(root, "assets", "work"))) {
   await cp(join(root, "assets", "work", file), join(workAssets, file));
 }
 
-const [workerSource, loginHtml, dashboardHtml, clientLoginHtml, clientPortalHtml, contactApplicationHtml, businessLeadSeed] = await Promise.all([
+const internalAssets = join(assets, "assets", "internal");
+await mkdir(internalAssets, { recursive: true });
+await cp(join(root, "data", "makkah-business-leads-batch-1.json"), join(internalAssets, "makkah-business-leads-batch-1.json"));
+
+const [workerSource, loginHtml, dashboardHtml, clientLoginHtml, clientPortalHtml, contactApplicationHtml] = await Promise.all([
   readFile(join(root, "worker", "index.js"), "utf8"),
   readFile(join(root, "employee-login.html"), "utf8"),
   readFile(join(root, "employee-dashboard.html"), "utf8"),
   readFile(join(root, "client-login.html"), "utf8"),
   readFile(join(root, "client-portal.html"), "utf8"),
   readFile(join(root, "contact-application.html"), "utf8"),
-  readFile(join(root, "data", "makkah-business-leads-batch-1.json"), "utf8"),
 ]);
 const compiledWorker = workerSource
   .replace("const EMPLOYEE_LOGIN_HTML = '';", `const EMPLOYEE_LOGIN_HTML = ${JSON.stringify(loginHtml)};`)
   .replace("const EMPLOYEE_DASHBOARD_HTML = '';", `const EMPLOYEE_DASHBOARD_HTML = ${JSON.stringify(dashboardHtml)};`)
   .replace("const CLIENT_LOGIN_HTML = '';", `const CLIENT_LOGIN_HTML = ${JSON.stringify(clientLoginHtml)};`)
   .replace("const CLIENT_PORTAL_HTML = '';", `const CLIENT_PORTAL_HTML = ${JSON.stringify(clientPortalHtml)};`)
-  .replace("const CONTACT_APPLICATION_HTML = '';", `const CONTACT_APPLICATION_HTML = ${JSON.stringify(contactApplicationHtml)};`)
-  .replace("const BUSINESS_LEAD_SEED = [];", `const BUSINESS_LEAD_SEED = ${businessLeadSeed};`);
+  .replace("const CONTACT_APPLICATION_HTML = '';", `const CONTACT_APPLICATION_HTML = ${JSON.stringify(contactApplicationHtml)};`);
 await writeFile(join(server, "index.js"), compiledWorker, "utf8");

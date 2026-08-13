@@ -66,7 +66,7 @@
       const pause = /[،,.]/.test(character) ? 125 : 44 + Math.random() * 34;
       quoteTimer = window.setTimeout(write, pause);
     }
-    const openingDelay = firstQuoteRender ? 2050 : 320;
+    const openingDelay = firstQuoteRender ? 1180 : 260;
     firstQuoteRender = false;
     quoteTimer = window.setTimeout(write, openingDelay);
   }

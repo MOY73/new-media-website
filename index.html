@@ -22,13 +22,14 @@
   <link rel="canonical" href="https://newmedia.website/">
   <title>New Media</title>
   <link rel="icon" href="/newmedia-logo.png" type="image/png">
+  <link rel="preload" href="/assets/homepage/tv-head-hero.webp" as="image" type="image/webp" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@300;400;500;600;700;800;900&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&display=swap" rel="stylesheet">
   <!-- Shared loader: src="/site-preferences.js" (versioned below to invalidate stale homepage chrome). -->
   <script src="/site-preferences.js?v=35"></script>
   <link rel="stylesheet" href="/site-fixes.css?v=42">
-  <link rel="stylesheet" href="/homepage.css?v=41">
+  <link rel="stylesheet" href="/homepage.css?v=42">
 </head>
 <body class="nm-home">
   <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -53,11 +54,11 @@
 
         <div class="nm-story__visual" aria-hidden="true">
           <img class="nm-story__frame" data-frame="0" src="/assets/homepage/tv-head-hero.webp" alt="" fetchpriority="high">
-          <img class="nm-story__frame" data-frame="1" src="/assets/homepage/tv-head-stage-02.webp" alt="">
-          <img class="nm-story__frame" data-frame="2" src="/assets/homepage/tv-head-stage-03.webp" alt="">
-          <img class="nm-story__frame" data-frame="3" src="/assets/homepage/tv-head-stage-04.webp" alt="">
-          <img class="nm-story__frame" data-frame="4" src="/assets/homepage/tv-head-deconstructed.webp" alt="">
-          <img class="nm-story__frame nm-story__frame--hands" data-frame="hands" src="/assets/homepage/tv-head-open-hands.webp" alt="">
+          <img class="nm-story__frame" data-frame="1" src="/assets/homepage/tv-head-stage-02.webp" alt="" fetchpriority="low" decoding="async">
+          <img class="nm-story__frame" data-frame="2" src="/assets/homepage/tv-head-stage-03.webp" alt="" fetchpriority="low" decoding="async">
+          <img class="nm-story__frame" data-frame="3" src="/assets/homepage/tv-head-stage-04.webp" alt="" fetchpriority="low" decoding="async">
+          <img class="nm-story__frame" data-frame="4" src="/assets/homepage/tv-head-deconstructed.webp" alt="" fetchpriority="low" decoding="async">
+          <img class="nm-story__frame nm-story__frame--hands" data-frame="hands" src="/assets/homepage/tv-head-open-hands.webp" alt="" fetchpriority="low" decoding="async">
           <div class="nm-story__scan"></div>
           <div class="nm-story__vignette"></div>
         </div>
@@ -381,6 +382,6 @@
       }
     };
   </script>
-  <script src="/homepage.js?v=38" defer></script>
+  <script src="/homepage.js?v=39" defer></script>
 </body>
 </html>

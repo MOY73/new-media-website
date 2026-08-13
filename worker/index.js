@@ -358,6 +358,10 @@ export default {
       return new Response('Not found', { status: 404 });
     }
 
+    if (url.pathname.startsWith('/assets/internal/')) {
+      return new Response('Not found', { status: 404 });
+    }
+
     if (url.pathname.startsWith('/team/library/')) {
       const user = await readSession(request, env);
       if (!user) return Response.redirect(new URL('/team/login', url), 302);
@@ -567,6 +571,11 @@ async function ensureSchema(env) {
   await env.DB.prepare(
     'DELETE FROM employee_activity_log WHERE id NOT IN (SELECT id FROM employee_activity_log ORDER BY created_at DESC LIMIT 100)'
   ).run();
+  const expiredSupportBefore = Date.now() - (3 * 24 * 60 * 60 * 1000);
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM client_support_messages WHERE ticket_id IN (SELECT id FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?)").bind(expiredSupportBefore),
+    env.DB.prepare("DELETE FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?").bind(expiredSupportBefore)
+  ]);
   for (const groupId of CHAT_GROUPS) await pruneChatGroup(env, groupId);
   const leadColumns = await env.DB.prepare('PRAGMA table_info(business_leads)').all();
   if (!(leadColumns.results || []).some((column) => column.name === 'city')) {
@@ -580,10 +589,15 @@ async function ensureSchema(env) {
      (id, author_username, author_name, body, created_at)
      VALUES (?, ?, ?, ?, ?)`
   ).bind('system-welcome', 'SYSTEM', 'NEW MEDIA', 'أهلًا بالفريق. هذه مساحة العمل الداخلية المشتركة.', Date.now()).run();
-  if (BUSINESS_LEAD_SEED.length) {
+  const leadTotal = await env.DB.prepare('SELECT COUNT(*) AS total FROM business_leads').first();
+  const seedResponse = Number(leadTotal?.total || 0) === 0
+    ? await env.ASSETS.fetch(new Request('https://assets.internal/assets/internal/makkah-business-leads-batch-1.json'))
+    : null;
+  const leadSeed = seedResponse?.ok ? await seedResponse.json() : BUSINESS_LEAD_SEED;
+  if (Array.isArray(leadSeed) && leadSeed.length) {
     const now = Date.now();
-    for (let offset = 0; offset < BUSINESS_LEAD_SEED.length; offset += 100) {
-      const chunk = BUSINESS_LEAD_SEED.slice(offset, offset + 100);
+    for (let offset = 0; offset < leadSeed.length; offset += 100) {
+      const chunk = leadSeed.slice(offset, offset + 100);
       await env.DB.batch(chunk.map((lead) => env.DB.prepare(
         `INSERT OR IGNORE INTO business_leads
          (id, city, neighborhood, name, activity, category, phone, email, address, website, maps_url,
@@ -687,8 +701,8 @@ async function getClientData(env, client) {
     env.DB.prepare('SELECT id,project_id,title,message,original_name,content_type,size_bytes,status,approved_at,created_at,updated_at FROM client_deliveries WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid),
     env.DB.prepare('SELECT visited_sections,score,updated_at FROM client_progress WHERE client_uid=?').bind(client.uid),
     env.DB.prepare('SELECT id,reference,services,budget_range,project_summary,status,created_at,updated_at FROM client_applications WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid),
-    env.DB.prepare('SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets WHERE client_uid=? ORDER BY updated_at DESC LIMIT 100').bind(client.uid),
-    env.DB.prepare(`SELECT m.id,m.ticket_id,m.sender_type,m.sender_id,m.sender_name,m.body,m.created_at FROM client_support_messages m JOIN client_support_tickets t ON t.id=m.ticket_id WHERE t.client_uid=? ORDER BY m.created_at ASC LIMIT 1000`).bind(client.uid)
+    env.DB.prepare("SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets WHERE client_uid=? AND status!='closed' ORDER BY updated_at DESC LIMIT 100").bind(client.uid),
+    env.DB.prepare(`SELECT m.id,m.ticket_id,m.sender_type,m.sender_id,m.sender_name,m.body,m.created_at FROM client_support_messages m JOIN client_support_tickets t ON t.id=m.ticket_id WHERE t.client_uid=? AND t.status!='closed' ORDER BY m.created_at ASC LIMIT 1000`).bind(client.uid)
   ]);
   const profile = results[0].results?.[0];
   if (!profile) return json({ error: 'ملف العميل غير موجود.' }, 404);
@@ -945,7 +959,7 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT id,client_uid,title,service,summary,status,progress,current_stage,deadline,created_by,created_at,updated_at FROM client_projects ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,project_id,title,type,details,priority,status,employee_note,updated_by,created_at,updated_at FROM client_requests ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,project_id,title,message,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at FROM client_deliveries ORDER BY created_at DESC LIMIT 1000'),
-    env.DB.prepare('SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets ORDER BY updated_at DESC LIMIT 500'),
+    env.DB.prepare("SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets WHERE status!='closed' OR resolved_at>? ORDER BY updated_at DESC LIMIT 500").bind(now - (3 * 24 * 60 * 60 * 1000)),
     env.DB.prepare('SELECT id,ticket_id,sender_type,sender_id,sender_name,body,created_at FROM client_support_messages ORDER BY created_at ASC LIMIT 5000')
   ]);
   const messages = [...(results[0].results || [])].reverse();
@@ -1688,8 +1702,10 @@ function secureAssetResponse(response, url, method) {
   const html = type.includes('text/html') || url.pathname.endsWith('.html') || (!url.pathname.includes('.') && !type);
   const headers = securityHeaders(response.headers, { html });
   if (html && (url.pathname === '/' || url.pathname === '/index.html') && method === 'GET') {
-    headers.set('Cache-Control', 'no-cache, max-age=0, must-revalidate');
-    headers.set('CDN-Cache-Control', 'no-cache');
+    headers.set('Cache-Control', 'public, max-age=60, stale-while-revalidate=300');
+    headers.set('CDN-Cache-Control', 'public, max-age=300');
+  } else if (!html && method === 'GET') {
+    headers.set('Cache-Control', 'public, max-age=86400, stale-while-revalidate=604800');
   }
   return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
 }

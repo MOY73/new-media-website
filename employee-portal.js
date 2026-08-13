@@ -647,7 +647,7 @@
     else { select.value=''; refreshClientDeliveryProjects(); }
   }
 
-  const SUPPORT_STATUS = { open:'مفتوحة', in_progress:'قيد المعالجة', waiting_client:'بانتظار العميل', resolved:'تم الحل', closed:'مغلقة' };
+  const SUPPORT_STATUS = { open:'مفتوحة', in_progress:'قيد المعالجة', waiting_client:'بانتظار العميل', resolved:'تم الحل', closed:'إغلاق التذكرة' };
   function renderClientSupport() {
     const tickets=state.data.clientSupportTickets||[], messages=state.data.clientSupportMessages||[];
     const open=tickets.filter((ticket)=>!['resolved','closed'].includes(ticket.status)).length;

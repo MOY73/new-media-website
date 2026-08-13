@@ -86,9 +86,9 @@ body.nm-home::selection{background:var(--nm-orange);color:#fff}
 @keyframes nm-title-float{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-7px,0)}}
 
 .nm-scene--quote{display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;padding:110px var(--nm-gutter) 80px;text-align:center}
-.nm-hero-logo-reveal{position:absolute;z-index:4;left:50%;top:50%;display:grid;place-items:center;width:clamp(92px,12vw,170px);aspect-ratio:1.55;pointer-events:none;transform:translate(-50%,-50%) scale(.28);opacity:0;animation:nm-hero-logo-opening 1.9s cubic-bezier(.16,1,.3,1) both}
+.nm-hero-logo-reveal{position:absolute;z-index:4;left:50%;top:50%;display:grid;place-items:center;width:clamp(92px,12vw,170px);aspect-ratio:1.55;pointer-events:none;transform:translate(-50%,-50%) scale(.28);opacity:0;animation:nm-hero-logo-opening 1.08s cubic-bezier(.16,1,.3,1) both}
 .nm-hero-logo-reveal img{display:block;width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 22px 54px rgba(153,25,219,.42))}
-.nm-scene--quote>.nm-scene__eyebrow,.nm-scene--quote>.nm-quote,.nm-scene--quote>.nm-quote__sub{animation:nm-hero-copy-entry .65s ease 1.9s both}
+.nm-scene--quote>.nm-scene__eyebrow,.nm-scene--quote>.nm-quote,.nm-scene--quote>.nm-quote__sub{animation:nm-hero-copy-entry .55s ease 1.08s both}
 .nm-scene--quote>.nm-scene__eyebrow{display:none}
 .nm-quote{width:min(100%,1180px);margin-inline:auto;text-align:center}
 .nm-quote span{white-space:pre-line}
