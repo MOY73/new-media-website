@@ -354,6 +354,11 @@ html[lang="ar"] :is(.page-title,.section h2,.card-title,.step-title,.work-title)
   padding-block: .035em .1em;
 }
 
+html[lang="ar"] .division-cta h2 {
+  line-height: 1.38;
+  padding-block: .035em .14em;
+}
+
 html[lang="ar"] :is(.section,.card,.service-card,.step,.work-card,.cta,.hero,.content) {
   min-width: 0;
 }
