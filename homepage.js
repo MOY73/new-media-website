@@ -356,19 +356,32 @@
 
   const cursor = document.getElementById('cursor');
   const cursorRing = document.getElementById('cursorRing');
+  const cursorRoot = document.documentElement;
+  cursorRoot.classList.remove('nm-custom-cursor-active');
   if (cursor && cursorRing && window.matchMedia('(hover:hover) and (pointer:fine)').matches) {
-    let mouseX = 0;
-    let mouseY = 0;
-    let ringX = 0;
-    let ringY = 0;
+    let mouseX = -80;
+    let mouseY = -80;
+    let ringX = -80;
+    let ringY = -80;
+    const deactivateCustomCursor = () => {
+      cursorRoot.classList.remove('nm-custom-cursor-active');
+      cursor.classList.remove('is-hovering');
+      cursorRing.classList.remove('is-hovering');
+    };
     const trackCursor = (event) => {
+      if (!Number.isFinite(event.clientX) || !Number.isFinite(event.clientY)) return;
       mouseX = event.clientX;
       mouseY = event.clientY;
       cursor.style.left = `${mouseX}px`;
       cursor.style.top = `${mouseY}px`;
+      cursorRoot.classList.add('nm-custom-cursor-active');
     };
-    document.addEventListener('mousemove', trackCursor, { passive:true });
     document.addEventListener('pointermove', trackCursor, { passive:true });
+    document.addEventListener('pointerleave', deactivateCustomCursor, { passive:true });
+    window.addEventListener('blur', deactivateCustomCursor, { passive:true });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) deactivateCustomCursor();
+    });
     const animateCursorRing = () => {
       ringX += (mouseX - ringX) * 0.12;
       ringY += (mouseY - ringY) * 0.12;
