@@ -246,7 +246,32 @@ const SCHEMA_STATEMENTS = [
     score INTEGER NOT NULL DEFAULT 0,
     updated_at INTEGER NOT NULL,
     FOREIGN KEY(client_uid) REFERENCES client_profiles(firebase_uid) ON DELETE CASCADE
-  )`
+  )`,
+  `CREATE TABLE IF NOT EXISTS client_support_tickets (
+    id TEXT PRIMARY KEY,
+    client_uid TEXT NOT NULL,
+    subject TEXT NOT NULL,
+    category TEXT NOT NULL DEFAULT 'other',
+    status TEXT NOT NULL DEFAULT 'open' CHECK(status IN ('open','in_progress','waiting_client','resolved','closed')),
+    priority TEXT NOT NULL DEFAULT 'normal' CHECK(priority IN ('low','normal','high')),
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL,
+    resolved_at INTEGER NOT NULL DEFAULT 0,
+    FOREIGN KEY(client_uid) REFERENCES client_profiles(firebase_uid) ON DELETE CASCADE
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_support_tickets_client_updated ON client_support_tickets(client_uid, updated_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_support_tickets_status_updated ON client_support_tickets(status, updated_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS client_support_messages (
+    id TEXT PRIMARY KEY,
+    ticket_id TEXT NOT NULL,
+    sender_type TEXT NOT NULL CHECK(sender_type IN ('client','employee','system')),
+    sender_id TEXT NOT NULL,
+    sender_name TEXT NOT NULL,
+    body TEXT NOT NULL CHECK(length(body) BETWEEN 1 AND 2500),
+    created_at INTEGER NOT NULL,
+    FOREIGN KEY(ticket_id) REFERENCES client_support_tickets(id) ON DELETE CASCADE
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_support_messages_ticket_created ON client_support_messages(ticket_id, created_at ASC)`
 ];
 
 const KNOWLEDGE = {
@@ -437,6 +462,14 @@ async function handleEmployeeApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return createClientDelivery(request, env, user);
   }
+  if (/^\/api\/employee\/support-tickets\/[^/]+\/messages$/.test(url.pathname) && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createEmployeeSupportMessage(request, env, user, url.pathname.split('/').at(-2));
+  }
+  if (/^\/api\/employee\/support-tickets\/[^/]+$/.test(url.pathname) && request.method === 'PATCH') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateSupportTicketByEmployee(request, env, user, url.pathname.split('/').pop());
+  }
   if (url.pathname.startsWith('/api/employee/application-files/') && request.method === 'GET') {
     return getApplicationFile(env, url.pathname.split('/').pop());
   }
@@ -609,6 +642,14 @@ async function handleClientApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return createClientRequest(request, env, client);
   }
+  if (url.pathname === '/api/client/support-tickets' && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createClientSupportTicket(request, env, client);
+  }
+  if (/^\/api\/client\/support-tickets\/[^/]+\/messages$/.test(url.pathname) && request.method === 'POST') {
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createClientSupportMessage(request, env, client, url.pathname.split('/').at(-2));
+  }
   if (url.pathname === '/api/client/progress' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateClientProgress(request, env, client);
@@ -645,12 +686,43 @@ async function getClientData(env, client) {
     env.DB.prepare('SELECT id,project_id,title,type,details,priority,status,employee_note,created_at,updated_at FROM client_requests WHERE client_uid=? ORDER BY updated_at DESC LIMIT 100').bind(client.uid),
     env.DB.prepare('SELECT id,project_id,title,message,original_name,content_type,size_bytes,status,approved_at,created_at,updated_at FROM client_deliveries WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid),
     env.DB.prepare('SELECT visited_sections,score,updated_at FROM client_progress WHERE client_uid=?').bind(client.uid),
-    env.DB.prepare('SELECT id,reference,services,budget_range,project_summary,status,created_at,updated_at FROM client_applications WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid)
+    env.DB.prepare('SELECT id,reference,services,budget_range,project_summary,status,created_at,updated_at FROM client_applications WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid),
+    env.DB.prepare('SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets WHERE client_uid=? ORDER BY updated_at DESC LIMIT 100').bind(client.uid),
+    env.DB.prepare(`SELECT m.id,m.ticket_id,m.sender_type,m.sender_id,m.sender_name,m.body,m.created_at FROM client_support_messages m JOIN client_support_tickets t ON t.id=m.ticket_id WHERE t.client_uid=? ORDER BY m.created_at ASC LIMIT 1000`).bind(client.uid)
   ]);
   const profile = results[0].results?.[0];
   if (!profile) return json({ error: 'ملف العميل غير موجود.' }, 404);
   const progressRow = results[4].results?.[0] || { visited_sections: '[]', score: 0 };
-  return json({ profile, projects: results[1].results || [], requests: results[2].results || [], deliveries: results[3].results || [], applications: results[5].results || [], progress: { visited_sections: safeJsonParse(progressRow.visited_sections) || [], score: Number(progressRow.score || 0) }, serverTime: Date.now() });
+  return json({ profile, projects: results[1].results || [], requests: results[2].results || [], deliveries: results[3].results || [], applications: results[5].results || [], supportTickets: results[6].results || [], supportMessages: results[7].results || [], progress: { visited_sections: safeJsonParse(progressRow.visited_sections) || [], score: Number(progressRow.score || 0) }, serverTime: Date.now() });
+}
+
+async function createClientSupportTicket(request, env, client) {
+  const payload = await readJson(request, 6000);
+  const subject = cleanString(payload?.subject, 140), body = cleanString(payload?.message, 2500);
+  if (!subject || !body) return json({ error: 'اكتب عنوان التذكرة وتفاصيلها.' }, 400);
+  const category = ['project','delivery','billing','account','technical','other'].includes(payload.category) ? payload.category : 'other';
+  const id = crypto.randomUUID(), messageId = crypto.randomUUID(), now = Date.now();
+  await env.DB.batch([
+    env.DB.prepare('INSERT INTO client_support_tickets (id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at) VALUES (?,?,?,?,?,?,?,?,0)').bind(id, client.uid, subject, category, 'open', 'normal', now, now),
+    env.DB.prepare('INSERT INTO client_support_messages (id,ticket_id,sender_type,sender_id,sender_name,body,created_at) VALUES (?,?,?,?,?,?,?)').bind(messageId, id, 'client', client.uid, client.name || client.email, body, now)
+  ]);
+  return json({ id }, 201);
+}
+
+async function createClientSupportMessage(request, env, client, ticketId) {
+  if (!isUuid(ticketId)) return json({ error: 'معرّف التذكرة غير صحيح.' }, 400);
+  const ticket = await env.DB.prepare('SELECT id,status FROM client_support_tickets WHERE id=? AND client_uid=?').bind(ticketId, client.uid).first();
+  if (!ticket) return json({ error: 'التذكرة غير موجودة.' }, 404);
+  if (ticket.status === 'closed') return json({ error: 'هذه التذكرة مغلقة.' }, 409);
+  const payload = await readJson(request, 4000), body = cleanString(payload?.body, 2500);
+  if (!body) return json({ error: 'اكتب ردك أولًا.' }, 400);
+  const now = Date.now();
+  await env.DB.batch([
+    env.DB.prepare('INSERT INTO client_support_messages (id,ticket_id,sender_type,sender_id,sender_name,body,created_at) VALUES (?,?,?,?,?,?,?)').bind(crypto.randomUUID(), ticketId, 'client', client.uid, client.name || client.email, body, now),
+    env.DB.prepare("UPDATE client_support_tickets SET status='open',updated_at=? WHERE id=?").bind(now, ticketId),
+    env.DB.prepare('DELETE FROM client_support_messages WHERE ticket_id=? AND id NOT IN (SELECT id FROM client_support_messages WHERE ticket_id=? ORDER BY created_at DESC LIMIT 100)').bind(ticketId, ticketId)
+  ]);
+  return json({ ok: true });
 }
 
 async function updateClientProfile(request, env, client) {
@@ -773,6 +845,32 @@ async function createClientDelivery(request, env, user) {
   return json({ id }, 201);
 }
 
+async function createEmployeeSupportMessage(request, env, user, ticketId) {
+  if (!isUuid(ticketId)) return json({ error: 'معرّف التذكرة غير صحيح.' }, 400);
+  const ticket = await env.DB.prepare('SELECT id,status FROM client_support_tickets WHERE id=?').bind(ticketId).first();
+  if (!ticket) return json({ error: 'التذكرة غير موجودة.' }, 404);
+  const payload = await readJson(request, 4000), body = cleanString(payload?.body, 2500);
+  if (!body) return json({ error: 'اكتب الرد أولًا.' }, 400);
+  const now = Date.now();
+  await env.DB.batch([
+    env.DB.prepare('INSERT INTO client_support_messages (id,ticket_id,sender_type,sender_id,sender_name,body,created_at) VALUES (?,?,?,?,?,?,?)').bind(crypto.randomUUID(), ticketId, 'employee', user.username, user.name, body, now),
+    env.DB.prepare("UPDATE client_support_tickets SET status='waiting_client',updated_at=? WHERE id=?").bind(now, ticketId),
+    env.DB.prepare('DELETE FROM client_support_messages WHERE ticket_id=? AND id NOT IN (SELECT id FROM client_support_messages WHERE ticket_id=? ORDER BY created_at DESC LIMIT 100)').bind(ticketId, ticketId)
+  ]);
+  return json({ ok: true });
+}
+
+async function updateSupportTicketByEmployee(request, env, user, ticketId) {
+  if (!isUuid(ticketId)) return json({ error: 'معرّف التذكرة غير صحيح.' }, 400);
+  const payload = await readJson(request, 1000);
+  const status = ['open','in_progress','waiting_client','resolved','closed'].includes(payload?.status) ? payload.status : '';
+  if (!status) return json({ error: 'حالة التذكرة غير صحيحة.' }, 400);
+  const now = Date.now(), resolvedAt = ['resolved','closed'].includes(status) ? now : 0;
+  const result = await env.DB.prepare('UPDATE client_support_tickets SET status=?,resolved_at=?,updated_at=? WHERE id=?').bind(status, resolvedAt, now, ticketId).run();
+  if (!result.meta?.changes) return json({ error: 'التذكرة غير موجودة.' }, 404);
+  return json({ ok: true });
+}
+
 async function login(request, env) {
   if (!env.EMPLOYEE_AUTH_CONFIG || !env.EMPLOYEE_SESSION_SECRET || !env.EMPLOYEE_PASSWORD_PEPPER) {
     return json({ error: 'تهيئة الأمان غير مكتملة حاليًا.' }, 503);
@@ -846,7 +944,9 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT firebase_uid,email,display_name,organization,phone,photo_url,created_at,updated_at FROM client_profiles ORDER BY updated_at DESC LIMIT 500'),
     env.DB.prepare('SELECT id,client_uid,title,service,summary,status,progress,current_stage,deadline,created_by,created_at,updated_at FROM client_projects ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,project_id,title,type,details,priority,status,employee_note,updated_by,created_at,updated_at FROM client_requests ORDER BY updated_at DESC LIMIT 1000'),
-    env.DB.prepare('SELECT id,client_uid,project_id,title,message,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at FROM client_deliveries ORDER BY created_at DESC LIMIT 1000')
+    env.DB.prepare('SELECT id,client_uid,project_id,title,message,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at FROM client_deliveries ORDER BY created_at DESC LIMIT 1000'),
+    env.DB.prepare('SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets ORDER BY updated_at DESC LIMIT 500'),
+    env.DB.prepare('SELECT id,ticket_id,sender_type,sender_id,sender_name,body,created_at FROM client_support_messages ORDER BY created_at ASC LIMIT 5000')
   ]);
   const messages = [...(results[0].results || [])].reverse();
   const clients = results[1].results || [];
@@ -859,6 +959,8 @@ async function getPortalData(env, user) {
   const clientProjects = results[9].results || [];
   const clientRequests = results[10].results || [];
   const clientDeliveries = results[11].results || [];
+  const clientSupportTickets = results[12].results || [];
+  const clientSupportMessages = results[13].results || [];
   const authConfig = readAuthConfig(env);
   const teamMembers = Object.entries(authConfig.users || {}).map(([username, account]) => ({
     username: String(username).toUpperCase(),
@@ -885,6 +987,8 @@ async function getPortalData(env, user) {
     clientProjects,
     clientRequests,
     clientDeliveries,
+    clientSupportTickets,
+    clientSupportMessages,
     stats: {
       clients: clients.length,
       opportunities: clients.filter((item) => ['lead', 'discovery', 'proposal'].includes(item.status)).length,

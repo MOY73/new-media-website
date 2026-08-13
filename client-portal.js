@@ -1,9 +1,11 @@
 import { getFirebaseServices } from './firebase-client.js';
+import { SUPPORT_TOPICS, findSupportAnswers } from './support-faq.js';
 
 const qs = (selector, root = document) => root.querySelector(selector);
 const qsa = (selector, root = document) => [...root.querySelectorAll(selector)];
 const state = { data: null, view: 'overview', auth: null, authSdk: null };
-const views = { overview: 'مساحتك مع New Media', projects: 'مشاريعي', requests: 'طلباتي', deliveries: 'التسليمات', explore: 'مستواي والباقات', profile: 'الملف الشخصي' };
+const views = { overview: 'مساحتك مع New Media', projects: 'مشاريعي', requests: 'طلباتي', deliveries: 'التسليمات', explore: 'مستواي والباقات', support: 'الدعم والتذاكر', profile: 'الملف الشخصي' };
+let supportTopic = 'all';
 const statusText = { new: 'وصل للفريق', reviewing: 'قيد المراجعة', scheduled: 'مجدول', in_progress: 'قيد التنفيذ', waiting_client: 'بانتظارك', completed: 'مكتمل', approved: 'تم الاستلام', cancelled: 'ملغي', pending: 'قيد المراجعة', delivered: 'جاهز للاستلام' };
 const packages = [
   ['باقة الحضور', 'هوية واضحة وموقع احترافي يقدّمك كما تستحق.', 'تبدأ من 3,499 ر.س'],
@@ -106,7 +108,36 @@ function renderMetrics() {
   qs('#clientMetrics').innerHTML = [['مشاريع نشطة', projects.filter((p) => !['completed', 'cancelled'].includes(p.status)).length], ['طلبات مفتوحة', requests.filter((r) => !['completed', 'cancelled'].includes(r.status)).length + applications.filter((r) => r.status !== 'closed').length], ['جاهز للاستلام', deliveries.filter((d) => d.status !== 'approved').length], ['تم استلامه', deliveries.filter((d) => d.status === 'approved').length]].map(([label, value]) => `<div class="client-metric"><span>${label}</span><strong>${value}</strong></div>`).join('');
 }
 
-function renderAll() { renderIdentity(); renderMetrics(); renderProjects(); renderRequests(); renderDeliveries(); renderExplore(); }
+function supportStatus(status) { return ({ open: 'مفتوحة', in_progress: 'قيد المعالجة', waiting_client: 'بانتظار ردك', resolved: 'تم الحل', closed: 'مغلقة' })[status] || status; }
+function renderSupportFaq() {
+  const query = qs('#supportFaqSearch')?.value || '';
+  qs('#supportTopics').innerHTML = SUPPORT_TOPICS.map(([id, label]) => `<button type="button" class="${supportTopic === id ? 'is-active' : ''}" data-support-topic="${id}">${label}</button>`).join('');
+  const matches = findSupportAnswers(query, supportTopic);
+  qs('#supportFaqList').innerHTML = matches.length ? matches.map((item) => `<details class="support-faq-item"><summary>${escapeHtml(item.title)}<i>+</i></summary><p>${escapeHtml(item.answer)}</p></details>`).join('') : empty('لم نجد جوابًا مطابقًا. افتح تذكرة وسيجيبك الفريق.');
+  qsa('[data-support-topic]').forEach((button) => button.addEventListener('click', () => { supportTopic = button.dataset.supportTopic; renderSupportFaq(); }));
+}
+
+function renderSupport() {
+  renderSupportFaq();
+  const tickets = state.data.supportTickets || [], messages = state.data.supportMessages || [];
+  const open = tickets.filter((ticket) => !['resolved', 'closed'].includes(ticket.status));
+  qs('#supportCount').textContent = open.length;
+  qs('#clientSupportTickets').innerHTML = tickets.length ? tickets.map((ticket) => {
+    const thread = messages.filter((message) => message.ticket_id === ticket.id);
+    const canReply = ticket.status !== 'closed';
+    return `<article class="support-ticket"><header><div><span>${escapeHtml(ticket.category)}</span><h3>${escapeHtml(ticket.subject)}</h3></div><em data-status="${ticket.status}">${supportStatus(ticket.status)}</em></header><div class="support-thread">${thread.map((message) => `<div class="support-message is-${message.sender_type}"><strong>${message.sender_type === 'client' ? 'أنت' : escapeHtml(message.sender_name || 'فريق New Media')}</strong><p>${escapeHtml(message.body)}</p><small>${date(message.created_at)}</small></div>`).join('')}</div>${canReply ? `<form class="support-reply-form" data-ticket-reply="${ticket.id}"><textarea name="body" maxlength="2500" required placeholder="اكتب ردك للفريق..."></textarea><button type="submit">إرسال الرد</button></form>` : ''}</article>`;
+  }).join('') : empty('لا توجد تذاكر حتى الآن. استخدم الإجابات السريعة أو افتح تذكرة جديدة.');
+  qsa('[data-ticket-reply]').forEach((form) => form.addEventListener('submit', submitSupportReply));
+}
+
+async function submitSupportReply(event) {
+  event.preventDefault(); const form = event.currentTarget, button = qs('button', form), body = form.elements.body.value.trim();
+  if (!body) return; button.disabled = true;
+  try { await api(`/api/client/support-tickets/${form.dataset.ticketReply}/messages`, { method: 'POST', body: JSON.stringify({ body }) }); await refresh(); toast('وصل ردك للفريق.'); }
+  catch (error) { toast(error.message, true); } finally { button.disabled = false; }
+}
+
+function renderAll() { renderIdentity(); renderMetrics(); renderProjects(); renderRequests(); renderDeliveries(); renderExplore(); renderSupport(); }
 
 async function refresh() {
   try { state.data = await api('/api/client/data'); renderAll(); }
@@ -120,11 +151,16 @@ async function approveDelivery(id) {
 
 function openRequest() { qs('#requestModal').classList.add('is-visible'); qs('#requestModal').setAttribute('aria-hidden', 'false'); }
 function closeRequest() { qs('#requestModal').classList.remove('is-visible'); qs('#requestModal').setAttribute('aria-hidden', 'true'); }
+function openSupport() { qs('#supportModal').classList.add('is-visible'); qs('#supportModal').setAttribute('aria-hidden', 'false'); }
+function closeSupport() { qs('#supportModal').classList.remove('is-visible'); qs('#supportModal').setAttribute('aria-hidden', 'true'); }
 
 qsa('[data-client-view]').forEach((button) => button.addEventListener('click', () => switchView(button.dataset.clientView)));
 qsa('[data-jump-client]').forEach((button) => button.addEventListener('click', () => switchView(button.dataset.jumpClient)));
 qsa('[data-open-request]').forEach((button) => button.addEventListener('click', openRequest));
 qsa('[data-close-request]').forEach((button) => button.addEventListener('click', closeRequest));
+qs('#openSupportTicket')?.addEventListener('click', openSupport);
+qsa('[data-close-support]').forEach((button) => button.addEventListener('click', closeSupport));
+qs('#supportFaqSearch')?.addEventListener('input', renderSupportFaq);
 qs('#openClientNav').addEventListener('click', () => qs('#clientSidebar').classList.add('is-open'));
 qs('#closeClientNav').addEventListener('click', () => qs('#clientSidebar').classList.remove('is-open'));
 
@@ -140,6 +176,13 @@ qs('#clientProfileForm').addEventListener('submit', async (event) => {
   event.preventDefault(); const form = event.currentTarget, message = qs('#profileMessage');
   try { await api('/api/client/profile', { method: 'PATCH', body: JSON.stringify(Object.fromEntries(new FormData(form))) }); message.textContent = 'تم حفظ بياناتك.'; await refresh(); }
   catch (error) { message.textContent = error.message; message.classList.add('is-error'); }
+});
+
+qs('#supportTicketForm')?.addEventListener('submit', async (event) => {
+  event.preventDefault(); const form = event.currentTarget, message = qs('#supportMessage'), button = qs('button[type="submit"]', form);
+  message.textContent = 'جاري إرسال التذكرة...'; message.classList.remove('is-error'); button.disabled = true;
+  try { await api('/api/client/support-tickets', { method: 'POST', body: JSON.stringify(Object.fromEntries(new FormData(form))) }); form.reset(); closeSupport(); await refresh(); switchView('support'); toast('فُتحت تذكرتك بنجاح.'); }
+  catch (error) { message.textContent = error.message; message.classList.add('is-error'); } finally { button.disabled = false; }
 });
 
 qs('#clientLogout').addEventListener('click', async () => { try { await api('/api/client/logout', { method: 'POST', body: '{}' }); await state.authSdk.signOut(state.auth); } finally { location.replace('/client/login'); } });

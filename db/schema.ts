@@ -88,3 +88,26 @@ export interface BusinessLead {
   created_at: number;
   updated_at: number;
 }
+
+export type SupportTicketStatus = 'open' | 'in_progress' | 'waiting_client' | 'resolved' | 'closed';
+export interface ClientSupportTicket {
+  id: string;
+  client_uid: string;
+  subject: string;
+  category: string;
+  status: SupportTicketStatus;
+  priority: 'low' | 'normal' | 'high';
+  created_at: number;
+  updated_at: number;
+  resolved_at: number;
+}
+
+export interface ClientSupportMessage {
+  id: string;
+  ticket_id: string;
+  sender_type: 'client' | 'employee' | 'system';
+  sender_id: string;
+  sender_name: string;
+  body: string;
+  created_at: number;
+}

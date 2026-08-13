@@ -115,6 +115,7 @@
             <section class="workspace-card workspace-card--wide"><div class="card-heading"><div><span>PROJECTS</span><h3>المشاريع المشتركة</h3></div></div><div class="clientspace-list" id="clientPortalProjects"></div></section>
             <section class="workspace-card workspace-card--wide"><div class="card-heading"><div><span>REQUESTS</span><h3>طلبات العملاء الداخلية</h3></div></div><div class="clientspace-list" id="clientPortalRequests"></div></section>
             <section class="workspace-card"><div class="card-heading"><div><span>DELIVERIES</span><h3>آخر التسليمات</h3></div></div><div class="clientspace-list" id="clientPortalDeliveries"></div></section>
+            <section class="workspace-card workspace-card--wide client-support-card"><div class="card-heading"><div><span>CLIENT SUPPORT</span><h3>تذاكر دعم العملاء</h3></div><em id="clientSupportBadge">0 مفتوحة</em></div><div class="clientspace-list" id="clientSupportTickets"></div></section>
           </div>
         </section>
 
@@ -226,7 +227,8 @@
     <section class="portal-modal__card" role="dialog" aria-modal="true" aria-labelledby="clientDeliveryModalTitle">
       <div class="modal-head"><div><span>CLIENT DELIVERY</span><h2 id="clientDeliveryModalTitle">رفع تسليم للعميل</h2></div><button type="button" data-close-modal="clientDeliveryModal" aria-label="إغلاق">×</button></div>
       <form class="portal-form modal-form" id="clientDeliveryForm">
-        <label>حساب العميل<select name="clientUid" id="clientDeliveryUser" required></select></label>
+        <label>ابحث عن العميل<input id="clientDeliverySearch" type="search" autocomplete="off" placeholder="الاسم، الشركة أو البريد الإلكتروني"></label>
+        <label>اختر العميل<select name="clientUid" id="clientDeliveryUser" required></select></label>
         <label>المشروع<select name="projectId" id="clientDeliveryProject"><option value="">بدون مشروع محدد</option></select></label>
         <label>عنوان التسليم<input name="title" maxlength="160" required></label>
         <label>رسالة للعميل<textarea name="message" maxlength="2000" rows="3"></textarea></label>

@@ -625,9 +625,44 @@
     qs('#clientPortalRequests')?.replaceChildren(...(requestNodes.length ? requestNodes : [emptyState('لا توجد طلبات داخلية بعد.') ]));
     const deliveryNodes = deliveries.map((delivery)=>{ const card=element('article','clientspace-item'); const icon=element('div','clientspace-avatar','↓'); const copy=element('div','clientspace-copy'); copy.append(element('strong','',delivery.title),element('span','',clientName(delivery.client_uid)),element('small','',`${delivery.original_name} · ${delivery.status==='approved'?'اعتمده العميل':'بانتظار الاعتماد'}`)); card.append(icon,copy); return card; });
     qs('#clientPortalDeliveries')?.replaceChildren(...(deliveryNodes.length ? deliveryNodes : [emptyState('لم ترفع تسليمات بعد.') ]));
-    const options = profiles.map((profile)=>{const option=element('option','',`${profile.display_name||profile.email} · ${profile.email}`); option.value=profile.firebase_uid; return option;});
-    for (const select of [qs('#clientProjectUser'),qs('#clientDeliveryUser')]) { if (!select) continue; const selected=select.value; select.replaceChildren(element('option','','اختر العميل'),...options.map((option)=>option.cloneNode(true))); select.firstElementChild.value=''; select.value=profiles.some((p)=>p.firebase_uid===selected)?selected:''; }
+    const projectSelect = qs('#clientProjectUser');
+    if (projectSelect) { const selected=projectSelect.value; const options=profiles.map(clientOption); projectSelect.replaceChildren(element('option','','اختر العميل'),...options); projectSelect.firstElementChild.value=''; projectSelect.value=profiles.some((p)=>p.firebase_uid===selected)?selected:''; }
+    populateDeliveryClientOptions();
     refreshClientDeliveryProjects();
+    renderClientSupport();
+  }
+
+  function clientOption(profile) {
+    const label = [profile.display_name, profile.organization, profile.email].filter(Boolean).join(' · ');
+    const option = element('option','',label); option.value=profile.firebase_uid; return option;
+  }
+
+  function populateDeliveryClientOptions() {
+    const select=qs('#clientDeliveryUser'); if(!select)return;
+    const selected=select.value, query=String(qs('#clientDeliverySearch')?.value||'').trim().toLowerCase();
+    const profiles=(state.data?.clientProfiles||[]).filter((profile)=>!query||[profile.display_name,profile.organization,profile.email,profile.phone].some((value)=>String(value||'').toLowerCase().includes(query)));
+    const first=element('option','',profiles.length?'اختر العميل':'لا توجد نتيجة مطابقة'); first.value='';
+    select.replaceChildren(first,...profiles.map(clientOption));
+    if(profiles.some((profile)=>profile.firebase_uid===selected)) select.value=selected;
+    else { select.value=''; refreshClientDeliveryProjects(); }
+  }
+
+  const SUPPORT_STATUS = { open:'مفتوحة', in_progress:'قيد المعالجة', waiting_client:'بانتظار العميل', resolved:'تم الحل', closed:'مغلقة' };
+  function renderClientSupport() {
+    const tickets=state.data.clientSupportTickets||[], messages=state.data.clientSupportMessages||[];
+    const open=tickets.filter((ticket)=>!['resolved','closed'].includes(ticket.status)).length;
+    if(qs('#clientSupportBadge')) qs('#clientSupportBadge').textContent=`${open} مفتوحة`;
+    const nodes=tickets.map((ticket)=>{
+      const card=element('article','client-support-ticket');
+      const head=element('header'); const title=element('div'); title.append(element('span','',`${clientName(ticket.client_uid)} · ${ticket.category}`),element('strong','',ticket.subject)); const status=leadSelect('',Object.keys(SUPPORT_STATUS),ticket.status,SUPPORT_STATUS); head.append(title,status);
+      const thread=element('div','client-support-thread');
+      (messages.filter((message)=>message.ticket_id===ticket.id)).forEach((message)=>{const bubble=element('div',`client-support-message is-${message.sender_type}`);bubble.append(element('strong','',message.sender_type==='client'?clientName(ticket.client_uid):message.sender_name),element('p','',message.body),element('small','',displayDate(message.created_at)));thread.append(bubble);});
+      const reply=element('form','client-support-reply'); const input=element('textarea'); input.placeholder='اكتب ردك للعميل...'; input.maxLength=2500; const send=element('button','','إرسال الرد');send.type='submit';
+      reply.append(input,send); reply.addEventListener('submit',async(event)=>{event.preventDefault();const body=input.value.trim();if(!body)return;send.disabled=true;try{await api(`/api/employee/support-tickets/${ticket.id}/messages`,{method:'POST',body:JSON.stringify({body})});await refreshData({quiet:true});showToast('وصل ردك للعميل.');}catch(error){showToast(error.message,true);}finally{send.disabled=false;}});
+      status.addEventListener('change',async()=>{status.disabled=true;try{await api(`/api/employee/support-tickets/${ticket.id}`,{method:'PATCH',body:JSON.stringify({status:status.value})});await refreshData({quiet:true});showToast('تم تحديث حالة التذكرة.');}catch(error){showToast(error.message,true);}finally{status.disabled=false;}});
+      card.append(head,thread,reply); return card;
+    });
+    qs('#clientSupportTickets')?.replaceChildren(...(nodes.length?nodes:[emptyState('لا توجد تذاكر دعم حتى الآن.') ]));
   }
 
   function refreshClientDeliveryProjects() {
@@ -1009,6 +1044,7 @@
     qs('#openClientProjectModal')?.addEventListener('click', () => openModal('clientProjectModal'));
     qs('#openClientDeliveryModal')?.addEventListener('click', () => openModal('clientDeliveryModal'));
     qs('#clientDeliveryUser')?.addEventListener('change', refreshClientDeliveryProjects);
+    qs('#clientDeliverySearch')?.addEventListener('input', populateDeliveryClientOptions);
     const leadFilterBindings = [
       ['#leadSearch', 'search', 'input'], ['#leadNeighborhood', 'neighborhood', 'change'],
       ['#leadCategory', 'category', 'change'],
