@@ -28,10 +28,41 @@
     if (loading) loading.textContent = text.loading;
   }
 
+  function installControls() {
+    const languageButton = document.getElementById('langBtn');
+    const themeButton = document.getElementById('themeBtn');
+    if (languageButton && !languageButton.dataset.archiveReady) {
+      languageButton.dataset.archiveReady = 'true';
+      languageButton.addEventListener('click', () => {
+        const next = language() === 'en' ? 'ar' : 'en';
+        if (window.NMPreferences) window.NMPreferences.setLanguage(next);
+        else {
+          document.documentElement.lang = next;
+          document.documentElement.dir = next === 'ar' ? 'rtl' : 'ltr';
+        }
+        languageButton.textContent = next === 'ar' ? 'EN' : 'ع';
+        localizeShell();
+      });
+    }
+    if (themeButton && !themeButton.dataset.archiveReady) {
+      themeButton.dataset.archiveReady = 'true';
+      themeButton.addEventListener('click', () => {
+        const next = document.documentElement.classList.contains('light') ? 'dark' : 'light';
+        if (window.NMPreferences) window.NMPreferences.setTheme(next);
+        else document.documentElement.classList.toggle('light', next === 'light');
+        const icon = themeButton.querySelector('span');
+        if (icon) icon.textContent = next === 'light' ? '☀' : '☾';
+      });
+    }
+    if (languageButton) languageButton.textContent = language() === 'ar' ? 'EN' : 'ع';
+    const themeIcon = themeButton?.querySelector('span');
+    if (themeIcon) themeIcon.textContent = document.documentElement.classList.contains('light') ? '☀' : '☾';
+  }
+
   function loadShowcaseScript() {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = '/work-showcase.js?v=8';
+      script.src = '/work-showcase.js?v=9';
       script.onload = resolve;
       script.onerror = reject;
       document.body.appendChild(script);
@@ -55,13 +86,14 @@
       await loadShowcaseScript();
     } catch (error) {
       const text = copy[language()];
-      mount.innerHTML = `<div class="nm-work-archive-status nm-work-archive-error" role="alert"><img src="/newmedia-logo.png" alt=""><span>${text.error}</span><a href="/work-archive">${text.retry}</a></div>`;
+      mount.innerHTML = `<div class="nm-work-archive-status nm-work-archive-error" role="alert"><div class="nm-archive-loader" aria-hidden="true"><i></i><i></i><img src="/newmedia-logo.png" alt=""></div><span>${text.error}</span><a href="/work-archive">${text.retry}</a></div>`;
       console.error(error);
     }
   }
 
   const shellObserver = new MutationObserver(localizeShell);
   shellObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['lang'] });
+  installControls();
   localizeShell();
   installArchive();
 })();

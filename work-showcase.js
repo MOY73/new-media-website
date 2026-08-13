@@ -374,12 +374,17 @@
       previous.type = 'button';
       previous.textContent = '‹';
       previous.setAttribute('aria-label', language() === 'ar' ? 'النموذج السابق' : 'Previous example');
-      previous.addEventListener('click', (event) => { event.stopPropagation(); show(current - 1); schedule(); });
+      const pauseAfterManualChange = () => {
+        paused = true;
+        stop();
+        window.setTimeout(() => { paused = false; schedule(); }, 9000);
+      };
+      previous.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); show(current - 1); pauseAfterManualChange(); });
       const next = document.createElement('button');
       next.type = 'button';
       next.textContent = '›';
       next.setAttribute('aria-label', language() === 'ar' ? 'النموذج التالي' : 'Next example');
-      next.addEventListener('click', (event) => { event.stopPropagation(); show(current + 1); schedule(); });
+      next.addEventListener('click', (event) => { event.preventDefault(); event.stopPropagation(); show(current + 1); pauseAfterManualChange(); });
       arrows.append(previous, next);
       rotator.appendChild(arrows);
       rotator.tabIndex = 0;

@@ -21,22 +21,13 @@
   root.classList.add('nm-story-root');
 
   const quotes = {
-    ar: [
-      'نحوّل الفكرة إلى تأثير قابل للقياس',
-      'نصنع حضوراً يلفت ونتيجة تنمو',
-      'نحوّل المشاريع إلى علامات لا تُنسى',
-      'نربط الإبداع بالأداء حتى يصبح الأثر رقماً'
-    ],
-    en: [
-      'We turn ideas into measurable impact',
-      'We build presence that attracts and results that grow',
-      'We turn businesses into unforgettable brands',
-      'We connect creativity to performance until impact becomes a number'
-    ]
+    ar: ['نحوّل الفكرة إلى\nتأثير قابل للقياس'],
+    en: ['We turn ideas into\nmeasurable impact']
   };
 
   let quoteTimer = 0;
   let quoteCycle = -1;
+  let firstQuoteRender = true;
 
   function storedLanguage() {
     if (window.NMPreferences) return window.NMPreferences.getLanguage();
@@ -75,7 +66,9 @@
       const pause = /[،,.]/.test(character) ? 125 : 44 + Math.random() * 34;
       quoteTimer = window.setTimeout(write, pause);
     }
-    quoteTimer = window.setTimeout(write, 320);
+    const openingDelay = firstQuoteRender ? 2050 : 320;
+    firstQuoteRender = false;
+    quoteTimer = window.setTimeout(write, openingDelay);
   }
 
   function applyLanguage(language) {
