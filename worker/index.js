@@ -694,6 +694,7 @@ async function verifyFirebaseToken(token, env) {
 }
 
 async function getClientData(env, client) {
+  await pruneExpiredSupportTickets(env);
   const results = await env.DB.batch([
     env.DB.prepare('SELECT firebase_uid,email,display_name,organization,phone,photo_url,created_at,updated_at FROM client_profiles WHERE firebase_uid=?').bind(client.uid),
     env.DB.prepare('SELECT id,title,service,summary,status,progress,current_stage,deadline,created_at,updated_at FROM client_projects WHERE client_uid=? ORDER BY updated_at DESC').bind(client.uid),
@@ -935,6 +936,7 @@ async function login(request, env) {
 }
 
 async function getPortalData(env, user) {
+  await pruneExpiredSupportTickets(env);
   user.role = roleForUsername(user.username);
   const now = Date.now();
   await env.DB.prepare(
@@ -1016,6 +1018,14 @@ async function getPortalData(env, user) {
     knowledge: KNOWLEDGE,
     serverTime: Date.now()
   });
+}
+
+async function pruneExpiredSupportTickets(env) {
+  const cutoff = Date.now() - (3 * 24 * 60 * 60 * 1000);
+  await env.DB.batch([
+    env.DB.prepare("DELETE FROM client_support_messages WHERE ticket_id IN (SELECT id FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?)").bind(cutoff),
+    env.DB.prepare("DELETE FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?").bind(cutoff)
+  ]);
 }
 
 async function createPublicApplication(request, env, url, ctx) {
