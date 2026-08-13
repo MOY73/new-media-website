@@ -37,17 +37,6 @@ async function establishSession(user) {
 const { auth, authSdk } = await getFirebaseServices();
 let authFlowRunning = false;
 
-try {
-  const redirectResult = await authSdk.getRedirectResult(auth);
-  if (redirectResult?.user) {
-    authFlowRunning = true;
-    await establishSession(redirectResult.user);
-  }
-} catch (error) {
-  authFlowRunning = false;
-  showMessage(friendlyError(error), true);
-}
-
 authSdk.onAuthStateChanged(auth, (user) => {
   // Restore a previous Firebase login when the server session has expired.
   // Interactive flows establish the session themselves, avoiding competing
@@ -62,12 +51,13 @@ authSdk.onAuthStateChanged(auth, (user) => {
 });
 
 document.querySelector('#googleLogin').addEventListener('click', async () => {
-  showMessage('جاري الانتقال إلى Google...');
+  showMessage('جاري فتح Google...');
   authFlowRunning = true;
   try {
     const provider = new authSdk.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: 'select_account' });
-    await authSdk.signInWithRedirect(auth, provider);
+    const result = await authSdk.signInWithPopup(auth, provider);
+    await establishSession(result.user);
   } catch (error) {
     authFlowRunning = false;
     console.error('Client Google sign-in failed:', error?.code || error);
