@@ -314,7 +314,7 @@ export default {
       return createPublicApplication(request, env, url, ctx);
     }
 
-    if (/^\/contact-application(?:\.html)?\/?$/.test(url.pathname)) {
+    if (/^\/contact-application(?:\.html)?\/?$/.test(url.pathname) && request.method === 'GET') {
       const client = await readClientSession(request, env);
       if (!client) return Response.redirect(new URL(`/client/login?next=${encodeURIComponent(url.pathname + url.search)}`, url), 302);
     }
