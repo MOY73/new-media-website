@@ -8,6 +8,7 @@ const EMPLOYEE_LOGIN_HTML = '';
 const EMPLOYEE_DASHBOARD_HTML = '';
 const CLIENT_LOGIN_HTML = '';
 const CLIENT_PORTAL_HTML = '';
+const CONTACT_APPLICATION_HTML = '';
 const CLIENT_SESSION_COOKIE = 'nm_client_session';
 const CLIENT_SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 
@@ -317,6 +318,7 @@ export default {
     if (/^\/contact-application(?:\.html)?\/?$/.test(url.pathname) && request.method === 'GET') {
       const client = await readClientSession(request, env);
       if (!client) return Response.redirect(new URL(`/client/login?next=${encodeURIComponent(url.pathname + url.search)}`, url), 302);
+      return privateHtmlResponse(CONTACT_APPLICATION_HTML);
     }
 
     if (url.pathname.startsWith('/api/client/')) {
