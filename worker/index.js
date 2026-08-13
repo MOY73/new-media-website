@@ -591,6 +591,11 @@ async function handleClientApi(request, env, url) {
   const client = await readClientSession(request, env);
   if (!client) return json({ error: 'يجب تسجيل الدخول كعميل.' }, 401);
 
+  if (url.pathname === '/api/client/session' && request.method === 'GET') {
+    const profile = await env.DB.prepare('SELECT firebase_uid,email,display_name,organization,photo_url FROM client_profiles WHERE firebase_uid=?').bind(client.uid).first();
+    if (!profile) return json({ error: 'ملف العميل غير موجود.' }, 404);
+    return json({ authenticated: true, profile });
+  }
   if (url.pathname === '/api/client/logout' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return json({ ok: true }, 200, { 'Set-Cookie': clearClientSessionCookie() });

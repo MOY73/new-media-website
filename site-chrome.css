@@ -31,16 +31,6 @@
 }
 
 .nm-site-nav__brand img { width: 54px; height: 36px; object-fit: contain; flex: 0 0 auto; }
-.nm-site-nav__brand span {
-  font-family: 'Alexandria', sans-serif;
-  font-size: 14px;
-  font-weight: 900;
-  letter-spacing: .13em;
-  background: linear-gradient(90deg,#8b00dc,#ff5b19);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
 
 .nm-site-nav__links {
   display: flex;
@@ -92,6 +82,75 @@
   font-weight:800;
   text-decoration:none;
 }
+
+.nm-account { position:relative; }
+.nm-account__login,
+.nm-account__trigger {
+  height:38px;
+  min-width:104px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:0 15px;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:11px;
+  color:rgba(255,255,255,.86);
+  background:rgba(255,255,255,.055);
+  font-family:'Alexandria',sans-serif;
+  font-size:12px;
+  font-weight:750;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.22s ease;
+}
+.nm-account__login:hover,.nm-account__trigger:hover,.nm-account.is-open .nm-account__trigger { color:#fff;border-color:rgba(255,101,0,.42);background:rgba(255,255,255,.09); }
+.nm-account__trigger { padding:0 8px 0 12px; }
+.nm-account__trigger > i,.nm-account__identity > i { display:grid;place-items:center;overflow:hidden;border-radius:10px;background:linear-gradient(135deg,#7b0bd2,#ff6517);color:#fff;font-style:normal;font-weight:800; }
+.nm-account__trigger > i { width:26px;height:26px; }
+.nm-account__identity > i { width:44px;height:44px;border-radius:14px;flex:0 0 auto; }
+.nm-account :is(.nm-account__trigger,.nm-account__identity) img { width:100%;height:100%;object-fit:cover; }
+.nm-account__trigger b { max-width:72px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:800; }
+.nm-account__trigger em { color:rgba(255,255,255,.45);font-style:normal;font-size:10px;transition:transform .2s; }
+.nm-account.is-open .nm-account__trigger em { transform:rotate(180deg); }
+.nm-account__menu {
+  position:absolute;
+  top:calc(100% + 13px);
+  inset-inline-end:0;
+  width:294px;
+  padding:10px;
+  border:1px solid rgba(255,255,255,.13);
+  border-radius:20px;
+  color:#f8f5fa;
+  background:rgba(12,10,15,.94);
+  box-shadow:0 24px 80px rgba(0,0,0,.48),0 0 45px rgba(121,0,190,.12);
+  backdrop-filter:blur(28px) saturate(160%);
+  -webkit-backdrop-filter:blur(28px) saturate(160%);
+  transform-origin:top right;
+  animation:nmAccountIn .18s ease both;
+}
+.nm-account__menu[hidden] { display:none; }
+@keyframes nmAccountIn { from{opacity:0;transform:translateY(-7px) scale(.97)} to{opacity:1;transform:none} }
+.nm-account__identity { display:flex;align-items:center;gap:11px;padding:10px 10px 14px;border-bottom:1px solid rgba(255,255,255,.09); }
+.nm-account__identity div { min-width:0;display:grid;gap:2px; }
+.nm-account__identity strong,.nm-account__identity span { overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+.nm-account__identity strong { font:800 13px 'Alexandria',sans-serif; }
+.nm-account__identity span { color:rgba(255,255,255,.5);font-size:10px;direction:ltr;text-align:start; }
+.nm-account__identity small { margin-top:3px;color:#ff671b;font:700 9px 'Alexandria',sans-serif;letter-spacing:.05em; }
+.nm-account__links { display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:9px 0; }
+.nm-account__links a { min-height:52px;display:flex;align-items:center;gap:9px;padding:0 10px;border:1px solid transparent;border-radius:12px;color:rgba(255,255,255,.74);text-decoration:none;background:rgba(255,255,255,.025); }
+.nm-account__links a:hover { color:#fff;border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.065); }
+.nm-account__links a span { width:25px;height:25px;display:grid;place-items:center;border-radius:8px;color:#ff681c;background:rgba(255,104,28,.1);font-size:11px; }
+.nm-account__links a b { font:700 10px 'Alexandria',sans-serif; }
+.nm-account__theme { padding:10px;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08); }
+.nm-account__theme > span { display:block;margin-bottom:8px;color:rgba(255,255,255,.43);font:650 9px 'Alexandria',sans-serif; }
+.nm-account__theme > div { display:grid;grid-template-columns:1fr 1fr;gap:6px; }
+.nm-account__theme button { height:37px;display:flex;align-items:center;justify-content:center;gap:7px;border:1px solid rgba(255,255,255,.09);border-radius:10px;color:rgba(255,255,255,.6);background:rgba(255,255,255,.025);font:700 10px 'Alexandria',sans-serif;cursor:pointer; }
+.nm-account__theme button.is-active { color:#fff;border-color:rgba(255,103,27,.42);background:rgba(255,103,27,.12); }
+.nm-account__theme button i { font-style:normal; }
+.nm-account__logout { width:100%;height:42px;margin-top:7px;display:flex;align-items:center;gap:9px;padding:0 10px;border:0;border-radius:11px;color:rgba(255,255,255,.55);background:transparent;font:700 10px 'Alexandria',sans-serif;cursor:pointer; }
+.nm-account__logout:hover { color:#ff8b56;background:rgba(255,90,28,.08); }
+.nm-account__logout span { font-size:15px; }
 
 .nm-site-footer {
   position: relative;
@@ -149,6 +208,15 @@ html.light .nm-site-nav {
 html.light .nm-site-nav__links a { color:rgba(32,25,39,.68); }
 html.light .nm-site-nav__links a:hover { color:#201927; }
 html.light .nm-site-nav__actions :is(.theme-btn,.lang-btn,.theme-btn-404,.lang-btn-404) { color:#201927; background:rgba(255,255,255,.8); border-color:rgba(55,37,69,.17); }
+html.light .nm-account__login,html.light .nm-account__trigger { color:#201927;background:rgba(255,255,255,.78);border-color:rgba(55,37,69,.16); }
+html.light .nm-account__menu { color:#201927;background:rgba(255,255,255,.96);border-color:rgba(55,37,69,.13);box-shadow:0 24px 70px rgba(43,27,55,.18); }
+html.light .nm-account__identity,html.light .nm-account__theme { border-color:rgba(55,37,69,.1); }
+html.light .nm-account__identity span,html.light .nm-account__theme > span { color:rgba(32,25,39,.52); }
+html.light .nm-account__links a { color:rgba(32,25,39,.72);background:rgba(55,37,69,.025); }
+html.light .nm-account__links a:hover { color:#201927;border-color:rgba(55,37,69,.1);background:rgba(55,37,69,.06); }
+html.light .nm-account__theme button { color:rgba(32,25,39,.62);border-color:rgba(55,37,69,.11);background:rgba(55,37,69,.025); }
+html.light .nm-account__theme button.is-active { color:#201927;border-color:rgba(255,103,27,.35);background:rgba(255,103,27,.1); }
+html.light .nm-account__logout { color:rgba(32,25,39,.54); }
 html.light .nm-site-footer { color:#201927; background:rgba(255,255,255,.8); border-color:rgba(55,37,69,.13); box-shadow:0 18px 50px rgba(40,24,53,.09); }
 html.light .nm-site-footer__about p,
 html.light .nm-site-footer li,
@@ -168,8 +236,10 @@ body.nm-has-shared-chrome.nm-404-page .nm-site-footer { margin-top:3rem; }
   .nm-site-nav__links a { font-size:11px; white-space:nowrap; }
   .nm-site-nav__actions { grid-column:2; grid-row:1; }
   .nm-site-nav__actions { gap:.45rem; }
-  .nm-site-nav__brand span { display:none; }
   .nm-site-nav__cta { padding:0 .9rem; }
+  .nm-account__login,.nm-account__trigger { min-width:42px;padding:0 9px; }
+  .nm-account__trigger b { display:none; }
+  .nm-account__trigger em { display:none; }
   .nm-site-footer { padding:2.75rem 2rem; }
   .nm-site-footer__grid { grid-template-columns:repeat(2,1fr); gap:2.5rem 2rem; }
 }
@@ -177,7 +247,13 @@ body.nm-has-shared-chrome.nm-404-page .nm-site-footer { margin-top:3rem; }
 @media (max-width: 560px) {
   .nm-site-nav { height:102px; top:10px; grid-template-rows:55px 37px; border-radius:18px; }
   .nm-site-nav__brand img { width:46px; height:31px; }
-  .nm-site-nav__cta { font-size:10px; padding:0 .6rem; }
+  .nm-site-nav__actions { gap:.3rem; }
+  .nm-site-nav__cta { font-size:9px; padding:0 .55rem; }
+  .nm-site-nav__actions :is(.lang-btn,.lang-btn-404) { min-width:36px;padding:0 8px;font-size:10px; }
+  .nm-account__login { min-width:auto;font-size:9px;padding:0 8px; }
+  .nm-account__trigger { min-width:36px;padding:0 5px; }
+  .nm-account__trigger > i { width:25px;height:25px; }
+  .nm-account__menu { position:fixed;top:72px;right:12px;left:12px;width:auto; }
   .nm-site-nav__links { gap:.35rem; }
   .nm-site-nav__links a { font-size:10px; }
   .nm-site-footer { width:calc(100% - 1rem); padding:2.35rem 1.35rem; border-radius:22px; }
