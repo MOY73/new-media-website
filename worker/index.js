@@ -144,6 +144,8 @@ const SCHEMA_STATEMENTS = [
    ON business_leads(neighborhood, priority, score DESC)`,
   `CREATE INDEX IF NOT EXISTS idx_business_leads_status_updated
    ON business_leads(contact_status, updated_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_business_leads_city_category
+   ON business_leads(city, category, priority, score DESC)`,
   `CREATE TABLE IF NOT EXISTS business_lead_deletions (
     id TEXT PRIMARY KEY,
     deleted_by TEXT NOT NULL,
@@ -282,20 +284,14 @@ export default {
 
     const response = await env.ASSETS.fetch(request);
     if (response.status !== 404) {
-      if ((url.pathname === '/' || url.pathname === '/index.html') && request.method === 'GET') {
-        const headers = new Headers(response.headers);
-        headers.set('Cache-Control', 'no-cache, max-age=0, must-revalidate');
-        headers.set('CDN-Cache-Control', 'no-cache');
-        return new Response(response.body, { status: response.status, headers });
-      }
-      return response;
+      return secureAssetResponse(response, url, request.method);
     }
 
     const notFoundUrl = new URL('/404.html', request.url);
     const notFoundPage = await env.ASSETS.fetch(new Request(notFoundUrl, request));
     return new Response(notFoundPage.body, {
       status: 404,
-      headers: notFoundPage.headers,
+      headers: securityHeaders(notFoundPage.headers, { html: true }),
     });
   },
 };
@@ -331,10 +327,12 @@ async function handleEmployeeApi(request, env, url) {
     return getMessageFile(env, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/applications/') && request.method === 'PATCH') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية تعديل الطلبات.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return updateApplication(request, env, user, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/applications/') && request.method === 'DELETE') {
+    if (!hasRole(user, 'super_admin')) return json({ error: 'الحذف متاح للمدير الأعلى فقط.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return deleteApplication(env, user, url.pathname.split('/').pop());
   }
@@ -343,6 +341,7 @@ async function handleEmployeeApi(request, env, url) {
     return createMessage(request, env, user);
   }
   if (url.pathname === '/api/employee/clients' && request.method === 'POST') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية إضافة عميل.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return createClient(request, env, user);
   }
@@ -351,6 +350,7 @@ async function handleEmployeeApi(request, env, url) {
     return updateClient(request, env, user, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/clients/') && request.method === 'DELETE') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية حذف عميل.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return deleteClient(env, user, url.pathname.split('/').pop());
   }
@@ -363,10 +363,12 @@ async function handleEmployeeApi(request, env, url) {
     return updateTask(request, env, user, url.pathname.split('/').pop());
   }
   if (url.pathname.startsWith('/api/employee/tasks/') && request.method === 'DELETE') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية حذف مهمة.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return deleteTask(env, user, url.pathname.split('/').pop());
   }
   if (url.pathname === '/api/employee/leads/assign-category' && request.method === 'POST') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية توزيع الفرص.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return assignLeadCategory(request, env, user);
   }
@@ -375,6 +377,7 @@ async function handleEmployeeApi(request, env, url) {
     return updateBusinessLead(request, env, user, url.pathname.split('/').pop());
   }
   if (/^\/api\/employee\/leads\/[^/]+$/.test(url.pathname) && request.method === 'DELETE') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية حذف فرصة.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return deleteBusinessLead(env, user, url.pathname.split('/').pop());
   }
@@ -383,6 +386,7 @@ async function handleEmployeeApi(request, env, url) {
     return convertBusinessLeadToTask(request, env, user, url.pathname.split('/')[4]);
   }
   if (/^\/api\/employee\/leads\/[^/]+\/convert-client$/.test(url.pathname) && request.method === 'POST') {
+    if (!hasRole(user, 'manager')) return json({ error: 'ليس لديك صلاحية تحويل الفرصة إلى عميل.' }, 403);
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return convertBusinessLeadToClient(request, env, user, url.pathname.split('/')[4]);
   }
@@ -611,6 +615,7 @@ async function createPublicApplication(request, env, url, ctx) {
     const extension = cleanString(file.name, 180).split('.').pop()?.toLowerCase() || '';
     if (!ALLOWED_FILE_EXTENSIONS.has(extension)) return json({ error: `نوع الملف «${cleanString(file.name, 180)}» غير مسموح.` }, 400);
     if (file.size > MAX_APPLICATION_FILE_SIZE) return json({ error: `الملف «${cleanString(file.name, 180)}» أكبر من 10MB.` }, 400);
+    if (!await fileSignatureAllowed(file, extension)) return json({ error: `محتوى الملف «${cleanString(file.name, 180)}» لا يطابق نوعه.` }, 400);
   }
   if (files.length && !env.UPLOADS) return json({ error: 'رفع الملفات غير متاح مؤقتاً. أرسل الطلب بدون ملفات أو حاول لاحقاً.' }, 503);
 
@@ -798,6 +803,7 @@ async function createMessage(request, env, user) {
   if (file && (!env.UPLOADS || file.size > MAX_CHAT_PDF_SIZE || (file.type !== 'application/pdf' && !String(file.name).toLowerCase().endsWith('.pdf')))) {
     return json({ error: file?.size > MAX_CHAT_PDF_SIZE ? 'حجم ملف PDF يجب ألا يتجاوز 8 ميجابايت.' : 'المرفق يجب أن يكون ملف PDF.' }, 400);
   }
+  if (file && !await fileSignatureAllowed(file, 'pdf')) return json({ error: 'محتوى المرفق ليس ملف PDF صالحًا.' }, 400);
   const message = {
     id: crypto.randomUUID(),
     group_id: groupId,
@@ -1116,13 +1122,8 @@ function normalizeTask(payload) {
 }
 
 function employeeHtmlResponse(html) {
-  const headers = new Headers({ 'Content-Type': 'text/html; charset=utf-8' });
+  const headers = securityHeaders(new Headers({ 'Content-Type': 'text/html; charset=utf-8' }), { html: true });
   headers.set('Cache-Control', 'no-store');
-  headers.set('Content-Security-Policy', "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'");
-  headers.set('X-Content-Type-Options', 'nosniff');
-  headers.set('X-Frame-Options', 'DENY');
-  headers.set('Referrer-Policy', 'same-origin');
-  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=()');
   return new Response(html, { status: 200, headers });
 }
 
@@ -1157,6 +1158,8 @@ function cleanString(value, maxLength) {
 
 function validOrigin(request, url) {
   const origin = request.headers.get('Origin');
+  const fetchSite = (request.headers.get('Sec-Fetch-Site') || '').toLowerCase();
+  if (fetchSite && !['same-origin', 'none'].includes(fetchSite)) return false;
   return !origin || origin === url.origin;
 }
 
@@ -1179,6 +1182,64 @@ function roleForUsername(username) {
   if (normalized === 'MOY') return 'super_admin';
   if (['AK', 'AZOZ', 'EMAD', 'TURKI'].includes(normalized)) return 'manager';
   return 'employee';
+}
+
+function hasRole(user, minimum) {
+  const order = { employee: 1, manager: 2, super_admin: 3 };
+  return (order[roleForUsername(user?.username)] || 0) >= (order[minimum] || 99);
+}
+
+function securityHeaders(input = new Headers(), options = {}) {
+  const headers = new Headers(input);
+  headers.set('X-Content-Type-Options', 'nosniff');
+  headers.set('X-Frame-Options', 'DENY');
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+  headers.set('Permissions-Policy', 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()');
+  headers.set('Cross-Origin-Opener-Policy', 'same-origin');
+  headers.set('Cross-Origin-Resource-Policy', options.html ? 'same-origin' : 'same-site');
+  if (options.html) {
+    const inlineScriptHashes = [
+      "'sha256-ndLNAMbMb6Lj1BuNHOd5kCg7wLZIMbIdeq8fGPGuiVI='",
+      "'sha256-ZpIsx7qRxnTggQmrSPie/W50KaU0xIWptY8CWp4Y4LM='",
+      "'sha256-VZqHdmFeYueEy6c1p+codH7KSQ46Vb9jaaQ+FAhQuX0='",
+      "'sha256-xJhyz8QKMfSS8oF6MiA4A3mvY7TgsREIP3VVtjY+yBM='",
+      "'sha256-+bThsQXAU4MLjclLoLKAgkEJBG9LmWEjqo6i3i1FMp4='",
+      "'sha256-6iRH9bbhlQ97k0KghZKJQzPqY7y7l2POENeH5Xun1+8='",
+      "'sha256-PmgFQeOqSJiAQaXJAmFcNmxTUfErIV3uLqmCJ7u/2YI='",
+      "'sha256-h+oEoT9097gWM1uxJ7YRnX542PZLJvq3Wn6W3d9XOOg='",
+      "'sha256-DfmCNzJA+9a2ObhQOc+DC2uLx2KCynaCvJ1vHPB8YrI='",
+      "'sha256-Op6alKSYavs08/G7WPPYPlgBMv6zq50xjT9ZRtW10FA='",
+      "'sha256-+QD3imx2tSDAen8T0skcWUeZu64ME3UKdtk93SzUWzk='",
+      "'sha256-ZZVWUGtMU4LhKuJ935X/H1HFrjvUo6DVGylLXJbTAx4='",
+      "'sha256-grU1SQdF1J2/VRMQajNGeYpCR9gQaL1C1z+CmbplNPM='"
+    ].join(' ');
+    headers.set('Content-Security-Policy', `default-src 'self'; script-src 'self' ${inlineScriptHashes}; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; media-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; upgrade-insecure-requests`);
+  }
+  return headers;
+}
+
+function secureAssetResponse(response, url, method) {
+  const type = (response.headers.get('Content-Type') || '').toLowerCase();
+  const html = type.includes('text/html') || url.pathname.endsWith('.html') || (!url.pathname.includes('.') && !type);
+  const headers = securityHeaders(response.headers, { html });
+  if (html && (url.pathname === '/' || url.pathname === '/index.html') && method === 'GET') {
+    headers.set('Cache-Control', 'no-cache, max-age=0, must-revalidate');
+    headers.set('CDN-Cache-Control', 'no-cache');
+  }
+  return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+}
+
+async function fileSignatureAllowed(file, extension) {
+  const bytes = new Uint8Array(await file.slice(0, 16).arrayBuffer());
+  const starts = (...values) => values.every((value, index) => bytes[index] === value);
+  const ascii = decoder.decode(bytes);
+  if (extension === 'pdf') return ascii.startsWith('%PDF-');
+  if (extension === 'png') return starts(0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A);
+  if (extension === 'jpg' || extension === 'jpeg') return starts(0xFF,0xD8,0xFF);
+  if (extension === 'webp') return ascii.startsWith('RIFF') && ascii.slice(8,12) === 'WEBP';
+  if (['docx','pptx','xlsx','zip'].includes(extension)) return starts(0x50,0x4B,0x03,0x04) || starts(0x50,0x4B,0x05,0x06) || starts(0x50,0x4B,0x07,0x08);
+  if (extension === 'doc' || extension === 'ppt' || extension === 'xls') return starts(0xD0,0xCF,0x11,0xE0,0xA1,0xB1,0x1A,0xE1);
+  return false;
 }
 
 async function verifyPassword(password, account, pepper) {

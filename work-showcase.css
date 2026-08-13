@@ -171,6 +171,10 @@ html.light .nm-showcase__aurora{opacity:.55}.light .nm-showcase__intro-copy>p,.l
 .nm-rotator-dots button:hover{transform:scale(1.25)}
 .nm-rotator-dots button.is-active{width:22px;background:#ff6824}
 .nm-content-case .nm-rotator-dots{top:18px;left:18px}
+.nm-rotator-arrows{position:absolute;z-index:6;right:18px;top:18px;display:flex;direction:ltr;gap:6px}
+.nm-rotator-arrows button{display:grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(8,8,9,.58);color:#fff;font:700 20px/1 "Alexandria",sans-serif;cursor:pointer;backdrop-filter:blur(12px);transition:.25s ease}
+.nm-rotator-arrows button:hover,.nm-rotator-arrows button:focus-visible{border-color:#ff6824;background:#ff6824;color:#090909;transform:translateY(-2px);outline:none}
+.nm-work-rotator:focus-visible{outline:2px solid #ff6824;outline-offset:-4px}
 
 /* Identity package: five recognisably different brand worlds. */
 .nm-identity-board.nm-visual-variant--2{background:#1737d1;color:#f4f0df}.nm-identity-board.nm-visual-variant--2>b{letter-spacing:-.08em;transform:translate(-50%,-54%) rotate(-7deg)}.nm-identity-board.nm-visual-variant--2>div i{border-radius:4px;background:#f4f0df}.nm-identity-board.nm-visual-variant--2>div i:nth-child(2){background:#ffbb16}.nm-identity-board.nm-visual-variant--2>div i:nth-child(3){background:#ff6b2c}.nm-identity-board.nm-visual-variant--2>div i:nth-child(4){background:#0c173d}
@@ -206,6 +210,7 @@ html.light .nm-rotator-dots{border-color:rgba(0,0,0,.12);background:rgba(255,255
 html.light .nm-rotator-dots button{background:rgba(0,0,0,.24)}html.light .nm-rotator-dots button.is-active{background:#ff6824}
 html.light .nm-showcase-cta{border-color:rgba(0,0,0,.1);background:radial-gradient(circle at 18% 18%,rgba(134,29,222,.1),transparent 34%),radial-gradient(circle at 82% 82%,rgba(255,92,15,.12),transparent 38%),rgba(255,255,255,.64);box-shadow:0 40px 100px rgba(42,30,20,.12),inset 0 1px #fff}html.light .nm-showcase-cta>p:not(.nm-showcase__kicker){color:#625c55}
 @media(max-width:600px){.nm-rotator-dots{top:13px;left:13px;padding:6px 8px}.nm-rotator-dots button{width:5px;height:5px}.nm-rotator-dots button.is-active{width:18px}}
+@media(max-width:600px){.nm-rotator-arrows{right:12px;top:12px}.nm-rotator-arrows button{width:30px;height:30px;font-size:18px}}
 @media(max-width:600px){.nm-showcase-cta{min-height:520px;margin-top:90px;padding:72px 16px;border-radius:28px}.nm-showcase-cta h3{font-size:clamp(48px,15vw,74px);line-height:1.18}.nm-showcase-cta>p:not(.nm-showcase__kicker){font-size:14px}}
 @media(prefers-reduced-motion:reduce){.nm-work-rotator>.nm-rotator-frame{transition:none!important}.nm-rotator-dots{display:flex}.nm-showcase-cta::before{animation:none}}
 
@@ -306,6 +311,77 @@ html.light .nm-showcase-cta{border-color:rgba(0,0,0,.1);background:radial-gradie
   .nm-brand-preview{min-height:auto}.nm-brand-browser{border-radius:19px}.nm-brand-experience,.nm-lab-scene{min-height:650px}.nm-lab-copy{max-width:100%}.nm-lab-copy h5{font-size:40px}.nm-lab-copy p{max-width:90%}
   .nm-lab-food-art,.nm-lab-beauty-art,.nm-lab-tech-panel,.nm-lab-stay,.nm-lab-property,.nm-lab-course,.nm-lab-breathe,.nm-lab-finance{inset:auto 20px 65px 20px;width:auto;height:285px}.nm-lab-tech-panel{height:300px}.nm-lab-tech-panel>div{padding:15px 0}.nm-lab-chart{height:95px}.nm-lab-property{height:310px}.nm-lab-buildings{height:200px}.nm-lab-course{height:300px}.nm-lab-course>div{min-height:220px}.nm-lab-breathe{height:295px}.nm-lab-finance{height:315px}.nm-lab-finance-chart{height:125px}
   .nm-lab-scene--culture>div{grid-template-columns:1fr}.nm-lab-scene--culture aside{min-height:285px}.nm-lab-scene--retail .nm-lab-copy{max-width:100%}.nm-lab-products i{min-height:180px}.nm-lab-products i:nth-child(2){min-height:210px}.nm-brand-preview__footer{align-items:flex-start;flex-direction:column}.nm-brand-preview__swatches{flex-wrap:wrap}
+}
+
+/* Campaign dashboard: every metric is a readable performance ring. */
+.nm-info-board .nm-info-scene--dashboard li i{
+  display:grid;
+  place-items:center;
+  width:56px;
+  height:56px;
+  border:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle closest-side,#101315 74%,transparent 76% 99%),
+    conic-gradient(#e8f45e 0 78%,rgba(232,244,94,.13) 78% 100%);
+  color:#fff;
+  box-shadow:0 0 0 1px rgba(232,244,94,.2);
+  font-size:9px;
+  font-weight:900;
+}
+.nm-info-board .nm-info-scene--dashboard li:nth-child(2) i{
+  background:radial-gradient(circle closest-side,#101315 74%,transparent 76% 99%),conic-gradient(#ff6930 0 62%,rgba(255,105,48,.13) 62% 100%);
+}
+.nm-info-board .nm-info-scene--dashboard li:nth-child(3) i{
+  background:radial-gradient(circle closest-side,#101315 74%,transparent 76% 99%),conic-gradient(#8d43d0 0 54%,rgba(141,67,208,.14) 54% 100%);
+}
+.nm-info-board .nm-info-scene--dashboard li:nth-child(4) i{
+  background:radial-gradient(circle closest-side,#101315 74%,transparent 76% 99%),conic-gradient(#56d4c4 0 74%,rgba(86,212,196,.14) 74% 100%);
+}
+@media(max-width:720px){
+  .nm-info-board .nm-info-scene--dashboard li i{width:38px;height:38px;font-size:7px}
+}
+
+/* Final Arabic type pass: keep the bold character, remove glyph clipping. */
+html[lang="ar"] .nm-showcase :is(.nm-showcase__intro h2,.nm-archive-heading h3,.nm-showcase-cta h3,.nm-brand-lab__copy h3){
+  font-weight:800;
+  line-height:1.24;
+  letter-spacing:-.018em;
+  padding-block:.045em .12em;
+  overflow:visible;
+}
+html[lang="ar"] .nm-case-ui :is(h5,h4){font-weight:800;line-height:1.24;letter-spacing:-.018em;padding-block:.035em .1em;overflow:visible}
+html[lang="ar"] .nm-case-mashhad aside>b{line-height:1.05;padding-block:.06em .16em}
+html[lang="ar"] .nm-brand-preview__mark h4,
+html[lang="ar"] .nm-lab-copy h5,
+html[lang="ar"] .nm-deck-layout .nm-deck-copy>b{line-height:1.26;letter-spacing:-.018em;padding-block:.035em .11em;overflow:visible}
+.nm-case-ui :is(section,div,aside,header,footer){min-width:0}
+
+/* Small identity application strip makes every identity a real mini-system. */
+.nm-identity-board>.nm-identity-apps{position:absolute;z-index:3;inset:auto 6% 6%;display:grid;grid-template-columns:1.2fr .9fr .9fr;gap:7px;width:56%;direction:rtl}
+.nm-identity-board>.nm-identity-apps i{display:grid;place-items:end start;min-height:72px;padding:10px;border:1px solid currentColor;border-radius:10px;background:color-mix(in srgb,currentColor 8%,transparent);font-size:8px;font-weight:800;font-style:normal}
+.nm-identity-board>.nm-identity-apps i:nth-child(2){border-radius:50% 50% 10px 10px}.nm-identity-board>.nm-identity-apps i:nth-child(3){border-radius:10px 40% 10px 10px}
+.nm-identity-board>.nm-identity-palette{top:7%;right:7%;bottom:auto}
+.nm-identity-board>small{bottom:23%}
+
+/* Packaging refinements: keep supporting pieces beside the hero pack, never across it. */
+.nm-pack-stage-art{isolation:isolate}
+.nm-pack-object--sleeve{left:7%;bottom:9%;transform:none}
+.nm-pack-object--cap{left:7%;bottom:9%;transform:none}
+.nm-pack-stage-art--drink{gap:6%}.nm-pack-stage-art--drink .nm-pack-object--can{flex:0 0 auto}
+.nm-pack-object--can.nm-pack-object--tall{height:68%}
+
+/* Deck copy always stays inside its column, including the editorial report. */
+.nm-deck-layout .nm-deck-copy>b{max-width:8ch;font-size:clamp(36px,5.2vw,78px);overflow-wrap:normal;word-break:normal}
+.nm-deck-layout--report .nm-deck-art strong{left:auto;right:7%;top:6%;font-size:clamp(30px,4vw,60px)}
+.nm-deck-layout--proposal .nm-deck-copy>b{max-width:7.5ch}
+.nm-deck-copy p{max-width:22ch}
+
+@media(max-width:720px){
+  .nm-identity-board>.nm-identity-apps{width:64%;grid-template-columns:repeat(3,1fr)}
+  .nm-identity-board>.nm-identity-apps i{min-height:52px;padding:7px;font-size:6px}
+  .nm-identity-board>small{bottom:24%;font-size:12px}
+  .nm-deck-layout .nm-deck-copy>b{font-size:clamp(29px,8vw,44px);line-height:1.27}
 }
 @media(max-width:430px){.nm-industry-grid button>span img{width:40px;height:40px}.nm-lab-scene{padding:24px 18px}.nm-lab-copy h5{font-size:35px}.nm-lab-products{gap:4px}.nm-lab-products i{padding:8px}.nm-brand-browser>header{padding-inline:10px}.nm-brand-browser__logo b{max-width:100px}}
 

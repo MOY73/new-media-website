@@ -14,13 +14,13 @@ html[lang="ar"] :is(.hero-title, h1, .section-title, .sec-title, .cta-title, .ct
 
 html[lang="ar"] .hero-title,
 html[lang="ar"] h1 {
-  line-height: 1.38;
-  padding-block: 0.08em 0.2em;
+  line-height: 1.24;
+  padding-block: 0.05em 0.14em;
 }
 
 html[lang="ar"] :is(.section-title, .sec-title, .cta-title, .cta h2) {
-  line-height: 1.48;
-  padding-block: 0.08em 0.18em;
+  line-height: 1.3;
+  padding-block: 0.05em 0.14em;
 }
 
 html[lang="ar"] :is(.hero-title .line-1, .hero-title .line-2) {
@@ -316,8 +316,8 @@ html.light .service-icon-art img {
 
 @media (max-width: 700px) {
   html[lang="ar"] .hero-title,
-  html[lang="ar"] h1 { line-height: 1.42; }
-  html[lang="ar"] :is(.section-title, .sec-title, .cta-title, .cta h2) { line-height: 1.52; }
+  html[lang="ar"] h1 { line-height: 1.27; }
+  html[lang="ar"] :is(.section-title, .sec-title, .cta-title, .cta h2) { line-height: 1.32; }
   footer,
   .page-footer { width: calc(100% - 1rem); border-radius: 22px; }
 }
@@ -328,6 +328,34 @@ html.light .service-icon-art img {
     letter-spacing: 0.04em;
     padding-inline: 0.65rem;
   }
+}
+
+/*
+ * Arabic display safety net.
+ * Several legacy page styles used Latin poster metrics (line-height below 1),
+ * which clips Arabic dots, hamzas and descenders. Keep the display face bold
+ * and compact, while guaranteeing enough glyph room on every route.
+ */
+html[lang="ar"] :is(h1,h2,h3,h4,h5,.page-title,.hero-title,.section-title,.sec-title,.cta-title) {
+  font-family: 'Alexandria', sans-serif !important;
+  font-weight: 800;
+  letter-spacing: -0.018em;
+  text-transform: none;
+  text-wrap: balance;
+  overflow: visible;
+}
+
+html[lang="ar"] :is(h1,h2,h3,h4,h5) > :is(em,strong,span,.gradient,.accent,.gr,.gradient-text) {
+  line-height: inherit;
+}
+
+html[lang="ar"] :is(.page-title,.section h2,.card-title,.step-title,.work-title) {
+  line-height: 1.34;
+  padding-block: .035em .1em;
+}
+
+html[lang="ar"] :is(.section,.card,.service-card,.step,.work-card,.cta,.hero,.content) {
+  min-width: 0;
 }
 
 /* Complete responsive pass shared by the home, division, legal, and 404 pages. */

@@ -119,11 +119,11 @@
 
   function designFrameMarkup(cardIndex, frameIndex) {
     const identity = [
-      ['نَبْت', 'NABT / BOTANICAL', 'ينمو معك.', 'Grows with you.'],
-      ['مَدى', 'MADA / CULTURE', 'صوتٌ يتّسع.', 'A voice that expands.'],
-      ['سُرى', 'SURA / HOSPITALITY', 'دفءٌ يُرى.', 'Warmth you can see.'],
-      ['أثَر', 'ATHAR / ARCHITECTURE', 'مكانٌ يبقى.', 'A place that remains.'],
-      ['نَوَاة', 'NAWA / TECHNOLOGY', 'من الفكرة يبدأ.', 'It starts with an idea.'],
+      ['نَبْت', 'NABT / BOTANICAL', 'ينمو معك.', 'Grows with you.',['عبوة','متجر','قصة'],['PACK','SHOP','STORY']],
+      ['مَدى', 'MADA / CULTURE', 'صوتٌ يتّسع.', 'A voice that expands.',['غلاف','منصة','صوت'],['COVER','SITE','AUDIO']],
+      ['سُرى', 'SURA / HOSPITALITY', 'دفءٌ يُرى.', 'Warmth you can see.',['ترحيب','حجز','مكان'],['WELCOME','BOOKING','PLACE']],
+      ['أثَر', 'ATHAR / ARCHITECTURE', 'مكانٌ يبقى.', 'A place that remains.',['واجهة','مخطط','لوحة'],['FACADE','PLAN','SIGN']],
+      ['نَوَاة', 'NAWA / TECHNOLOGY', 'من الفكرة يبدأ.', 'It starts with an idea.',['تطبيق','لوحة','نظام'],['APP','DASH','SYSTEM']],
     ];
     const social = [
       [['رَشْف','RASHF'],['',''],['08:00','08:00'],['',''],['قهوة\nبمزاج','COFFEE\nWITH MOOD'],['',''],['↓','↓'],['',''],['كل يوم','EVERY DAY']],
@@ -140,11 +140,11 @@
       { type:'fragrance', label:['سُرى · عطر','SURA · FRAGRANCE'], items:'<i class="nm-pack-object nm-pack-object--perfume"><b>س</b></i><i class="nm-pack-object nm-pack-object--fragrance-box"><b>SURA</b></i><i class="nm-pack-object nm-pack-object--cap"><b>✦</b></i>' },
     ];
     const info = [
-      { title:['كيف تنمو الفكرة؟','How does an idea grow?'], steps:[['نبحث','Research'],['نبني','Build'],['نطلق','Launch'],['نقيس','Measure']] },
-      { title:['رحلة العميل','The customer journey'], steps:[['يرى','See'],['يفهم','Understand'],['يختار','Choose'],['يعود','Return']] },
-      { title:['من الحبة إلى الكوب','From bean to cup'], steps:[['نزرع','Grow'],['نحمّص','Roast'],['نطحن','Grind'],['نصبّ','Pour']] },
-      { title:['نبض الحملة','Campaign pulse'], steps:[['وصول','Reach'],['تفاعل','Engage'],['طلب','Convert'],['ولاء','Retain']] },
-      { title:['خريطة المكان','A map of place'], steps:[['دخول','Enter'],['مسار','Navigate'],['تجربة','Experience'],['ذكرى','Remember']] },
+      { title:['كيف تنمو الفكرة؟','How does an idea grow?'], values:['24%','46%','72%','100%'], steps:[['بحث','Research'],['نموذج','Prototype'],['إطلاق','Launch'],['تحسين','Improve']] },
+      { title:['قمع رحلة العميل','The customer journey funnel'], values:['120K','36K','4.8K','860'], steps:[['وصول','Reach'],['اهتمام','Interest'],['طلب','Lead'],['تحويل','Convert']] },
+      { title:['من الحبة إلى الكوب','From bean to cup'], values:['1650m','198°','18h','32s'], steps:[['المزرعة','Farm'],['التحميص','Roast'],['الاستخلاص','Brew'],['التقديم','Serve']] },
+      { title:['لوحة أداء الحملة','Campaign performance board'], values:['+62%','8.4%','3.1×','74%'], steps:[['الوصول','Reach'],['التفاعل','Engage'],['العائد','Return'],['الولاء','Retain']] },
+      { title:['خريطة تجربة المكان','A map of place'], values:['01','07','12','19'], steps:[['الوصول','Arrival'],['الاكتشاف','Discover'],['التجربة','Experience'],['العودة','Return']] },
     ];
     const decks = [
       { label:'MADAR / 2026', ar:['نرى','الصورة','كاملة.'], en:['SEE','THE WHOLE','PICTURE.'], meta:'STRATEGY · PROFILE · PRESENTATION' },
@@ -156,7 +156,7 @@
 
     if (cardIndex === 0) {
       const item = identity[frameIndex];
-      return `<b>${item[0]}</b><span>${item[1]}</span><div><i></i><i></i><i></i><i></i></div><small data-work-ar="${item[2]}" data-work-en="${item[3]}">${item[2]}</small>`;
+      return `<b>${item[0]}</b><span>${item[1]}</span><div class="nm-identity-palette"><i></i><i></i><i></i><i></i></div><small data-work-ar="${item[2]}" data-work-en="${item[3]}">${item[2]}</small><section class="nm-identity-apps">${item[4].map((label,index)=>`<i data-work-ar="${label}" data-work-en="${item[5][index]}">${label}</i>`).join('')}</section>`;
     }
     if (cardIndex === 1) {
       return social[frameIndex].map(([ar, en]) => `<i data-work-ar="${ar}" data-work-en="${en}">${ar.replace('\n','<br>')}</i>`).join('');
@@ -168,7 +168,7 @@
     if (cardIndex === 3) {
       const item = info[frameIndex];
       const kinds = ['steps','funnel','timeline','dashboard','map'];
-      return `<header><b data-work-ar="${item.title[0]}" data-work-en="${item.title[1]}">${item.title[0]}</b><span>0${frameIndex + 1} / INFO</span></header><section class="nm-info-scene nm-info-scene--${kinds[frameIndex]}"><ol>${item.steps.map((step, index) => `<li><i>0${index + 1}</i><span data-work-ar="${step[0]}" data-work-en="${step[1]}">${step[0]}</span><b>${[74,58,86,68][(index + frameIndex) % 4]}%</b></li>`).join('')}</ol><div class="nm-info-accent"><i></i><i></i><i></i><i></i><i></i></div></section>`;
+      return `<header><b data-work-ar="${item.title[0]}" data-work-en="${item.title[1]}">${item.title[0]}</b><span>0${frameIndex + 1} / INFO</span></header><section class="nm-info-scene nm-info-scene--${kinds[frameIndex]}"><ol>${item.steps.map((step, index) => `<li><i>0${index + 1}</i><span data-work-ar="${step[0]}" data-work-en="${step[1]}">${step[0]}</span><b>${item.values[index]}</b></li>`).join('')}</ol><div class="nm-info-accent"><i></i><i></i><i></i><i></i><i></i></div></section>`;
     }
     const item = decks[frameIndex];
     const deckKinds = ['strategy','profile','pitch','report','proposal'];
@@ -217,12 +217,42 @@
   }
 
   function installWorkRotators() {
-    const contentImages = [
-      ['product-02', 'product-03', 'product-04', 'product-05', 'product-06'],
-      ['space-02', 'space-03', 'space-04', 'space-05', 'space-06'],
-      ['campaign-02', 'campaign-03', 'campaign-04', 'campaign-05', 'campaign-06'],
-      ['ugc-02', 'ugc-03', 'ugc-04', 'ugc-05', 'ugc-06'],
-      ['podcast-02', 'podcast-03', 'podcast-04', 'podcast-05', 'podcast-06'],
+    const contentStories = [
+      [
+        ['product-02','01 / PRODUCT','سُرى · عطر فاخر','ضوء نحتي يقدّم العطر كقطعة تُقتنى.','Sura · Fine fragrance','Sculptural light presenting fragrance as a collectible.','لقطة عطر فاخر بإضاءة تحريرية'],
+        ['product-03','02 / BEAUTY','لُمى · سيروم عناية','ملمس نقي وتفاصيل دقيقة تشرح خفة المنتج.','Luma · Care serum','Clean texture and precise detail communicating lightness.','تصوير سيروم عناية بالبشرة'],
+        ['product-04','03 / FOOD','شَهْد · عسل موسمي','ضوء دافئ يحوّل المكوّن الطبيعي إلى قصة مذاق.','Shahd · Seasonal honey','Warm light turning a natural ingredient into a taste story.','تصوير منتج عسل طبيعي'],
+        ['product-05','04 / TECH','نبراس · منتج تقني','مشهد ليلي جريء يوضّح الشكل والوظيفة والحضور.','Nibras · Technology product','A bold night scene clarifying form, function, and presence.','تصوير منتج تقني ذكي'],
+        ['product-06','05 / PANTRY','نَبْت · منتج طبيعي','تكوين هادئ للعبوة يربط المنتج بمصدره الطبيعي.','Nabt · Natural product','A calm pack shot connecting the product to its natural source.','تصوير عبوة منتج طبيعي'],
+      ],
+      [
+        ['space-02','01 / HOSPITALITY','رِواق · ضيافة هادئة','مدخل معماري يجعل الوصول أول لحظة في التجربة.','Riwaq · Calm hospitality','An architectural entrance making arrival part of the experience.','تصوير مدخل منشأة ضيافة'],
+        ['space-03','02 / DINING','مَجلِس · مطعم معاصر','الإضاءة والخامة تحكيان طابع المكان قبل قائمة الطعام.','Majlis · Contemporary dining','Light and material tell the place story before the menu.','تصوير داخلي لمطعم معاصر'],
+        ['space-04','03 / HOTEL','وِجهة · فندق حضري','خطوط وزوايا حادة تمنح الفندق حضورًا سينمائيًا.','W وجهة · Urban hotel','Strong lines and angles give the hotel a cinematic presence.','تصوير بهو فندق حضري'],
+        ['space-05','04 / WELLNESS','سُكون · مساحة عافية','ضوء طبيعي وتفاصيل صامتة تشرح معنى الراحة.','Sukun · Wellness space','Natural light and quiet detail communicate rest.','تصوير مساحة عافية هادئة'],
+        ['space-06','05 / RESIDENCE','أثَر · سكن صحراوي','الواجهة والمنظر يربطان العمارة بطبيعة الموقع.','Athar · Desert residence','Facade and landscape tie the architecture to its setting.','تصوير مشروع سكني صحراوي'],
+      ],
+      [
+        ['campaign-02','01 / LAUNCH','مِدار · حملة إطلاق','مجسم بصري جريء يصنع أصلًا رئيسيًا لحملة متعددة القنوات.','Madar · Launch campaign','A bold visual object built as the hero asset for many channels.','حملة إطلاق بصرية جريئة'],
+        ['campaign-03','02 / IMPACT','مُكعّب · لحظة توقف','تصادم الماء واللون يحوّل ثانية واحدة إلى صورة لا تُنسى.','Mukab · Stop moment','Water and color turn one second into a memorable key visual.','حملة منتج بمشهد ماء جريء'],
+        ['campaign-04','03 / BEAUTY','لُمى · طاقة اللون','تكوين لوني حاد يربط العبوة بالحركة والحيوية.','Luma · Color energy','A sharp color world connecting packaging with motion and energy.','حملة جمالية لمنتج ملون'],
+        ['campaign-05','04 / PLACE','بَوّابة · حملة وجهة','هندسة ورسالة مباشرة تفتحان فضول الجمهور نحو المكان.','Bawaba · Destination campaign','Geometry and direct messaging build curiosity around a place.','حملة تجارية لوجهة معمارية'],
+        ['campaign-06','05 / CULTURE','نَبْض · حملة ثقافية','عالم تجريدي مرن يعمل كملصق وحركة وافتتاحية.','Nabd · Culture campaign','A flexible abstract world working across posters, motion, and openers.','حملة ثقافية تجريدية'],
+      ],
+      [
+        ['ugc-02','01 / STORY','مذاق البيت · قصة يومية','لقطة قريبة وبسيطة تجعل المنتج جزءًا من روتين حقيقي.','At home · Daily story','A close, simple setup placing the product in a real routine.','إنتاج محتوى منزلي لمنتج ضيافة'],
+        ['ugc-03','02 / REVIEW','لُمى · تجربة عناية','مراجعة عملية توضّح القوام والاستخدام والنتيجة بلا تكلّف.','Luma · Care review','A practical review showing texture, use, and result naturally.','إنتاج مراجعة منتج عناية'],
+        ['ugc-04','03 / FOOD','من المطبخ · وصفة قصيرة','تصوير علوي سريع يحوّل الوصفة إلى خطوات قابلة للحفظ.','From the kitchen · Short recipe','Fast overhead coverage turns a recipe into saveable steps.','تصوير وصفة طعام قصيرة'],
+        ['ugc-05','04 / TECH','جرّبته · مراجعة تقنية','لقطات A-roll وB-roll تشرح الجهاز في أقل من دقيقة.','Tested · Tech review','A-roll and B-roll explain the device in under a minute.','تصوير مراجعة تقنية بالجوال'],
+        ['ugc-06','05 / HOME','تفاصيل · استخدام واقعي','محتوى هادئ يبيّن المنتج داخل بيئته بدل عرضه منفصلًا.','Details · Real use','Quiet content showing a product in context rather than isolation.','إنتاج محتوى واقعي لمنتج منزلي'],
+      ],
+      [
+        ['podcast-02','01 / PODCAST','بين سطرين · حوار عميق','مشهد مظلم وصوت قريب لحلقة تضع الفكرة أولًا.','Between Lines · Deep conversation','An intimate dark set putting the idea first.','استوديو بودكاست حواري'],
+        ['podcast-03','02 / INTERVIEW','دائرة · مقابلة خبراء','تكوين نهاري نظيف يناسب الحوارات المهنية المصوّرة.','Daira · Expert interview','A clean daylight set for filmed professional interviews.','إنتاج مقابلة خبراء'],
+        ['podcast-04','03 / DOCUMENTARY','صوت المكان · تسجيل ميداني','إضاءة درامية ولقطات B-roll تبني حكاية تتجاوز الطاولة.','Voice of Place · Field story','Dramatic light and B-roll build a story beyond the table.','إنتاج بودكاست وثائقي'],
+        ['podcast-05','04 / ROUNDTABLE','المجلس · نقاش جماعي','توزيع صوت وصورة يترك مساحة متساوية لكل ضيف.','The Majlis · Roundtable','Audio and framing give every guest equal room.','تصوير نقاش جماعي'],
+        ['podcast-06','05 / POST','غرفة الصوت · مونتاج الحلقة','مونتاج وصناعة هوية صوتية ونسخ قصيرة للنشر.','Sound Room · Episode post','Editing, sonic identity, and short cutdowns for publishing.','مونتاج ومعالجة بودكاست'],
+      ],
     ];
 
     root.querySelectorAll('.nm-content-case').forEach((card, cardIndex) => {
@@ -231,14 +261,19 @@
       const carousel = document.createElement('div');
       carousel.className = 'nm-work-rotator nm-content-carousel';
       carousel.dataset.autoRotator = '';
-      contentImages[cardIndex].forEach((asset, frameIndex) => {
+      contentStories[cardIndex].forEach((story, frameIndex) => {
         const image = document.createElement('img');
         image.className = `nm-rotator-frame${frameIndex === 0 ? ' is-active' : ''}`;
-        image.src = `/assets/work/content-${asset}.webp`;
-        image.alt = frameIndex === 0 ? original.alt : '';
+        image.src = `/assets/work/content-${story[0]}.webp`;
+        image.alt = story[6];
         image.loading = 'lazy';
         image.decoding = 'async';
         image.setAttribute('aria-hidden', frameIndex === 0 ? 'false' : 'true');
+        image.dataset.metaLabel = story[1];
+        image.dataset.metaArTitle = story[2];
+        image.dataset.metaArDescription = story[3];
+        image.dataset.metaEnTitle = story[4];
+        image.dataset.metaEnDescription = story[5];
         carousel.appendChild(image);
       });
       original.replaceWith(carousel);
@@ -306,6 +341,23 @@
           }
           if (number) number.textContent = `0${current + 1} / 05`;
         }
+        if (rotator.classList.contains('nm-content-carousel')) {
+          const card = rotator.closest('.nm-content-case');
+          const activeFrame = frames[current];
+          const meta = card?.lastElementChild;
+          const label = meta?.querySelector(':scope > span');
+          const title = meta?.querySelector(':scope > h4');
+          const description = meta?.querySelector(':scope > p');
+          if (label) label.textContent = activeFrame.dataset.metaLabel || `0${current + 1}`;
+          if (title && description) {
+            title.dataset.workAr = activeFrame.dataset.metaArTitle;
+            title.dataset.workEn = activeFrame.dataset.metaEnTitle;
+            description.dataset.workAr = activeFrame.dataset.metaArDescription;
+            description.dataset.workEn = activeFrame.dataset.metaEnDescription;
+            title.textContent = language() === 'en' ? activeFrame.dataset.metaEnTitle : activeFrame.dataset.metaArTitle;
+            description.textContent = language() === 'en' ? activeFrame.dataset.metaEnDescription : activeFrame.dataset.metaArDescription;
+          }
+        }
       };
 
       frames.forEach((_, index) => {
@@ -316,6 +368,33 @@
         dots.appendChild(dot);
       });
       rotator.appendChild(dots);
+      const arrows = document.createElement('div');
+      arrows.className = 'nm-rotator-arrows';
+      const previous = document.createElement('button');
+      previous.type = 'button';
+      previous.textContent = '‹';
+      previous.setAttribute('aria-label', language() === 'ar' ? 'النموذج السابق' : 'Previous example');
+      previous.addEventListener('click', (event) => { event.stopPropagation(); show(current - 1); schedule(); });
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.textContent = '›';
+      next.setAttribute('aria-label', language() === 'ar' ? 'النموذج التالي' : 'Next example');
+      next.addEventListener('click', (event) => { event.stopPropagation(); show(current + 1); schedule(); });
+      arrows.append(previous, next);
+      rotator.appendChild(arrows);
+      rotator.tabIndex = 0;
+      rotator.setAttribute('role', 'group');
+      rotator.addEventListener('click', (event) => {
+        if (event.target.closest('button')) return;
+        show(current + 1);
+        schedule();
+      });
+      rotator.addEventListener('keydown', (event) => {
+        if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+        show(current + (event.key === 'ArrowRight' ? 1 : -1));
+        schedule();
+      });
       show(0);
 
       const stop = () => { if (timer) window.clearTimeout(timer); timer = 0; };

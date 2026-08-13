@@ -31,7 +31,7 @@
   function loadShowcaseScript() {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
-      script.src = '/work-showcase.js?v=7';
+      script.src = '/work-showcase.js?v=8';
       script.onload = resolve;
       script.onerror = reject;
       document.body.appendChild(script);

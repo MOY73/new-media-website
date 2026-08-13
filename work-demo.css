@@ -32,4 +32,27 @@ html.light body.nm-demo{background:#efede8}.light .nm-demo-bar{background:rgba(2
 
 @media(max-width:900px){.atlas-hero,.atlas-impact,.sukun-hero,.sukun-booking,.midad-hero,.midad-path,.nibras-hero{grid-template-columns:1fr}.atlas-hero{min-height:700px}.atlas-hero aside{padding-top:50px}.sukun-hero__visual{height:480px}.mashhad-lead{grid-template-columns:1fr}.mashhad-lead__art{min-height:420px}.mashhad-news article,.mashhad-news article:first-child,.mashhad-news article:last-child{grid-column:span 12;border:0;border-bottom:2px solid var(--black)}.nibras-dashboard{transform:none}.nibras-metrics{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:680px){.nm-demo-bar{inset:8px;grid-template-columns:1fr auto;padding:6px}.nm-demo-bar__mark{display:none}.nm-demo-site{padding-top:82px}.nm-demo-footer{flex-direction:column}.atlas-nav div,.sukun-nav div>span,.midad-nav div>span,.nibras-nav div>span{display:none}.atlas-hero{min-height:620px}.atlas-hero h1{font-size:72px}.atlas-services,.sukun-strip,.midad-course-grid{grid-template-columns:1fr}.atlas-services article{min-height:230px;border:0;border-top:1px solid var(--ink)}.atlas-services h2{margin-top:65px}.atlas-impact div{grid-template-columns:1fr}.sukun-hero{min-height:640px}.sukun-hero__visual{height:420px}.sukun-strip article{min-height:auto}.sukun-days{grid-template-columns:repeat(3,1fr)}.mashhad-lead{min-height:580px}.mashhad-lead h1{font-size:80px}.midad-hero{min-height:670px}.midad-orbit{width:95%;margin:auto}.midad-path li{grid-template-columns:34px 1fr}.midad-path li span:last-child{display:none}.nibras-dashboard__grid{grid-template-columns:1fr}.nibras-metrics{grid-template-columns:1fr 1fr}.nibras-close{grid-template-columns:1fr;gap:30px}.nibras-close h2{font-size:58px}}
+
+/* Arabic headlines use Alexandria everywhere, with compact but safe metrics. */
+.nm-demo-site :is(h1,h2,h3,blockquote),
+.nm-demo-site :is(h1,h2,h3,blockquote) *{
+  font-family:"Alexandria",sans-serif;
+}
+.nm-demo-site[dir="rtl"] :is(h1,h2,h3,blockquote){
+  font-weight:800;
+  line-height:1.25;
+  letter-spacing:-.025em;
+  padding-block:.04em .12em;
+  overflow:visible;
+  text-wrap:balance;
+}
+.nm-demo-site[dir="rtl"] :is(.atlas-hero h1,.mashhad-lead h1,.midad-hero h1,.nibras-hero h1){line-height:1.18}
+.nm-demo-site[dir="rtl"] :is(.atlas-impact h2,.midad-path h2,.nibras-close h2,.sukun-booking h2,.sukun-close h2){line-height:1.24}
+.nm-demo-site :is(.atlas-hero,.atlas-impact,.mashhad-lead,.midad-hero,.midad-path,.nibras-hero,.nibras-close)>*{min-width:0}
+
+@media(max-width:680px){
+  .nm-demo-site[dir="rtl"] :is(.atlas-hero h1,.mashhad-lead h1,.midad-hero h1,.nibras-hero h1){font-size:clamp(48px,17vw,72px);line-height:1.2}
+  .nm-demo-site[dir="rtl"] :is(.atlas-impact h2,.midad-path h2,.nibras-close h2,.sukun-booking h2,.sukun-close h2,.mashhad-quote blockquote){font-size:clamp(38px,12vw,58px);line-height:1.26}
+  .mashhad-lead__copy{padding-inline:0}
+}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.atlas-ticker span,.nm-audio-wave i{animation:none!important}}
