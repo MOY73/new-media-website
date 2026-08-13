@@ -8,6 +8,9 @@
 
 const firebaseConfig = Object.freeze({
   apiKey: "AIzaSyCD863vxkq4SnpQ9pQ6t6l7IKC2MD071-s",
+  // Use Firebase's hosted OAuth handler. The custom domain is authorized for
+  // the app, while the Google OAuth client currently redirects through this
+  // standard handler.
   authDomain: "new-media-website-6d275.firebaseapp.com",
   projectId: "new-media-website-6d275",
   storageBucket: "new-media-website-6d275.firebasestorage.app",
