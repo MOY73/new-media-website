@@ -226,7 +226,7 @@
     qs('#userHandle').textContent = `@${user.username}`;
     qs('#userAvatar').textContent = initials(user.name);
     qs('#userRole').textContent = user.role === 'super_admin' ? 'أعلى مدير' : user.role === 'manager' ? 'مدير' : 'موظف';
-    qs('#activityNavItem').hidden = user.role !== 'super_admin';
+    qs('#activityNavItem').hidden = !['super_admin', 'manager'].includes(user.role);
     qs('#viewTitle').textContent = `مرحبًا، ${user.name}`;
 
     const today = new Date(state.data.serverTime || Date.now());
@@ -253,8 +253,8 @@
   function renderActivity() {
     const list = qs('#activityList');
     if (!list) return;
-    if (state.data.user.role !== 'super_admin') {
-      list.replaceChildren(emptyState('هذا السجل متاح لأعلى مدير فقط.'));
+    if (!['super_admin', 'manager'].includes(state.data.user.role)) {
+      list.replaceChildren(emptyState('هذا السجل متاح للمدير وأعلى مدير فقط.'));
       return;
     }
     const roleLabel = (role) => role === 'super_admin' ? 'أعلى مدير' : role === 'manager' ? 'مدير' : 'موظف';
@@ -689,7 +689,19 @@
     not_contacted: 'لم يتم التواصل', no_answer: 'لم يرد', follow_up: 'يحتاج متابعة',
     interested: 'مهتم', not_interested: 'غير مهتم', converted: 'تم التحويل',
   };
-  const TEAM_MEMBERS = ['', 'MOY', 'AK', 'AZOZ', 'EMAD'];
+  function teamMembers() {
+    const members = (state.data?.teamMembers || []).map((member) => String(member.username || '').toUpperCase()).filter(Boolean);
+    return ['', ...new Set(members)];
+  }
+
+  function teamMemberLabels() {
+    const labels = { '': 'غير مسند' };
+    (state.data?.teamMembers || []).forEach((member) => {
+      const username = String(member.username || '').toUpperCase();
+      if (username) labels[username] = `${member.name || username} · ${username}`;
+    });
+    return labels;
+  }
 
   function leadSelect(className, values, selected, labels) {
     const select = element('select', className);
@@ -735,7 +747,9 @@
     const service = element('div', 'lead-service');
     service.append(element('small', '', 'الخدمة المقترحة'), element('p', '', lead.recommended_service));
     const controls = element('div', 'lead-controls');
-    const owner = leadSelect('lead-owner', TEAM_MEMBERS, lead.owner || '', Object.fromEntries(TEAM_MEMBERS.map((item) => [item, item || 'غير مسند'])));
+    const owners = teamMembers();
+    if (lead.owner && !owners.includes(lead.owner)) owners.push(lead.owner);
+    const owner = leadSelect('lead-owner', owners, lead.owner || '', teamMemberLabels());
     const status = leadSelect('lead-state', Object.keys(LEAD_STATUS_META), lead.contact_status, LEAD_STATUS_META);
     const outcome = leadSelect('lead-outcome', Object.keys(LEAD_OUTCOME_META), lead.outcome, LEAD_OUTCOME_META);
     const save = element('button', 'lead-save', 'حفظ الحالة'); save.type = 'button';
@@ -784,6 +798,16 @@
 
   function renderLeads() {
     const allLeads = state.data.leads || [];
+    const categoryOwner = qs('#leadCategoryOwner');
+    if (categoryOwner) {
+      const selectedOwner = categoryOwner.value;
+      categoryOwner.replaceChildren(...teamMembers().map((username) => {
+        const option = element('option', '', username ? teamMemberLabels()[username] : 'اختر المسؤول');
+        option.value = username;
+        option.selected = username === selectedOwner;
+        return option;
+      }));
+    }
     const leadCity = (lead) => lead.city || 'مكة المكرمة';
     const cityLeads = allLeads.filter((lead) => leadCity(lead) === state.leadCity);
     const neighborhoods = [...new Set(cityLeads.map((lead) => lead.neighborhood))].sort((a, b) => a.localeCompare(b, 'ar'));

@@ -13,7 +13,6 @@ const TASK_PRIORITIES = ['low', 'normal', 'high'];
 const APPLICATION_STATUSES = ['new', 'reviewing', 'contacted', 'qualified', 'closed'];
 const LEAD_STATUSES = ['new', 'working', 'contacted', 'interested', 'follow_up', 'not_interested', 'converted'];
 const LEAD_OUTCOMES = ['not_contacted', 'no_answer', 'follow_up', 'interested', 'not_interested', 'converted'];
-const TEAM_USERNAMES = ['MOY', 'AK', 'AZOZ', 'EMAD'];
 const CHAT_GROUPS = ['general', 'digital-presence', 'creative-content', 'brand-identity', 'web-experience', 'growth-performance'];
 const MAX_CHAT_MESSAGES_PER_GROUP = 100;
 const MAX_CHAT_PDF_SIZE = 8 * 1024 * 1024;
@@ -510,7 +509,7 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT id, application_id, original_name, content_type, size_bytes, created_at FROM client_application_files ORDER BY created_at ASC LIMIT 1000'),
     env.DB.prepare('SELECT * FROM business_leads ORDER BY city ASC, priority ASC, score DESC, neighborhood ASC, name ASC LIMIT 5000'),
     env.DB.prepare('SELECT username, name, role, last_seen_at FROM employee_presence WHERE last_seen_at >= ? ORDER BY last_seen_at DESC LIMIT 20').bind(now - 90_000),
-    user.role === 'super_admin'
+    hasRole(user, 'manager')
       ? env.DB.prepare(`SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at
           FROM employee_activity_log
           WHERE action IN ('حذف طلب موقع','إضافة عميل','حذف عميل','حذف مهمة','حذف فرصة','توزيع تصنيف فرص','تحويل فرصة إلى عميل')
@@ -524,6 +523,12 @@ async function getPortalData(env, user) {
   const leads = results[5].results || [];
   const onlineUsers = results[6].results || [];
   const activityLog = results[7].results || [];
+  const authConfig = readAuthConfig(env);
+  const teamMembers = Object.entries(authConfig.users || {}).map(([username, account]) => ({
+    username: String(username).toUpperCase(),
+    name: cleanString(account?.name || username, 60),
+    role: roleForUsername(username),
+  })).sort((a, b) => a.name.localeCompare(b.name, 'ar'));
   const applications = (results[3].results || []).map((application) => ({
     ...application,
     details: safeJsonParse(application.payload_json),
@@ -538,6 +543,7 @@ async function getPortalData(env, user) {
     applications,
     leads,
     onlineUsers,
+    teamMembers,
     activityLog,
     stats: {
       clients: clients.length,
@@ -986,7 +992,7 @@ async function updateBusinessLead(request, env, user, id) {
   const contactStatus = LEAD_STATUSES.includes(payload.contactStatus) ? payload.contactStatus : current.contact_status;
   const outcome = LEAD_OUTCOMES.includes(payload.outcome) ? payload.outcome : current.outcome;
   const requestedOwner = cleanString(payload.owner, 32).toUpperCase();
-  const owner = requestedOwner && TEAM_USERNAMES.includes(requestedOwner) ? requestedOwner : current.owner;
+  const owner = requestedOwner && configuredTeamUsernames(env).includes(requestedOwner) ? requestedOwner : current.owner;
   const notes = payload.notes === undefined ? current.notes : cleanString(payload.notes, 1200);
   const shouldStamp = payload.markContacted === true || ['contacted', 'interested', 'follow_up', 'not_interested'].includes(contactStatus);
   await env.DB.prepare(
@@ -1020,7 +1026,7 @@ async function assignLeadCategory(request, env, user) {
   const city = cleanString(payload.city, 80);
   const category = cleanString(payload.category, 120);
   const owner = cleanString(payload.owner, 32).toUpperCase();
-  if (!city || !category || !TEAM_USERNAMES.includes(owner)) {
+  if (!city || !category || !configuredTeamUsernames(env).includes(owner)) {
     return json({ error: 'اختر التصنيف والمسؤول أولًا.' }, 400);
   }
   const result = await env.DB.prepare(
@@ -1051,7 +1057,7 @@ async function convertBusinessLeadToTask(request, env, user, id) {
   if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
   if (lead.converted_task_id) return json({ ok: true, id: lead.converted_task_id, alreadyConverted: true });
   const requestedOwner = cleanString(payload.owner, 32).toUpperCase();
-  const owner = TEAM_USERNAMES.includes(requestedOwner) ? requestedOwner : (lead.owner || user.username);
+  const owner = configuredTeamUsernames(env).includes(requestedOwner) ? requestedOwner : (lead.owner || user.username);
   const now = Date.now();
   const taskId = crypto.randomUUID();
   await env.DB.batch([
@@ -1074,7 +1080,7 @@ async function convertBusinessLeadToClient(request, env, user, id) {
   if (!lead) return json({ error: 'الفرصة غير موجودة.' }, 404);
   if (lead.converted_client_id) return json({ ok: true, id: lead.converted_client_id, alreadyConverted: true });
   const requestedOwner = cleanString(payload.owner, 32).toUpperCase();
-  const owner = TEAM_USERNAMES.includes(requestedOwner) ? requestedOwner : (lead.owner || user.username);
+  const owner = configuredTeamUsernames(env).includes(requestedOwner) ? requestedOwner : (lead.owner || user.username);
   const now = Date.now();
   const clientId = crypto.randomUUID();
   const contact = [lead.phone, lead.email].filter(Boolean).join(' · ');
@@ -1175,6 +1181,10 @@ function readAuthConfig(env) {
   } catch {
     return { users: {} };
   }
+}
+
+function configuredTeamUsernames(env) {
+  return Object.keys(readAuthConfig(env).users || {}).map((username) => String(username).toUpperCase());
 }
 
 function roleForUsername(username) {

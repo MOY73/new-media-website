@@ -314,33 +314,33 @@ html.light .app-sidebar { background:#fff; }
 .package-card { position:relative; min-height:340px; display:flex; flex-direction:column; padding:1.45rem; overflow:hidden; border:1px solid var(--portal-line); border-radius:19px; background:var(--portal-panel); }
 .package-card::before { position:absolute; right:0; top:0; width:100%; height:3px; content:''; background:linear-gradient(90deg,var(--portal-purple),var(--portal-pink),var(--portal-orange)); }
 .package-card__index { color:var(--portal-faint); font-family:'Alexandria',sans-serif; font-size:9px; letter-spacing:.12em; }
-.package-card h3 { margin:1.6rem 0 .45rem; font-family:'Alexandria',sans-serif; font-size:1.25rem; }
+.package-card h3 { margin:1.6rem 0 .45rem; font-family:'Alexandria',sans-serif; font-size:1.45rem; line-height:1.45; }
 .package-card__price { display:flex; align-items:baseline; gap:.35rem; margin-bottom:1rem; }
 .package-card__price strong { font-family:'Alexandria',sans-serif; font-size:1.9rem; }
-.package-card__price span { color:var(--portal-muted); font-size:10px; }
-.package-card > p { margin:0 0 1rem; color:var(--portal-muted); font-size:12px; line-height:1.7; }
+.package-card__price span { color:var(--portal-muted); font-size:12px; }
+.package-card > p { margin:0 0 1rem; color:var(--portal-muted); font-size:14px; line-height:1.85; }
 .package-card ul { display:flex; flex-direction:column; gap:.48rem; margin:auto 0 0; padding:0; list-style:none; }
-.package-card li { position:relative; padding-right:1rem; color:var(--portal-muted); font-size:11px; }
+.package-card li { position:relative; padding-right:1rem; color:var(--portal-muted); font-size:13px; line-height:1.7; }
 .package-card li::before { position:absolute; right:0; top:.48rem; width:5px; height:5px; border-radius:50%; content:''; background:var(--portal-purple); }
 .pricing-stack { display:flex; flex-direction:column; gap:.85rem; }
 .pricing-block { border:1px solid var(--portal-line); border-radius:17px; overflow:hidden; background:var(--portal-panel); }
 .pricing-block__head { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:1rem; padding:1.2rem 1.3rem; border:0; color:inherit; background:transparent; cursor:pointer; font:inherit; text-align:inherit; }
-.pricing-block__head h3 { margin:0; font-family:'Alexandria',sans-serif; font-size:1rem; }
-.pricing-block__head p { margin:.35rem 0 0; color:var(--portal-muted); font-size:11px; }
+.pricing-block__head h3 { margin:0; font-family:'Alexandria',sans-serif; font-size:1.2rem; }
+.pricing-block__head p { margin:.35rem 0 0; color:var(--portal-muted); font-size:13px; line-height:1.75; }
 .pricing-block__head span { font-size:1.2rem; color:var(--portal-muted); transition:transform .25s; }
 .pricing-block.is-open .pricing-block__head span { transform:rotate(45deg); }
 .pricing-block__body { display:none; padding:0 1.3rem 1.3rem; }
 .pricing-block.is-open .pricing-block__body { display:block; }
 .pricing-table { width:100%; border-collapse:collapse; }
-.pricing-table th,.pricing-table td { padding:.8rem; border-top:1px solid var(--portal-line); text-align:right; font-size:11px; }
+.pricing-table th,.pricing-table td { padding:1rem .85rem; border-top:1px solid var(--portal-line); text-align:right; font-size:13px; line-height:1.65; }
 .pricing-table th { color:var(--portal-faint); font-weight:500; }
 .pricing-table td:last-child { color:var(--portal-green); font-weight:700; white-space:nowrap; }
 .workflow-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.85rem; }
 .workflow-card { min-height:230px; padding:1.3rem; border:1px solid var(--portal-line); border-radius:17px; background:var(--portal-panel); }
 .workflow-card__num { display:grid; width:40px; height:40px; place-items:center; border-radius:12px; color:#fff; background:linear-gradient(135deg,var(--portal-purple),var(--portal-pink)); font-family:'Alexandria',sans-serif; font-size:12px; }
 .workflow-card:nth-child(even) .workflow-card__num { background:linear-gradient(135deg,var(--portal-pink),var(--portal-orange)); }
-.workflow-card h3 { margin:2.3rem 0 .75rem; font-family:'Alexandria',sans-serif; font-size:1rem; }
-.workflow-card p { margin:0; color:var(--portal-muted); font-size:12px; line-height:1.8; }
+.workflow-card h3 { margin:2.3rem 0 .75rem; font-family:'Alexandria',sans-serif; font-size:1.2rem; line-height:1.5; }
+.workflow-card p { margin:0; color:var(--portal-muted); font-size:14px; line-height:1.9; }
 .rules-panel { display:grid; grid-template-columns:.7fr 1.3fr; gap:2rem; margin-top:1rem; padding:2rem; border:1px solid rgba(255,107,16,.2); border-radius:18px; background:linear-gradient(120deg,rgba(255,107,16,.08),rgba(165,21,232,.08)),var(--portal-panel); }
 .rules-panel span { color:var(--portal-orange); font-size:11px; }
 .rules-panel h3 { margin:.5rem 0 0; font-family:'Alexandria',sans-serif; font-size:1.5rem; }
@@ -353,10 +353,10 @@ html.light .app-sidebar { background:#fff; }
 .service-card__top span { color:var(--portal-orange); font-family:'Alexandria',sans-serif; font-size:9px; letter-spacing:.14em; }
 .service-card__top i { width:42px; height:4px; border-radius:4px; background:linear-gradient(90deg,var(--portal-purple),var(--portal-orange)); }
 .service-card h3 { margin:1.8rem 0 .65rem; font-family:'Alexandria',sans-serif; font-size:1.35rem; }
-.service-card > p { margin:0 0 1.2rem; color:var(--portal-muted); line-height:1.8; }
+.service-card > p { margin:0 0 1.2rem; color:var(--portal-muted); font-size:14px; line-height:1.9; }
 .service-card__columns { display:grid; grid-template-columns:1fr 1fr; gap:1rem; padding-top:1rem; border-top:1px solid var(--portal-line); }
-.service-card__columns strong { display:block; margin-bottom:.55rem; color:var(--portal-faint); font-size:9px; }
-.service-card__columns span { display:block; margin:.32rem 0; color:var(--portal-muted); font-size:10px; }
+.service-card__columns strong { display:block; margin-bottom:.65rem; color:var(--portal-faint); font-size:12px; }
+.service-card__columns span { display:block; margin:.42rem 0; color:var(--portal-muted); font-size:13px; line-height:1.65; }
 
 /* Makkah prospecting */
 .leads-kpis { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.8rem; margin-bottom:1rem; }

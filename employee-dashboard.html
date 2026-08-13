@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/site-fixes.css?v=41">
-<link rel="stylesheet" href="/employee-portal.css?v=36">
-<script src="/employee-portal.js?v=35" defer></script>
+<link rel="stylesheet" href="/employee-portal.css?v=37">
+<script src="/employee-portal.js?v=36" defer></script>
 </head>
 <body class="portal-body portal-dashboard-page" data-portal-page="dashboard">
   <div class="app-shell">
@@ -116,7 +116,7 @@
             <label><span>الأولوية</span><select id="leadPriority"><option value="all">كل الأولويات</option><option value="1">P1 أولوية أولى</option><option value="2">P2 أولوية ثانية</option><option value="3">P3 أولوية ثالثة</option></select></label>
             <label><span>الحالة</span><select id="leadStatus"><option value="all">كل الحالات</option><option value="new">جديد</option><option value="working">قيد العمل</option><option value="contacted">تم التواصل</option><option value="interested">مهتم</option><option value="follow_up">متابعة</option><option value="not_interested">غير مهتم</option><option value="converted">تم التحويل</option></select></label>
           </div>
-          <div class="lead-assignment" id="leadAssignment"><div><span>توزيع التصنيف الحالي</span><p>عيّن كل فرص التصنيف المختار في المدينة لمسؤول واحد.</p></div><select id="leadCategoryOwner"><option value="">اختر المسؤول</option><option value="MOY">MOY</option><option value="AK">AK</option><option value="AZOZ">AZOZ</option><option value="EMAD">EMAD</option></select><button class="portal-primary-button portal-primary-button--small" id="assignLeadCategory" type="button"><span>توزيع الفرص</span></button></div>
+          <div class="lead-assignment" id="leadAssignment"><div><span>توزيع التصنيف الحالي</span><p>عيّن كل فرص التصنيف المختار في المدينة لمسؤول واحد.</p></div><select id="leadCategoryOwner"><option value="">اختر المسؤول</option></select><button class="portal-primary-button portal-primary-button--small" id="assignLeadCategory" type="button"><span>توزيع الفرص</span></button></div>
           <div class="leads-grid" id="leadsGrid"></div>
           <div class="leads-pagination"><span id="leadsVisibleCount"></span><div id="leadPagination" aria-label="صفحات الفرص"></div></div>
         </section>
@@ -158,7 +158,7 @@
         </section>
 
         <section class="app-view" data-view-panel="activity">
-          <div class="section-intro"><div><span>SUPER ADMIN / AUDIT LOG</span><h2>سجل الإجراءات المهمة</h2><p>يظهر لأعلى مدير فقط: الحذف، إضافة العملاء، التحويل إلى عميل والتوزيع الجماعي للفرص.</p></div></div>
+          <div class="section-intro"><div><span>MANAGEMENT / AUDIT LOG</span><h2>سجل الإجراءات المهمة</h2><p>يظهر للمدير وأعلى مدير: الحذف، إضافة العملاء، التحويل إلى عميل والتوزيع الجماعي للفرص.</p></div></div>
           <div class="activity-list" id="activityList"></div>
         </section>
       </main>
