@@ -106,6 +106,7 @@
         <section class="app-view" data-view-panel="clients">
           <div class="section-intro"><div><span>CRM / PIPELINE</span><h2>العملاء والفرص</h2><p>حرّك كل فرصة من أول تواصل حتى التشغيل الفعلي، وافتح التفاصيل لمعرفة مصدرها وبياناتها الكاملة.</p></div><button class="portal-primary-button portal-primary-button--small client-add-button" id="addClientFromView" type="button"><span>إضافة عميل</span><b>+</b></button></div>
           <div class="pipeline-board" id="pipelineBoard"></div>
+          <section class="declined-pipeline"><div class="card-heading"><div><span>DECLINED / ARCHIVE</span><h3>لم يوافق</h3></div><em id="declinedCount">0 فرصة</em></div><p>الفرص التي لم توافق على العرض تبقى محفوظة هنا ويمكن إعادتها للمسار في أي وقت.</p><div class="declined-clients" id="declinedClients"></div></section>
         </section>
 
         <section class="app-view" data-view-panel="clientspace">
@@ -154,7 +155,7 @@
         </section>
 
         <section class="app-view" data-view-panel="packages">
-          <div class="section-intro"><div><span>CLIENT PACKAGES</span><h2>الباقات المعتمدة</h2><p>النسخة المختصرة التي يحتاجها الفريق عند التأهيل والعرض.</p></div></div>
+          <div class="section-intro"><div><span>LIVE CLIENT PACKAGES</span><h2>الباقات المعتمدة</h2><p>مصدر واحد للباقات. أي تعديل هنا يظهر تلقائيًا في قسم الباقات لدى العملاء.</p></div><button class="portal-primary-button portal-primary-button--small client-add-button" id="addPackageButton" type="button"><span>باقة جديدة</span><b>+</b></button></div>
           <div class="package-grid" id="packageGrid"></div>
         </section>
 
@@ -192,12 +193,32 @@
     <section class="portal-modal__card" role="dialog" aria-modal="true" aria-labelledby="clientModalTitle">
       <div class="modal-head"><div><span>NEW OPPORTUNITY</span><h2 id="clientModalTitle">إضافة عميل</h2></div><button type="button" data-close-modal="clientModal" aria-label="إغلاق">×</button></div>
       <form class="portal-form modal-form" id="clientForm">
+        <input name="clientId" type="hidden">
         <div class="form-grid"><label>اسم العميل<input name="name" maxlength="120" required></label><label>التواصل<input name="contact" maxlength="160" placeholder="رقم أو بريد"></label></div>
-        <div class="form-grid"><label>الخدمة<input name="service" maxlength="160" placeholder="الباقة أو الخدمة"></label><label>القيمة المتوقعة<input name="value" type="number" min="0" max="1000000000" step="1" placeholder="0"></label></div>
-        <div class="form-grid"><label>المرحلة<select name="status"><option value="lead">فرصة جديدة</option><option value="discovery">اكتشاف</option><option value="proposal">عرض مرسل</option><option value="won">تم الإغلاق</option><option value="active">عميل نشط</option></select></label><label>المسؤول<input name="owner" maxlength="60" placeholder="اسم المسؤول"></label></div>
-        <label>الخطوة التالية<textarea name="nextStep" maxlength="300" rows="3" placeholder="مكالمة، عرض، متابعة..."></textarea></label>
+        <div class="form-grid"><label>الخدمة أو الباقة<input name="service" list="packageOptions" maxlength="160" placeholder="اختر باقة أو اكتب خدمة"></label><label>القيمة المتوقعة<input name="value" type="number" min="0" max="1000000000" step="1" placeholder="0"></label></div>
+        <datalist id="packageOptions"></datalist>
+        <div class="form-grid"><label>المرحلة<select name="status"><option value="lead">فرصة جديدة</option><option value="discovery">اكتشاف الاحتياج</option><option value="proposal">عرض مقترح</option><option value="won">وافق</option><option value="active">تحت العمل</option><option value="retained">عميل نشط أو دائم</option><option value="closed">تم إغلاق الصفقة</option><option value="lost">لم يوافق</option></select></label><label>المسؤول<input name="owner" maxlength="60" placeholder="اسم المسؤول"></label></div>
+        <label>الخطوة التالية أو سبب الرفض<textarea name="nextStep" maxlength="300" rows="3" placeholder="مكالمة، عرض، متابعة أو سبب عدم الموافقة"></textarea></label>
         <p class="form-message" id="clientFormMessage" role="alert"></p>
         <button class="portal-primary-button" type="submit"><span>حفظ في اللوحة</span></button>
+      </form>
+    </section>
+  </div>
+
+  <div class="portal-modal" id="packageModal" aria-hidden="true">
+    <div class="portal-modal__backdrop" data-close-modal="packageModal"></div>
+    <section class="portal-modal__card" role="dialog" aria-modal="true" aria-labelledby="packageModalTitle">
+      <div class="modal-head"><div><span>PACKAGE MANAGER</span><h2 id="packageModalTitle">إضافة باقة</h2></div><button type="button" data-close-modal="packageModal" aria-label="إغلاق">×</button></div>
+      <form class="portal-form modal-form" id="packageForm">
+        <input name="packageId" type="hidden">
+        <div class="form-grid"><label>اسم الباقة<input name="name" maxlength="120" required></label><label>الفئة<select name="category"><option>إدارة وحضور</option><option>قطاعية</option><option>إنتاج إبداعي</option><option>تصميم</option><option>هوية</option><option>مواقع</option><option>شراكة</option></select></label></div>
+        <div class="form-grid"><label>الفئة المستهدفة<input name="audience" maxlength="120" placeholder="مطاعم، شركات، فنادق..."></label><label>ترتيب العرض<input name="sortOrder" type="number" min="0" max="10000" value="100"></label></div>
+        <div class="form-grid"><label>السعر<input name="price" type="number" min="0" max="1000000000" required></label><label>الدورية<select name="cadence"><option>شهريًا</option><option>للمشروع</option><option>للدفعة</option><option>سنويًا</option></select></label></div>
+        <label>وصف الباقة<textarea name="summary" maxlength="600" rows="3" required></textarea></label>
+        <label>المميزات، ميزة في كل سطر<textarea name="facts" maxlength="1800" rows="7" placeholder="جلسة تصوير\n8 مقاطع قصيرة\nتقرير شهري"></textarea></label>
+        <label class="package-active-toggle"><input name="isActive" type="checkbox" checked><span>إظهار الباقة للعملاء</span></label>
+        <p class="form-message" id="packageFormMessage" role="alert"></p>
+        <button class="portal-primary-button" type="submit"><span id="packageSubmitLabel">حفظ الباقة</span></button>
       </form>
     </section>
   </div>

@@ -115,13 +115,16 @@
     username?.focus();
   }
 
-  const STATUS_ORDER = ['lead', 'discovery', 'proposal', 'won', 'active'];
+  const STATUS_ORDER = ['lead', 'discovery', 'proposal', 'won', 'active', 'retained', 'closed'];
   const STATUS_META = {
     lead: { label: 'فرصة جديدة', prev: null, next: 'discovery' },
-    discovery: { label: 'مرحلة الاكتشاف', prev: 'lead', next: 'proposal' },
-    proposal: { label: 'عرض مرسل', prev: 'discovery', next: 'won' },
-    won: { label: 'تم الإغلاق', prev: 'proposal', next: 'active' },
-    active: { label: 'عميل نشط', prev: 'won', next: null },
+    discovery: { label: 'اكتشاف الاحتياج', prev: 'lead', next: 'proposal' },
+    proposal: { label: 'عرض مقترح', prev: 'discovery', next: 'won' },
+    won: { label: 'وافق', prev: 'proposal', next: 'active' },
+    active: { label: 'تحت العمل', prev: 'won', next: 'retained' },
+    retained: { label: 'عميل نشط أو دائم', prev: 'active', next: 'closed' },
+    closed: { label: 'تم إغلاق الصفقة', prev: 'retained', next: null },
+    lost: { label: 'لم يوافق', prev: 'proposal', next: null },
   };
   const VIEW_TITLES = {
     applications: 'طلبات التقديم عبر الموقع',
@@ -229,6 +232,7 @@
     qs('#userAvatar').textContent = initials(user.name);
     qs('#userRole').textContent = user.role === 'super_admin' ? 'أعلى مدير' : user.role === 'manager' ? 'مدير' : 'موظف';
     qs('#activityNavItem').hidden = !['super_admin', 'manager'].includes(user.role);
+    if (qs('#addPackageButton')) qs('#addPackageButton').hidden = !['super_admin', 'manager'].includes(user.role);
     qs('#viewTitle').textContent = `مرحبًا، ${user.name}`;
 
     const today = new Date(state.data.serverTime || Date.now());
@@ -274,13 +278,13 @@
 
   function renderMetrics() {
     const stats = state.data.stats;
-    const won = state.data.clients.filter((client) => client.status === 'won').length;
     const metrics = [
-      ['إجمالي العملاء', formatNumber.format(stats.clients), 'كل السجلات المشتركة'],
-      ['الفرص المفتوحة', formatNumber.format(stats.opportunities), 'تحتاج متابعة أو عرض'],
-      ['قيمة المسار', formatMoney.format(stats.pipelineValue), 'إجمالي القيمة المتوقعة'],
-      ['العملاء النشطون', formatNumber.format(stats.active), 'في مرحلة التنفيذ'],
-      ['إغلاقات ناجحة', formatNumber.format(won), 'جاهزة للتهيئة'],
+      ['إجمالي العملاء', formatNumber.format(stats.clients), 'كل من وافق أو بدأ العمل معنا'],
+      ['فرص الاستهداف', formatNumber.format(stats.targetingOpportunities || 0), 'المنشآت المتاحة في قاعدة الاستهداف'],
+      ['الفرص المفتوحة', formatNumber.format(stats.opportunities), 'فرص لم توقّع معنا حتى الآن'],
+      ['قيمة الفرص المتوقعة', formatMoney.format(stats.pipelineValue), 'إجمالي قيمة العروض والفرص المفتوحة'],
+      ['العملاء النشطون', formatNumber.format(stats.active), 'وافقوا ويجري العمل معهم'],
+      ['قيمة العملاء النشطين', formatMoney.format(stats.activeClientValue || 0), 'القيمة المسجلة للعملاء الموقعين'],
     ];
     const cards = metrics.map(([label, value, hint]) => {
       const card = element('article', 'metric-card');
@@ -460,6 +464,24 @@
     finally { button.disabled = false; }
   }
 
+  function openClientEditor(client = null) {
+    const form = qs('#clientForm');
+    if (!form) return;
+    form.reset();
+    form.elements.clientId.value = client?.id || '';
+    form.elements.name.value = client?.name || '';
+    form.elements.contact.value = client?.contact || '';
+    form.elements.service.value = client?.service || '';
+    form.elements.value.value = Number(client?.value || 0);
+    form.elements.status.value = client?.status || 'lead';
+    form.elements.owner.value = client?.owner || '';
+    form.elements.nextStep.value = client?.next_step || '';
+    qs('#clientModalTitle').textContent = client ? `تحرير ${client.name}` : 'إضافة فرصة أو عميل';
+    qs('#clientForm button[type="submit"] span').textContent = client ? 'حفظ التعديلات' : 'حفظ في اللوحة';
+    setMessage(qs('#clientFormMessage'), '');
+    openModal('clientModal');
+  }
+
   function clientCard(client) {
     const card = element('article', 'client-card');
     const top = element('div', 'client-card__top');
@@ -516,6 +538,7 @@
     owner.append(element('i', '', initials(client.owner || client.created_by)), document.createTextNode(client.owner || client.created_by || 'الفريق'));
     actions.append(owner);
     const buttons = element('div', 'client-card__action-buttons');
+    const edit = element('button', 'client-edit', 'تحرير'); edit.type = 'button'; edit.addEventListener('click', () => openClientEditor(client)); buttons.append(edit);
     const reveal = element('button', 'client-more', 'المزيد'); reveal.type = 'button'; reveal.setAttribute('aria-expanded', 'false');
     reveal.addEventListener('click', () => { const open = card.classList.toggle('is-expanded'); reveal.textContent = open ? 'إخفاء التفاصيل' : 'المزيد'; reveal.setAttribute('aria-expanded', String(open)); });
     buttons.append(reveal);
@@ -523,6 +546,7 @@
     if (previous) { const back = element('button', 'client-move-back', `رجوع إلى ${STATUS_META[previous].label}`); back.type = 'button'; back.addEventListener('click', () => moveClient(client, previous, back)); buttons.append(back); }
     const next = STATUS_META[client.status]?.next;
     if (next) { const move = element('button', 'client-move-next', `نقل إلى ${STATUS_META[next].label}`); move.type = 'button'; move.addEventListener('click', () => moveClient(client, next, move)); buttons.append(move); }
+    if (['lead','discovery','proposal'].includes(client.status)) { const lost = element('button', 'client-mark-lost', 'لم يوافق'); lost.type = 'button'; lost.addEventListener('click', () => moveClient(client, 'lost', lost)); buttons.append(lost); }
     const remove = element('button', 'client-delete', 'حذف');
     remove.type = 'button';
     remove.addEventListener('click', async () => {
@@ -552,6 +576,9 @@
       return column;
     });
     qs('#pipelineBoard').replaceChildren(...columns);
+    const declined = state.data.clients.filter((client) => client.status === 'lost');
+    qs('#declinedCount').textContent = `${formatNumber.format(declined.length)} فرصة`;
+    qs('#declinedClients').replaceChildren(...(declined.length ? declined.map(clientCard) : [emptyState('لا توجد فرص غير موافقة حاليًا.') ]));
   }
 
   const APPLICATION_STATUS = {
@@ -740,20 +767,48 @@
     const empty=element('option','','بدون مشروع محدد');empty.value='';select.replaceChildren(empty,...options);
   }
 
+  function openPackageEditor(item = null) {
+    const form = qs('#packageForm'); if (!form) return;
+    form.reset();
+    form.elements.packageId.value = item?.id || '';
+    form.elements.name.value = item?.name || '';
+    form.elements.audience.value = item?.audience || '';
+    form.elements.category.value = item?.category || 'إدارة وحضور';
+    form.elements.price.value = Number(item?.price || 0);
+    form.elements.cadence.value = item?.cadence || 'شهريًا';
+    form.elements.summary.value = item?.summary || '';
+    form.elements.facts.value = (item?.facts || []).join('\n');
+    form.elements.isActive.checked = item ? Boolean(Number(item.is_active)) : true;
+    form.elements.sortOrder.value = Number(item?.sort_order ?? 100);
+    qs('#packageModalTitle').textContent = item ? `تحرير ${item.name}` : 'إضافة باقة';
+    qs('#packageSubmitLabel').textContent = item ? 'حفظ التعديلات' : 'حفظ الباقة';
+    setMessage(qs('#packageFormMessage'), '');
+    openModal('packageModal');
+  }
+
   function renderPackages() {
-    const cards = state.data.knowledge.packages.map((item, index) => {
-      const card = element('article', 'package-card');
-      card.append(element('span', 'package-card__index', `PACKAGE / ${String(index + 1).padStart(2, '0')}`));
-      card.append(element('h3', '', item.name));
+    const packages = state.data.packages || [];
+    const canManage = ['super_admin','manager'].includes(state.data.user.role);
+    const cards = packages.map((item, index) => {
+      const card = element('article', `package-card${Number(item.is_active) ? '' : ' is-inactive'}`);
+      const kicker = element('span', 'package-card__index', `PACKAGE / ${String(index + 1).padStart(2, '0')} · ${item.category || 'عام'}`);
+      card.append(kicker, element('h3', '', item.name), element('small', 'package-card__audience', item.audience || 'كل القطاعات'));
       const price = element('div', 'package-card__price');
-      price.append(element('strong', '', formatNumber.format(item.price)), element('span', '', `ر.س / ${item.cadence}`));
+      price.append(element('strong', '', formatNumber.format(Number(item.price || 0))), element('span', '', `ر.س / ${item.cadence}`));
       card.append(price, element('p', '', item.summary));
-      const facts = element('ul');
-      item.facts.forEach((fact) => facts.append(element('li', '', fact)));
-      card.append(facts);
+      const facts = element('ul'); (item.facts || []).forEach((fact) => facts.append(element('li', '', fact))); card.append(facts);
+      if (canManage) {
+        const actions = element('div', 'package-card__actions');
+        const edit = element('button', '', 'تحرير'); edit.type = 'button'; edit.addEventListener('click', () => openPackageEditor(item)); actions.append(edit);
+        if (Number(item.is_active)) { const hide = element('button', 'is-danger', 'إخفاء عن العملاء'); hide.type = 'button'; hide.addEventListener('click', async()=>{if(!window.confirm(`إخفاء باقة «${item.name}» عن العملاء؟`))return;hide.disabled=true;try{await api(`/api/employee/packages/${encodeURIComponent(item.id)}`,{method:'DELETE'});await refreshData({quiet:true});showToast('تم إخفاء الباقة عن العملاء.');}catch(error){showToast(error.message,true);}finally{hide.disabled=false;}}); actions.append(hide); }
+        card.append(actions);
+      }
+      if (!Number(item.is_active)) card.append(element('em','package-card__hidden','مخفية عن العملاء'));
       return card;
     });
-    qs('#packageGrid').replaceChildren(...cards);
+    qs('#packageGrid').replaceChildren(...(cards.length ? cards : [emptyState('لا توجد باقات بعد.') ]));
+    const options = qs('#packageOptions');
+    if (options) options.replaceChildren(...packages.filter((item)=>Number(item.is_active)).map((item)=>{const option=element('option');option.value=item.name;option.label=`${formatNumber.format(Number(item.price||0))} ر.س / ${item.cadence}`;return option;}));
   }
 
   function renderPricing() {
@@ -1051,8 +1106,8 @@
     renderClientWorkspace();
     renderLeads();
     renderActivity();
+    renderPackages();
     if (!state.staticRendered) {
-      renderPackages();
       renderPricing();
       renderWorkflow();
       renderServices();
@@ -1107,8 +1162,9 @@
     qsa('[data-jump-view]').forEach((button) => button.addEventListener('click', () => switchView(button.dataset.jumpView)));
     qs('#sidebarOpen')?.addEventListener('click', () => qs('#appSidebar')?.classList.add('is-open'));
     qs('#sidebarClose')?.addEventListener('click', () => qs('#appSidebar')?.classList.remove('is-open'));
-    qs('#quickAddClient')?.addEventListener('click', () => openModal('clientModal'));
-    qs('#addClientFromView')?.addEventListener('click', () => openModal('clientModal'));
+    qs('#quickAddClient')?.addEventListener('click', () => openClientEditor());
+    qs('#addClientFromView')?.addEventListener('click', () => openClientEditor());
+    qs('#addPackageButton')?.addEventListener('click', () => openPackageEditor());
     qs('#quickAddTask')?.addEventListener('click', () => openModal('taskModal'));
     qs('#openClientProjectModal')?.addEventListener('click', () => openModal('clientProjectModal'));
     qs('#openClientDeliveryModal')?.addEventListener('click', () => openModal('clientDeliveryModal'));
@@ -1156,19 +1212,38 @@
       const message = qs('#clientFormMessage');
       const button = qs('button[type="submit"]', form);
       button.disabled = true;
-      setMessage(message, 'جاري حفظ العميل...');
+      const payload = formPayload(form);
+      const clientId = payload.clientId;
+      delete payload.clientId;
+      setMessage(message, clientId ? 'جاري حفظ التعديلات...' : 'جاري حفظ العميل...');
       try {
-        await api('/api/employee/clients', { method: 'POST', body: JSON.stringify(formPayload(form)) });
+        await api(clientId ? `/api/employee/clients/${encodeURIComponent(clientId)}` : '/api/employee/clients', { method: clientId ? 'PATCH' : 'POST', body: JSON.stringify(payload) });
         form.reset();
         setMessage(message, '');
         closeModal('clientModal');
         await refreshData({ quiet: true });
-        showToast('تمت إضافة العميل إلى اللوحة المشتركة.');
+        showToast(clientId ? 'تم تحديث بيانات العميل.' : 'تمت إضافة العميل إلى اللوحة المشتركة.');
       } catch (error) {
         setMessage(message, error.message, true);
       } finally {
         button.disabled = false;
       }
+    });
+
+    qs('#packageForm')?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const form = event.currentTarget, message = qs('#packageFormMessage'), button = qs('button[type="submit"]', form);
+      button.disabled = true;
+      const payload = formPayload(form), packageId = payload.packageId; delete payload.packageId;
+      payload.isActive = form.elements.isActive.checked;
+      payload.facts = String(payload.facts || '').split(/\r?\n/).map((fact)=>fact.trim()).filter(Boolean);
+      setMessage(message, packageId ? 'جاري تحديث الباقة...' : 'جاري إضافة الباقة...');
+      try {
+        await api(packageId ? `/api/employee/packages/${encodeURIComponent(packageId)}` : '/api/employee/packages', { method: packageId ? 'PATCH' : 'POST', body: JSON.stringify(payload) });
+        form.reset(); setMessage(message,''); closeModal('packageModal'); await refreshData({quiet:true});
+        showToast(packageId ? 'تم تحديث الباقة لدى الموظفين والعملاء.' : 'تمت إضافة الباقة وظهرت للعملاء.');
+      } catch(error) { setMessage(message,error.message,true); }
+      finally { button.disabled=false; }
     });
 
     qs('#taskForm')?.addEventListener('submit', async (event) => {

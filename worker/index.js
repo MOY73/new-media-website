@@ -12,7 +12,7 @@ const CONTACT_APPLICATION_HTML = '';
 const CLIENT_SESSION_COOKIE = 'nm_client_session';
 const CLIENT_SESSION_MAX_AGE = 60 * 60 * 24 * 7;
 
-const CLIENT_STATUSES = ['lead', 'discovery', 'proposal', 'won', 'active'];
+const CLIENT_STATUSES = ['lead', 'discovery', 'proposal', 'won', 'active', 'retained', 'closed', 'lost'];
 const TASK_STATUSES = ['open', 'done'];
 const TASK_PRIORITIES = ['low', 'normal', 'high'];
 const APPLICATION_STATUSES = ['new', 'reviewing', 'contacted', 'qualified', 'closed'];
@@ -27,6 +27,18 @@ const MAX_APPLICATION_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_FILE_EXTENSIONS = new Set(['png','jpg','jpeg','webp','pdf','doc','docx','ppt','pptx','xls','xlsx','zip']);
 const CLIENT_PROJECT_STATUSES = ['new','scheduled','in_progress','waiting_client','completed','cancelled'];
 const CLIENT_REQUEST_STATUSES = ['new','reviewing','in_progress','waiting_client','completed','cancelled'];
+const DEFAULT_SERVICE_PACKAGES = [
+  ['pkg-presence','باقة الحضور','الأنشطة الناشئة','إدارة وحضور',999,'شهريًا','بداية مرتبة وحضور ثابت على منصة واحدة',['منصة واحدة','13 مادة شهريًا','6 تصاميم','6 قصص','تقرير شهري مختصر'],10],
+  ['pkg-restaurant','باقة نمو المطاعم','المطاعم والمقاهي','قطاعية',3499,'شهريًا','محتوى شهري يبرز التجربة والمنيو ويحوّل المشاهدة إلى زيارة',['جلستا تصوير','8 فيديوهات قصيرة','12 تصميمًا وقصة','إدارة منصتين','حملة محلية','تقرير حجوزات وتفاعل'],20],
+  ['pkg-hotel','باقة حضور الفنادق','الفنادق والضيافة','قطاعية',6999,'شهريًا','منظومة محتوى وحملات ترفع الحجوزات المباشرة وتعرض تجربة الضيف',['تصوير شهري','12 فيديو قصيرًا','محتوى عربي وإنجليزي','إدارة 3 منصات','حملات حجز','تقرير إشغال وتحويل'],30],
+  ['pkg-company','باقة حضور الشركات','الشركات والاستشارات','قطاعية',4999,'شهريًا','حضور مهني يبني الثقة ويشرح الخبرة ويولد فرصًا مؤهلة',['لينكدإن ومنصة إضافية','خطة قيادة فكرية','12 مادة احترافية','4 فيديوهات خبراء','صفحة التقاط عملاء','تقرير فرص شهرية'],40],
+  ['pkg-video','باقة استوديو المقاطع','كل القطاعات','إنتاج إبداعي',2999,'للدفعة','دفعة مقاطع قصيرة جاهزة للنشر تحافظ على شكل موحد للعلامة',['8 مقاطع قصيرة','جلسة تصوير 4 ساعات','كتابة الأفكار','مونتاج وترجمة','مقاسات المنصات','جولتا تعديل'],50],
+  ['pkg-design','باقة التصميم الشهري','كل القطاعات','تصميم',1999,'شهريًا','نظام تصميم مرن يغطي الحملات والمحتوى اليومي',['12 تصميمًا','8 قصص','قالبا حملة','تكييف المقاسات','ملفات جاهزة للنشر','جولتا تعديل'],60],
+  ['pkg-brand','باقة الهوية البصرية','المشاريع الجديدة','هوية',3999,'للمشروع','هوية متماسكة تمنح المشروع شكلًا واضحًا من أول ظهور',['شعار ونظام بصري','ألوان وخطوط','دليل استخدام','6 تطبيقات','قوالب سوشيال','ملفات مفتوحة'],70],
+  ['pkg-landing','باقة صفحة الهبوط','الحملات والخدمات','مواقع',2499,'للمشروع','صفحة مركزة تقود الزائر إلى تواصل أو حجز أو شراء',['تصميم مخصص','كتابة حتى 700 كلمة','متجاوبة للجوال','نموذج وواتساب','ربط التحليلات','جولتا تعديل'],80],
+  ['pkg-website','باقة الموقع المؤسسي','الشركات والفنادق','مواقع',5999,'للمشروع','موقع احترافي يشرح الخدمات ويبني الثقة ويستقبل العملاء',['حتى 7 صفحات','عربي أو إنجليزي','تصميم متجاوب','تهيئة بحث أساسية','نماذج وتحليلات','تدريب بعد التسليم'],90],
+  ['pkg-partner','باقة الشريك التسويقي','العلامات النامية','شراكة',9999,'شهريًا','فريق تسويق خارجي يقود الاستراتيجية والإنتاج والإعلان',['4 منصات','42 مادة','جلستا تصوير','إعلانات على 3 قنوات','إدارة حساب','اجتماع أسبوعي'],100]
+];
 
 const SCHEMA_STATEMENTS = [
   `CREATE TABLE IF NOT EXISTS employee_messages (
@@ -50,6 +62,7 @@ const SCHEMA_STATEMENTS = [
     service TEXT NOT NULL DEFAULT '',
     value REAL NOT NULL DEFAULT 0,
     status TEXT NOT NULL DEFAULT 'lead' CHECK(status IN ('lead','discovery','proposal','won','active')),
+    pipeline_stage TEXT NOT NULL DEFAULT 'lead',
     next_step TEXT NOT NULL DEFAULT '',
     owner TEXT NOT NULL DEFAULT '',
     created_by TEXT NOT NULL,
@@ -58,6 +71,23 @@ const SCHEMA_STATEMENTS = [
   )`,
   `CREATE INDEX IF NOT EXISTS idx_employee_clients_status_updated
    ON employee_clients(status, updated_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS service_packages (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    audience TEXT NOT NULL DEFAULT '',
+    category TEXT NOT NULL DEFAULT '',
+    price REAL NOT NULL DEFAULT 0,
+    cadence TEXT NOT NULL DEFAULT 'للمشروع',
+    summary TEXT NOT NULL DEFAULT '',
+    facts_json TEXT NOT NULL DEFAULT '[]',
+    is_active INTEGER NOT NULL DEFAULT 1 CHECK(is_active IN (0,1)),
+    sort_order INTEGER NOT NULL DEFAULT 0,
+    created_by TEXT NOT NULL DEFAULT 'SYSTEM',
+    created_at INTEGER NOT NULL,
+    updated_at INTEGER NOT NULL
+  )`,
+  `CREATE INDEX IF NOT EXISTS idx_service_packages_active_sort
+   ON service_packages(is_active, sort_order, updated_at DESC)`,
   `CREATE TABLE IF NOT EXISTS employee_tasks (
     id TEXT PRIMARY KEY,
     title TEXT NOT NULL,
@@ -508,6 +538,21 @@ async function handleEmployeeApi(request, env, url) {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return deleteClient(env, user, url.pathname.split('/').pop());
   }
+  if (url.pathname === '/api/employee/packages' && request.method === 'POST') {
+    if (!hasRole(user, 'manager')) return json({ error: 'إدارة الباقات متاحة للمدير فقط.' }, 403);
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return createServicePackage(request, env, user);
+  }
+  if (/^\/api\/employee\/packages\/[^/]+$/.test(url.pathname) && request.method === 'PATCH') {
+    if (!hasRole(user, 'manager')) return json({ error: 'إدارة الباقات متاحة للمدير فقط.' }, 403);
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return updateServicePackage(request, env, user, url.pathname.split('/').pop());
+  }
+  if (/^\/api\/employee\/packages\/[^/]+$/.test(url.pathname) && request.method === 'DELETE') {
+    if (!hasRole(user, 'manager')) return json({ error: 'إدارة الباقات متاحة للمدير فقط.' }, 403);
+    if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
+    return deleteServicePackage(env, user, url.pathname.split('/').pop());
+  }
   if (url.pathname === '/api/employee/tasks' && request.method === 'POST') {
     if (!validOrigin(request, url)) return json({ error: 'طلب غير مسموح.' }, 403);
     return createTask(request, env, user);
@@ -551,6 +596,18 @@ async function handleEmployeeApi(request, env, url) {
 async function ensureSchema(env) {
   if (schemaReady) return;
   await env.DB.batch(SCHEMA_STATEMENTS.map((statement) => env.DB.prepare(statement)));
+  const clientColumns = await env.DB.prepare('PRAGMA table_info(employee_clients)').all();
+  if (!(clientColumns.results || []).some((column) => column.name === 'pipeline_stage')) {
+    await env.DB.prepare("ALTER TABLE employee_clients ADD COLUMN pipeline_stage TEXT NOT NULL DEFAULT 'lead'").run();
+    await env.DB.prepare('UPDATE employee_clients SET pipeline_stage = status').run();
+  }
+  await env.DB.prepare('CREATE INDEX IF NOT EXISTS idx_employee_clients_pipeline_updated ON employee_clients(pipeline_stage, updated_at DESC)').run();
+  const packageSeedTime = Date.now();
+  await env.DB.batch(DEFAULT_SERVICE_PACKAGES.map(([id,name,audience,category,price,cadence,summary,facts,sortOrder]) => env.DB.prepare(
+    `INSERT OR IGNORE INTO service_packages
+     (id,name,audience,category,price,cadence,summary,facts_json,is_active,sort_order,created_by,created_at,updated_at)
+     VALUES (?,?,?,?,?,?,?, ?,1,?,'SYSTEM',?,?)`
+  ).bind(id,name,audience,category,price,cadence,summary,JSON.stringify(facts),sortOrder,packageSeedTime,packageSeedTime)));
   const messageColumns = await env.DB.prepare('PRAGMA table_info(employee_messages)').all();
   const messageColumnNames = new Set((messageColumns.results || []).map((column) => column.name));
   for (const [name, definition] of [
@@ -697,12 +754,14 @@ async function getClientData(env, client) {
     env.DB.prepare('SELECT visited_sections,score,updated_at FROM client_progress WHERE client_uid=?').bind(client.uid),
     env.DB.prepare('SELECT id,reference,services,budget_range,project_summary,status,created_at,updated_at FROM client_applications WHERE client_uid=? ORDER BY created_at DESC LIMIT 100').bind(client.uid),
     env.DB.prepare("SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets WHERE client_uid=? AND status!='closed' ORDER BY updated_at DESC LIMIT 100").bind(client.uid),
-    env.DB.prepare(`SELECT m.id,m.ticket_id,m.sender_type,m.sender_id,m.sender_name,m.body,m.created_at FROM client_support_messages m JOIN client_support_tickets t ON t.id=m.ticket_id WHERE t.client_uid=? AND t.status!='closed' ORDER BY m.created_at ASC LIMIT 1000`).bind(client.uid)
+    env.DB.prepare(`SELECT m.id,m.ticket_id,m.sender_type,m.sender_id,m.sender_name,m.body,m.created_at FROM client_support_messages m JOIN client_support_tickets t ON t.id=m.ticket_id WHERE t.client_uid=? AND t.status!='closed' ORDER BY m.created_at ASC LIMIT 1000`).bind(client.uid),
+    env.DB.prepare('SELECT id,name,audience,category,price,cadence,summary,facts_json,sort_order,updated_at FROM service_packages WHERE is_active=1 ORDER BY sort_order ASC, updated_at DESC LIMIT 100')
   ]);
   const profile = results[0].results?.[0];
   if (!profile) return json({ error: 'ملف العميل غير موجود.' }, 404);
   const progressRow = results[4].results?.[0] || { visited_sections: '[]', score: 0 };
-  return json({ profile, projects: results[1].results || [], requests: results[2].results || [], deliveries: results[3].results || [], applications: results[5].results || [], supportTickets: results[6].results || [], supportMessages: results[7].results || [], progress: { visited_sections: safeJsonParse(progressRow.visited_sections) || [], score: Number(progressRow.score || 0) }, serverTime: Date.now() });
+  const packages = (results[8].results || []).map((item) => ({ ...item, facts: safeJsonParse(item.facts_json) || [] }));
+  return json({ profile, projects: results[1].results || [], requests: results[2].results || [], deliveries: results[3].results || [], applications: results[5].results || [], supportTickets: results[6].results || [], supportMessages: results[7].results || [], packages, progress: { visited_sections: safeJsonParse(progressRow.visited_sections) || [], score: Number(progressRow.score || 0) }, serverTime: Date.now() });
 }
 
 async function createClientSupportTicket(request, env, client) {
@@ -938,7 +997,7 @@ async function getPortalData(env, user) {
   ).bind(user.username, user.name, user.role, now).run();
   const results = await env.DB.batch([
     env.DB.prepare('SELECT id, group_id, author_username, author_name, body, attachment_name, attachment_type, attachment_size, created_at FROM employee_messages ORDER BY created_at DESC LIMIT 600'),
-    env.DB.prepare('SELECT id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at FROM employee_clients ORDER BY updated_at DESC LIMIT 250'),
+    env.DB.prepare('SELECT id, name, contact, service, value, status, pipeline_stage, next_step, owner, created_by, created_at, updated_at FROM employee_clients ORDER BY updated_at DESC LIMIT 500'),
     env.DB.prepare('SELECT id, title, client_name, assignee, due_date, priority, status, created_by, created_at, updated_at FROM employee_tasks ORDER BY status ASC, due_date ASC, updated_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, reference, full_name, organization, email, phone, services, budget_range, project_summary, payload_json, status, attachment_count, email_status, created_at, updated_at FROM client_applications ORDER BY created_at DESC LIMIT 250'),
     env.DB.prepare('SELECT id, application_id, original_name, content_type, size_bytes, created_at FROM client_application_files ORDER BY created_at ASC LIMIT 1000'),
@@ -947,7 +1006,7 @@ async function getPortalData(env, user) {
     hasRole(user, 'manager')
       ? env.DB.prepare(`SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at
           FROM employee_activity_log
-          WHERE action IN ('حذف طلب موقع','إضافة عميل','حذف عميل','حذف مهمة','حذف فرصة','توزيع تصنيف فرص','تحويل فرصة إلى عميل')
+          WHERE action IN ('حذف طلب موقع','إضافة عميل','حذف عميل','حذف مهمة','حذف فرصة','توزيع تصنيف فرص','تحويل فرصة إلى عميل','إضافة باقة','تحديث باقة','إخفاء باقة')
           ORDER BY created_at DESC LIMIT 100`)
       : env.DB.prepare('SELECT id, actor_username, actor_name, actor_role, action, entity_type, entity_id, detail, created_at FROM employee_activity_log WHERE 0'),
     env.DB.prepare('SELECT firebase_uid,email,display_name,organization,phone,photo_url,created_at,updated_at FROM client_profiles ORDER BY updated_at DESC LIMIT 500'),
@@ -955,10 +1014,11 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT id,client_uid,project_id,title,type,details,priority,status,employee_note,updated_by,created_at,updated_at FROM client_requests ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,project_id,title,message,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at FROM client_deliveries ORDER BY created_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets ORDER BY updated_at DESC LIMIT 1000'),
-    env.DB.prepare('SELECT id,ticket_id,sender_type,sender_id,sender_name,body,created_at FROM client_support_messages ORDER BY created_at ASC LIMIT 5000')
+    env.DB.prepare('SELECT id,ticket_id,sender_type,sender_id,sender_name,body,created_at FROM client_support_messages ORDER BY created_at ASC LIMIT 5000'),
+    env.DB.prepare('SELECT id,name,audience,category,price,cadence,summary,facts_json,is_active,sort_order,created_by,created_at,updated_at FROM service_packages ORDER BY sort_order ASC, updated_at DESC LIMIT 200')
   ]);
   const messages = [...(results[0].results || [])].reverse();
-  const clients = results[1].results || [];
+  const clients = (results[1].results || []).map((item) => ({ ...item, legacy_status: item.status, status: item.pipeline_stage || item.status }));
   const tasks = results[2].results || [];
   const files = results[4].results || [];
   const leads = results[5].results || [];
@@ -970,6 +1030,7 @@ async function getPortalData(env, user) {
   const clientDeliveries = results[11].results || [];
   const clientSupportTickets = results[12].results || [];
   const clientSupportMessages = results[13].results || [];
+  const packages = (results[14].results || []).map((item) => ({ ...item, facts: safeJsonParse(item.facts_json) || [] }));
   const authConfig = readAuthConfig(env);
   const teamMembers = Object.entries(authConfig.users || {}).map(([username, account]) => ({
     username: String(username).toUpperCase(),
@@ -981,7 +1042,6 @@ async function getPortalData(env, user) {
     details: safeJsonParse(application.payload_json),
     files: files.filter((file) => file.application_id === application.id)
   }));
-  const pipelineValue = clients.reduce((sum, item) => sum + Number(item.value || 0), 0);
   return json({
     user,
     messages,
@@ -998,12 +1058,17 @@ async function getPortalData(env, user) {
     clientDeliveries,
     clientSupportTickets,
     clientSupportMessages,
+    packages,
     stats: {
-      clients: clients.length,
+      clients: clients.filter((item) => ['won','active','retained','closed'].includes(item.status)).length,
       opportunities: clients.filter((item) => ['lead', 'discovery', 'proposal'].includes(item.status)).length,
-      active: clients.filter((item) => item.status === 'active').length,
+      targetingOpportunities: leads.filter((item) => item.contact_status !== 'converted').length,
+      active: clients.filter((item) => ['won','active','retained'].includes(item.status)).length,
       openTasks: tasks.filter((item) => item.status === 'open').length,
-      pipelineValue,
+      pipelineValue: clients.filter((item) => ['lead','discovery','proposal'].includes(item.status)).reduce((sum,item)=>sum+Number(item.value||0),0),
+      activeClientValue: clients.filter((item) => ['won','active','retained'].includes(item.status)).reduce((sum,item)=>sum+Number(item.value||0),0),
+      closedDeals: clients.filter((item) => item.status === 'closed').length,
+      lostOpportunities: clients.filter((item) => item.status === 'lost').length,
       newApplications: applications.filter((item) => item.status === 'new').length,
       businessLeads: leads.length,
       untouchedLeads: leads.filter((item) => item.contact_status === 'new').length
@@ -1102,10 +1167,10 @@ async function createPublicApplication(request, env, url, ctx) {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'new', ?, ?, ?, ?)`
     ).bind(id, client.uid, reference, payload.full_name, payload.organization, payload.email, payload.phone, serviceLabel,
       payload.budget_range, payload.project_summary, JSON.stringify(payload), files.length, emailStatus, now, now),
-    env.DB.prepare(
-      `INSERT INTO employee_clients
-       (id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at)
-       VALUES (?, ?, ?, ?, ?, 'lead', ?, '', 'WEBSITE', ?, ?)`
+     env.DB.prepare(
+       `INSERT INTO employee_clients
+        (id, name, contact, service, value, status, pipeline_stage, next_step, owner, created_by, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, 'lead', 'lead', ?, '', 'WEBSITE', ?, ?)`
     ).bind(id, payload.organization || payload.full_name, `${payload.phone} · ${payload.email}`, serviceLabel,
       estimatedValue, `مراجعة طلب الموقع ${reference} والتواصل مع ${payload.full_name}`, now, now),
     env.DB.prepare(
@@ -1347,9 +1412,9 @@ async function createClient(request, env, user) {
   const id = crypto.randomUUID();
   await env.DB.prepare(
     `INSERT INTO employee_clients
-     (id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-  ).bind(id, client.name, client.contact, client.service, client.value, client.status, client.nextStep, client.owner, user.username, now, now).run();
+     (id, name, contact, service, value, status, pipeline_stage, next_step, owner, created_by, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+  ).bind(id, client.name, client.contact, client.service, client.value, legacyClientStatus(client.status), client.status, client.nextStep, client.owner, user.username, now, now).run();
   await recordActivity(env, user, 'إضافة عميل', 'client', id, client.name);
   if (client.status === 'won') await createSystemMessage(env, `🎉 مبروك! تم إقفال صفقة «${client.name}» بنجاح.`);
   return json({ ok: true, id }, 201);
@@ -1366,16 +1431,16 @@ async function updateClient(request, env, user, id) {
     contact: payload.contact ?? current.contact,
     service: payload.service ?? current.service,
     value: payload.value ?? current.value,
-    status: payload.status ?? current.status,
+    status: payload.status ?? current.pipeline_stage ?? current.status,
     nextStep: payload.nextStep ?? current.next_step,
     owner: payload.owner ?? current.owner
   });
   if (!merged.name) return json({ error: 'اسم العميل مطلوب.' }, 400);
   await env.DB.prepare(
-    `UPDATE employee_clients SET name = ?, contact = ?, service = ?, value = ?, status = ?,
+    `UPDATE employee_clients SET name = ?, contact = ?, service = ?, value = ?, status = ?, pipeline_stage = ?,
      next_step = ?, owner = ?, updated_at = ? WHERE id = ?`
-  ).bind(merged.name, merged.contact, merged.service, merged.value, merged.status, merged.nextStep, merged.owner, Date.now(), id).run();
-  if (current.status !== 'won' && merged.status === 'won') {
+  ).bind(merged.name, merged.contact, merged.service, merged.value, legacyClientStatus(merged.status), merged.status, merged.nextStep, merged.owner, Date.now(), id).run();
+  if ((current.pipeline_stage || current.status) !== 'won' && merged.status === 'won') {
     await createSystemMessage(env, `🎉 مبروك! تم إقفال صفقة «${merged.name}» بنجاح.`);
   }
   return json({ ok: true });
@@ -1392,6 +1457,64 @@ async function deleteClient(env, user, id) {
   await env.DB.prepare('DELETE FROM employee_clients WHERE id = ?').bind(id).run();
   await recordActivity(env, user, 'حذف عميل', 'client', id);
   return json({ ok: true });
+}
+
+function normalizeServicePackage(payload) {
+  const numericPrice = Number(payload?.price || 0);
+  const factsInput = Array.isArray(payload?.facts) ? payload.facts : String(payload?.facts || '').split(/\r?\n/);
+  return {
+    name: cleanString(payload?.name, 120),
+    audience: cleanString(payload?.audience, 120),
+    category: cleanString(payload?.category, 80),
+    price: Number.isFinite(numericPrice) ? Math.max(0, Math.min(numericPrice, 1_000_000_000)) : 0,
+    cadence: cleanString(payload?.cadence, 40) || 'للمشروع',
+    summary: cleanString(payload?.summary, 600),
+    facts: factsInput.map((fact) => cleanString(String(fact), 140)).filter(Boolean).slice(0, 12),
+    isActive: payload?.isActive === true || payload?.isActive === 1 || ['1','true','on'].includes(String(payload?.isActive || '').toLowerCase()),
+    sortOrder: Math.max(0, Math.min(Number(payload?.sortOrder || 0) || 0, 10000))
+  };
+}
+
+function validPackageId(id) { return /^[a-z0-9-]{3,80}$/i.test(id || ''); }
+
+async function createServicePackage(request, env, user) {
+  const payload = await readJson(request, 16000);
+  if (!payload) return json({ error: 'تعذر قراءة بيانات الباقة.' }, 400);
+  const item = normalizeServicePackage(payload);
+  if (!item.name || !item.summary) return json({ error: 'اسم الباقة ووصفها مطلوبان.' }, 400);
+  const id = crypto.randomUUID(), now = Date.now();
+  await env.DB.prepare(`INSERT INTO service_packages
+    (id,name,audience,category,price,cadence,summary,facts_json,is_active,sort_order,created_by,created_at,updated_at)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(id,item.name,item.audience,item.category,item.price,item.cadence,item.summary,JSON.stringify(item.facts),item.isActive?1:0,item.sortOrder,user.username,now,now).run();
+  await recordActivity(env,user,'إضافة باقة','package',id,item.name);
+  return json({ ok:true,id },201);
+}
+
+async function updateServicePackage(request, env, user, id) {
+  if (!validPackageId(id)) return json({ error: 'معرّف الباقة غير صحيح.' }, 400);
+  const current = await env.DB.prepare('SELECT * FROM service_packages WHERE id=?').bind(id).first();
+  if (!current) return json({ error: 'الباقة غير موجودة.' }, 404);
+  const payload = await readJson(request, 16000);
+  if (!payload) return json({ error: 'تعذر قراءة بيانات الباقة.' }, 400);
+  const item = normalizeServicePackage({
+    name:payload.name??current.name,audience:payload.audience??current.audience,category:payload.category??current.category,
+    price:payload.price??current.price,cadence:payload.cadence??current.cadence,summary:payload.summary??current.summary,
+    facts:payload.facts??safeJsonParse(current.facts_json),isActive:payload.isActive??Boolean(current.is_active),sortOrder:payload.sortOrder??current.sort_order
+  });
+  if (!item.name || !item.summary) return json({ error: 'اسم الباقة ووصفها مطلوبان.' }, 400);
+  await env.DB.prepare(`UPDATE service_packages SET name=?,audience=?,category=?,price=?,cadence=?,summary=?,facts_json=?,is_active=?,sort_order=?,updated_at=? WHERE id=?`)
+    .bind(item.name,item.audience,item.category,item.price,item.cadence,item.summary,JSON.stringify(item.facts),item.isActive?1:0,item.sortOrder,Date.now(),id).run();
+  await recordActivity(env,user,'تحديث باقة','package',id,item.name);
+  return json({ ok:true });
+}
+
+async function deleteServicePackage(env, user, id) {
+  if (!validPackageId(id)) return json({ error: 'معرّف الباقة غير صحيح.' }, 400);
+  const item = await env.DB.prepare('SELECT name FROM service_packages WHERE id=?').bind(id).first();
+  if (!item) return json({ error: 'الباقة غير موجودة.' }, 404);
+  await env.DB.prepare('UPDATE service_packages SET is_active=0,updated_at=? WHERE id=?').bind(Date.now(),id).run();
+  await recordActivity(env,user,'إخفاء باقة','package',id,item.name);
+  return json({ ok:true });
 }
 
 async function createTask(request, env, user) {
@@ -1540,10 +1663,10 @@ async function convertBusinessLeadToClient(request, env, user, id) {
   const clientId = crypto.randomUUID();
   const contact = [lead.phone, lead.email].filter(Boolean).join(' · ');
   await env.DB.batch([
-    env.DB.prepare(
-      `INSERT INTO employee_clients
-       (id, name, contact, service, value, status, next_step, owner, created_by, created_at, updated_at)
-       VALUES (?, ?, ?, ?, 0, 'lead', ?, ?, ?, ?, ?)`
+     env.DB.prepare(
+       `INSERT INTO employee_clients
+        (id, name, contact, service, value, status, pipeline_stage, next_step, owner, created_by, created_at, updated_at)
+        VALUES (?, ?, ?, ?, 0, 'lead', 'lead', ?, ?, ?, ?, ?)`
     ).bind(clientId, lead.name, contact, lead.recommended_service, `مراجعة فرصة ${lead.id} وتحديد موعد اكتشاف`, owner, user.username, now, now),
     env.DB.prepare(
       `UPDATE business_leads SET contact_status = 'converted', outcome = 'converted', owner = ?,
@@ -1566,6 +1689,12 @@ function normalizeClient(payload) {
     nextStep: cleanString(payload.nextStep ?? payload.next_step, 300),
     owner: cleanString(payload.owner, 60)
   };
+}
+
+function legacyClientStatus(status) {
+  if (['lead','discovery','proposal','won','active'].includes(status)) return status;
+  if (['retained','closed'].includes(status)) return 'active';
+  return 'proposal';
 }
 
 function normalizeTask(payload) {

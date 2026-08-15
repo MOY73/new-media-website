@@ -7,11 +7,7 @@ const state = { data: null, view: 'overview', auth: null, authSdk: null };
 const views = { overview: 'مساحتك مع New Media', projects: 'مشاريعي', requests: 'طلباتي', deliveries: 'التسليمات', explore: 'مستواي والباقات', support: 'الدعم والتذاكر', profile: 'الملف الشخصي' };
 let supportTopic = 'all';
 const statusText = { new: 'وصل للفريق', reviewing: 'قيد المراجعة', scheduled: 'مجدول', in_progress: 'قيد التنفيذ', waiting_client: 'بانتظارك', completed: 'مكتمل', approved: 'تم الاستلام', cancelled: 'ملغي', pending: 'قيد المراجعة', delivered: 'جاهز للاستلام' };
-const packages = [
-  ['باقة الحضور', 'هوية واضحة وموقع احترافي يقدّمك كما تستحق.', 'تبدأ من 3,499 ر.س'],
-  ['باقة النمو', 'محتوى وإدارة وإعلانات تعمل كمنظومة واحدة.', 'تبدأ من 2,999 ر.س شهريًا'],
-  ['باقة الشراكة', 'فريق متكامل يغطي الهوية والموقع والمحتوى والنمو.', 'تبدأ من 9,999 ر.س شهريًا'],
-];
+const packageMoney = new Intl.NumberFormat('ar-SA', { maximumFractionDigits: 0 });
 
 async function api(path, options = {}) {
   const headers = new Headers(options.headers || {});
@@ -99,7 +95,9 @@ function renderExplore() {
   qs('#levelTrack').style.width = `${score}%`;
   qs('#progressPercent').textContent = `${score}%`;
   qs('#progressRing').style.setProperty('--progress', `${score}%`);
-  qs('#clientPackages').innerHTML = `<div class="client-panel-head"><div><span>PACKAGES</span><h3>${level >= 3 ? 'الباقات الأنسب لك' : 'أكمل الجولة لفتح الباقات'}</h3></div></div>` + packages.map(([name, desc, price]) => `<article class="client-package ${level >= 3 ? '' : 'is-locked'}"><h3>${name}</h3><p>${desc}</p><strong>${price}</strong></article>`).join('');
+  const packages = state.data.packages || [];
+  const packageMarkup = packages.length ? packages.map((item) => `<article class="client-package ${level >= 3 ? '' : 'is-locked'}"><small>${escapeHtml(item.category || 'باقة')} · ${escapeHtml(item.audience || 'كل القطاعات')}</small><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.summary)}</p><ul>${(item.facts || []).slice(0,6).map((fact)=>`<li>${escapeHtml(fact)}</li>`).join('')}</ul><strong>${packageMoney.format(Number(item.price || 0))} ر.س / ${escapeHtml(item.cadence)}</strong></article>`).join('') : empty('يعمل الفريق على تحديث الباقات المناسبة لك.');
+  qs('#clientPackages').innerHTML = `<div class="client-panel-head"><div><span>PACKAGES</span><h3>${level >= 3 ? 'الباقات الأنسب لك' : 'أكمل الجولة لفتح الباقات'}</h3></div></div>${packageMarkup}`;
   qsa('[data-explore]').forEach((link) => link.addEventListener('click', () => navigator.sendBeacon?.('/api/client/progress', new Blob([JSON.stringify({ section: link.dataset.explore })], { type: 'application/json' }))));
 }
 
@@ -190,3 +188,5 @@ qs('#clientLogout').addEventListener('click', async () => { try { await api('/ap
 const firebase = await getFirebaseServices(); state.auth = firebase.auth; state.authSdk = firebase.authSdk;
 const initial = location.hash.slice(1); if (views[initial]) state.view = initial;
 await refresh(); switchView(state.view);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+window.setInterval(() => { if (!document.hidden && !qs('.client-modal.is-visible')) refresh(); }, 60000);
