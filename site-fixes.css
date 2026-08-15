@@ -306,14 +306,14 @@ html.light .service-icon-art img {
 }
 
 .nm-web-experience .service-card .card-icon.service-icon-art {
-  width: 92px;
-  height: 92px;
-  margin-bottom: 1.35rem;
+  width: 188px;
+  height: 188px;
+  margin-bottom: 1.5rem;
 }
 
 @media (max-width: 720px) {
   .nm-web-experience .hero-icon.icon-art { width: 126px; height: 126px; }
-  .nm-web-experience .service-card .card-icon.service-icon-art { width: 78px; height: 78px; }
+  .nm-web-experience .service-card .card-icon.service-icon-art { width: 150px; height: 150px; }
 }
 
 .div-link {
