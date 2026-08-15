@@ -49,6 +49,12 @@ for (const file of await readdir(join(root, "assets", "work"))) {
   await cp(join(root, "assets", "work", file), join(workAssets, file));
 }
 
+const socialAssets = join(assets, "assets", "social");
+await mkdir(socialAssets, { recursive: true });
+for (const file of await readdir(join(root, "assets", "social"))) {
+  await cp(join(root, "assets", "social", file), join(socialAssets, file));
+}
+
 const internalAssets = join(assets, "assets", "internal");
 await mkdir(internalAssets, { recursive: true });
 await cp(join(root, "data", "makkah-business-leads-batch-1.json"), join(internalAssets, "makkah-business-leads-batch-1.json"));
