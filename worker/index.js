@@ -408,7 +408,7 @@ export default {
 
     if (/^\/client\/login\/?$/.test(url.pathname)) {
       const client = await readClientSession(request, env);
-      if (client) return Response.redirect(new URL('/client/portal', url), 302);
+      if (client) return Response.redirect(new URL(safeClientNext(url.searchParams.get('next')), url), 302);
       return privateHtmlResponse(CLIENT_LOGIN_HTML);
     }
 
@@ -571,11 +571,6 @@ async function ensureSchema(env) {
   await env.DB.prepare(
     'DELETE FROM employee_activity_log WHERE id NOT IN (SELECT id FROM employee_activity_log ORDER BY created_at DESC LIMIT 100)'
   ).run();
-  const expiredSupportBefore = Date.now() - (3 * 24 * 60 * 60 * 1000);
-  await env.DB.batch([
-    env.DB.prepare("DELETE FROM client_support_messages WHERE ticket_id IN (SELECT id FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?)").bind(expiredSupportBefore),
-    env.DB.prepare("DELETE FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?").bind(expiredSupportBefore)
-  ]);
   for (const groupId of CHAT_GROUPS) await pruneChatGroup(env, groupId);
   const leadColumns = await env.DB.prepare('PRAGMA table_info(business_leads)').all();
   if (!(leadColumns.results || []).some((column) => column.name === 'city')) {
@@ -694,7 +689,6 @@ async function verifyFirebaseToken(token, env) {
 }
 
 async function getClientData(env, client) {
-  await pruneExpiredSupportTickets(env);
   const results = await env.DB.batch([
     env.DB.prepare('SELECT firebase_uid,email,display_name,organization,phone,photo_url,created_at,updated_at FROM client_profiles WHERE firebase_uid=?').bind(client.uid),
     env.DB.prepare('SELECT id,title,service,summary,status,progress,current_stage,deadline,created_at,updated_at FROM client_projects WHERE client_uid=? ORDER BY updated_at DESC').bind(client.uid),
@@ -936,7 +930,6 @@ async function login(request, env) {
 }
 
 async function getPortalData(env, user) {
-  await pruneExpiredSupportTickets(env);
   user.role = roleForUsername(user.username);
   const now = Date.now();
   await env.DB.prepare(
@@ -961,7 +954,7 @@ async function getPortalData(env, user) {
     env.DB.prepare('SELECT id,client_uid,title,service,summary,status,progress,current_stage,deadline,created_by,created_at,updated_at FROM client_projects ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,project_id,title,type,details,priority,status,employee_note,updated_by,created_at,updated_at FROM client_requests ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,client_uid,project_id,title,message,original_name,content_type,size_bytes,status,created_by,approved_at,created_at,updated_at FROM client_deliveries ORDER BY created_at DESC LIMIT 1000'),
-    env.DB.prepare("SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets WHERE status!='closed' OR resolved_at>? ORDER BY updated_at DESC LIMIT 500").bind(now - (3 * 24 * 60 * 60 * 1000)),
+    env.DB.prepare('SELECT id,client_uid,subject,category,status,priority,created_at,updated_at,resolved_at FROM client_support_tickets ORDER BY updated_at DESC LIMIT 1000'),
     env.DB.prepare('SELECT id,ticket_id,sender_type,sender_id,sender_name,body,created_at FROM client_support_messages ORDER BY created_at ASC LIMIT 5000')
   ]);
   const messages = [...(results[0].results || [])].reverse();
@@ -1018,14 +1011,6 @@ async function getPortalData(env, user) {
     knowledge: KNOWLEDGE,
     serverTime: Date.now()
   });
-}
-
-async function pruneExpiredSupportTickets(env) {
-  const cutoff = Date.now() - (3 * 24 * 60 * 60 * 1000);
-  await env.DB.batch([
-    env.DB.prepare("DELETE FROM client_support_messages WHERE ticket_id IN (SELECT id FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?)").bind(cutoff),
-    env.DB.prepare("DELETE FROM client_support_tickets WHERE status='closed' AND resolved_at > 0 AND resolved_at <= ?").bind(cutoff)
-  ]);
 }
 
 async function createPublicApplication(request, env, url, ctx) {
@@ -1636,6 +1621,11 @@ async function readJson(request, maxLength) {
 function cleanString(value, maxLength) {
   if (typeof value !== 'string') return '';
   return value.replace(/[\u0000-\u001F\u007F]/g, ' ').trim().slice(0, maxLength);
+}
+
+function safeClientNext(value) {
+  const next = cleanString(value || '/client/portal', 500);
+  return next.startsWith('/') && !next.startsWith('//') && !next.includes('\\') ? next : '/client/portal';
 }
 
 function validOrigin(request, url) {

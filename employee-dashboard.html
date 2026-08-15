@@ -33,6 +33,7 @@
         <button class="app-nav__item" type="button" data-view="applications"><span>↓</span><b>طلبات الموقع</b><em id="applicationsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="clients"><span>◇</span><b>العملاء والفرص</b><em id="clientsBadge">0</em></button>
         <button class="app-nav__item" type="button" data-view="clientspace"><span>◈</span><b>بوابة العملاء</b><em id="clientPortalBadge">0</em></button>
+        <button class="app-nav__item" type="button" data-view="support"><span>?</span><b>الدعم والتذاكر</b><em id="clientSupportNavBadge">0</em></button>
         <div class="app-nav__group is-open" id="leadsNavGroup">
           <button class="app-nav__group-toggle" id="leadsNavToggle" type="button" aria-expanded="true" aria-controls="leadsNavChildren"><span>◎</span><b>فرص الاستهداف</b><i>⌄</i></button>
           <div class="app-nav__children" id="leadsNavChildren">
@@ -67,7 +68,7 @@
           <span class="sync-status"><i></i><b id="syncLabel">متزامن</b></span>
           <button class="portal-icon-button" id="themeBtn" type="button" aria-label="تغيير المظهر">☽</button>
           <button id="langBtn" type="button" hidden aria-hidden="true">AR</button>
-          <button class="topbar-add" id="quickAddClient" type="button">+ عميل جديد</button>
+          <button class="topbar-add client-add-button" id="quickAddClient" type="button">+ عميل جديد</button>
         </div>
       </header>
 
@@ -103,19 +104,27 @@
         </section>
 
         <section class="app-view" data-view-panel="clients">
-          <div class="section-intro"><div><span>CRM / PIPELINE</span><h2>العملاء والفرص</h2><p>حرّك كل فرصة من أول تواصل حتى التشغيل الفعلي.</p></div><button class="portal-primary-button portal-primary-button--small" id="addClientFromView" type="button"><span>إضافة عميل</span><b>+</b></button></div>
+          <div class="section-intro"><div><span>CRM / PIPELINE</span><h2>العملاء والفرص</h2><p>حرّك كل فرصة من أول تواصل حتى التشغيل الفعلي، وافتح التفاصيل لمعرفة مصدرها وبياناتها الكاملة.</p></div><button class="portal-primary-button portal-primary-button--small client-add-button" id="addClientFromView" type="button"><span>إضافة عميل</span><b>+</b></button></div>
           <div class="pipeline-board" id="pipelineBoard"></div>
         </section>
 
         <section class="app-view" data-view-panel="clientspace">
-          <div class="section-intro"><div><span>CLIENT DELIVERY HUB</span><h2>بوابة العملاء والتسليم</h2><p>أنشئ مشروعًا داخل حساب العميل، تابع طلباته، وارفع النسخ الجاهزة له من مكان واحد.</p></div><div class="clientspace-actions"><button class="portal-primary-button portal-primary-button--small" id="openClientProjectModal" type="button"><span>مشروع جديد</span><b>+</b></button><button class="portal-primary-button portal-primary-button--small is-secondary" id="openClientDeliveryModal" type="button"><span>رفع تسليم</span><b>↑</b></button></div></div>
+          <div class="section-intro"><div><span>CLIENT DELIVERY HUB</span><h2>بوابة العملاء والتسليم</h2><p>أنشئ مشروعًا داخل حساب العميل، تابع طلباته، وارفع النسخ الجاهزة له من مكان واحد.</p></div><div class="clientspace-actions"><button class="portal-primary-button portal-primary-button--small client-add-button" id="openClientProjectModal" type="button"><span>مشروع جديد</span><b>+</b></button><button class="portal-primary-button portal-primary-button--small is-secondary" id="openClientDeliveryModal" type="button"><span>رفع تسليم</span><b>↑</b></button></div></div>
           <div class="clientspace-summary" id="clientspaceSummary"></div>
           <div class="clientspace-layout">
             <section class="workspace-card"><div class="card-heading"><div><span>CLIENT ACCOUNTS</span><h3>حسابات العملاء</h3></div></div><div class="clientspace-list" id="clientPortalClients"></div></section>
             <section class="workspace-card workspace-card--wide"><div class="card-heading"><div><span>PROJECTS</span><h3>المشاريع المشتركة</h3></div></div><div class="clientspace-list" id="clientPortalProjects"></div></section>
             <section class="workspace-card workspace-card--wide"><div class="card-heading"><div><span>REQUESTS</span><h3>طلبات العملاء الداخلية</h3></div></div><div class="clientspace-list" id="clientPortalRequests"></div></section>
             <section class="workspace-card"><div class="card-heading"><div><span>DELIVERIES</span><h3>آخر التسليمات</h3></div></div><div class="clientspace-list" id="clientPortalDeliveries"></div></section>
-            <section class="workspace-card workspace-card--wide client-support-card"><div class="card-heading"><div><span>CLIENT SUPPORT</span><h3>تذاكر دعم العملاء</h3></div><em id="clientSupportBadge">0 مفتوحة</em></div><div class="clientspace-list" id="clientSupportTickets"></div></section>
+          </div>
+        </section>
+
+        <section class="app-view" data-view-panel="support">
+          <div class="section-intro"><div><span>CLIENT SUPPORT CENTER</span><h2>الدعم والتذاكر</h2><p>مساحة مستقلة لمتابعة طلبات الدعم. التذكرة المغلقة تختفي من حساب العميل وتبقى محفوظة هنا للفريق.</p></div></div>
+          <div class="support-summary" id="supportSummary"></div>
+          <div class="support-workspace">
+            <section class="workspace-card workspace-card--wide client-support-card"><div class="card-heading"><div><span>ACTIVE TICKETS</span><h3>التذاكر المفتوحة</h3></div><em id="clientSupportBadge">0 مفتوحة</em></div><div class="clientspace-list" id="clientSupportOpenTickets"></div></section>
+            <section class="workspace-card workspace-card--wide client-support-card is-closed"><div class="card-heading"><div><span>CLOSED ARCHIVE</span><h3>التذاكر المغلقة</h3></div><em id="clientSupportClosedBadge">0 مغلقة</em></div><div class="clientspace-list" id="clientSupportClosedTickets"></div></section>
           </div>
         </section>
 

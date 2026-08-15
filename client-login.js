@@ -1,7 +1,7 @@
 import { getFirebaseServices } from './firebase-client.js';
 
 const nextPath = new URLSearchParams(location.search).get('next') || '/client/portal';
-const safeNext = nextPath.startsWith('/') && !nextPath.startsWith('//') ? nextPath : '/client/portal';
+const safeNext = nextPath.startsWith('/') && !nextPath.startsWith('//') && !nextPath.includes('\\') ? nextPath : '/client/portal';
 const message = document.querySelector('#authMessage');
 
 function showMessage(text, error = false) {

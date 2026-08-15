@@ -117,16 +117,17 @@
 
   const STATUS_ORDER = ['lead', 'discovery', 'proposal', 'won', 'active'];
   const STATUS_META = {
-    lead: { label: 'فرصة جديدة', next: 'discovery' },
-    discovery: { label: 'مرحلة الاكتشاف', next: 'proposal' },
-    proposal: { label: 'عرض مرسل', next: 'won' },
-    won: { label: 'تم الإغلاق', next: 'active' },
-    active: { label: 'عميل نشط', next: null },
+    lead: { label: 'فرصة جديدة', prev: null, next: 'discovery' },
+    discovery: { label: 'مرحلة الاكتشاف', prev: 'lead', next: 'proposal' },
+    proposal: { label: 'عرض مرسل', prev: 'discovery', next: 'won' },
+    won: { label: 'تم الإغلاق', prev: 'proposal', next: 'active' },
+    active: { label: 'عميل نشط', prev: 'won', next: null },
   };
   const VIEW_TITLES = {
     applications: 'طلبات التقديم عبر الموقع',
     clients: 'العملاء والفرص',
     clientspace: 'بوابة العملاء والتسليم',
+    support: 'الدعم والتذاكر',
     leads: 'فرص مكة',
     chat: 'محادثة الفريق',
     packages: 'الباقات المعتمدة',
@@ -416,6 +417,49 @@
     qs('#chatPreview').replaceChildren(...(previewRows.length ? previewRows : [emptyState('لا توجد رسائل بعد.') ]));
   }
 
+  const CLIENT_DETAIL_LABELS = {
+    start_window: 'موعد البدء', primary_goal: 'الهدف الأساسي', target_audience: 'الجمهور المستهدف',
+    project_details: 'تفاصيل المشروع', current_challenge: 'التحدي الحالي', engagement_type: 'نوع التعاون',
+    media_budget: 'ميزانية الإعلان', industry: 'القطاع', location: 'الموقع', job_title: 'منصب مقدم الطلب',
+    website_url: 'الموقع الإلكتروني', social_accounts: 'حسابات المنظمة', competitors: 'المنافسون',
+    references: 'مراجع مفضلة', decision_readiness: 'جاهزية القرار', previous_agency: 'تعامل سابق مع وكالة',
+    referral_source: 'مصدر المعرفة', scope_notes: 'ملاحظات النطاق', timeline: 'المدة المتوقعة',
+  };
+
+  function normalized(value) { return String(value || '').trim().toLowerCase(); }
+
+  function clientConnections(client) {
+    const contact = normalized(client.contact);
+    const name = normalized(client.name);
+    const application = (state.data.applications || []).find((item) => item.id === client.id
+      || normalized(item.organization) === name || normalized(item.full_name) === name
+      || (item.email && contact.includes(normalized(item.email))) || (item.phone && contact.includes(normalized(item.phone))));
+    const lead = (state.data.leads || []).find((item) => item.converted_client_id === client.id
+      || (normalized(item.name) === name && normalized(item.name)));
+    const profile = (state.data.clientProfiles || []).find((item) => normalized(item.organization) === name
+      || normalized(item.display_name) === name || (item.email && contact.includes(normalized(item.email)))
+      || (item.phone && contact.includes(normalized(item.phone))));
+    const requests = profile ? (state.data.clientRequests || []).filter((item) => item.client_uid === profile.firebase_uid) : [];
+    return { application, lead, profile, requests };
+  }
+
+  function clientInfoRow(label, value) {
+    if (value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length)) return null;
+    const row = element('div', 'client-card__info-row');
+    row.append(element('span', '', label), element('p', '', Array.isArray(value) ? value.join('، ') : String(value)));
+    return row;
+  }
+
+  async function moveClient(client, status, button) {
+    button.disabled = true;
+    try {
+      await api(`/api/employee/clients/${encodeURIComponent(client.id)}`, { method: 'PATCH', body: JSON.stringify({ status }) });
+      await refreshData({ quiet: true });
+      showToast(`انتقل ${client.name} إلى ${STATUS_META[status].label}.`);
+    } catch (error) { showToast(error.message, true); }
+    finally { button.disabled = false; }
+  }
+
   function clientCard(client) {
     const card = element('article', 'client-card');
     const top = element('div', 'client-card__top');
@@ -433,49 +477,64 @@
       card.append(detail);
     }
 
+    const linked = clientConnections(client);
+    const more = element('section', 'client-card__more');
+    const source = linked.application ? 'طلب تقديم كامل عبر الموقع' : linked.requests.length ? 'طلب من بوابة العميل' : linked.lead ? 'فرصة استهداف' : 'إضافة داخلية';
+    more.append(clientInfoRow('المصدر', source), clientInfoRow('المسؤول', client.owner || client.created_by || 'الفريق'), clientInfoRow('القيمة', formatMoney.format(Number(client.value || 0))));
+    if (linked.application) {
+      const app = linked.application, details = app.details || {};
+      more.append(element('h4', '', 'بيانات التقديم الكامل'));
+      [
+        ['رقم الطلب', app.reference], ['اسم مقدم الطلب', app.full_name], ['المنظمة', app.organization],
+        ['البريد', app.email], ['الجوال', app.phone], ['الخدمات', app.services], ['الميزانية', app.budget_range],
+        ['ملخص المشروع', app.project_summary], ...Object.entries(details).map(([key, value]) => [CLIENT_DETAIL_LABELS[key] || key.replaceAll('_', ' '), value]),
+      ].forEach(([label, value]) => { const row = clientInfoRow(label, value); if (row) more.append(row); });
+      if (app.files?.length) {
+        const files = element('div', 'client-card__files'); files.append(element('span', '', 'المرفقات'));
+        app.files.forEach((file) => { const link = element('a', '', file.original_name); link.href = `/api/employee/application-files/${encodeURIComponent(file.id)}`; link.target = '_blank'; link.rel = 'noopener'; files.append(link); });
+        more.append(files);
+      }
+    }
+    if (linked.profile) {
+      more.append(element('h4', '', 'حساب العميل'));
+      [['الاسم', linked.profile.display_name], ['المنظمة', linked.profile.organization], ['البريد', linked.profile.email], ['الجوال', linked.profile.phone]].forEach(([label, value]) => { const row = clientInfoRow(label, value); if (row) more.append(row); });
+    }
+    if (linked.requests.length) {
+      more.append(element('h4', '', 'طلبات بوابة العميل'));
+      linked.requests.forEach((request) => { const block = element('article', 'client-card__request'); block.append(element('strong', '', request.title), element('span', '', `${CLIENT_REQUEST_STATUS[request.status] || request.status} · ${request.type}`), element('p', '', request.details)); more.append(block); });
+    }
+    if (linked.lead) {
+      const lead = linked.lead;
+      more.append(element('h4', '', 'بيانات فرصة الاستهداف'));
+      [['النشاط', lead.activity], ['التصنيف', lead.category], ['الحي', lead.neighborhood], ['الأولوية', `P${lead.priority || 3}`], ['الهاتف', lead.phone], ['البريد', lead.email], ['العنوان', lead.address], ['الخدمة المقترحة', lead.recommended_service], ['ملاحظات', lead.notes]].forEach(([label, value]) => { const row = clientInfoRow(label, value); if (row) more.append(row); });
+      if (lead.maps_url) { const map = element('a', 'client-card__map', 'فتح الموقع على الخريطة'); map.href = lead.maps_url; map.target = '_blank'; map.rel = 'noopener'; more.append(map); }
+    }
+    card.append(more);
+
     const actions = element('div', 'client-card__actions');
     const owner = element('span', 'client-card__owner');
     owner.append(element('i', '', initials(client.owner || client.created_by)), document.createTextNode(client.owner || client.created_by || 'الفريق'));
     actions.append(owner);
+    const buttons = element('div', 'client-card__action-buttons');
+    const reveal = element('button', 'client-more', 'المزيد'); reveal.type = 'button'; reveal.setAttribute('aria-expanded', 'false');
+    reveal.addEventListener('click', () => { const open = card.classList.toggle('is-expanded'); reveal.textContent = open ? 'إخفاء التفاصيل' : 'المزيد'; reveal.setAttribute('aria-expanded', String(open)); });
+    buttons.append(reveal);
+    const previous = STATUS_META[client.status]?.prev;
+    if (previous) { const back = element('button', 'client-move-back', `رجوع إلى ${STATUS_META[previous].label}`); back.type = 'button'; back.addEventListener('click', () => moveClient(client, previous, back)); buttons.append(back); }
     const next = STATUS_META[client.status]?.next;
-    if (next) {
-      const move = element('button', '', `نقل إلى ${STATUS_META[next].label} `);
-      move.type = 'button';
-      move.addEventListener('click', async () => {
-        move.disabled = true;
-        try {
-          await api(`/api/employee/clients/${encodeURIComponent(client.id)}`, {
-            method: 'PATCH',
-            body: JSON.stringify({ status: next }),
-          });
-          await refreshData({ quiet: true });
-          showToast(`انتقل ${client.name} إلى ${STATUS_META[next].label}.`);
-        } catch (error) {
-          showToast(error.message, true);
-        } finally {
-          move.disabled = false;
-        }
-      });
-      actions.append(move);
-    }
+    if (next) { const move = element('button', 'client-move-next', `نقل إلى ${STATUS_META[next].label}`); move.type = 'button'; move.addEventListener('click', () => moveClient(client, next, move)); buttons.append(move); }
     const remove = element('button', 'client-delete', 'حذف');
     remove.type = 'button';
     remove.addEventListener('click', async () => {
       const linkedRequest = client.created_by === 'WEBSITE';
-      const warning = linkedRequest
-        ? `حذف «${client.name}»؟\nسيُحذف أيضاً طلب الموقع والمهمة والمرفقات المرتبطة به.`
-        : `حذف العميل «${client.name}» من مسار الفرص؟`;
+      const warning = linkedRequest ? `حذف «${client.name}»؟\nسيُحذف أيضاً طلب الموقع والمهمة والمرفقات المرتبطة به.` : `حذف العميل «${client.name}» من مسار الفرص؟`;
       if (!window.confirm(warning)) return;
       remove.disabled = true;
-      try {
-        await api(`/api/employee/clients/${encodeURIComponent(client.id)}`, { method: 'DELETE' });
-        await refreshData({ quiet: true });
-        showToast(`تم حذف ${client.name}.`);
-      } catch (error) { showToast(error.message, true); }
+      try { await api(`/api/employee/clients/${encodeURIComponent(client.id)}`, { method: 'DELETE' }); await refreshData({ quiet: true }); showToast(`تم حذف ${client.name}.`); }
+      catch (error) { showToast(error.message, true); }
       finally { remove.disabled = false; }
     });
-    actions.append(remove);
-    card.append(actions);
+    buttons.append(remove); actions.append(buttons); card.append(actions);
     return card;
   }
 
@@ -650,19 +709,29 @@
   const SUPPORT_STATUS = { open:'مفتوحة', in_progress:'قيد المعالجة', waiting_client:'بانتظار العميل', resolved:'تم الحل', closed:'إغلاق التذكرة' };
   function renderClientSupport() {
     const tickets=state.data.clientSupportTickets||[], messages=state.data.clientSupportMessages||[];
-    const open=tickets.filter((ticket)=>!['resolved','closed'].includes(ticket.status)).length;
-    if(qs('#clientSupportBadge')) qs('#clientSupportBadge').textContent=`${open} مفتوحة`;
-    const nodes=tickets.map((ticket)=>{
+    const activeTickets=tickets.filter((ticket)=>ticket.status!=='closed');
+    const closedTickets=tickets.filter((ticket)=>ticket.status==='closed');
+    const needsReply=activeTickets.filter((ticket)=>messages.filter((message)=>message.ticket_id===ticket.id).at(-1)?.sender_type==='client').length;
+    if(qs('#clientSupportBadge')) qs('#clientSupportBadge').textContent=`${activeTickets.length} مفتوحة`;
+    if(qs('#clientSupportClosedBadge')) qs('#clientSupportClosedBadge').textContent=`${closedTickets.length} مغلقة`;
+    if(qs('#clientSupportNavBadge')) qs('#clientSupportNavBadge').textContent=String(activeTickets.length);
+    const summaryItems=[['تذاكر نشطة',activeTickets.length],['تحتاج رد الفريق',needsReply],['بانتظار العميل',activeTickets.filter((ticket)=>ticket.status==='waiting_client').length],['أرشيف مغلق',closedTickets.length]];
+    qs('#supportSummary')?.replaceChildren(...summaryItems.map(([label,value])=>{const item=element('article');item.append(element('span','',label),element('strong','',String(value)));return item;}));
+    const ticketNode=(ticket)=>{
       const card=element('article','client-support-ticket');
       const head=element('header'); const title=element('div'); title.append(element('span','',`${clientName(ticket.client_uid)} · ${ticket.category}`),element('strong','',ticket.subject)); const status=leadSelect('',Object.keys(SUPPORT_STATUS),ticket.status,SUPPORT_STATUS); head.append(title,status);
       const thread=element('div','client-support-thread');
       (messages.filter((message)=>message.ticket_id===ticket.id)).forEach((message)=>{const bubble=element('div',`client-support-message is-${message.sender_type}`);bubble.append(element('strong','',message.sender_type==='client'?clientName(ticket.client_uid):message.sender_name),element('p','',message.body),element('small','',displayDate(message.created_at)));thread.append(bubble);});
       const reply=element('form','client-support-reply'); const input=element('textarea'); input.placeholder='اكتب ردك للعميل...'; input.maxLength=2500; const send=element('button','','إرسال الرد');send.type='submit';
       reply.append(input,send); reply.addEventListener('submit',async(event)=>{event.preventDefault();const body=input.value.trim();if(!body)return;send.disabled=true;try{await api(`/api/employee/support-tickets/${ticket.id}/messages`,{method:'POST',body:JSON.stringify({body})});await refreshData({quiet:true});showToast('وصل ردك للعميل.');}catch(error){showToast(error.message,true);}finally{send.disabled=false;}});
-      status.addEventListener('change',async()=>{status.disabled=true;try{await api(`/api/employee/support-tickets/${ticket.id}`,{method:'PATCH',body:JSON.stringify({status:status.value})});await refreshData({quiet:true});showToast('تم تحديث حالة التذكرة.');}catch(error){showToast(error.message,true);}finally{status.disabled=false;}});
-      card.append(head,thread,reply); return card;
-    });
-    qs('#clientSupportTickets')?.replaceChildren(...(nodes.length?nodes:[emptyState('لا توجد تذاكر دعم حتى الآن.') ]));
+      status.addEventListener('change',async()=>{status.disabled=true;const nextStatus=status.value;try{await api(`/api/employee/support-tickets/${ticket.id}`,{method:'PATCH',body:JSON.stringify({status:nextStatus})});await refreshData({quiet:true});showToast(nextStatus==='closed'?'أغلقت التذكرة واختفت من حساب العميل.':'تم تحديث حالة التذكرة.');}catch(error){showToast(error.message,true);}finally{status.disabled=false;}});
+      card.append(head,thread);
+      if(ticket.status!=='closed') card.append(reply);
+      else card.append(element('p','client-support-closed-note','هذه التذكرة محفوظة في أرشيف الفريق. اختر حالة جديدة من الأعلى لإعادة فتحها للعميل.'));
+      return card;
+    };
+    qs('#clientSupportOpenTickets')?.replaceChildren(...(activeTickets.length?activeTickets.map(ticketNode):[emptyState('لا توجد تذاكر مفتوحة الآن.') ]));
+    qs('#clientSupportClosedTickets')?.replaceChildren(...(closedTickets.length?closedTickets.map(ticketNode):[emptyState('لا توجد تذاكر مغلقة في الأرشيف.') ]));
   }
 
   function refreshClientDeliveryProjects() {
